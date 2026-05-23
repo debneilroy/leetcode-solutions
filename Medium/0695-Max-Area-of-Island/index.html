@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>695. Max Area of Island - LeetCode Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+
+:root {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --radius:    6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #e6db74; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy   { color: var(--easy);   background: rgba(44,187,93,0.15); }
+.badge-Medium { color: var(--medium); background: rgba(255,161,22,0.15); }
+.badge-Hard   { color: var(--hard);   background: rgba(239,71,67,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--surface2); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: #1e1e1e !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">695. Max Area of Island</span>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (0)</div>
+        <div class="tab" data-tab="similar">Similar (6)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">695. Max Area of Island</div>
+        <div class="prob-meta">
+          <span class="badge badge-Medium">Medium</span>
+          <span class="tag">Array</span><span class="tag">Depth-First Search</span><span class="tag">Breadth-First Search</span><span class="tag">Union-Find</span><span class="tag">Matrix</span>
+        </div>
+        <div class="prob-stats">1.2M / 1.7M (74.0%)</div>
+        <div class="prob-desc"><p>You are given an <code>m x n</code> binary matrix <code>grid</code>. An island is a group of <code>1</code>'s (representing land) connected <strong>4-directionally</strong> (horizontal or vertical.) You may assume all four edges of the grid are surrounded by water.</p>
+<p>The <strong>area</strong> of an island is the number of cells with a value <code>1</code> in the island.</p>
+<p>Return <em>the maximum <strong>area</strong> of an island in </em><code>grid</code>. If there is no island, return <code>0</code>.</p>
+<p>Example 1:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> grid = [[0,0,1,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,1,1,0,1,0,0,0,0,0,0,0,0],[0,1,0,0,1,1,0,0,1,0,1,0,0],[0,1,0,0,1,1,0,0,1,1,1,0,0],[0,0,0,0,0,0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,0,1,1,0,0,0,0]]
+<strong>Output:</strong> 6
+<strong>Explanation:</strong> The answer is not 11, because the island must be connected 4-directionally.
+</code></pre>
+<p>Example 2:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> grid = [[0,0,0,0,0,0,0,0]]
+<strong>Output:</strong> 0
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li><code>m == grid.length</code></li>
+</ul>
+	
+<ul>
+<li><code>n == grid[i].length</code></li>
+</ul>
+	
+<ul>
+<li><code>1 &lt;= m, n &lt;= 50</code></li>
+</ul>
+	
+<ul>
+<li><code>grid[i][j]</code> is either <code>0</code> or <code>1</code>.</li>
+</ul></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        <p class="empty-msg">No hints for this problem.</p>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/number-of-islands/" target="_blank">Number of Islands</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/battleships-in-a-board/" target="_blank">Battleships in a Board</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/island-perimeter/" target="_blank">Island Perimeter</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/largest-submatrix-with-rearrangements/" target="_blank">Largest Submatrix With Rearrangements</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/detonate-the-maximum-bombs/" target="_blank">Detonate the Maximum Bombs</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/maximum-number-of-fish-in-a-grid/" target="_blank">Maximum Number of Fish in a Grid</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 695. Max Area of Island
+Difficulty: Medium
+URL: https://leetcode.com/problems/max-area-of-island/
+&quot;&quot;&quot;
+
+# Approach : Iterative DFS (grid not modified)
+
+# class Solution:
+#     def maxAreaOfIsland(self, grid: List[List[int]]) -&gt; int:
+#         &quot;&quot;&quot;
+#         Find the maximum area of an island in a binary grid.
+        
+#         An island is a group of connected 1s (land) surrounded by 0s (water).
+#         Cells are connected horizontally or vertically (not diagonally).
+        
+#         Approach: Iterative Depth-First Search (DFS) with Stack and Visited Set
+#         - Use explicit stack instead of recursion to avoid stack overflow
+#         - Use a separate visited set to track explored cells (preserves original grid)
+#         - Explore each island completely before moving to the next cell
+        
+#         Time Complexity: O(rows * cols)
+#         - We visit each cell exactly once in the worst case
+#         - Each cell is added to visited set when first encountered
+        
+#         Space Complexity: O(rows * cols)
+#         - Visited set: O(rows * cols) to store all visited coordinates
+#         - Stack: O(min(rows, cols)) on average, O(rows * cols) worst case
+#         - Total: O(rows * cols)
+        
+#         Args:
+#             grid: 2D binary grid where 1 = land, 0 = water
+            
+#         Returns:
+#             Maximum area of any island, or 0 if no islands exist
+            
+#         &quot;&quot;&quot;
+#         # Handle edge cases: empty grid or empty rows
+#         if not grid or not grid[0]:
+#             return 0
+        
+#         rows, cols = len(grid), len(grid[0])
+#         visited = set()  # Track visited cells without modifying grid
+#         max_area = 0
+        
+#         # Iterate through every cell in the grid
+#         for row in range(rows):
+#             for col in range(cols):
+#                 # Found an unvisited land cell - start exploring the island
+#                 if grid[row][col] == 1 and (row, col) not in visited:
+#                     # Initialize DFS using an explicit stack
+#                     current_area = 0
+#                     stack = [(row, col)]
+                    
+#                     # Mark starting cell as visited
+#                     visited.add((row, col))
+                    
+#                     # Explore all connected land cells iteratively
+#                     while stack:
+#                         curr_row, curr_col = stack.pop()
+                        
+#                         # Count this cell as part of the island
+#                         current_area += 1
+                        
+#                         # Explore all 4 adjacent directions: down, up, right, left
+#                         for dr, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+#                             next_row = curr_row + dr
+#                             next_col = curr_col + dc
+                            
+#                             # Check if neighbor is within bounds, is land, and not visited
+#                             if (0 &lt;= next_row &lt; rows and 
+#                                 0 &lt;= next_col &lt; cols and 
+#                                 grid[next_row][next_col] == 1 and
+#                                 (next_row, next_col) not in visited):
+                                
+#                                 # Mark as visited to prevent duplicates in stack
+#                                 visited.add((next_row, next_col))
+                                
+#                                 # Add to stack for exploration
+#                                 stack.append((next_row, next_col))
+                    
+#                     # Update maximum area found so far
+#                     max_area = max(max_area, current_area)
+
+#         return max_area
+
+        # Example Dry Run:
+        #     Input: grid = [[0, 1, 0],
+        #                   [1, 1, 0],
+        #                   [0, 1, 1]]
+            
+        #     Step-by-step execution:
+            
+        #     Initial state:
+        #     - visited = set()
+        #     - max_area = 0
+            
+        #     1. Scan (0,0): value=0, skip
+            
+        #     2. Scan (0,1): value=1 and not visited, begin DFS
+        #        - visited.add((0,1))
+        #        - stack=[(0,1)], current_area=0
+               
+        #        Pop (0,1): current_area=1
+        #        - Check (1,1): land and not visited
+        #          * visited.add((1,1)), stack=[(1,1)]
+        #        - Check (-1,1): out of bounds
+        #        - Check (0,2): water, skip
+        #        - Check (0,0): water, skip
+               
+        #        Pop (1,1): current_area=2
+        #        - Check (2,1): land and not visited
+        #          * visited.add((2,1)), stack=[(2,1)]
+        #        - Check (0,1): already in visited, skip
+        #        - Check (1,2): water, skip
+        #        - Check (1,0): land and not visited
+        #          * visited.add((1,0)), stack=[(2,1), (1,0)]
+               
+        #        Pop (1,0): current_area=3
+        #        - Check (2,0): water, skip
+        #        - Check (0,0): water, skip
+        #        - Check (1,1): already in visited, skip
+        #        - Check (1,-1): out of bounds
+               
+        #        Pop (2,1): current_area=4
+        #        - Check (2,2): land and not visited
+        #          * visited.add((2,2)), stack=[(2,2)]
+        #        - Check (1,1): already in visited, skip
+        #        - Check (2,0): water, skip
+               
+        #        Pop (2,2): current_area=5
+        #        - Check (2,1): already in visited, skip
+        #        - All other neighbors are water or out of bounds
+               
+        #        Stack empty: Island complete
+        #        - current_area = 5
+        #        - max_area = max(0, 5) = 5
+        #        - visited = {(0,1), (1,1), (2,1), (1,0), (2,2)}
+            
+        #     3. Continue scanning (0,2): water, skip
+        #     4. Scan (1,0): already in visited, skip
+        #     5. Scan (1,1): already in visited, skip
+        #     6. Scan (1,2): water, skip
+        #     7. Scan (2,0): water, skip
+        #     8. Scan (2,1): already in visited, skip
+        #     9. Scan (2,2): already in visited, skip
+            
+        #     Output: 5
+
+
+# Approach : Iterative DFS (grid modified)
+
+# class Solution:
+#     def maxAreaOfIsland(self, grid: List[List[int]]) -&gt; int:
+#         &quot;&quot;&quot;
+#         Find the maximum area of an island in a binary grid.
+        
+#         An island is a group of connected 1s (land) surrounded by 0s (water).
+#         Cells are connected horizontally or vertically (not diagonally).
+        
+#         Approach: Iterative Depth-First Search (DFS) with Stack
+#         - Use explicit stack instead of recursion to avoid stack overflow
+#         - Mark cells as visited by modifying the grid (set to 0)
+#         - Explore each island completely before moving to the next cell
+        
+#         Time Complexity: O(rows * cols)
+#         - We visit each cell exactly once in the worst case
+#         - Each cell is marked as visited (set to 0) when first encountered
+        
+#         Space Complexity: O(rows * cols)
+#         - In the worst case (entire grid is one island), the stack can grow
+#           to contain all cells before we start popping
+#         - More typically, O(min(rows, cols)) for a snake-shaped island
+        
+#         Args:
+#             grid: 2D binary grid where 1 = land, 0 = water
+            
+#         Returns:
+#             Maximum area of any island, or 0 if no islands exist
+#         &quot;&quot;&quot;
+#         # Handle edge cases: empty grid or empty rows
+#         if not grid or not grid[0]:
+#             return 0
+        
+#         rows, cols = len(grid), len(grid[0])
+#         max_area = 0
+        
+#         # Iterate through every cell in the grid
+#         for row in range(rows):
+#             for col in range(cols):
+#                 # Found an unvisited land cell - start exploring the island
+#                 if grid[row][col] == 1:
+#                     # Initialize DFS using an explicit stack
+#                     current_area = 0
+#                     stack = [(row, col)]
+                    
+#                     # Mark starting cell as visited to avoid revisiting
+#                     grid[row][col] = 0
+                    
+#                     # Explore all connected land cells iteratively
+#                     while stack:
+#                         curr_row, curr_col = stack.pop()
+                        
+#                         # Count this cell as part of the island
+#                         current_area += 1
+                        
+#                         # Explore all 4 adjacent directions: down, up, right, left
+#                         for delta_row, delta_col in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+#                             next_row = curr_row + delta_row
+#                             next_col = curr_col + delta_col
+                            
+#                             # Check if neighbor is within bounds and is unvisited land
+#                             if (0 &lt;= next_row &lt; rows and 
+#                                 0 &lt;= next_col &lt; cols and 
+#                                 grid[next_row][next_col] == 1):
+                                
+#                                 # Mark as visited immediately to prevent duplicates in stack
+#                                 grid[next_row][next_col] = 0
+                                
+#                                 # Add to stack for exploration
+#                                 stack.append((next_row, next_col))
+                    
+#                     # Update maximum area found so far
+#                     max_area = max(max_area, current_area)
+        
+#         return max_area
+
+# Approach : BFS
+
+# from collections import deque
+
+# class Solution:
+#     def maxAreaOfIsland(self, grid: List[List[int]]) -&gt; int:
+#         &quot;&quot;&quot;
+#         Find the maximum area of an island in a binary grid.
+        
+#         An island is a group of connected 1s (land) surrounded by 0s (water).
+#         Cells are connected horizontally or vertically (not diagonally).
+        
+#         Approach: Iterative Breadth-First Search (BFS) with Queue and Visited Set
+#         - Use queue (deque) for level-by-level exploration
+#         - Use a separate visited set to track explored cells (preserves original grid)
+#         - Process cells in order of distance from starting point
+        
+#         Time Complexity: O(rows * cols)
+#         - We visit each cell exactly once in the worst case
+#         - Each cell is added to visited set when first encountered
+        
+#         Space Complexity: O(rows * cols)
+#         - Visited set: O(rows * cols) to store all visited coordinates
+#         - Queue: O(min(rows, cols)) on average, O(rows * cols) worst case
+#         - Total: O(rows * cols)
+        
+#         Args:
+#             grid: 2D binary grid where 1 = land, 0 = water
+            
+#         Returns:
+#             Maximum area of any island, or 0 if no islands exist
+#         &quot;&quot;&quot;
+#         # Handle edge cases: empty grid or empty rows
+#         if not grid or not grid[0]:
+#             return 0
+        
+#         rows, cols = len(grid), len(grid[0])
+#         visited = set()  # Track visited cells without modifying grid
+#         max_area = 0
+        
+#         # Iterate through every cell in the grid
+#         for row in range(rows):
+#             for col in range(cols):
+#                 # Found an unvisited land cell - start exploring the island
+#                 if grid[row][col] == 1 and (row, col) not in visited:
+#                     # Initialize BFS using a queue (deque for O(1) operations)
+#                     current_area = 0
+#                     queue = deque([(row, col)])
+                    
+#                     # Mark starting cell as visited
+#                     visited.add((row, col))
+                    
+#                     # Explore all connected land cells level by level
+#                     while queue:
+#                         curr_row, curr_col = queue.popleft()  # FIFO for BFS
+                        
+#                         # Count this cell as part of the island
+#                         current_area += 1
+                        
+#                         # Explore all 4 adjacent directions: down, up, right, left
+#                         for delta_row, delta_col in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+#                             next_row = curr_row + delta_row
+#                             next_col = curr_col + delta_col
+                            
+#                             # Check if neighbor is within bounds, is land, and not visited
+#                             if (0 &lt;= next_row &lt; rows and 
+#                                 0 &lt;= next_col &lt; cols and 
+#                                 grid[next_row][next_col] == 1 and
+#                                 (next_row, next_col) not in visited):
+                                
+#                                 # Mark as visited to prevent duplicates in queue
+#                                 visited.add((next_row, next_col))
+                                
+#                                 # Add to queue for exploration
+#                                 queue.append((next_row, next_col))
+                    
+#                     # Update maximum area found so far
+#                     max_area = max(max_area, current_area)
+        
+#         return max_area
+
+
+# Approach : Recursive DFS (grid not modified)
+
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -&gt; int:
+        &quot;&quot;&quot;
+        Find the maximum area of an island in a binary grid.
+        
+        An island is a group of connected 1s (land) surrounded by 0s (water).
+        Cells are connected horizontally or vertically (not diagonally).
+        
+        Approach: Recursive Depth-First Search (DFS) with Visited Set
+        - Use recursion call stack for exploration
+        - Use a separate visited set to track explored cells (preserves original grid)
+        - Explore each island completely using recursive calls
+        
+        Time Complexity: O(rows * cols)
+        - Visit each cell exactly once
+        - Each cell is added to visited set when first encountered
+        
+        Space Complexity: O(rows * cols)
+        - Visited set: O(rows * cols) to store all visited coordinates
+        - Recursion call stack: O(rows * cols) in worst case (entire grid is one island)
+        - Total: O(rows * cols)
+        
+        Args:
+            grid: 2D binary grid where 1 = land, 0 = water
+            
+        Returns:
+            Maximum area of any island, or 0 if no islands exist
+        &quot;&quot;&quot;
+        # Handle edge cases: empty grid or empty rows
+        if not grid or not grid[0]:
+            return 0
+        
+        rows, cols = len(grid), len(grid[0])
+        visited = set()  # Track visited cells without modifying grid
+        max_area = 0
+        
+        def dfs(row: int, col: int) -&gt; int:
+            &quot;&quot;&quot;
+            Recursively explore island and return its area.
+            
+            Args:
+                row: Current row index
+                col: Current column index
+                
+            Returns:
+                Area of island reachable from this cell
+            &quot;&quot;&quot;
+            # Base case: out of bounds, water, or already visited
+            if (row &lt; 0 or row &gt;= rows or 
+                col &lt; 0 or col &gt;= cols or 
+                grid[row][col] == 0 or
+                (row, col) in visited):
+                return 0
+            
+            # Mark current cell as visited
+            visited.add((row, col))
+            
+            # Count current cell (1) plus all connected cells in 4 directions
+            area = 1
+            area += dfs(row + 1, col)  # explore down
+            area += dfs(row - 1, col)  # explore up
+            area += dfs(row, col + 1)  # explore right
+            area += dfs(row, col - 1)  # explore left
+            
+            return area
+        
+        # Iterate through every cell in the grid
+        for row in range(rows):
+            for col in range(cols):
+                # Found an unvisited land cell - start exploring the island
+                if grid[row][col] == 1 and (row, col) not in visited:
+                    # Call DFS and get the area of this island
+                    current_area = dfs(row, col)
+                    # Update maximum area found so far
+                    max_area = max(max_area, current_area)
+        
+        return max_area
+        </code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Easy/0680-Valid-Palindrome-II/">&#8592; 680. Valid Palindrome II</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Easy/0766-Toeplitz-Matrix/">766. Toeplitz Matrix &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+</body>
+</html>
