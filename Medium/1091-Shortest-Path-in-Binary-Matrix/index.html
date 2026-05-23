@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1091. Shortest Path in Binary Matrix - LeetCode Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+
+:root {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --radius:    6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #e6db74; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy   { color: var(--easy);   background: rgba(44,187,93,0.15); }
+.badge-Medium { color: var(--medium); background: rgba(255,161,22,0.15); }
+.badge-Hard   { color: var(--hard);   background: rgba(239,71,67,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--surface2); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: #1e1e1e !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">1091. Shortest Path in Binary Matrix</span>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (1)</div>
+        <div class="tab" data-tab="similar">Similar (1)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">1091. Shortest Path in Binary Matrix</div>
+        <div class="prob-meta">
+          <span class="badge badge-Medium">Medium</span>
+          <span class="tag">Array</span><span class="tag">Breadth-First Search</span><span class="tag">Matrix</span>
+        </div>
+        <div class="prob-stats">852K / 1.7M (51.5%)</div>
+        <div class="prob-desc"><p>Given an <code>n x n</code> binary matrix <code>grid</code>, return <em>the length of the shortest <strong>clear path</strong> in the matrix</em>. If there is no clear path, return <code>-1</code>.</p>
+<p>A <strong>clear path</strong> in a binary matrix is a path from the <strong>top-left</strong> cell (i.e., <code>(0, 0)</code>) to the <strong>bottom-right</strong> cell (i.e., <code>(n - 1, n - 1)</code>) such that:</p>
+<ul>
+<li>All the visited cells of the path are <code>0</code>.</li>
+</ul>
+	
+<ul>
+<li>All the adjacent cells of the path are <strong>8-directionally</strong> connected (i.e., they are different and they share an edge or a corner).</li>
+</ul>
+<p>The <strong>length of a clear path</strong> is the number of visited cells of this path.</p>
+<p>Example 1:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> grid = [[0,1],[1,0]]
+<strong>Output:</strong> 2
+</code></pre>
+<p>Example 2:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> grid = [[0,0,0],[1,1,0],[1,1,0]]
+<strong>Output:</strong> 4
+</code></pre>
+<p>Example 3:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> grid = [[1,0,0],[1,1,0],[1,1,0]]
+<strong>Output:</strong> -1
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li><code>n == grid.length</code></li>
+</ul>
+	
+<ul>
+<li><code>n == grid[i].length</code></li>
+</ul>
+	
+<ul>
+<li><code>1 &lt;= n &lt;= 100</code></li>
+</ul>
+	
+<ul>
+<li><code>grid[i][j] is 0 or 1</code></li>
+</ul></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        
+<details class="hint-block">
+  <summary>Hint 1</summary>
+  <div class="hint-body"><p>Do a breadth first search to find the shortest path.</p></div>
+</details>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/paths-in-matrix-whose-sum-is-divisible-by-k/" target="_blank">Paths in Matrix Whose Sum Is Divisible by K</a>
+  <span style="color:#ef4743; font-size:12px;">Hard</span>
+</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 1091. Shortest Path in Binary Matrix
+Difficulty: Medium
+URL: https://leetcode.com/problems/shortest-path-in-binary-matrix/
+&quot;&quot;&quot;
+
+# Approach : BFS with parent map solution (Meta might prefer this)
+
+class Solution:
+    def shortestPathBinaryMatrix(self, grid: List[List[int]]) -&gt; int:
+        &quot;&quot;&quot;
+        Find shortest path length in n×n binary matrix using BFS.
+        
+        Time Complexity: O(N²)
+            - BFS visits each cell at most once: O(N²)
+            - Each cell checks 8 directions: O(1) per cell
+            - Path length calculation: O(path_length) ≤ O(N²)
+            - Total: O(N²)
+        
+        Space Complexity: O(N²)
+            - Queue: O(N²) cells in worst case
+            - Parent dict: O(N²) mappings (serves dual purpose: visited + parent tracking)
+            - Total: O(N²)
+        
+        Note: We don&#x27;t need a separate visited set because parent dict already
+        tracks visited cells. If (r,c) is in parent, we&#x27;ve visited it.
+        This saves one O(N²) data structure while maintaining O(1) lookup.
+        
+        Parent Map Rationale:
+            - Enables path reconstruction by storing how we reached each cell
+            - Each cell maps to its predecessor: parent[(child)] = (parent_cell)
+            - To get actual path: backtrack from end to start, then reverse
+            - To get path length: count hops during backtracking (O(path_length))
+            - Alternative: store distance in queue as (r, c, dist), but parent map
+              is more flexible - can get both path AND length from same structure
+            - Useful for follow-up questions like &quot;return the actual path&quot; or
+              &quot;return all cells visited along the shortest path&quot;
+        
+        Args:
+            grid: n×n binary matrix where 0 is traversable, 1 is blocked
+        
+        Returns:
+            int: Length of shortest path from (0,0) to (n-1,n-1)
+                 -1 if no path exists
+        &quot;&quot;&quot;
+        # Edge case: empty grid
+        if not grid:
+            return -1  # For path: return []
+        
+        # Edge case: empty first row (e.g., grid = [[]])
+        # Without this check, grid[0][0] would raise IndexError
+        # Example: grid = [[]] → grid[0] = [] → grid[0][0] = IndexError!
+        if not grid[0]:
+            return -1 # For path: return []
+        
+        n = len(grid)
+        
+        # Edge case: start or end blocked
+        if grid[0][0] == 1 or grid[n-1][n-1] == 1:
+            return -1 # For path: return []
+        
+        # Edge case: single cell (start == end)
+        if n == 1:
+            return 1 # return 
+        
+        # BFS initialization
+        queue = deque([(0, 0)])  # Cells to explore (FIFO)
+        
+        # parent: Map each cell to its predecessor (also acts as visited tracker)
+        # If (r,c) is in parent dict, it means we&#x27;ve already visited that cell
+        # Example after exploring a few cells:
+        # {(0,0): None, (0,1): (0,0), (1,0): (0,0), (1,1): (0,1)}
+        # This means: (0,1) was reached from (0,0), (1,0) from (0,0), (1,1) from (0,1)
+        parent = {(0, 0): None}
+        
+        # 8 directions: (row_delta, col_delta) for all adjacent cells
+        # Each tuple represents how to move from current cell to neighbor:
+        #   negative row_delta = move up, positive = move down
+        #   negative col_delta = move left, positive = move right
+        dirs = [
+            (-1, -1),  # up-left diagonal
+            (-1,  0),  # up (directly above)
+            (-1,  1),  # up-right diagonal
+            ( 0, -1),  # left (same row)
+            ( 0,  1),  # right (same row)
+            ( 1, -1),  # down-left diagonal
+            ( 1,  0),  # down (directly below)
+            ( 1,  1)   # down-right diagonal
+        ]
+        
+        # BFS traversal
+        while queue:
+            r, c = queue.popleft()
+            
+            # Explore all 8 neighbors
+            for dr, dc in dirs:
+                nr, nc = r + dr, c + dc  # neighbor_row, neighbor_col
+                
+                # Check: in bounds, traversable, unvisited (not in parent dict)
+                if (0 &lt;= nr &lt; n and 0 &lt;= nc &lt; n and 
+                    grid[nr][nc] == 0 and (nr, nc) not in parent):
+                    
+                    parent[(nr, nc)] = (r, c)  # Record parent AND mark as visited
+                    
+                    # Early exit if destination reached
+                    if nr == n-1 and nc == n-1:
+                        return self.get_path_length(parent, (nr, nc))
+                    
+                    queue.append((nr, nc))
+        
+        # No path found (queue exhausted)
+        return -1 # For path: return []
+    
+    def get_path_length(self, parent: dict, end: tuple) -&gt; int:
+        &quot;&quot;&quot;
+        Calculate path length by counting parent hops.
+        
+        Time Complexity: O(L) where L is path length
+            - Backtrack through parent pointers once: O(L)
+            - L ≤ N² because:
+              * Grid has N² total cells
+              * BFS visited set ensures each cell visited at most once
+              * Longest path visits all cells: L = N²
+              * Example worst case (4×4 grid, spiral path visiting all 16 cells):
+                (0,0)→(0,1)→(0,2)→(0,3)→(1,3)→(2,3)→(2,2)→(2,1)→
+                (3,1)→(3,0)→(2,0)→(1,0)→(1,1)→(1,2)→(3,2)→(3,3)
+              * Best case: L = N (diagonal path from corner to corner)
+        
+        Space Complexity: O(1)
+            - Only uses a counter variable
+            - No additional data structures created
+        
+        If returning actual path instead of length:
+            Time Complexity: O(L)
+                - Still need to backtrack through parent pointers: O(L)
+                - Reversing the path list: O(L)
+                - Total: O(L) where L ≤ N²
+            
+            Space Complexity: O(L)
+                - Path list stores all coordinates: O(L)
+                - L ≤ N² in worst case
+                - So space becomes O(N²) instead of O(1)
+        
+        Args:
+            parent: Dictionary mapping child -&gt; parent coordinate
+            end: End coordinate (destination cell)
+        
+        Returns:
+            int: Number of cells in the shortest path
+        &quot;&quot;&quot;
+        
+        length = 0
+        current = end
+        # path = [] # to get the actual path
+        
+        # Count hops back to start (parent = None)
+        while current is not None:
+            length += 1
+            # path.append(current)  # Uncomment to build actual path: adds O(L) space
+            current = parent[current]
+        
+        return length
+        # return path[::-1]  # Uncomment to return actual path: O(L) time for reversal
+
+# Check Discord post https://discord.com/channels/1356367273614508132/1370878985176875058
+
+# Approach: BFS (Without Overwriting the Input)
+
+# class Solution:
+#     def shortestPathBinaryMatrix(self, grid: List[List[int]]) -&gt; int:
+#         &quot;&quot;&quot;
+#         Find shortest path length using BFS with distance tracking in queue.
+#         Set-based approach with optimizations.
+
+#         Time Complexity: O(N²) for n×n grid, O(M×N) for m×n rectangular grid
+#             - BFS visits each cell at most once: O(N²) or O(M×N)
+#             - Each cell checks 8 directions: O(1) per cell
+#             - Early termination when destination found
+#             - Total: O(N²) for square, O(M×N) for rectangular
+        
+#         Space Complexity: O(N²) for n×n grid, O(M×N) for m×n rectangular grid
+#             - Queue: O(N²) or O(M×N) cells in worst case
+#             - Visited set: O(N²) or O(M×N) coordinates
+#             - Directions tuple: O(1) constant space (8 directions)
+#             - Total: O(N²) for square, O(M×N) for rectangular
+        
+#         Note: This approach stores distance in queue (r, c, dist) instead of
+#         using parent map. Trade-off:
+#             - Simpler for getting path length only
+#             - Cannot reconstruct actual path without parent map
+#             - Slightly less flexible for follow-up questions
+        
+#         Args:
+#             grid: n×n binary matrix where 0 is traversable, 1 is blocked
+        
+#         Returns:
+#             int: Length of shortest path from (0,0) to (n-1,n-1)
+#                  -1 if no path exists
+#         &quot;&quot;&quot;
+#         # Edge case: empty grid
+#         if not grid:
+#             return -1
+        
+#         # Edge case: empty first row (e.g., grid = [[]])
+#         # Without this check, grid[0][0] would raise IndexError
+#         if not grid[0]:
+#             return -1
+
+#         # Get grid dimension (assuming square grid)
+#         n = len(grid)
+
+#         # if rectangular grid
+#         # m = len(grid)        # Number of rows
+#         # n = len(grid[0])     # Number of columns
+        
+#         # Early termination: check if start or end positions are blocked
+#         # grid[0][0] is top-left start, grid[n-1][n-1] is bottom-right end
+
+#         if grid[0][0] == 1 or grid[n-1][n-1] == 1: # grid[m-1][n-1] for rectangular grid
+#             return -1
+        
+#         # Edge case: single cell grid
+#         # If we can start and end at same position, path length is 1
+
+#         if n == 1: # for rectangular grid, if m == 1 and n == 1:
+#             return 1
+        
+#         # Initialize visited set with starting position
+#         # Using set for O(1) average lookup time
+#         visited = {(0, 0)}
+        
+#         # Initialize BFS queue with (row, col, distance)
+#         # Start at (0,0) with path length 1 (counting the starting cell)
+#         queue = deque([(0, 0, 1)])
+        
+#         # Use tuple for directions (slightly faster than list)
+#         # 8-directional movement: up, down, left, right, and 4 diagonals
+#         # Format: (row_offset, col_offset)
+#         dirs = ((-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1))
+        
+#         # BFS main loop - continue until queue is empty
+#         while queue:
+#             # Get current position and distance from queue
+#             r, c, dist = queue.popleft()
+            
+#             # Explore all 8 possible directions from current position
+#             for dr, dc in dirs:
+#                 # Calculate new position coordinates
+#                 nr, nc = r + dr, c + dc
+                
+#                 # Check if new position is valid:
+#                 # 1. Within grid boundaries (0 &lt;= nr &lt; n and 0 &lt;= nc &lt; n)
+#                 # 2. Cell is passable (not grid[nr][nc] means grid[nr][nc] == 0)
+#                 # 3. Not already visited ((nr, nc) not in visited)
+#                 if (0 &lt;= nr &lt; n and 0 &lt;= nc &lt; n and 
+#                     not grid[nr][nc] and (nr, nc) not in visited): # 0 &lt;= nr &lt; m and 0 &lt;= nc &lt; n for rectangular grid
+                    
+#                     # Check if we&#x27;ve reached the destination (bottom-right corner)
+#                     # Return immediately for optimal performance
+#                     # Return dist + 1 because:
+#                     #   - dist = path length to reach current cell (r,c)
+#                     #   - We&#x27;re moving to neighbor (nr,nc), which adds 1 to path
+#                     #   - Example: if dist=3 at (r,c), moving to (nr,nc) makes path length 4
+
+#                     if nr == n-1 and nc == n-1: # if nr == m-1 and nc == n-1 for rectangular grid
+#                         return dist + 1
+                    
+#                     # Mark new position as visited to avoid revisiting
+#                     # Do this BEFORE adding to queue to prevent duplicates
+#                     # Done AFTER destination check since we return immediately above
+#                     # This saves one set.add() operation when destination is found
+#                     visited.add((nr, nc))
+                    
+#                     # Add new position to queue with incremented distance
+#                     # dist + 1 represents the path length to reach this new cell
+#                     queue.append((nr, nc, dist + 1))
+        
+#         # If we exit the loop without finding destination, no path exists
+#         return -1
+
+
+# # Approach : Optimized BFS (Overwriting the input)
+
+# class Solution:
+#     def shortestPathBinaryMatrix(self, grid: List[List[int]]) -&gt; int:
+#         &quot;&quot;&quot;
+#         Find shortest path length using BFS with in-place grid modification.
+#         Space-optimized approach that marks visited cells directly in the grid.
+        
+#         TC: O(N²) for n×n grid, O(M×N) for m×n rectangular grid
+#         SC: O(N²) for n×n grid, O(M×N) for m×n rectangular grid
+        
+#         Time Complexity: O(N²) for n×n grid, O(M×N) for m×n rectangular grid
+#             - BFS visits each cell at most once: O(N²) or O(M×N)
+#             - Each cell checks 8 directions: O(1) per cell
+#             - Early termination when destination found
+#             - Total: O(N²) for square, O(M×N) for rectangular
+        
+#         Space Complexity: O(N²) for n×n grid, O(M×N) for m×n rectangular grid
+#             - Queue: O(N²) or O(M×N) cells in worst case
+#             - No separate visited set (uses grid in-place)
+#             - Directions list: O(1) constant space (8 directions)
+#             - Total: O(N²) for square, O(M×N) for rectangular
+
+#         Note: This approach modifies the input grid by marking visited cells as 1.
+        
+#         Advantages:
+#         ✅ Memory: 67% reduction (1 structure vs 3: queue only, no visited/parent)
+#         ✅ Simple: grid[nr][nc] == 0 checks both passable AND unvisited
+#         ✅ Performance: Better cache locality, fewer pointer dereferences
+#         ✅ Practical: For 10K×10K grid, saves ~1.6GB memory
+        
+#         Disadvantages:
+#         ❌ Destructive: Grid permanently modified, cannot restore
+#         ❌ No path: Cannot return actual coordinates (no parent tracking)
+#         ❌ Single use: Grid cannot be reused for multiple queries
+        
+#         Use when: Grid disposable, only need length, memory constrained
+#         Avoid when: Need actual path, grid must be preserved, multiple queries
+        
+#         Args:
+#             grid: n×n binary matrix where 0 is traversable, 1 is blocked
+#                   WARNING: This grid will be modified in-place
+        
+#         Returns:
+#             int: Length of shortest path from (0,0) to (n-1,n-1)
+#                  -1 if no path exists
+#         &quot;&quot;&quot;
+#         # Edge case: empty grid
+#         if not grid:
+#             return -1
+        
+#         # Edge case: empty first row (e.g., grid = [[]])
+#         # Without this check, grid[0][0] would raise IndexError
+#         if not grid[0]:
+#             return -1
+            
+#         n = len(grid)
+        
+#         # Early termination: check if start or end is blocked or if grid is empty
+#         if not grid or grid[0][0] == 1 or grid[n-1][n-1] == 1:
+#             return -1
+        
+#         # Edge case: single cell
+#         if n == 1:
+#             return 1
+        
+#         # Mark start as visited in-place (modifies grid)
+#         # Uses grid itself as visited tracker instead of separate set
+#         grid[0][0] = 1
+        
+#         # BFS with deque for O(1) popleft and append operations
+#         queue = deque([(0, 0, 1)])
+        
+#         # 8-directional moves (precomputed for efficiency)
+#         # Format: (row_offset, col_offset)
+#         dirs = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
+        
+#         while queue:
+#             r, c, dist = queue.popleft()
+            
+#             # Check all 8 directions
+#             for dr, dc in dirs:
+#                 nr, nc = r + dr, c + dc
+                
+#                 # Boundary check and cell availability in one condition
+#                 # grid[nr][nc] == 0 means both: passable AND unvisited
+#                 if 0 &lt;= nr &lt; n and 0 &lt;= nc &lt; n and grid[nr][nc] == 0:
+#                     # Reached destination
+#                     # Check BEFORE marking as visited for early exit optimization
+#                     if nr == n-1 and nc == n-1:
+#                         return dist + 1
+                    
+#                     # Mark as visited in-place and add to queue
+#                     # grid[nr][nc] = 1 serves dual purpose:
+#                     # 1. Marks cell as visited (prevents revisiting)
+#                     # 2. Modifies original grid (cannot restore later)
+#                     grid[nr][nc] = 1
+#                     queue.append((nr, nc, dist + 1))
+        
+#         return -1
+
+# # Variant 1 : Return the shortest path itself (included in the first approach)
+
+# # Return shortest path without grid modification (this one is essentially the same, just uses the visted set)
+
+# def shortestPathBinaryMatrix(grid):
+#     &quot;&quot;&quot;
+#     Find shortest path in binary matrix without modifying the input grid.
+#     Uses separate visited set for tracking. TC: O(N²), SC: O(N²)
+#     &quot;&quot;&quot;
+#     n = len(grid)
+#     # m×n grid: m = len(grid), n = len(grid[0])
+    
+#     # Edge cases
+#     if not grid or grid[0][0] == 1 or grid[n-1][n-1] == 1:
+#         return []
+#     # m×n grid: change grid[n-1][n-1] to grid[m-1][n-1]
+    
+#     if n == 1:
+#         return [(0, 0)]
+#     # m×n grid: change to &quot;if m == 1 and n == 1&quot;
+    
+#     # BFS setup
+#     queue = deque([(0, 0)])
+#     visited = {(0, 0)}  # Separate visited set instead of modifying grid
+#     parent = {(0, 0): None}
+    
+#     # 8 directions: up-left, up, up-right, left, right, down-left, down, down-right
+#     dirs = [(-1,-1), (-1,0), (-1,1), (0,-1), (0,1), (1,-1), (1,0), (1,1)]
+    
+#     while queue:
+#         r, c = queue.popleft()
+        
+#         # Explore all 8 neighbors
+#         for dr, dc in dirs:
+#             nr, nc = r + dr, c + dc
+            
+#             # Check: in bounds, traversable (0), not visited
+#             if (0 &lt;= nr &lt; n and 0 &lt;= nc &lt; n and 
+#                 grid[nr][nc] == 0 and (nr, nc) not in visited): 
+#                 # m×n grid: change &quot;0 &lt;= nr &lt; n and 0 &lt;= nc &lt; n&quot; to &quot;0 &lt;= nr &lt; m and 0 &lt;= nc &lt; n&quot;
+#                 visited.add((nr, nc))  # Mark as visited in separate set
+#                 parent[(nr, nc)] = (r, c)
+                
+#                 # Check if we reached destination
+#                 if nr == n-1 and nc == n-1: # m×n grid: change &quot;nr == n-1 and nc == n-1&quot; to &quot;nr == m-1 and nc == n-1&quot;
+#                     return reconstruct_path(parent, (nr, nc))
+ 
+#                 queue.append((nr, nc))
+    
+#     # No path found
+#     return []
+
+
+# def reconstruct_path(parent, end):
+#     &quot;&quot;&quot;
+#     Reconstruct path from parent mapping by backtracking.
+    
+#     Args:
+#         parent: Dictionary mapping child -&gt; parent coordinate
+#         end: End coordinate (destination)
+    
+#     Returns:
+#         List[Tuple[int, int]]: Path from start to end
+    
+#     Time Complexity: O(path_length)
+#         - Backtrack through parent pointers once
+#         - Reverse the list: O(path_length)
+    
+#     Space Complexity: O(path_length)
+#         - Path list stores all coordinates in the path
+#     &quot;&quot;&quot;
+#     path = []
+#     current = end
+    
+#     # Backtrack through parents until we reach start (parent = None)
+#     while current is not None:
+#         path.append(current)
+#         current = parent[current]
+    
+#     # Reverse to get path from start to end
+#     return path[::-1]
+
+# # Minh&#x27;s solution
+
+# class Variant:
+#     def shortestPathBinaryMatrix(self, grid: List[List[int]]) -&gt; List[tuple[int]]:
+#         &quot;&quot;&quot;
+#         Find shortest path in m×n binary matrix using BFS.
+        
+#         TC: O(M×N) - visits each cell at most once
+#         SC: O(M×N) - queue, visited set, and parent map
+        
+#         Time Complexity: O(M×N)
+#             - BFS visits each cell at most once: O(M×N)
+#             - Each cell checks 8 directions: O(1) per cell
+#             - Path reconstruction: O(path_length) ≤ O(M×N)
+#             - Total: O(M×N)
+        
+#         Space Complexity: O(M×N)
+#             - Queue: O(M×N) cells in worst case
+#             - Visited set: O(M×N) coordinates
+#             - Parent dict: O(M×N) mappings
+#             - Path list: O(M×N) in worst case
+#             - Total: O(M×N)
+        
+#         Args:
+#             grid: m×n binary matrix where 0 is traversable, 1 is blocked
+        
+#         Returns:
+#             List[tuple]: Path coordinates from (0,0) to (m-1,n-1)
+#             [] if no path exists
+#         &quot;&quot;&quot;
+#         # Edge case: empty grid
+#         if not grid:
+#             return []
+        
+#         # Edge case: empty first row
+#         if not grid[0]:
+#             return []
+        
+#         # Store last valid indices (alternative to storing dimensions)
+#         # rows = m-1, cols = n-1 where m and n are dimensions
+#         rows, cols = len(grid) - 1, len(grid[0]) - 1
+        
+#         # Edge case: start or end blocked
+#         if grid[0][0] == 1 or grid[rows][cols] == 1:
+#             return []
+        
+#         # Edge case: single cell (when rows=0 and cols=0)
+#         if rows == 0 and cols == 0:
+#             return [(0, 0)]
+        
+#         # Parent mapping for path reconstruction
+#         # Maps each visited cell to the cell we came from
+#         map = {}  # (child) -&gt; (parent)
+        
+#         # 8 directions: all adjacent cells including diagonals
+#         directions = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+        
+#         # BFS initialization
+#         queue = deque([(0, 0)])       # Start from top-left
+#         visited = {(0, 0)}            # Track visited cells to avoid cycles
+#         reached_end = False           # Flag to track if destination was found
+        
+#         # BFS traversal to find shortest path
+#         while queue:
+#             row, col = queue.popleft()  # Get current cell (FIFO)
+            
+#             # Check if reached destination (bottom-right corner)
+#             if row == rows and col == cols:
+#                 reached_end = True
+#                 break  # Early exit - no need to explore further
+            
+#             # Explore all 8 neighbors
+#             for dr, dc in directions:
+#                 nr, nc = row + dr, col + dc  # Calculate neighbor coordinates
+                
+#                 # Check if neighbor is valid:
+#                 # - In bounds (using &lt;= since rows/cols are last indices)
+#                 # - Not visited yet
+#                 # - Traversable (grid value is 0)
+#                 if (0 &lt;= nr &lt;= rows and 
+#                     0 &lt;= nc &lt;= cols and 
+#                     (nr, nc) not in visited and 
+#                     grid[nr][nc] == 0):
+                    
+#                     map[(nr, nc)] = (row, col)  # Store parent for backtracking
+#                     queue.append((nr, nc))       # Add to queue for BFS
+#                     visited.add((nr, nc))        # Mark as visited
+        
+#         # No path found - destination was not reached
+#         if not reached_end:
+#             return []
+        
+#         # Reconstruct path by backtracking from end to start using parent map
+#         result = []
+#         r, c = rows, cols  # Start from destination
+        
+#         # Follow parent pointers back to origin (0, 0)
+#         while (r, c) != (0, 0):
+#             result.append((r, c))
+#             r, c = map[(r, c)]  # Move to parent cell
+        
+#         result.append((0, 0))  # Add starting cell
+        
+#         # Reverse to get path from start to end
+#         return result[::-1]
+
+# # Return both the shortest path and its length
+
+# # def shortestPath(grid):
+# #     &quot;&quot;&quot;
+# #     Returns:
+# #         Tuple[int, List[Tuple[int, int]]]: (path_length, path_coordinates)
+# #         (-1, []) if no path exists
+
+# #     TC : O(N^2) SC : O(N^2)
+# #     &quot;&quot;&quot;
+# #     n = len(grid)
+    
+# #     if not grid or grid[0][0] == 1 or grid[n-1][n-1] == 1:
+# #         return (-1, [])
+    
+# #     if n == 1:
+# #         return (1, [(0, 0)])
+    
+# #     # BFS queue: (row, col)
+# #     queue = deque([(0, 0)])
+# #     visited = {(0, 0)}
+    
+# #     # Parent tracking: child -&gt; parent mapping
+# #     parent = {(0, 0): None}
+    
+# #     dirs = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
+    
+# #     while queue:
+# #         r, c = queue.popleft()
+        
+# #         for dr, dc in dirs:
+# #             nr, nc = r + dr, c + dc
+            
+# #             if (0 &lt;= nr &lt; n and 0 &lt;= nc &lt; n and 
+# #                 not grid[nr][nc] and (nr, nc) not in visited):
+                
+# #                 visited.add((nr, nc))
+# #                 parent[(nr, nc)] = (r, c)  # Track parent
+                
+# #                 # Check if reached destination
+# #                 if nr == n-1 and nc == n-1:
+# #                     # Reconstruct path by backtracking through parents
+# #                     path = reconstruct_path(parent, (nr, nc))
+# #                     return (len(path), path)
+                
+# #                 queue.append((nr, nc))
+    
+# #     return (-1, [])
+
+# # def reconstruct_path(parent, end):
+# #     &quot;&quot;&quot;
+# #     Reconstruct path from parent mapping by backtracking.
+    
+# #     Args:
+# #         parent: Dictionary mapping child -&gt; parent coordinate
+# #         end: End coordinate (destination)
+    
+# #     Returns:
+# #         List[Tuple[int, int]]: Path from start to end
+    
+# #     Time Complexity: O(path_length)
+# #         - Backtrack through parent pointers once
+# #         - Reverse the list: O(path_length)
+    
+# #     Space Complexity: O(path_length)
+# #         - Path list stores all coordinates in the path
+# #     &quot;&quot;&quot;
+# #     path = []
+# #     current = end
+    
+# #     # Backtrack through parents until we reach start (parent = None)
+# #     while current is not None:
+# #         path.append(current)
+# #         current = parent[current]
+    
+# #     # Reverse to get path from start to end
+# #     return path[::-1]
+
+# # Follow ups:
+
+# # For most large grids (thousands × thousands), use bidirectional BFS. We search from both start and end simultaneously, meeting in the middle. This typically reduces both time and memory by 50% or more.
+
+# # If the grid is sparse (few obstacles), A* would be even better. We use a distance heuristic to prioritize cells closer to the goal, exploring far fewer cells overall.
+
+# # If memory is the main concern and we don&#x27;t need to preserve the grid, use in-place modification - marking visited cells directly in the grid saves about 67% memory.
+
+# # For extremely large grids that don&#x27;t fit in memory (millions × millions), we&#x27;d need chunking - processing the grid in tiles and using disk-based storage.
+
+
+# # Variant : Return any path, not necessarily the shortest one
+
+# # Approach : DFS (preferred)
+
+# class Solution:
+#     def pathInBinaryMatrix(self, grid: List[List[int]]) -&gt; List[List[int]]:
+#         &quot;&quot;&quot;
+#         Find ANY path (not necessarily shortest) using recursive DFS with backtracking.
+#         Uses nested DFS function for cleaner code and direct variable access.
+#         Does NOT modify the grid.
+        
+#         TC: O(M×N) - in worst case, explores all cells with backtracking
+#         SC: O(M×N) - recursion stack depth + visited set + path list
+        
+#         Note: Uses DFS instead of BFS because we only need ANY path, not shortest.
+#         DFS is simpler and uses less memory than BFS for this use case.
+        
+#         To return path length instead of path:
+#         - Change return type to int
+#         - Replace: return [] with return -1
+#         - Replace: return [[0, 0]] with return 1
+#         - Replace: return path if dfs(0, 0) else [] 
+#           with: return len(path) if dfs(0, 0) else -1
+        
+#         Args:
+#             grid: m×n binary matrix where 0 is traversable, 1 is blocked
+        
+#         Returns:
+#             List[List[int]]: Any valid path from (0,0) to (m-1,n-1)
+#             [] if no path exists
+            
+#             For path length: int (length of path or -1 if no path)
+#         &quot;&quot;&quot;
+#         # Edge case: empty grid
+#         if not grid:
+#             return []  # For length: return -1
+        
+#         # Edge case: empty first row
+#         if not grid[0]:
+#             return []  # For length: return -1
+        
+#         # Get grid dimensions
+#         m = len(grid)      # Number of rows
+#         n = len(grid[0])   # Number of columns
+        
+#         # Edge case: start or end blocked
+#         if grid[0][0] == 1 or grid[m-1][n-1] == 1:
+#             return []  # For length: return -1
+
+#         # Edge case: single cell grid
+#         if m == 1 and n == 1:
+#             return [[0, 0]]  # For length: return 1
+
+#         # Initialize data structures for DFS
+#         # Track visited cells to avoid cycles and redundant exploration
+#         visited = {(0, 0)}
+        
+#         # Store current path being explored
+#         # Modified during DFS: cells added when exploring, removed when backtracking
+#         path = []
+        
+#         # 8-directional moves (including diagonals)
+#         # Format: (row_offset, col_offset)
+#         directions = [(-1,-1), (-1,0), (-1,1), (0,-1), (0,1), (1,-1), (1,0), (1,1)]
+        
+#         def dfs(row, col):
+#             &quot;&quot;&quot;
+#             Nested DFS function to find any path from current cell to destination.
+#             Has direct access to: grid, m, n, visited, path, directions (closure)
+            
+#             Args:
+#                 row, col: Current cell coordinates
+            
+#             Returns:
+#                 bool: True if path found from this cell to destination, False otherwise
+#             &quot;&quot;&quot;
+#             # Add current cell to path
+#             path.append([row, col])
+            
+#             # Base case: reached destination (bottom-right cell)
+#             if row == m - 1 and col == n - 1:
+#                 return True  # Path found! Keep current path
+            
+#             # Explore all 8 possible directions from current cell
+#             for dr, dc in directions:
+#                 nr, nc = row + dr, col + dc  # Calculate neighbor coordinates
+                
+#                 # Check if neighbor is valid:
+#                 # 1. In bounds: 0 &lt;= nr &lt; m and 0 &lt;= nc &lt; n
+#                 # 2. Traversable: grid[nr][nc] == 0 (not blocked)
+#                 # 3. Unvisited: (nr, nc) not in visited (avoid cycles)
+#                 if (0 &lt;= nr &lt; m and 0 &lt;= nc &lt; n and 
+#                     grid[nr][nc] == 0 and (nr, nc) not in visited):
+                    
+#                     # Mark neighbor as visited BEFORE recursive call
+#                     # This prevents the neighbor from being visited again in other branches
+#                     visited.add((nr, nc))
+                    
+#                     # Recursively explore from neighbor
+#                     if dfs(nr, nc):
+#                         return True  # Path found through this neighbor
+                    
+#                     # Note: We don&#x27;t remove from visited during backtracking
+#                     # This is intentional - once explored and didn&#x27;t lead to destination,
+#                     # no need to explore it again from a different path
+            
+#             # Backtracking: No valid path found from current cell
+#             # Remove current cell from path since it&#x27;s not part of solution
+#             path.pop()
+#             return False  # Signal to caller that this path doesn&#x27;t work
+        
+#         # Start DFS from (0, 0)
+#         # If DFS returns True, path contains the solution
+#         # If DFS returns False, no path exists
+#         return path if dfs(0, 0) else []
+#         # For length: return len(path) if dfs(0, 0) else -1
+
+# # Iterative DFS
+
+# class Solution:
+#     def pathInBinaryMatrix(self, grid: List[List[int]]) -&gt; List[List[int]]:
+#         &quot;&quot;&quot;
+#         Find ANY path (not necessarily shortest) using iterative DFS with backtracking.
+#         Uses explicit stack instead of recursion.
+#         Does NOT modify the grid.
+        
+#         TC: O(M×N) - in worst case, explores all cells with backtracking
+#         SC: O(M×N) - stack + visited set + path list
+        
+#         Note: Uses iterative DFS instead of recursive to avoid stack overflow
+#         for very large grids. Still finds ANY path, not necessarily shortest.
+        
+#         Args:
+#             grid: m×n binary matrix where 0 is traversable, 1 is blocked
+        
+#         Returns:
+#             List[List[int]]: Any valid path from (0,0) to (m-1,n-1)
+#             [] if no path exists
+            
+#             For path length: int (length of path or -1 if no path)
+#         &quot;&quot;&quot;
+#         # Edge case: empty grid
+#         if not grid:
+#             return []  # For length: return -1
+        
+#         # Edge case: empty first row
+#         if not grid[0]:
+#             return []  # For length: return -1
+        
+#         # Get grid dimensions
+#         m = len(grid)      # Number of rows
+#         n = len(grid[0])   # Number of columns
+        
+#         # Edge case: start or end blocked
+#         if grid[0][0] == 1 or grid[m-1][n-1] == 1:
+#             return []  # For length: return -1
+
+#         # Edge case: single cell grid
+#         if m == 1 and n == 1:
+#             return [[0, 0]]  # For length: return 1
+
+#         # Initialize data structures for iterative DFS
+#         # Stack stores: (row, col, path_so_far)
+#         # path_so_far is the path taken to reach this cell
+#         stack = [(0, 0, [[0, 0]])]
+        
+#         # Track visited cells to avoid cycles
+#         visited = {(0, 0)}
+        
+#         # 8-directional moves (including diagonals)
+#         directions = [(-1,-1), (-1,0), (-1,1), (0,-1), (0,1), (1,-1), (1,0), (1,1)]
+        
+#         while stack:
+#             row, col, path = stack.pop()
+            
+#             # Check if reached destination (bottom-right cell)
+#             if row == m - 1 and col == n - 1:
+#                 return path  # Found a path! For length: return len(path)
+            
+#             # Explore all 8 possible directions from current cell
+#             for dr, dc in directions:
+#                 nr, nc = row + dr, col + dc  # Calculate neighbor coordinates
+            
+#                 if (0 &lt;= nr &lt; m and 0 &lt;= nc &lt; n and 
+#                     grid[nr][nc] == 0 and (nr, nc) not in visited):
+                    
+#                     visited.add((nr, nc))
+                    
+#                     new_path = path + [[nr, nc]]
+                    
+#                     # Push neighbor onto stack with its path
+#                     stack.append((nr, nc, new_path))
+        
+#         # Stack exhausted without finding destination - no path exists
+#         return []  # For length: return -1
+
+# # Using parent tracking
+
+# class SolutionOptimized:
+#     def pathInBinaryMatrix(self, grid: List[List[int]]) -&gt; List[List[int]]:
+#         &quot;&quot;&quot;
+#         Space-optimized iterative DFS using parent tracking instead of storing paths.
+#         Reconstructs path only when destination found.
+        
+#         TC: O(M×N)
+#         SC: O(M×N) - more efficient than storing full paths in stack
+        
+#         Advantage: Uses less memory by storing only parent relationships,
+#         not full path copies for each stack entry.
+#         &quot;&quot;&quot;
+#         if not grid or not grid[0]:
+#             return []  # For length: return -1
+        
+#         m, n = len(grid), len(grid[0])
+        
+#         if grid[0][0] == 1 or grid[m-1][n-1] == 1:
+#             return []  # For length: return -1
+        
+#         if m == 1 and n == 1:
+#             return [[0, 0]]  # For length: return 1
+
+#         # Stack stores only coordinates (not full paths)
+#         stack = [(0, 0)]
+#         visited = {(0, 0)}
+#         parent = {(0, 0): None}  # Track parent for path reconstruction
+        
+#         directions = [(-1,-1), (-1,0), (-1,1), (0,-1), (0,1), (1,-1), (1,0), (1,1)]
+        
+#         while stack:
+#             row, col = stack.pop()  # Only coordinates, not path
+            
+#             # Check if reached destination
+#             if row == m - 1 and col == n - 1:
+#                 # Reconstruct path by backtracking through parents
+#                 return self.reconstruct_path(parent, (row, col))
+#                 # For length: return self.get_path_length(parent, (row, col))
+            
+#             for dr, dc in directions:
+#                 nr, nc = row + dr, col + dc
+                
+#                 if (0 &lt;= nr &lt; m and 0 &lt;= nc &lt; n and 
+#                     grid[nr][nc] == 0 and (nr, nc) not in visited):
+                    
+#                     visited.add((nr, nc))
+#                     parent[(nr, nc)] = (row, col)  # Record parent
+#                     stack.append((nr, nc))  # Only coordinates
+        
+#         return []  # For length: return -1
+    
+#     def reconstruct_path(self, parent: dict, end: tuple) -&gt; List[List[int]]:
+#         &quot;&quot;&quot;
+#         Reconstruct path by backtracking through parent pointers.
+        
+#         TC: O(path_length)
+#         SC: O(path_length)
+#         &quot;&quot;&quot;
+#         path = []
+#         current = end
+        
+#         # Backtrack from end to start
+#         while current is not None:
+#             path.append(list(current))
+#             current = parent[current]
+        
+#         # Reverse to get start -&gt; end order
+#         return path[::-1]
+    
+#     def get_path_length(self, parent: dict, end: tuple) -&gt; int:
+#         &quot;&quot;&quot;
+#         Calculate path length by counting parent hops.
+#         Use this method instead of reconstruct_path() to return length.
+        
+#         TC: O(path_length)
+#         SC: O(1) - only uses a counter
+#         &quot;&quot;&quot;
+#         length = 0
+#         current = end
+        
+#         # Count hops back to start (parent = None)
+#         while current is not None:
+#             length += 1
+#             current = parent[current]
+        
+#         return length
+
+# Approach : DFS with in cell modification
+
+# def pathInBinaryMatrix(grid):
+#     n = len(grid)
+
+#     if not grid or grid[0][0] == 1 or grid[n-1][n-1] == 1:
+#         return []
+
+#     # Single cell grid
+#     if n == 1:
+#         return [(0,0)]
+    
+#     directions = [(-1,-1), (-1,0), (-1,1), (0,-1), (0,1), (1,-1), (1,0), (1,1)]
+#     path = []
+    
+#     def dfs(row, col):
+#         path.append([row, col])
+#         if row == n - 1 and col == n - 1:
+#             return True
+        
+#         # Mark as visited in-place
+#         grid[row][col] = -1
+        
+#         for dr, dc in directions:
+#             nr, nc = row + dr, col + dc
+#             if 0 &lt;= nr &lt; n and 0 &lt;= nc &lt; n and grid[nr][nc] == 0:
+#                 if dfs(nr, nc):
+#                     return True
+        
+#         # Backtrack
+#         path.pop()
+#         # Optional: restore grid value if you want to preserve grid (comment out if not needed)
+#         # grid[row][col] = 0
+#         return False
+    
+#     return path if dfs(0, 0) else []
+
+
+
+
+</code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Easy/1047-Remove-All-Adjacent-Duplicates-In-String/">&#8592; 1047. Remove All Adjacent Duplicates In String</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Medium/1209-Remove-All-Adjacent-Duplicates-in-String-II/">1209. Remove All Adjacent Duplicates in String II &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+</body>
+</html>
