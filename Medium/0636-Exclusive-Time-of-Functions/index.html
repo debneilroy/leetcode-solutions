@@ -376,203 +376,203 @@ class Solution:
 # 6. No two end events will happen at the same timestamp.
 # 7. Each function has an &quot;end&quot; log for each &quot;start&quot; log.
 
-# class Solution:
-#     def profile_app(self, logs: List[List]) -&gt; Dict[str, int]:
-#         &quot;&quot;&quot;
-#         Calculate exclusive execution time for each function.
+class Solution:
+    def profile_app(self, logs: List[List]) -&gt; Dict[str, int]:
+        &quot;&quot;&quot;
+        Calculate exclusive execution time for each function.
 
-#         DIFFERENCE FROM LEETCODE 636 (Original Problem):
-#         This variant uses EXCLUSIVE end timestamps [start, end) - half-open intervals
-#         - Example: start=10, end=50 → runs during [10,11,...,49] = 40 units
+        DIFFERENCE FROM LEETCODE 636 (Original Problem):
+        This variant uses EXCLUSIVE end timestamps [start, end) - half-open intervals
+        - Example: start=10, end=50 → runs during [10,11,...,49] = 40 units
         
-#         LeetCode 636 uses INCLUSIVE end timestamps [start, end] - closed intervals
-#         - Example: start=10, end=50 → runs during [10,11,...,50] = 41 units
+        LeetCode 636 uses INCLUSIVE end timestamps [start, end] - closed intervals
+        - Example: start=10, end=50 → runs during [10,11,...,50] = 41 units
         
-#         Key Insight:
-#         - Uses half-open intervals [start, end)
-#         - End timestamp is exclusive (unlike LeetCode 636 which uses inclusive)
-#         - Example: start=10, end=50 → function runs during [10,11,...,49] = 40 units
+        Key Insight:
+        - Uses half-open intervals [start, end)
+        - End timestamp is exclusive (unlike LeetCode 636 which uses inclusive)
+        - Example: start=10, end=50 → function runs during [10,11,...,49] = 40 units
         
-#         Assumptions:
-#         - Logs are sorted by timestamp (chronological order)
-#         - Logs are properly nested (valid call stack)
+        Assumptions:
+        - Logs are sorted by timestamp (chronological order)
+        - Logs are properly nested (valid call stack)
         
-#         Time Complexity (Worst Case): O(m) where m = number of logs
-#         - Single pass through all logs
-#         - Each log processed in O(1) time (parsing + stack operations)
-#         - Worst case example with m = 6:
-#           logs = [[&quot;a&quot;,&quot;start&quot;,0], [&quot;b&quot;,&quot;start&quot;,1], [&quot;c&quot;,&quot;start&quot;,2],
-#                   [&quot;c&quot;,&quot;end&quot;,3], [&quot;b&quot;,&quot;end&quot;,4], [&quot;a&quot;,&quot;end&quot;,5]]
-#           Process all 6 logs exactly once → O(6) = O(m)
+        Time Complexity (Worst Case): O(m) where m = number of logs
+        - Single pass through all logs
+        - Each log processed in O(1) time (parsing + stack operations)
+        - Worst case example with m = 6:
+          logs = [[&quot;a&quot;,&quot;start&quot;,0], [&quot;b&quot;,&quot;start&quot;,1], [&quot;c&quot;,&quot;start&quot;,2],
+                  [&quot;c&quot;,&quot;end&quot;,3], [&quot;b&quot;,&quot;end&quot;,4], [&quot;a&quot;,&quot;end&quot;,5]]
+          Process all 6 logs exactly once → O(6) = O(m)
         
-#         Note: If logs are NOT sorted, must sort first → O(m log m) time complexity
+        Note: If logs are NOT sorted, must sort first → O(m log m) time complexity
         
-#         Space Complexity (Worst Case): O(m) where m = number of logs
-#         - Stack: O(d) where d = maximum call depth
-#           Worst case: d = m/2 when all &quot;start&quot; logs before all &quot;end&quot; logs
-#           Example with m = 6:
-#           logs = [[&quot;foo&quot;,&quot;start&quot;,0], [&quot;foo&quot;,&quot;start&quot;,1], [&quot;foo&quot;,&quot;start&quot;,2],
-#                   [&quot;foo&quot;,&quot;end&quot;,3], [&quot;foo&quot;,&quot;end&quot;,4], [&quot;foo&quot;,&quot;end&quot;,5]]
-#           Stack grows: [] → [foo] → [foo,foo] → [foo,foo,foo] (size 3 = m/2)
-#         - Result dictionary: O(k) where k = unique function names
-#           Worst case: k = m/2 when all functions are different
-#           Example with m = 6:
-#           logs = [[&quot;a&quot;,&quot;start&quot;,0], [&quot;b&quot;,&quot;start&quot;,1], [&quot;c&quot;,&quot;start&quot;,2],
-#                   [&quot;c&quot;,&quot;end&quot;,3], [&quot;b&quot;,&quot;end&quot;,4], [&quot;a&quot;,&quot;end&quot;,5]]
-#           Dictionary has 3 entries (a, b, c) = m/2
-#         - Overall: O(m/2) + O(m/2) = O(m)
-#         &quot;&quot;&quot;
-#         # Edge case 1: Empty logs
-#         if not logs:
-#             return {}
+        Space Complexity (Worst Case): O(m) where m = number of logs
+        - Stack: O(d) where d = maximum call depth
+          Worst case: d = m/2 when all &quot;start&quot; logs before all &quot;end&quot; logs
+          Example with m = 6:
+          logs = [[&quot;foo&quot;,&quot;start&quot;,0], [&quot;foo&quot;,&quot;start&quot;,1], [&quot;foo&quot;,&quot;start&quot;,2],
+                  [&quot;foo&quot;,&quot;end&quot;,3], [&quot;foo&quot;,&quot;end&quot;,4], [&quot;foo&quot;,&quot;end&quot;,5]]
+          Stack grows: [] → [foo] → [foo,foo] → [foo,foo,foo] (size 3 = m/2)
+        - Result dictionary: O(k) where k = unique function names
+          Worst case: k = m/2 when all functions are different
+          Example with m = 6:
+          logs = [[&quot;a&quot;,&quot;start&quot;,0], [&quot;b&quot;,&quot;start&quot;,1], [&quot;c&quot;,&quot;start&quot;,2],
+                  [&quot;c&quot;,&quot;end&quot;,3], [&quot;b&quot;,&quot;end&quot;,4], [&quot;a&quot;,&quot;end&quot;,5]]
+          Dictionary has 3 entries (a, b, c) = m/2
+        - Overall: O(m/2) + O(m/2) = O(m)
+        &quot;&quot;&quot;
+        # Edge case 1: Empty logs
+        if not logs:
+            return {}
         
-#         # Edge case 2: Single log (invalid - need at least start+end pair)
-#         if len(logs) &lt; 2:
-#             return {}
+        # Edge case 2: Single log (invalid - need at least start+end pair)
+        if len(logs) &lt; 2:
+            return {}
         
-#         # Case 1: If logs are NOT sorted by timestamp
-#         # Uncomment the following line to sort (changes TC to O(m log m)):
-#         # logs = sorted(logs, key=lambda x: x[2])
+        # Case 1: If logs are NOT sorted by timestamp
+        # Uncomment the following line to sort (changes TC to O(m log m)):
+        # logs = sorted(logs, key=lambda x: x[2])
         
-#         # Case 2: Same timestamp events (if constraints don&#x27;t guarantee uniqueness)
-#         # If two events can have same timestamp, we need stable ordering:
-#         # - &#x27;end&#x27; events should come before &#x27;start&#x27; events at same timestamp
-#         # - This ensures a function completes before another starts
-#         # Alternative sort: logs = sorted(logs, key=lambda x: (x[2], x[1] == &#x27;start&#x27;))
+        # Case 2: Same timestamp events (if constraints don&#x27;t guarantee uniqueness)
+        # If two events can have same timestamp, we need stable ordering:
+        # - &#x27;end&#x27; events should come before &#x27;start&#x27; events at same timestamp
+        # - This ensures a function completes before another starts
+        # Alternative sort: logs = sorted(logs, key=lambda x: (x[2], x[1] == &#x27;start&#x27;))
         
-#         result = defaultdict(int)
-#         stack = []
-#         prev_time = 0
+        result = defaultdict(int)
+        stack = []
+        prev_time = 0
         
-#         for log in logs:
+        for log in logs:
 
-#             # Case 3: Malformed log (wrong number of fields)
-#             # if len(log) != 3:
-#             #     continue  # Skip invalid log
+            # Case 3: Malformed log (wrong number of fields)
+            # if len(log) != 3:
+            #     continue  # Skip invalid log
             
-#             name, fn_type, timestamp = log[0], log[1], log[2]
+            name, fn_type, timestamp = log[0], log[1], log[2]
             
-#             # # Case 4: Invalid event type (not &#x27;start&#x27; or &#x27;end&#x27;)
-#             # if fn_type not in [&#x27;start&#x27;, &#x27;end&#x27;]:
-#             #     continue  # Skip invalid event type
+            # # Case 4: Invalid event type (not &#x27;start&#x27; or &#x27;end&#x27;)
+            # if fn_type not in [&#x27;start&#x27;, &#x27;end&#x27;]:
+            #     continue  # Skip invalid event type
             
-#             # # Case 5: Negative or invalid timestamp
-#             # # In real systems, timestamps should be non-negative
-#             # if timestamp &lt; 0:
-#             #     continue  # Skip invalid timestamp
+            # # Case 5: Negative or invalid timestamp
+            # # In real systems, timestamps should be non-negative
+            # if timestamp &lt; 0:
+            #     continue  # Skip invalid timestamp
             
-#             # # Case 6: Timestamp goes backward (indicates unsorted or corrupted data)
-#             # # This check only makes sense if we assume logs should be sorted
-#             # if timestamp &lt; prev_time:
-#             #     continue  # Skip out-of-order timestamp
+            # # Case 6: Timestamp goes backward (indicates unsorted or corrupted data)
+            # # This check only makes sense if we assume logs should be sorted
+            # if timestamp &lt; prev_time:
+            #     continue  # Skip out-of-order timestamp
             
-#             if fn_type == &#x27;start&#x27;:
-#                 if stack:
-#                     # Update the currently running function&#x27;s time
-#                     result[stack[-1]] += timestamp - prev_time
+            if fn_type == &#x27;start&#x27;:
+                if stack:
+                    # Update the currently running function&#x27;s time
+                    result[stack[-1]] += timestamp - prev_time
                 
-#                 # Push new function onto stack
-#                 stack.append(name)
-#                 prev_time = timestamp
+                # Push new function onto stack
+                stack.append(name)
+                prev_time = timestamp
 
-#             else:  # action == &#x27;end&#x27;
-#                 # Function completes - add its final execution time
-#                 # Runs from prev_time to timestamp (EXCLUSIVE of end timestamp)
-#                 # No +1 here because end timestamp is NOT included in this variant
-#                 # Example: prev_time=20, timestamp=50 → runs [20,21,...,49] = 30 units
-#                 # 
-#                 # DIFFERENCE FROM LEETCODE 636:
-#                 # - LeetCode 636: result[stack.pop()] += timestamp - prev_time + 1 (inclusive)
-#                 # - This variant: result[stack.pop()] += timestamp - prev_time (exclusive)
-#                 result[stack.pop()] += timestamp - prev_time
+            else:  # action == &#x27;end&#x27;
+                # Function completes - add its final execution time
+                # Runs from prev_time to timestamp (EXCLUSIVE of end timestamp)
+                # No +1 here because end timestamp is NOT included in this variant
+                # Example: prev_time=20, timestamp=50 → runs [20,21,...,49] = 30 units
+                # 
+                # DIFFERENCE FROM LEETCODE 636:
+                # - LeetCode 636: result[stack.pop()] += timestamp - prev_time + 1 (inclusive)
+                # - This variant: result[stack.pop()] += timestamp - prev_time (exclusive)
+                result[stack.pop()] += timestamp - prev_time
                 
-#                 # Update prev_time to timestamp (NOT timestamp + 1)
-#                 # Because the next function starts right at this timestamp
-#                 # 
-#                 # DIFFERENCE FROM LEETCODE 636:
-#                 # - LeetCode 636: prev_time = timestamp + 1 (next starts after this timestamp)
-#                 # - This variant: prev_time = timestamp (next starts at this timestamp)
-#                 prev_time = timestamp
+                # Update prev_time to timestamp (NOT timestamp + 1)
+                # Because the next function starts right at this timestamp
+                # 
+                # DIFFERENCE FROM LEETCODE 636:
+                # - LeetCode 636: prev_time = timestamp + 1 (next starts after this timestamp)
+                # - This variant: prev_time = timestamp (next starts at this timestamp)
+                prev_time = timestamp
         
-#         # Case 9: Unclosed function calls (stack not empty at end)
-#         # If stack is not empty, some functions never had &#x27;end&#x27; events
-#         # We could either:
-#         # - Ignore them 
-#         # - Log a warning (current approach)
-#         if stack:
-#             raise ValueError(&quot;Unclosed function calls detected&quot;)
+        # Case 9: Unclosed function calls (stack not empty at end)
+        # If stack is not empty, some functions never had &#x27;end&#x27; events
+        # We could either:
+        # - Ignore them 
+        # - Log a warning (current approach)
+        if stack:
+            raise ValueError(&quot;Unclosed function calls detected&quot;)
         
-#         # Case 10: Return type - convert defaultdict to regular dict
-#         # This ensures the return value is a plain dict, not defaultdict
-#         return dict(result)
+        # Case 10: Return type - convert defaultdict to regular dict
+        # This ensures the return value is a plain dict, not defaultdict
+        return dict(result)
 
-# # # If result is just a simple dictionary
+# # If result is just a simple dictionary
 
-# def profile_app(logs):
-#     result = {}
-#     stack = []
-#     prev_time = 0
+def profile_app(logs):
+    result = {}
+    stack = []
+    prev_time = 0
 
-#     for log in logs:
-#         name, fn_type, time = log[0], log[1], log[2]
+    for log in logs:
+        name, fn_type, time = log[0], log[1], log[2]
 
-#         if fn_type == &#x27;start&#x27;:
-#             if stack:
-#                 result[stack[-1]] = result.get(stack[-1], 0) + time - prev_time
-#             stack.append(name)
-#             prev_time = time
-#         else:
-#             func_name = stack.pop() # Pop once and store in a variable
-#             result[func_name] = result.get(func_name, 0) + time - prev_time
-#             prev_time = time
+        if fn_type == &#x27;start&#x27;:
+            if stack:
+                result[stack[-1]] = result.get(stack[-1], 0) + time - prev_time
+            stack.append(name)
+            prev_time = time
+        else:
+            func_name = stack.pop() # Pop once and store in a variable
+            result[func_name] = result.get(func_name, 0) + time - prev_time
+            prev_time = time
 
-#     return result
+    return result
 
-# # Another approach (using a Log class)
+# Another approach (using a Log class)
 
-# class Log:
-#     def __init__(self, name, fn_type, time):
-#         self.name = name
-#         self.fn_type = fn_type
-#         self.time = time
+class Log:
+    def __init__(self, name, fn_type, time):
+        self.name = name
+        self.fn_type = fn_type
+        self.time = time
 
-# class Solution:
-#     def profile_app(self, logs: List[Log]) -&gt; Dict[str, int]:
-#         result = defaultdict(int)  # Store exclusive time for each function
-#         stack = []  # Track currently executing functions
-#         prev_time = 0  # Track previous timestamp
+class Solution:
+    def profile_app(self, logs: List[Log]) -&gt; Dict[str, int]:
+        result = defaultdict(int)  # Store exclusive time for each function
+        stack = []  # Track currently executing functions
+        prev_time = 0  # Track previous timestamp
         
-#         for log in logs:
-#             # Access log attributes directly
-#             name = log.name
-#             fn_type = log.fn_type
-#             time = log.time
+        for log in logs:
+            # Access log attributes directly
+            name = log.name
+            fn_type = log.fn_type
+            time = log.time
             
-#             if fn_type == &#x27;start&#x27;:
-#                 # If a function is running, add its execution time before pausing
-#                 if stack:
-#                     # Previous function ran from prev_time to time (exclusive)
-#                     result[stack[-1]] += time - prev_time
+            if fn_type == &#x27;start&#x27;:
+                # If a function is running, add its execution time before pausing
+                if stack:
+                    # Previous function ran from prev_time to time (exclusive)
+                    result[stack[-1]] += time - prev_time
                 
-#                 # Start new function
-#                 stack.append(name)
+                # Start new function
+                stack.append(name)
                 
-#             else:  # type == &#x27;end&#x27;
-#                 # Function completes - add its final execution time
-#                 # Runs from prev_time to time (exclusive of end timestamp)
-#                 result[stack.pop()] += time - prev_time
+            else:  # type == &#x27;end&#x27;
+                # Function completes - add its final execution time
+                # Runs from prev_time to time (exclusive of end timestamp)
+                result[stack.pop()] += time - prev_time
 
-#             prev_time = time
+            prev_time = time
         
-#         return dict(result)
+        return dict(result)
 
-# logs = [
-#         Log(&quot;foo&quot;, &quot;start&quot;, 10),
-#         Log(&quot;bar&quot;, &quot;start&quot;, 20),
-#         Log(&quot;bar&quot;, &quot;end&quot;, 50),
-#         Log(&quot;foo&quot;, &quot;end&quot;, 100)
-#     ]
-# sol = Solution()
+logs = [
+        Log(&quot;foo&quot;, &quot;start&quot;, 10),
+        Log(&quot;bar&quot;, &quot;start&quot;, 20),
+        Log(&quot;bar&quot;, &quot;end&quot;, 50),
+        Log(&quot;foo&quot;, &quot;end&quot;, 100)
+    ]
+sol = Solution()
 # sol.profile_app(logs)
         </code></pre>
       </div>
