@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2265. Count Nodes Equal to Average of Subtree - LeetCode Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+
+:root {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --radius:    6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #e6db74; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy   { color: var(--easy);   background: rgba(44,187,93,0.15); }
+.badge-Medium { color: var(--medium); background: rgba(255,161,22,0.15); }
+.badge-Hard   { color: var(--hard);   background: rgba(239,71,67,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--surface2); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: #1e1e1e !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">2265. Count Nodes Equal to Average of Subtree</span>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (2)</div>
+        <div class="tab" data-tab="similar">Similar (3)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">2265. Count Nodes Equal to Average of Subtree</div>
+        <div class="prob-meta">
+          <span class="badge badge-Medium">Medium</span>
+          <span class="tag">Tree</span><span class="tag">Depth-First Search</span><span class="tag">Binary Tree</span>
+        </div>
+        <div class="prob-stats">200K / 230.4K (86.8%)</div>
+        <div class="prob-desc"><p>Given the <code>root</code> of a binary tree, return <em>the number of nodes where the value of the node is equal to the <strong>average</strong> of the values in its <strong>subtree</strong></em>.</p>
+<p><strong>Note:</strong></p>
+<ul>
+<li>The <strong>average</strong> of <code>n</code> elements is the <strong>sum</strong> of the <code>n</code> elements divided by <code>n</code> and <strong>rounded down</strong> to the nearest integer.</li>
+</ul>
+	
+<ul>
+<li>A <strong>subtree</strong> of <code>root</code> is a tree consisting of <code>root</code> and all of its descendants.</li>
+</ul>
+<p>Example 1:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> root = [4,8,5,0,1,null,6]
+<strong>Output:</strong> 5
+<strong>Explanation:</strong> 
+For the node with value 4: The average of its subtree is (4 + 8 + 5 + 0 + 1 + 6) / 6 = 24 / 6 = 4.
+For the node with value 5: The average of its subtree is (5 + 6) / 2 = 11 / 2 = 5.
+For the node with value 0: The average of its subtree is 0 / 1 = 0.
+For the node with value 1: The average of its subtree is 1 / 1 = 1.
+For the node with value 6: The average of its subtree is 6 / 1 = 6.
+</code></pre>
+<p>Example 2:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> root = [1]
+<strong>Output:</strong> 1
+<strong>Explanation:</strong> For the node with value 1: The average of its subtree is 1 / 1 = 1.
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li>The number of nodes in the tree is in the range <code>[1, 1000]</code>.</li>
+</ul>
+	
+<ul>
+<li><code>0 &lt;= Node.val &lt;= 1000</code></li>
+</ul></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        
+<details class="hint-block">
+  <summary>Hint 1</summary>
+  <div class="hint-body"><p>What information do we need to calculate the average? We need the sum of the values and the number of values.</p></div>
+</details>
+<details class="hint-block">
+  <summary>Hint 2</summary>
+  <div class="hint-body"><p>Create a recursive function that returns the size of a node’s subtree, and the sum of the values of its subtree.</p></div>
+</details>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/maximum-average-subtree/" target="_blank">Maximum Average Subtree</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/insufficient-nodes-in-root-to-leaf-paths/" target="_blank">Insufficient Nodes in Root to Leaf Paths</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/count-nodes-equal-to-sum-of-descendants/" target="_blank">Count Nodes Equal to Sum of Descendants</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 2265. Count Nodes Equal to Average of Subtree
+Difficulty: Medium
+URL: https://leetcode.com/problems/count-nodes-equal-to-average-of-subtree/
+&quot;&quot;&quot;
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+
+# Brute Force Approach (conceptually):
+
+# For each node in the tree:
+
+# Traverse the entire subtree rooted at that node.
+
+# Collect all node values in that subtree (via DFS or BFS).
+
+# Compute the average = sum(subtree_values) // len(subtree_values).
+
+# Check if it equals the node’s value — if yes, increment the count.
+
+# Repeat this for every node.
+
+# So essentially, you’re running a full subtree traversal per node — doing redundant work many times.
+
+# Complexity:
+
+# Time: O(n²) in the worst case (e.g., a skewed tree) because for each node you might traverse almost all nodes again.
+
+# Space: O(h) for recursion stack + O(n) for temporary list of subtree nodes.
+
+# The optimal O(n) version avoids this repetition by computing sum and count in one post-order traversal.
+
+# Approach : Postorder traversal DFS
+        
+class Solution:
+    def averageOfSubtree(self, root: TreeNode) -&gt; int:
+        &quot;&quot;&quot;
+        Count nodes where value equals the average of its subtree.
+        
+        Time Complexity: O(n) - visit each node exactly once
+        Space Complexity: O(h) - recursion stack depth where h is tree height
+        &quot;&quot;&quot;
+        # Counter to track nodes where value equals subtree average
+        self.count = 0
+        
+        def dfs(node):
+            &quot;&quot;&quot;
+            Post-order DFS to calculate subtree sum and count.
+            
+            Time Complexity: O(1) per node, O(n) overall
+            Space Complexity: O(h) for recursion stack
+            &quot;&quot;&quot;
+            # Base case: empty node (None)
+            # sum = 0: no values to add (neutral element for addition)
+            # count = 0: no nodes to count (neutral element for counting)
+            if not node:
+                return 0, 0
+            
+            # Recursively get info from left subtree
+            # left_sum = sum of all values in left subtree
+            # left_count = number of nodes in left subtree
+            left_sum, left_count = dfs(node.left)
+            
+            # Recursively get info from right subtree
+            # right_sum = sum of all values in right subtree
+            # right_count = number of nodes in right subtree
+            right_sum, right_count = dfs(node.right)
+            
+            # Calculate current subtree&#x27;s total sum
+            # curr_sum = sum of ALL values in the subtree rooted at this node
+            # (left subtree values + right subtree values + current node&#x27;s value)
+            curr_sum = left_sum + right_sum + node.val
+            
+            # Calculate current subtree&#x27;s total node count
+            # curr_count = total number of nodes in the subtree rooted at this node
+            # (left subtree nodes + right subtree nodes + 1 for current node)
+            curr_count = left_count + right_count + 1
+            
+            # Check if current node&#x27;s value equals the average of its subtree
+            # Average = total sum / total count (integer division rounds down)
+            if node.val == curr_sum // curr_count:
+                self.count += 1
+            
+            # Return sum and count for parent node to use in its calculations
+            # Parent will use these values to compute ITS subtree sum and count
+            return curr_sum, curr_count
+        
+        # Start DFS from root
+        dfs(root)
+        return self.count
+
+
+# Approach : BFS
+
+# from collections import deque
+
+# class Solution:
+#     def averageOfSubtree(self, root: TreeNode) -&gt; int:
+#         &quot;&quot;&quot;
+#         Count nodes where value equals the average of its subtree using BFS.
+        
+#         Time Complexity: O(n²) - O(n) for BFS traversal × O(n) for subtree calculation
+#         Space Complexity: O(n) - queue can hold up to n/2 nodes at the last level
+        
+#         Note: BFS is less efficient than DFS for this problem because we need
+#         subtree information, which requires additional traversals.
+#         &quot;&quot;&quot;
+#         if not root:
+#             return 0
+        
+#         count = 0
+#         # BFS queue to process nodes level by level
+#         queue = deque([root])
+        
+#         def calculate_subtree(node):
+#             &quot;&quot;&quot;
+#             Helper function to calculate sum and count of a subtree.
+#             Uses its own BFS traversal starting from the given node.
+            
+#             Time Complexity: O(k) where k is the size of the subtree
+#             Space Complexity: O(k) for the queue
+#             &quot;&quot;&quot;
+#             if not node:
+#                 return 0, 0
+            
+#             total_sum = 0
+#             total_count = 0
+            
+#             # BFS to traverse entire subtree rooted at &#x27;node&#x27;
+#             sub_queue = deque([node])
+            
+#             while sub_queue:
+#                 curr = sub_queue.popleft()
+#                 total_sum += curr.val
+#                 total_count += 1
+                
+#                 # Add children to queue
+#                 if curr.left:
+#                     sub_queue.append(curr.left)
+#                 if curr.right:
+#                     sub_queue.append(curr.right)
+            
+#             return total_sum, total_count
+        
+#         # Main BFS traversal - visit each node in the tree
+#         while queue:
+#             node = queue.popleft()
+            
+#             # Calculate subtree sum and count for current node
+#             # This does a separate BFS traversal for each node&#x27;s subtree
+#             subtree_sum, subtree_count = calculate_subtree(node)
+            
+#             # Check if node value equals average of its subtree
+#             if node.val == subtree_sum // subtree_count:
+#                 count += 1
+            
+#             # Add children to main BFS queue
+#             if node.left:
+#                 queue.append(node.left)
+#             if node.right:
+#                 queue.append(node.right)
+        
+#         return count
+
+# Variant : Given the root of a binary tree, return a boolean whether the value of every node is equal to the average of the values in its subtree.
+
+# Note:
+
+# The average of n elements is the sum of the n elements divided by n and rounded down to the nearest integer.
+
+# A subtree of root is a tree consisting of root and all of its descendants.
+
+# Example 1:
+#         4
+#        / \
+#       8   5
+#      / \   \
+#     0   1   6
+
+
+# Input: root = [4,8,5,0,1,null,6]
+# Output: False
+
+# Constraints:
+
+# The number of nodes in the tree is in the range [1, 1000].
+
+# 0 ≤ Node.val ≤ 1000
+
+# class Solution:
+#     def isSubtreeAverage(self, root):
+#         &quot;&quot;&quot;
+#         Check if EVERY node&#x27;s value equals the average of its subtree.
+#         Uses sentinel value (-1, -1) to signal mismatch found in subtree.
+        
+#         Args:
+#             root: Root of the binary tree
+        
+#         Returns:
+#             bool: True if all nodes match their subtree averages, False otherwise
+        
+#         Time Complexity: O(k) where k &lt;= n (stops at first mismatch)
+#         Space Complexity: O(h) where h is tree height (recursion stack)
+#         &quot;&quot;&quot;
+        
+#         def dfs(node):
+#             &quot;&quot;&quot;
+#             Post-order DFS traversal with immediate early exit.
+            
+#             Args:
+#                 node: Current tree node being processed
+            
+#             Returns:
+#                 tuple: (sum_of_subtree, count_of_nodes)
+#                 - If all nodes match: (actual_sum, actual_count)
+#                 - If any node doesn&#x27;t match: (-1, -1) as sentinel
+            
+#             Time Complexity: O(1) per node
+#             Space Complexity: O(h) for recursion stack
+#             &quot;&quot;&quot;
+
+#             if node is None:
+#                 return 0, 0
+            
+#             leftSum, leftCount = dfs(node.left)
+            
+#             # IMMEDIATE EXIT: If left subtree had a mismatch, propagate failure upward
+#             # No need to process right subtree or current node - answer is already False
+#             if leftCount == -1:
+#                 return -1, -1
+            
+#             rightSum, rightCount = dfs(node.right)
+            
+#             # IMMEDIATE EXIT: If right subtree had a mismatch, propagate failure upward
+#             # No need to check current node - answer is already False
+#             if rightCount == -1:
+#                 return -1, -1
+
+#             # Equivalently
+#             # leftSum, leftCount = dfs(node.left)
+#             # rightSum, rightCount = dfs(node.right)
+
+#             # if leftCount == -1 or rightCount == -1:
+#             #     return -1, -1
+
+#             currSum = leftSum + rightSum + node.val
+#             currCount = leftCount + rightCount + 1
+            
+#             if node.val != currSum // currCount:
+#                 return -1, -1
+            
+#             return currSum, currCount
+        
+#         # We don&#x27;t need the sum, only need to check if result indicates success or failure
+#         _, result = dfs(root)
+        
+#         # If result is -1, at least one node didn&#x27;t match (return False)
+#         # If result is not -1, all nodes matched their averages (return True)
+#         return result != -1
+
+
+# Boolean Flag Approach (Alternative)
+
+# class Solution:
+#     def isSubtreeAverage(self, root):
+#         &quot;&quot;&quot;
+#         Check if EVERY node&#x27;s value equals the average of its subtree.
+#         Uses boolean flag to track match status.
+        
+#         Time Complexity: O(k) where k &lt;= n (stops at first mismatch)
+#         Space Complexity: O(h) where h is tree height (recursion stack)
+#         &quot;&quot;&quot;
+#         # Flag to track if all nodes match
+#         self.all_match = True
+        
+#         def dfs(node):
+#             &quot;&quot;&quot;
+#             Post-order DFS with immediate early exit using flag.
+            
+#             Returns:
+#                 tuple: (sum, count) - returns (0, 0) when flag is False
+#             &quot;&quot;&quot;
+#             if node is None:
+#                 return 0, 0
+
+#             leftSum, leftCount = dfs(node.left)
+            
+#             # Early exit: if left subtree failed, stop processing
+#             if not self.all_match:
+#                 return 0, 0
+            
+#             rightSum, rightCount = dfs(node.right)
+            
+#             # Early exit: if right subtree failed, stop processing
+#             if not self.all_match:
+#                 return 0, 0
+            
+#             currSum = leftSum + rightSum + node.val
+#             currCount = leftCount + rightCount + 1
+
+#             if node.val != currSum // currCount:
+#                 self.all_match = False
+#                 return 0, 0
+            
+#             return currSum, currCount
+        
+#         # Run DFS and return flag
+#         dfs(root)
+#         return self.all_match</code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Medium/1868-Product-of-Two-Run-Length-Encoded-Arrays/">&#8592; 1868. Product of Two Run-Length Encoded Arrays</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+</body>
+</html>
