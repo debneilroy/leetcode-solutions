@@ -235,83 +235,83 @@ URL: https://leetcode.com/problems/max-area-of-island/
 
 # Approach : Iterative DFS (grid not modified)
 
-# class Solution:
-#     def maxAreaOfIsland(self, grid: List[List[int]]) -&gt; int:
-#         &quot;&quot;&quot;
-#         Find the maximum area of an island in a binary grid.
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -&gt; int:
+        &quot;&quot;&quot;
+        Find the maximum area of an island in a binary grid.
         
-#         An island is a group of connected 1s (land) surrounded by 0s (water).
-#         Cells are connected horizontally or vertically (not diagonally).
+        An island is a group of connected 1s (land) surrounded by 0s (water).
+        Cells are connected horizontally or vertically (not diagonally).
         
-#         Approach: Iterative Depth-First Search (DFS) with Stack and Visited Set
-#         - Use explicit stack instead of recursion to avoid stack overflow
-#         - Use a separate visited set to track explored cells (preserves original grid)
-#         - Explore each island completely before moving to the next cell
+        Approach: Iterative Depth-First Search (DFS) with Stack and Visited Set
+        - Use explicit stack instead of recursion to avoid stack overflow
+        - Use a separate visited set to track explored cells (preserves original grid)
+        - Explore each island completely before moving to the next cell
         
-#         Time Complexity: O(rows * cols)
-#         - We visit each cell exactly once in the worst case
-#         - Each cell is added to visited set when first encountered
+        Time Complexity: O(rows * cols)
+        - We visit each cell exactly once in the worst case
+        - Each cell is added to visited set when first encountered
         
-#         Space Complexity: O(rows * cols)
-#         - Visited set: O(rows * cols) to store all visited coordinates
-#         - Stack: O(min(rows, cols)) on average, O(rows * cols) worst case
-#         - Total: O(rows * cols)
+        Space Complexity: O(rows * cols)
+        - Visited set: O(rows * cols) to store all visited coordinates
+        - Stack: O(min(rows, cols)) on average, O(rows * cols) worst case
+        - Total: O(rows * cols)
         
-#         Args:
-#             grid: 2D binary grid where 1 = land, 0 = water
+        Args:
+            grid: 2D binary grid where 1 = land, 0 = water
             
-#         Returns:
-#             Maximum area of any island, or 0 if no islands exist
+        Returns:
+            Maximum area of any island, or 0 if no islands exist
             
-#         &quot;&quot;&quot;
-#         # Handle edge cases: empty grid or empty rows
-#         if not grid or not grid[0]:
-#             return 0
+        &quot;&quot;&quot;
+        # Handle edge cases: empty grid or empty rows
+        if not grid or not grid[0]:
+            return 0
         
-#         rows, cols = len(grid), len(grid[0])
-#         visited = set()  # Track visited cells without modifying grid
-#         max_area = 0
+        rows, cols = len(grid), len(grid[0])
+        visited = set()  # Track visited cells without modifying grid
+        max_area = 0
         
-#         # Iterate through every cell in the grid
-#         for row in range(rows):
-#             for col in range(cols):
-#                 # Found an unvisited land cell - start exploring the island
-#                 if grid[row][col] == 1 and (row, col) not in visited:
-#                     # Initialize DFS using an explicit stack
-#                     current_area = 0
-#                     stack = [(row, col)]
+        # Iterate through every cell in the grid
+        for row in range(rows):
+            for col in range(cols):
+                # Found an unvisited land cell - start exploring the island
+                if grid[row][col] == 1 and (row, col) not in visited:
+                    # Initialize DFS using an explicit stack
+                    current_area = 0
+                    stack = [(row, col)]
                     
-#                     # Mark starting cell as visited
-#                     visited.add((row, col))
+                    # Mark starting cell as visited
+                    visited.add((row, col))
                     
-#                     # Explore all connected land cells iteratively
-#                     while stack:
-#                         curr_row, curr_col = stack.pop()
+                    # Explore all connected land cells iteratively
+                    while stack:
+                        curr_row, curr_col = stack.pop()
                         
-#                         # Count this cell as part of the island
-#                         current_area += 1
+                        # Count this cell as part of the island
+                        current_area += 1
                         
-#                         # Explore all 4 adjacent directions: down, up, right, left
-#                         for dr, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)):
-#                             next_row = curr_row + dr
-#                             next_col = curr_col + dc
+                        # Explore all 4 adjacent directions: down, up, right, left
+                        for dr, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                            next_row = curr_row + dr
+                            next_col = curr_col + dc
                             
-#                             # Check if neighbor is within bounds, is land, and not visited
-#                             if (0 &lt;= next_row &lt; rows and 
-#                                 0 &lt;= next_col &lt; cols and 
-#                                 grid[next_row][next_col] == 1 and
-#                                 (next_row, next_col) not in visited):
+                            # Check if neighbor is within bounds, is land, and not visited
+                            if (0 &lt;= next_row &lt; rows and 
+                                0 &lt;= next_col &lt; cols and 
+                                grid[next_row][next_col] == 1 and
+                                (next_row, next_col) not in visited):
                                 
-#                                 # Mark as visited to prevent duplicates in stack
-#                                 visited.add((next_row, next_col))
+                                # Mark as visited to prevent duplicates in stack
+                                visited.add((next_row, next_col))
                                 
-#                                 # Add to stack for exploration
-#                                 stack.append((next_row, next_col))
+                                # Add to stack for exploration
+                                stack.append((next_row, next_col))
                     
-#                     # Update maximum area found so far
-#                     max_area = max(max_area, current_area)
+                    # Update maximum area found so far
+                    max_area = max(max_area, current_area)
 
-#         return max_area
+        return max_area
 
         # Example Dry Run:
         #     Input: grid = [[0, 1, 0],
@@ -379,161 +379,161 @@ URL: https://leetcode.com/problems/max-area-of-island/
 
 # Approach : Iterative DFS (grid modified)
 
-# class Solution:
-#     def maxAreaOfIsland(self, grid: List[List[int]]) -&gt; int:
-#         &quot;&quot;&quot;
-#         Find the maximum area of an island in a binary grid.
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -&gt; int:
+        &quot;&quot;&quot;
+        Find the maximum area of an island in a binary grid.
         
-#         An island is a group of connected 1s (land) surrounded by 0s (water).
-#         Cells are connected horizontally or vertically (not diagonally).
+        An island is a group of connected 1s (land) surrounded by 0s (water).
+        Cells are connected horizontally or vertically (not diagonally).
         
-#         Approach: Iterative Depth-First Search (DFS) with Stack
-#         - Use explicit stack instead of recursion to avoid stack overflow
-#         - Mark cells as visited by modifying the grid (set to 0)
-#         - Explore each island completely before moving to the next cell
+        Approach: Iterative Depth-First Search (DFS) with Stack
+        - Use explicit stack instead of recursion to avoid stack overflow
+        - Mark cells as visited by modifying the grid (set to 0)
+        - Explore each island completely before moving to the next cell
         
-#         Time Complexity: O(rows * cols)
-#         - We visit each cell exactly once in the worst case
-#         - Each cell is marked as visited (set to 0) when first encountered
+        Time Complexity: O(rows * cols)
+        - We visit each cell exactly once in the worst case
+        - Each cell is marked as visited (set to 0) when first encountered
         
-#         Space Complexity: O(rows * cols)
-#         - In the worst case (entire grid is one island), the stack can grow
-#           to contain all cells before we start popping
-#         - More typically, O(min(rows, cols)) for a snake-shaped island
+        Space Complexity: O(rows * cols)
+        - In the worst case (entire grid is one island), the stack can grow
+          to contain all cells before we start popping
+        - More typically, O(min(rows, cols)) for a snake-shaped island
         
-#         Args:
-#             grid: 2D binary grid where 1 = land, 0 = water
+        Args:
+            grid: 2D binary grid where 1 = land, 0 = water
             
-#         Returns:
-#             Maximum area of any island, or 0 if no islands exist
-#         &quot;&quot;&quot;
-#         # Handle edge cases: empty grid or empty rows
-#         if not grid or not grid[0]:
-#             return 0
+        Returns:
+            Maximum area of any island, or 0 if no islands exist
+        &quot;&quot;&quot;
+        # Handle edge cases: empty grid or empty rows
+        if not grid or not grid[0]:
+            return 0
         
-#         rows, cols = len(grid), len(grid[0])
-#         max_area = 0
+        rows, cols = len(grid), len(grid[0])
+        max_area = 0
         
-#         # Iterate through every cell in the grid
-#         for row in range(rows):
-#             for col in range(cols):
-#                 # Found an unvisited land cell - start exploring the island
-#                 if grid[row][col] == 1:
-#                     # Initialize DFS using an explicit stack
-#                     current_area = 0
-#                     stack = [(row, col)]
+        # Iterate through every cell in the grid
+        for row in range(rows):
+            for col in range(cols):
+                # Found an unvisited land cell - start exploring the island
+                if grid[row][col] == 1:
+                    # Initialize DFS using an explicit stack
+                    current_area = 0
+                    stack = [(row, col)]
                     
-#                     # Mark starting cell as visited to avoid revisiting
-#                     grid[row][col] = 0
+                    # Mark starting cell as visited to avoid revisiting
+                    grid[row][col] = 0
                     
-#                     # Explore all connected land cells iteratively
-#                     while stack:
-#                         curr_row, curr_col = stack.pop()
+                    # Explore all connected land cells iteratively
+                    while stack:
+                        curr_row, curr_col = stack.pop()
                         
-#                         # Count this cell as part of the island
-#                         current_area += 1
+                        # Count this cell as part of the island
+                        current_area += 1
                         
-#                         # Explore all 4 adjacent directions: down, up, right, left
-#                         for delta_row, delta_col in ((1, 0), (-1, 0), (0, 1), (0, -1)):
-#                             next_row = curr_row + delta_row
-#                             next_col = curr_col + delta_col
+                        # Explore all 4 adjacent directions: down, up, right, left
+                        for delta_row, delta_col in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                            next_row = curr_row + delta_row
+                            next_col = curr_col + delta_col
                             
-#                             # Check if neighbor is within bounds and is unvisited land
-#                             if (0 &lt;= next_row &lt; rows and 
-#                                 0 &lt;= next_col &lt; cols and 
-#                                 grid[next_row][next_col] == 1):
+                            # Check if neighbor is within bounds and is unvisited land
+                            if (0 &lt;= next_row &lt; rows and 
+                                0 &lt;= next_col &lt; cols and 
+                                grid[next_row][next_col] == 1):
                                 
-#                                 # Mark as visited immediately to prevent duplicates in stack
-#                                 grid[next_row][next_col] = 0
+                                # Mark as visited immediately to prevent duplicates in stack
+                                grid[next_row][next_col] = 0
                                 
-#                                 # Add to stack for exploration
-#                                 stack.append((next_row, next_col))
+                                # Add to stack for exploration
+                                stack.append((next_row, next_col))
                     
-#                     # Update maximum area found so far
-#                     max_area = max(max_area, current_area)
+                    # Update maximum area found so far
+                    max_area = max(max_area, current_area)
         
-#         return max_area
+        return max_area
 
 # Approach : BFS
 
-# from collections import deque
+from collections import deque
 
-# class Solution:
-#     def maxAreaOfIsland(self, grid: List[List[int]]) -&gt; int:
-#         &quot;&quot;&quot;
-#         Find the maximum area of an island in a binary grid.
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -&gt; int:
+        &quot;&quot;&quot;
+        Find the maximum area of an island in a binary grid.
         
-#         An island is a group of connected 1s (land) surrounded by 0s (water).
-#         Cells are connected horizontally or vertically (not diagonally).
+        An island is a group of connected 1s (land) surrounded by 0s (water).
+        Cells are connected horizontally or vertically (not diagonally).
         
-#         Approach: Iterative Breadth-First Search (BFS) with Queue and Visited Set
-#         - Use queue (deque) for level-by-level exploration
-#         - Use a separate visited set to track explored cells (preserves original grid)
-#         - Process cells in order of distance from starting point
+        Approach: Iterative Breadth-First Search (BFS) with Queue and Visited Set
+        - Use queue (deque) for level-by-level exploration
+        - Use a separate visited set to track explored cells (preserves original grid)
+        - Process cells in order of distance from starting point
         
-#         Time Complexity: O(rows * cols)
-#         - We visit each cell exactly once in the worst case
-#         - Each cell is added to visited set when first encountered
+        Time Complexity: O(rows * cols)
+        - We visit each cell exactly once in the worst case
+        - Each cell is added to visited set when first encountered
         
-#         Space Complexity: O(rows * cols)
-#         - Visited set: O(rows * cols) to store all visited coordinates
-#         - Queue: O(min(rows, cols)) on average, O(rows * cols) worst case
-#         - Total: O(rows * cols)
+        Space Complexity: O(rows * cols)
+        - Visited set: O(rows * cols) to store all visited coordinates
+        - Queue: O(min(rows, cols)) on average, O(rows * cols) worst case
+        - Total: O(rows * cols)
         
-#         Args:
-#             grid: 2D binary grid where 1 = land, 0 = water
+        Args:
+            grid: 2D binary grid where 1 = land, 0 = water
             
-#         Returns:
-#             Maximum area of any island, or 0 if no islands exist
-#         &quot;&quot;&quot;
-#         # Handle edge cases: empty grid or empty rows
-#         if not grid or not grid[0]:
-#             return 0
+        Returns:
+            Maximum area of any island, or 0 if no islands exist
+        &quot;&quot;&quot;
+        # Handle edge cases: empty grid or empty rows
+        if not grid or not grid[0]:
+            return 0
         
-#         rows, cols = len(grid), len(grid[0])
-#         visited = set()  # Track visited cells without modifying grid
-#         max_area = 0
+        rows, cols = len(grid), len(grid[0])
+        visited = set()  # Track visited cells without modifying grid
+        max_area = 0
         
-#         # Iterate through every cell in the grid
-#         for row in range(rows):
-#             for col in range(cols):
-#                 # Found an unvisited land cell - start exploring the island
-#                 if grid[row][col] == 1 and (row, col) not in visited:
-#                     # Initialize BFS using a queue (deque for O(1) operations)
-#                     current_area = 0
-#                     queue = deque([(row, col)])
+        # Iterate through every cell in the grid
+        for row in range(rows):
+            for col in range(cols):
+                # Found an unvisited land cell - start exploring the island
+                if grid[row][col] == 1 and (row, col) not in visited:
+                    # Initialize BFS using a queue (deque for O(1) operations)
+                    current_area = 0
+                    queue = deque([(row, col)])
                     
-#                     # Mark starting cell as visited
-#                     visited.add((row, col))
+                    # Mark starting cell as visited
+                    visited.add((row, col))
                     
-#                     # Explore all connected land cells level by level
-#                     while queue:
-#                         curr_row, curr_col = queue.popleft()  # FIFO for BFS
+                    # Explore all connected land cells level by level
+                    while queue:
+                        curr_row, curr_col = queue.popleft()  # FIFO for BFS
                         
-#                         # Count this cell as part of the island
-#                         current_area += 1
+                        # Count this cell as part of the island
+                        current_area += 1
                         
-#                         # Explore all 4 adjacent directions: down, up, right, left
-#                         for delta_row, delta_col in ((1, 0), (-1, 0), (0, 1), (0, -1)):
-#                             next_row = curr_row + delta_row
-#                             next_col = curr_col + delta_col
+                        # Explore all 4 adjacent directions: down, up, right, left
+                        for delta_row, delta_col in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                            next_row = curr_row + delta_row
+                            next_col = curr_col + delta_col
                             
-#                             # Check if neighbor is within bounds, is land, and not visited
-#                             if (0 &lt;= next_row &lt; rows and 
-#                                 0 &lt;= next_col &lt; cols and 
-#                                 grid[next_row][next_col] == 1 and
-#                                 (next_row, next_col) not in visited):
+                            # Check if neighbor is within bounds, is land, and not visited
+                            if (0 &lt;= next_row &lt; rows and 
+                                0 &lt;= next_col &lt; cols and 
+                                grid[next_row][next_col] == 1 and
+                                (next_row, next_col) not in visited):
                                 
-#                                 # Mark as visited to prevent duplicates in queue
-#                                 visited.add((next_row, next_col))
+                                # Mark as visited to prevent duplicates in queue
+                                visited.add((next_row, next_col))
                                 
-#                                 # Add to queue for exploration
-#                                 queue.append((next_row, next_col))
+                                # Add to queue for exploration
+                                queue.append((next_row, next_col))
                     
-#                     # Update maximum area found so far
-#                     max_area = max(max_area, current_area)
+                    # Update maximum area found so far
+                    max_area = max(max_area, current_area)
         
-#         return max_area
+        return max_area
 
 
 # Approach : Recursive DFS (grid not modified)
