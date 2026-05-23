@@ -458,32 +458,32 @@ class Solution:
 
 # Without class
 
-# def is_valid_palindrome(s: str, k: int) -&gt; bool:
-#     # Optimization: can always reduce to ≤1 char
-#     if k &gt;= len(s) - 1:
-#         return True
+def is_valid_palindrome(s: str, k: int) -&gt; bool:
+    # Optimization: can always reduce to ≤1 char
+    if k &gt;= len(s) - 1:
+        return True
 
-#     memo = {}
+    memo = {}
 
-#     def min_deletions(i: int, j: int) -&gt; int:
-#         if i &gt;= j:
-#             return 0
+    def min_deletions(i: int, j: int) -&gt; int:
+        if i &gt;= j:
+            return 0
         
-#         if (i, j) in memo:
-#             return memo[(i, j)]
+        if (i, j) in memo:
+            return memo[(i, j)]
         
-#         if s[i] == s[j]:
-#             res = min_deletions(i + 1, j - 1)
-#         else:
-#             res = 1 + min(
-#                 min_deletions(i + 1, j),
-#                 min_deletions(i, j - 1)
-#             )
+        if s[i] == s[j]:
+            res = min_deletions(i + 1, j - 1)
+        else:
+            res = 1 + min(
+                min_deletions(i + 1, j),
+                min_deletions(i, j - 1)
+            )
         
-#         memo[(i, j)] = res
-#         return res
+        memo[(i, j)] = res
+        return res
 
-#     return min_deletions(0, len(s) - 1) &lt;= k
+    return min_deletions(0, len(s) - 1) &lt;= k
 
 # Using lru_cache
 
@@ -759,161 +759,161 @@ class Solution:
 
 # Dry run Example 
 
-# s = &quot;abca&quot;, k = 1
+s = &quot;abca&quot;, k = 1
 
 # indices: 0 1 2 3
 # chars:   a b c a
 
-# n = 4
+n = 4
 
 # Question: Can we make &quot;abca&quot; a palindrome with at most 1 deletion?
 
-# ### DP Table Structure
+### DP Table Structure
 
-# dp[i][j] = minimum deletions to make s[i..j] a palindrome
+dp[i][j] = minimum deletions to make s[i..j] a palindrome
 
-#       j=0  j=1  j=2  j=3
-#        a    b    c    a
-#     ┌────────────────────
-# i=0│a│  ?    ?    ?    ?
-# i=1│b│       ?    ?    ?
-# i=2│c│            ?    ?
-# i=3│a│                 ?
+      j=0  j=1  j=2  j=3
+       a    b    c    a
+    ┌────────────────────
+i=0│a│  ?    ?    ?    ?
+i=1│b│       ?    ?    ?
+i=2│c│            ?    ?
+i=3│a│                 ?
 
 
-# ### Initial State (Base Cases)
+### Initial State (Base Cases)
 
 # Diagonal = 0 (single characters are palindromes)
 
-#       j=0  j=1  j=2  j=3
-#        a    b    c    a
-#     ┌────────────────────
-# i=0│a│  0    ?    ?    ?    ← s[0..0] = &quot;a&quot;
-# i=1│b│       0    ?    ?    ← s[1..1] = &quot;b&quot;
-# i=2│c│            0    ?    ← s[2..2] = &quot;c&quot;
-# i=3│a│                 0    ← s[3..3] = &quot;a&quot;
+      j=0  j=1  j=2  j=3
+       a    b    c    a
+    ┌────────────────────
+i=0│a│  0    ?    ?    ?    ← s[0..0] = &quot;a&quot;
+i=1│b│       0    ?    ?    ← s[1..1] = &quot;b&quot;
+i=2│c│            0    ?    ← s[2..2] = &quot;c&quot;
+i=3│a│                 0    ← s[3..3] = &quot;a&quot;
 
-# ### Fill Order: Length = 2
+### Fill Order: Length = 2
 
 # Process all 2-character substrings:
 
-# #### Cell (0,1): s[0..1] = &quot;ab&quot;
+#### Cell (0,1): s[0..1] = &quot;ab&quot;
 
-# i=0, j=1
-# s[0]=&#x27;a&#x27; vs s[1]=&#x27;b&#x27;
+i=0, j=1
+s[0]=&#x27;a&#x27; vs s[1]=&#x27;b&#x27;
 # &#x27;a&#x27; != &#x27;b&#x27; ✗ Mismatch!
 
 # Options:
 # - Delete &#x27;a&#x27;: dp[1][1] = 0 → need 1 deletion total
 # - Delete &#x27;b&#x27;: dp[0][0] = 0 → need 1 deletion total
 
-# dp[0][1] = 1 + min(0, 0) = 1
+dp[0][1] = 1 + min(0, 0) = 1
 
-# #### Cell (1,2): s[1..2] = &quot;bc&quot;
-# i=1, j=2
-# s[1]=&#x27;b&#x27; vs s[2]=&#x27;c&#x27;
+#### Cell (1,2): s[1..2] = &quot;bc&quot;
+i=1, j=2
+s[1]=&#x27;b&#x27; vs s[2]=&#x27;c&#x27;
 # &#x27;b&#x27; != &#x27;c&#x27; ✗ Mismatch!
 
 # Options:
 # - Delete &#x27;b&#x27;: dp[2][2] = 0 → need 1 deletion total
 # - Delete &#x27;c&#x27;: dp[1][1] = 0 → need 1 deletion total
 
-# dp[1][2] = 1 + min(0, 0) = 1
+dp[1][2] = 1 + min(0, 0) = 1
 
-# #### Cell (2,3): s[2..3] = &quot;ca&quot;
+#### Cell (2,3): s[2..3] = &quot;ca&quot;
 
-# i=2, j=3
-# s[2]=&#x27;c&#x27; vs s[3]=&#x27;a&#x27;
+i=2, j=3
+s[2]=&#x27;c&#x27; vs s[3]=&#x27;a&#x27;
 # &#x27;c&#x27; != &#x27;a&#x27; ✗ Mismatch!
 
 # Options:
 # - Delete &#x27;c&#x27;: dp[3][3] = 0 → need 1 deletion total
 # - Delete &#x27;a&#x27;: dp[2][2] = 0 → need 1 deletion total
 
-# dp[2][3] = 1 + min(0, 0) = 1
+dp[2][3] = 1 + min(0, 0) = 1
 
 # **Table after Length 2:**
-#       j=0  j=1  j=2  j=3
-#        a    b    c    a
-#     ┌────────────────────
-# i=0│a│  0    1    ?    ?    ← s[0..1] = &quot;ab&quot; needs 1 deletion
-# i=1│b│       0    1    ?    ← s[1..2] = &quot;bc&quot; needs 1 deletion
-# i=2│c│            0    1    ← s[2..3] = &quot;ca&quot; needs 1 deletion
-# i=3│a│                 0
+      j=0  j=1  j=2  j=3
+       a    b    c    a
+    ┌────────────────────
+i=0│a│  0    1    ?    ?    ← s[0..1] = &quot;ab&quot; needs 1 deletion
+i=1│b│       0    1    ?    ← s[1..2] = &quot;bc&quot; needs 1 deletion
+i=2│c│            0    1    ← s[2..3] = &quot;ca&quot; needs 1 deletion
+i=3│a│                 0
 
-# ### Fill Order: Length = 3
+### Fill Order: Length = 3
 
 # Process all 3-character substrings:
 
-# #### Cell (0,2): s[0..2] = &quot;abc&quot;
-# i=0, j=2
-# s[0]=&#x27;a&#x27; vs s[2]=&#x27;c&#x27;
+#### Cell (0,2): s[0..2] = &quot;abc&quot;
+i=0, j=2
+s[0]=&#x27;a&#x27; vs s[2]=&#x27;c&#x27;
 # &#x27;a&#x27; != &#x27;c&#x27; ✗ Mismatch!
 
 # Options:
 # - Delete &#x27;a&#x27;: dp[1][2] = 1 → need 1+1 = 2 deletions total
 # - Delete &#x27;c&#x27;: dp[0][1] = 1 → need 1+1 = 2 deletions total
 
-# dp[0][2] = 1 + min(1, 1) = 2
+dp[0][2] = 1 + min(1, 1) = 2
 
-# #### Cell (1,3): s[1..3] = &quot;bca&quot;
+#### Cell (1,3): s[1..3] = &quot;bca&quot;
 
-# i=1, j=3
-# s[1]=&#x27;b&#x27; vs s[3]=&#x27;a&#x27;
+i=1, j=3
+s[1]=&#x27;b&#x27; vs s[3]=&#x27;a&#x27;
 # &#x27;b&#x27; != &#x27;a&#x27; ✗ Mismatch!
 
 # Options:
 # - Delete &#x27;b&#x27;: dp[2][3] = 1 → need 1+1 = 2 deletions total
 # - Delete &#x27;a&#x27;: dp[1][2] = 1 → need 1+1 = 2 deletions total
 
-# dp[1][3] = 1 + min(1, 1) = 2
+dp[1][3] = 1 + min(1, 1) = 2
 
 # **Table after Length 3:**
-#       j=0  j=1  j=2  j=3
-#        a    b    c    a
-#     ┌────────────────────
-# i=0│a│  0    1    2    ?    ← s[0..2] = &quot;abc&quot; needs 2 deletions
-# i=1│b│       0    1    2    ← s[1..3] = &quot;bca&quot; needs 2 deletions
-# i=2│c│            0    1
-# i=3│a│                 0
+      j=0  j=1  j=2  j=3
+       a    b    c    a
+    ┌────────────────────
+i=0│a│  0    1    2    ?    ← s[0..2] = &quot;abc&quot; needs 2 deletions
+i=1│b│       0    1    2    ← s[1..3] = &quot;bca&quot; needs 2 deletions
+i=2│c│            0    1
+i=3│a│                 0
 
-# ### Fill Order: Length = 4
+### Fill Order: Length = 4
 
 # Process the full string:
 
-# #### Cell (0,3): s[0..3] = &quot;abca&quot;
+#### Cell (0,3): s[0..3] = &quot;abca&quot;
 # ```
-# i=0, j=3
-# s[0]=&#x27;a&#x27; vs s[3]=&#x27;a&#x27;
+i=0, j=3
+s[0]=&#x27;a&#x27; vs s[3]=&#x27;a&#x27;
 # &#x27;a&#x27; == &#x27;a&#x27; ✓ MATCH!
 
 # Matching chars satisfy palindrome property!
 # Keep both (no deletion needed)
 # Problem reduces to inner substring s[1..2] = &quot;bc&quot;
 
-# dp[0][3] = dp[1][2] = 1
+dp[0][3] = dp[1][2] = 1
 
 # **Final Table:**
 
-#       j=0  j=1  j=2  j=3
-#        a    b    c    a
-#     ┌────────────────────────────────
-# i=0│a│  0    1    2    1    ← s[0..3] = &quot;abca&quot; needs 1 deletion ✓
-# i=1│b│       0    1    2
-# i=2│c│            0    1
-# i=3│a│                 0
+      j=0  j=1  j=2  j=3
+       a    b    c    a
+    ┌────────────────────────────────
+i=0│a│  0    1    2    1    ← s[0..3] = &quot;abca&quot; needs 1 deletion ✓
+i=1│b│       0    1    2
+i=2│c│            0    1
+i=3│a│                 0
 
-# ### Answer
+### Answer
 
-# min_deletions_needed = dp[0][3] = 1
-# k = 1
+min_deletions_needed = dp[0][3] = 1
+k = 1
 
 # Check: 1 &lt;= 1 → True ✓
 
 # Result: YES, we can make &quot;abca&quot; a palindrome with 1 deletion!
 
 # How? Delete &#x27;b&#x27; → &quot;aca&quot; (palindrome)
-#   OR Delete &#x27;c&#x27; → &quot;aba&quot; (palindrome)
+  OR Delete &#x27;c&#x27; → &quot;aba&quot; (palindrome)
 
 # Approach : Bottom-Up DP (1D) (complicated)
 
@@ -1092,20 +1092,20 @@ class Solution:
 
 ## Initial Setup
 
-# s = &quot;aba&quot;
-# k = 1
-# n = 3
+s = &quot;aba&quot;
+k = 1
+n = 3
 
 # Indices:  0   1   2
 # String:   a   b   a
 
 # Initial: dp = [0, 0, 0]
 
-# ## Iteration i = 2 (Last character &#x27;a&#x27;)
+## Iteration i = 2 (Last character &#x27;a&#x27;)
 
-# i = 2
-# dp[2] = 1           # Single char &#x27;a&#x27; is palindrome of length 1
-# diagonal = 0        # Empty substring has LPS = 0
+i = 2
+dp[2] = 1           # Single char &#x27;a&#x27; is palindrome of length 1
+diagonal = 0        # Empty substring has LPS = 0
 
 # Inner loop: range(3, 3) → No iterations (empty range)
 
@@ -1114,26 +1114,26 @@ class Solution:
 # **What dp means now:**
 # - dp[2] = LPS of &quot;a&quot; = 1
 
-# ## Iteration i = 1 (Middle character &#x27;b&#x27;)
+## Iteration i = 1 (Middle character &#x27;b&#x27;)
 
-# i = 1
-# dp[1] = 1           # Single char &#x27;b&#x27; is palindrome of length 1
-# diagonal = 0        # Empty substring has LPS = 0
+i = 1
+dp[1] = 1           # Single char &#x27;b&#x27; is palindrome of length 1
+diagonal = 0        # Empty substring has LPS = 0
 
 # Inner loop: range(2, 3) → j = 2
 
-# ### j = 2: Substring &quot;ba&quot;
+### j = 2: Substring &quot;ba&quot;
 
-# temp = dp[2] = 1    # Save current dp[2]
+temp = dp[2] = 1    # Save current dp[2]
 
 # Compare: s[1] = &#x27;b&#x27; vs s[2] = &#x27;a&#x27;
 # Match? NO (&#x27;b&#x27; != &#x27;a&#x27;)
 
-# dp[2] = max(temp, dp[1])
-#       = max(1, 1) 
-#       = 1
+dp[2] = max(temp, dp[1])
+      = max(1, 1) 
+      = 1
 
-# diagonal = temp = 1  # Update diagonal for next iteration
+diagonal = temp = 1  # Update diagonal for next iteration
 
 # Result: dp = [0, 1, 1]
 
@@ -1141,26 +1141,26 @@ class Solution:
 # - dp[1] = LPS of &quot;b&quot; = 1
 # - dp[2] = LPS of &quot;ba&quot; = 1 (either &#x27;b&#x27; or &#x27;a&#x27;)
 
-# ## Iteration i = 0 (First character &#x27;a&#x27;)
+## Iteration i = 0 (First character &#x27;a&#x27;)
 
-# i = 0
-# dp[0] = 1           # Single char &#x27;a&#x27; is palindrome of length 1
-# diagonal = 0        # Empty substring has LPS = 0
+i = 0
+dp[0] = 1           # Single char &#x27;a&#x27; is palindrome of length 1
+diagonal = 0        # Empty substring has LPS = 0
 
 # Inner loop: range(1, 3) → j = 1, 2
 
-# ### j = 1: Substring &quot;ab&quot;
+### j = 1: Substring &quot;ab&quot;
 
-# temp = dp[1] = 1    # Save current dp[1]
+temp = dp[1] = 1    # Save current dp[1]
 
 # Compare: s[0] = &#x27;a&#x27; vs s[1] = &#x27;b&#x27;
 # Match? NO (&#x27;a&#x27; != &#x27;b&#x27;)
 
-# dp[1] = max(temp, dp[0])
-#       = max(1, 1)
-#       = 1
+dp[1] = max(temp, dp[0])
+      = max(1, 1)
+      = 1
 
-# diagonal = temp = 1  # Update diagonal for next iteration
+diagonal = temp = 1  # Update diagonal for next iteration
 
 # Current: dp = [1, 1, 1]
 
@@ -1168,44 +1168,44 @@ class Solution:
 # - dp[0] = LPS of &quot;a&quot; = 1
 # - dp[1] = LPS of &quot;ab&quot; = 1
 
-# ### j = 2: Substring &quot;aba&quot; (Full string!)
+### j = 2: Substring &quot;aba&quot; (Full string!)
 
-# temp = dp[2] = 1    # Save current dp[2]
+temp = dp[2] = 1    # Save current dp[2]
 
 # Compare: s[0] = &#x27;a&#x27; vs s[2] = &#x27;a&#x27;
 # Match? YES! ✓
 
-# dp[2] = diagonal + 2
-#       = 1 + 2
-#       = 3
+dp[2] = diagonal + 2
+      = 1 + 2
+      = 3
 
 # Explanation:
-#   &quot;aba&quot; → Both ends are &#x27;a&#x27; (match!)
-#   Middle is &quot;b&quot; (from position 1 to 1)
-#   LPS of middle = diagonal = 1 (which came from temp in previous iteration)
-#   So LPS of &quot;aba&quot; = 1 + 2 = 3
-#   The palindrome is &quot;aba&quot; itself!
+  &quot;aba&quot; → Both ends are &#x27;a&#x27; (match!)
+  Middle is &quot;b&quot; (from position 1 to 1)
+  LPS of middle = diagonal = 1 (which came from temp in previous iteration)
+  So LPS of &quot;aba&quot; = 1 + 2 = 3
+  The palindrome is &quot;aba&quot; itself!
 
-# diagonal = temp = 1  # Update diagonal (not needed anymore, loop ends)
+diagonal = temp = 1  # Update diagonal (not needed anymore, loop ends)
 
 # Result: dp = [1, 1, 3]
-#                     ↑
-#                  Answer!
+                    ↑
+                 Answer!
 
 # What dp means now:
 # - dp[0] = LPS of &quot;a&quot; = 1
 # - dp[1] = LPS of &quot;ab&quot; = 1  
 # - dp[2] = LPS of &quot;aba&quot; = 3
 
-# ## Final Calculation
+## Final Calculation
 
-# lps = dp[n - 1] = dp[2] = 3
+lps = dp[n - 1] = dp[2] = 3
 
-# removals = n - lps 
-#          = 3 - 3 
-#          = 0
+removals = n - lps 
+         = 3 - 3 
+         = 0
 
-# return removals &lt;= k
+return removals &lt;= k
 # Result: True
 
 
