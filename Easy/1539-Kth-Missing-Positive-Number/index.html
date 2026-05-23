@@ -267,7 +267,7 @@ URL: https://leetcode.com/problems/kth-missing-positive-number/
 # - But position 2 is taken, so we need to expand our search
 # - New range: positions 1-6 (shift by +1)
 
-# k = 5 + 1 = 6
+k = 5 + 1 = 6
 # When we see 3:
 # Question: Is 3 ≤ 6? YES
 
@@ -275,21 +275,21 @@ URL: https://leetcode.com/problems/kth-missing-positive-number/
 # We lose another position to a present number
 # Need to expand search range again
 
-# k = 6 + 1 = 7
+k = 6 + 1 = 7
 # When we see 4:
 # Question: Is 4 ≤ 7? YES
 
 # Position 4 is occupied
 # Shift again
 
-# k = 7 + 1 = 8
+k = 7 + 1 = 8
 # When we see 7:
 # Question: Is 7 ≤ 8? YES
 
 # Position 7 is occupied
 # Shift again
 
-# k = 8 + 1 = 9
+k = 8 + 1 = 9
 # When we see 11:
 # Question: Is 11 ≤ 9? NO
 
@@ -415,7 +415,7 @@ class Solution:
 # Example 1
 
 # Input:
-# nums = [4,7,9,10], k = 1
+nums = [4,7,9,10], k = 1
 # Output:
 # 5
 # Explanation:
@@ -424,7 +424,7 @@ class Solution:
 # Example 2
 
 # Input:
-# nums = [4,7,9,10], k = 3
+nums = [4,7,9,10], k = 3
 # Output:
 # 8
 # Explanation:
@@ -433,7 +433,7 @@ class Solution:
 # Example 3
 
 # Input:
-# nums = [1,2,4], k = 3
+nums = [1,2,4], k = 3
 # Output:
 # 6
 # Explanation:
@@ -449,106 +449,106 @@ class Solution:
 
 # 1 ≤ k ≤ 10⁸
 
-# class Solution:
-#     def missingElement(self, nums: list[int], k: int) -&gt; int:
-#         &quot;&quot;&quot;
-#         Find the kth missing number starting from nums[0].
+class Solution:
+    def missingElement(self, nums: list[int], k: int) -&gt; int:
+        &quot;&quot;&quot;
+        Find the kth missing number starting from nums[0].
         
-#         Key difference from LC1539: We start counting from nums[0], not from 1.
+        Key difference from LC1539: We start counting from nums[0], not from 1.
         
-#         Time Complexity: O(log n) using binary search
-#         Space Complexity: O(1)
-#         &quot;&quot;&quot;
-#         left = 0
-#         right = len(nums) - 1  # Search in [0, len(nums)-1]
+        Time Complexity: O(log n) using binary search
+        Space Complexity: O(1)
+        &quot;&quot;&quot;
+        left = 0
+        right = len(nums) - 1  # Search in [0, len(nums)-1]
         
-#         # Binary search to find the position where kth missing number lies
-#         while left &lt;= right:
-#             mid = (right - left) // 2 + left
+        # Binary search to find the position where kth missing number lies
+        while left &lt;= right:
+            mid = (right - left) // 2 + left
             
-#             # Count of missing numbers between nums[0] and nums[mid]
-#             # Formula derivation:
-#             #   - Total positive integers in range [nums[0], nums[mid]] = nums[mid] - nums[0] + 1
-#             #   - Existing positive inetgers from index 0 to mid = mid + 1
-#             #   - Missing = Total - Existing
-#             #             = (nums[mid] - nums[0] + 1) - (mid + 1)
-#             #             = nums[mid] - nums[0] - mid
-#             # 
-#             # Example: nums=[4,7,9,10], mid=2
-#             #   Range [4, 9]: total integers = 9-4+1 = 6 integers
-#             #   Existing elements at indices [0,1,2] = 3 elements
-#             #   Missing = 6 - 3 = 3 (which are: 5, 6, 8) ✓
-#             missing = nums[mid] - nums[0] - mid
+            # Count of missing numbers between nums[0] and nums[mid]
+            # Formula derivation:
+            #   - Total positive integers in range [nums[0], nums[mid]] = nums[mid] - nums[0] + 1
+            #   - Existing positive inetgers from index 0 to mid = mid + 1
+            #   - Missing = Total - Existing
+            #             = (nums[mid] - nums[0] + 1) - (mid + 1)
+            #             = nums[mid] - nums[0] - mid
+            # 
+            # Example: nums=[4,7,9,10], mid=2
+            #   Range [4, 9]: total integers = 9-4+1 = 6 integers
+            #   Existing elements at indices [0,1,2] = 3 elements
+            #   Missing = 6 - 3 = 3 (which are: 5, 6, 8) ✓
+            missing = nums[mid] - nums[0] - mid
             
-#             if missing &lt; k:
-#                 # Not enough missing numbers before nums[mid]
-#                 # The kth missing must be to the right
-#                 left = mid + 1
-#             else:
-#                 # We have k or more missing numbers before nums[mid]
-#                 # The kth missing could be before or at this position
-#                 right = mid - 1
+            if missing &lt; k:
+                # Not enough missing numbers before nums[mid]
+                # The kth missing must be to the right
+                left = mid + 1
+            else:
+                # We have k or more missing numbers before nums[mid]
+                # The kth missing could be before or at this position
+                right = mid - 1
         
-#         # Loop ends when left = right + 1
-#         # At this point:
-#         # - nums[right] is the LAST element where nums[right] - nums[0] - right &lt; k
-#         # - nums[left] is the FIRST element where nums[left] - nums[0] - left &gt;= k (or left = len(nums))
-#         # - The kth missing number is BETWEEN nums[right] and nums[left]
-#         #
-#         # Derivation of nums[0] + k + right:
-#         # Missing before nums[right] = nums[right] - nums[0] - right
-#         # We need k missing numbers total
-#         # Additional missing needed after nums[right] = k - (nums[right] - nums[0] - right)
-#         # kth missing number = nums[right] + additional missing
-#         #                    = nums[right] + k - (nums[right] - nums[0] - right)
-#         #                    = nums[right] + k - nums[right] + nums[0] + right
-#         #                    = nums[0] + k + right
-#         return nums[0] + k + right
+        # Loop ends when left = right + 1
+        # At this point:
+        # - nums[right] is the LAST element where nums[right] - nums[0] - right &lt; k
+        # - nums[left] is the FIRST element where nums[left] - nums[0] - left &gt;= k (or left = len(nums))
+        # - The kth missing number is BETWEEN nums[right] and nums[left]
+        #
+        # Derivation of nums[0] + k + right:
+        # Missing before nums[right] = nums[right] - nums[0] - right
+        # We need k missing numbers total
+        # Additional missing needed after nums[right] = k - (nums[right] - nums[0] - right)
+        # kth missing number = nums[right] + additional missing
+        #                    = nums[right] + k - (nums[right] - nums[0] - right)
+        #                    = nums[right] + k - nums[right] + nums[0] + right
+        #                    = nums[0] + k + right
+        return nums[0] + k + right
 
-# class Solution:
-#     def missingElement(self, nums: list[int], k: int) -&gt; int:
-#         &quot;&quot;&quot;
-#         Linear approach: iterate and count missing numbers.
+class Solution:
+    def missingElement(self, nums: list[int], k: int) -&gt; int:
+        &quot;&quot;&quot;
+        Linear approach: iterate and count missing numbers.
         
-#         Strategy: Check each gap between consecutive elements to see if 
-#         the kth missing number falls within that gap.
+        Strategy: Check each gap between consecutive elements to see if 
+        the kth missing number falls within that gap.
 
-#         Note: This &quot;gap-checking&quot; approach is different from the &quot;shift k&quot; 
-#         linear approach used in LC1539 (finding kth missing from 1). This 
-#         approach checks intervals between elements, while the shift approach 
-#         increments k for each array element ≤ k.
+        Note: This &quot;gap-checking&quot; approach is different from the &quot;shift k&quot; 
+        linear approach used in LC1539 (finding kth missing from 1). This 
+        approach checks intervals between elements, while the shift approach 
+        increments k for each array element ≤ k.
         
-#         Time Complexity: O(n)
-#         Space Complexity: O(1)
-#         &quot;&quot;&quot;
-#         n = len(nums)
+        Time Complexity: O(n)
+        Space Complexity: O(1)
+        &quot;&quot;&quot;
+        n = len(nums)
         
-#         # Iterate through consecutive pairs of elements
-#         for i in range(1, n):
-#             # Calculate the gap (missing numbers) between nums[i-1] and nums[i]
-#             # Example: nums[i-1]=4, nums[i]=7 → gap = 7-4-1 = 2 (missing: 5,6)
-#             gap = nums[i] - nums[i-1] - 1
+        # Iterate through consecutive pairs of elements
+        for i in range(1, n):
+            # Calculate the gap (missing numbers) between nums[i-1] and nums[i]
+            # Example: nums[i-1]=4, nums[i]=7 → gap = 7-4-1 = 2 (missing: 5,6)
+            gap = nums[i] - nums[i-1] - 1
             
-#             # Check if the kth missing number is within this gap
-#             if gap &gt;= k:
-#                 # The kth missing number is in this gap
-#                 # It&#x27;s k positions after nums[i-1]
-#                 # Example: nums[i-1]=4, k=2 → answer is 4+2=6 (the 2nd number after 4)
-#                 return nums[i-1] + k
+            # Check if the kth missing number is within this gap
+            if gap &gt;= k:
+                # The kth missing number is in this gap
+                # It&#x27;s k positions after nums[i-1]
+                # Example: nums[i-1]=4, k=2 → answer is 4+2=6 (the 2nd number after 4)
+                return nums[i-1] + k
             
-#             # The kth missing is NOT in this gap
-#             # We just passed &#x27;gap&#x27; missing numbers, so reduce k accordingly
-#             # Think of k as a countdown: if k=5 and gap=2, we&#x27;ve found 2 of the 5 missing numbers
-#             # Now we need to find the remaining (5-2)=3 missing numbers in subsequent gaps
-#             k -= gap
+            # The kth missing is NOT in this gap
+            # We just passed &#x27;gap&#x27; missing numbers, so reduce k accordingly
+            # Think of k as a countdown: if k=5 and gap=2, we&#x27;ve found 2 of the 5 missing numbers
+            # Now we need to find the remaining (5-2)=3 missing numbers in subsequent gaps
+            k -= gap
         
-#         # If we&#x27;ve exhausted all gaps between array elements
-#         # The kth missing number must be beyond the last element
-#         # Note: k has been reduced by all the gaps we&#x27;ve passed
-#         # Example: nums=[4,7,9,10], k=5
-#         # After all gaps: k becomes 2 (we passed gaps with 5,6,8 = 3 missing numbers)
-#         # → answer is nums[-1] + k = 10 + 2 = 12
-#         return nums[-1] + k
+        # If we&#x27;ve exhausted all gaps between array elements
+        # The kth missing number must be beyond the last element
+        # Note: k has been reduced by all the gaps we&#x27;ve passed
+        # Example: nums=[4,7,9,10], k=5
+        # After all gaps: k becomes 2 (we passed gaps with 5,6,8 = 3 missing numbers)
+        # → answer is nums[-1] + k = 10 + 2 = 12
+        return nums[-1] + k
 
 
 # Rephrasing in interview
@@ -557,7 +557,7 @@ class Solution:
 
 # You are given a list of integers &#x27;days&#x27; representing the days in a calendar year on which 
 # you CANNOT work (these are holidays). The list is sorted in strictly increasing order, 
-# and all values are unique.
+and all values are unique.
 
 # Days are numbered starting from 1 (so day 1 is the first day of the year).
 
@@ -573,19 +573,19 @@ class Solution:
 # Input: days = [2, 5, 7], k = 3
 # Output: 4
 # Explanation: 
-#   Day 1: work (1st working day)
-#   Day 2: holiday
-#   Day 3: work (2nd working day)
-#   Day 4: work (3rd working day) ✓ Project complete!
-#   Working days are [1, 3, 4, 6, 8, ...], the 3rd working day is 4.
+  Day 1: work (1st working day)
+  Day 2: holiday
+  Day 3: work (2nd working day)
+  Day 4: work (3rd working day) ✓ Project complete!
+  Working days are [1, 3, 4, 6, 8, ...], the 3rd working day is 4.
 
 # Example 2:
 # Input: days = [1, 2, 3, 4, 5], k = 2
 # Output: 7
 # Explanation:
-#   Day 1-5: holidays
-#   Day 6: work (1st working day)
-#   Day 7: work (2nd working day) ✓ Project complete!
+  Day 1-5: holidays
+  Day 6: work (1st working day)
+  Day 7: work (2nd working day) ✓ Project complete!
 
 
 # Example 4:
@@ -593,126 +593,126 @@ class Solution:
 # Output: 5
 # Explanation: No holidays, so the 5th working day is simply day 5.
 
-# class SolutionLinear:
-#     def projectDeadline(self, days: list[int], k: int) -&gt; int:
-#         &quot;&quot;&quot;
-#         Linear approach: iterate through holidays and adjust k.
+class SolutionLinear:
+    def projectDeadline(self, days: list[int], k: int) -&gt; int:
+        &quot;&quot;&quot;
+        Linear approach: iterate through holidays and adjust k.
         
-#         Strategy: For each holiday ≤ current target day, shift the target forward by 1.
-#         Similar to LC1539&#x27;s linear solution.
+        Strategy: For each holiday ≤ current target day, shift the target forward by 1.
+        Similar to LC1539&#x27;s linear solution.
         
-#         Time Complexity: O(n)
-#         Space Complexity: O(1)
-#         &quot;&quot;&quot;
-#         # Edge case: if no holidays, project finishes on day k
-#         if not days:
-#             return k
+        Time Complexity: O(n)
+        Space Complexity: O(1)
+        &quot;&quot;&quot;
+        # Edge case: if no holidays, project finishes on day k
+        if not days:
+            return k
         
-#         # Iterate through each holiday
-#         for holiday in days:
-#             # If this holiday is on or before our current target completion day
-#             # we need to push the completion day forward by 1
-#             # Think: if we thought we&#x27;d finish on day 5, but day 3 is a holiday,
-#             # then day 3 is NOT a working day, so we need one more day → finish on day 6
-#             if holiday &lt;= k:
-#                 k += 1  # Shift target forward by 1 day
-#             else:
-#                 # Once we find a holiday beyond our target, we can stop
-#                 # No further holidays will affect our answer
-#                 break
+        # Iterate through each holiday
+        for holiday in days:
+            # If this holiday is on or before our current target completion day
+            # we need to push the completion day forward by 1
+            # Think: if we thought we&#x27;d finish on day 5, but day 3 is a holiday,
+            # then day 3 is NOT a working day, so we need one more day → finish on day 6
+            if holiday &lt;= k:
+                k += 1  # Shift target forward by 1 day
+            else:
+                # Once we find a holiday beyond our target, we can stop
+                # No further holidays will affect our answer
+                break
         
-#         # After adjusting for all relevant holidays, k is the completion day
-#         return k
+        # After adjusting for all relevant holidays, k is the completion day
+        return k
 
-# class Solution:
-#     def projectDeadline(self, days: list[int], k: int) -&gt; int:
-#         &quot;&quot;&quot;
-#         Find the earliest day when project is completed after k working days.
-#         Working days are days NOT in the holidays list.
+class Solution:
+    def projectDeadline(self, days: list[int], k: int) -&gt; int:
+        &quot;&quot;&quot;
+        Find the earliest day when project is completed after k working days.
+        Working days are days NOT in the holidays list.
         
-#         Time Complexity: O(log n) where n is the length of days
-#         Space Complexity: O(1)
-#         &quot;&quot;&quot;
-#         # Edge case: if no holidays, project finishes on day k
-#         if not days:
-#             return k
+        Time Complexity: O(log n) where n is the length of days
+        Space Complexity: O(1)
+        &quot;&quot;&quot;
+        # Edge case: if no holidays, project finishes on day k
+        if not days:
+            return k
         
-#         left = 0
-#         right = len(days) - 1
+        left = 0
+        right = len(days) - 1
         
-#         # Binary search to find where the kth working day falls
-#         while left &lt;= right:
-#             mid = (right - left) // 2 + left
+        # Binary search to find where the kth working day falls
+        while left &lt;= right:
+            mid = (right - left) // 2 + left
             
-#             # Count of working days before and up to day days[mid]
-#             # Total days from 1 to days[mid]: days[mid]
-#             # Holidays up to and including days[mid]: mid + 1
-#             # Working days available = days[mid] - (mid + 1)
-#             working_before_mid = days[mid] - (mid + 1)
+            # Count of working days before and up to day days[mid]
+            # Total days from 1 to days[mid]: days[mid]
+            # Holidays up to and including days[mid]: mid + 1
+            # Working days available = days[mid] - (mid + 1)
+            working_before_mid = days[mid] - (mid + 1)
             
-#             if working_before_mid &lt; k:
-#                 # Not enough working days before days[mid]
-#                 # The kth working day is after this
-#                 left = mid + 1
-#             else:
-#                 # We have k or more working days before days[mid]
-#                 # The kth working day is before or at this position
-#                 right = mid - 1
+            if working_before_mid &lt; k:
+                # Not enough working days before days[mid]
+                # The kth working day is after this
+                left = mid + 1
+            else:
+                # We have k or more working days before days[mid]
+                # The kth working day is before or at this position
+                right = mid - 1
         
-#         return k + left
+        return k + left
 
 # Bonus: Get list of all k working days
 
-# class SolutionWithWorkingDaysList:
-#     def projectDeadlineWithList(self, days: list[int], k: int) -&gt; tuple[int, list[int]]:
-#         &quot;&quot;&quot;
-#         Return both the completion day and the list of k working days.
+class SolutionWithWorkingDaysList:
+    def projectDeadlineWithList(self, days: list[int], k: int) -&gt; tuple[int, list[int]]:
+        &quot;&quot;&quot;
+        Return both the completion day and the list of k working days.
         
-#         Time Complexity: O(n + k)
-#             - n: length of holidays array (we may scan through all holidays)
-#             - k: number of working days (in worst case, we iterate through k days)
-#             - We iterate at most through all holidays + k working days
-#             - Worst case example: days=[1,2,3,...,100], k=50
-#               → Must scan through all 100 holidays + find 50 working days
-#               → Total iterations: 100 + 50 = 150 = O(n + k)
+        Time Complexity: O(n + k)
+            - n: length of holidays array (we may scan through all holidays)
+            - k: number of working days (in worst case, we iterate through k days)
+            - We iterate at most through all holidays + k working days
+            - Worst case example: days=[1,2,3,...,100], k=50
+              → Must scan through all 100 holidays + find 50 working days
+              → Total iterations: 100 + 50 = 150 = O(n + k)
         
-#         Space Complexity: O(k)
-#             - Auxiliary space (extra space used by algorithm): O(k)
-#             - We store k working days in the result list
-#             - All other variables (current_day, holiday_idx) use O(1) space
-#             - Note: Input array &#x27;days&#x27; of size n is not counted in auxiliary space
-#             - Total space including input would be O(n + k)
-#             - Example: k=1000 → list stores 1000 integers = O(1000) = O(k)
+        Space Complexity: O(k)
+            - Auxiliary space (extra space used by algorithm): O(k)
+            - We store k working days in the result list
+            - All other variables (current_day, holiday_idx) use O(1) space
+            - Note: Input array &#x27;days&#x27; of size n is not counted in auxiliary space
+            - Total space including input would be O(n + k)
+            - Example: k=1000 → list stores 1000 integers = O(1000) = O(k)
         
-#         Returns:
-#             tuple: (completion_day, working_days_list)
-#         &quot;&quot;&quot;
-#         working_days_list = []
+        Returns:
+            tuple: (completion_day, working_days_list)
+        &quot;&quot;&quot;
+        working_days_list = []
         
-#         # Edge case: no holidays, working days are simply [1, 2, 3, ..., k]
-#         if not days:
-#             for i in range(1, k + 1):
-#                 working_days_list.append(i)
-#             return k, working_days_list
+        # Edge case: no holidays, working days are simply [1, 2, 3, ..., k]
+        if not days:
+            for i in range(1, k + 1):
+                working_days_list.append(i)
+            return k, working_days_list
         
-#         current_day = 1
-#         holiday_idx = 0
+        current_day = 1
+        holiday_idx = 0
         
-#         # Keep going until we have k working days
-#         while len(working_days_list) &lt; k:
-#             # Check if current day is a holiday
-#             if holiday_idx &lt; len(days) and current_day == days[holiday_idx]:
-#                 # It&#x27;s a holiday, skip it
-#                 holiday_idx += 1
-#             else:
-#                 # It&#x27;s a working day, add to list
-#                 working_days_list.append(current_day)
+        # Keep going until we have k working days
+        while len(working_days_list) &lt; k:
+            # Check if current day is a holiday
+            if holiday_idx &lt; len(days) and current_day == days[holiday_idx]:
+                # It&#x27;s a holiday, skip it
+                holiday_idx += 1
+            else:
+                # It&#x27;s a working day, add to list
+                working_days_list.append(current_day)
             
-#             current_day += 1
+            current_day += 1
         
-#         # Last working day is the completion day
-#         completion_day = working_days_list[-1]
-#         return completion_day, working_days_list
+        # Last working day is the completion day
+        completion_day = working_days_list[-1]
+        return completion_day, working_days_list
         </code></pre>
       </div>
     </div>
