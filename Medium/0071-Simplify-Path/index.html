@@ -401,116 +401,116 @@ class Solution:
 # Input : cwd = &quot;/a/b/c&quot;, cd = &quot;../d&quot;
 # Output: &quot;/a/b/d&quot;
 # Description: cd is relative, so we resolve from cwd.
-#              &quot;..&quot; moves up one level from &quot;/a/b/c&quot; → &quot;/a/b&quot;,
-#              then &quot;d&quot; moves into &quot;/a/b/d&quot;.
+             &quot;..&quot; moves up one level from &quot;/a/b/c&quot; → &quot;/a/b&quot;,
+             then &quot;d&quot; moves into &quot;/a/b/d&quot;.
 
 # Example 2:
 # Input : cwd = &quot;/x/y&quot;, cd = &quot;/foo/bar/../baz&quot;
 # Output: &quot;/foo/baz&quot;
 # Description: cd starts with &#x27;/&#x27;, so it is absolute — cwd is ignored entirely.
-#              Simplify &quot;/foo/bar/../baz&quot;: &quot;bar&quot; is pushed then popped by &quot;..&quot;,
-#              leaving &quot;/foo/baz&quot;.
+             Simplify &quot;/foo/bar/../baz&quot;: &quot;bar&quot; is pushed then popped by &quot;..&quot;,
+             leaving &quot;/foo/baz&quot;.
 
 # Example 3:
 # Input : cwd = &quot;/&quot;, cd = &quot;../../../../.&quot;
 # Output: &quot;/&quot;
 # Description: cd is relative, so we resolve from cwd = &quot;/&quot;.
-#              Each &quot;..&quot; attempts to go up from root, but root has no parent —
-#              all four &quot;..&quot; are silently ignored.
-#              Final &quot;.&quot; is a no-op. Result stays &quot;/&quot;.
+             Each &quot;..&quot; attempts to go up from root, but root has no parent —
+             all four &quot;..&quot; are silently ignored.
+             Final &quot;.&quot; is a no-op. Result stays &quot;/&quot;.
 
 # Example 4:
 # Input : cwd = &quot;/a/b/c&quot;, cd = &quot;.&quot;
 # Output: &quot;/a/b/c&quot;
 # Description: cd is relative and a single &quot;.&#x27;&quot; — current directory, no-op.
-#              cwd is returned unchanged.
+             cwd is returned unchanged.
 
 # Example 5:
 # Input : cwd = &quot;/home/user/docs&quot;, cd = &quot;../../music/jazz&quot;
 # Output: &quot;/home/music/jazz&quot;
 # Description: cd is relative, so we resolve from cwd.
-#              First &quot;..&quot;  : &quot;/home/user/docs&quot; → &quot;/home/user&quot;
-#              Second &quot;..&quot;: &quot;/home/user&quot;       → &quot;/home&quot;
-#              Then &quot;music/jazz&quot; is appended   → &quot;/home/music/jazz&quot;
+             First &quot;..&quot;  : &quot;/home/user/docs&quot; → &quot;/home/user&quot;
+             Second &quot;..&quot;: &quot;/home/user&quot;       → &quot;/home&quot;
+             Then &quot;music/jazz&quot; is appended   → &quot;/home/music/jazz&quot;
 
 
-# class Solution:
-#     def changeDirectory(self, cwd: str, cd: str) -&gt; str:
-#         &quot;&quot;&quot;
-#         Apply a Unix cd command to a current working directory.
+class Solution:
+    def changeDirectory(self, cwd: str, cd: str) -&gt; str:
+        &quot;&quot;&quot;
+        Apply a Unix cd command to a current working directory.
 
-#         Approach:
-#         - If cd is absolute (starts with &#x27;/&#x27;), ignore cwd entirely
-#         - Otherwise, seed the stack with cwd components, then process cd on top
-#         - &#x27;..&#x27; pops the stack (go up), &#x27;.&#x27; and &#x27;&#x27; are no-ops, else push
+        Approach:
+        - If cd is absolute (starts with &#x27;/&#x27;), ignore cwd entirely
+        - Otherwise, seed the stack with cwd components, then process cd on top
+        - &#x27;..&#x27; pops the stack (go up), &#x27;.&#x27; and &#x27;&#x27; are no-ops, else push
 
-#         Base / edge cases:
-#         - cd is None or empty          → return cwd if valid, else &#x27;/&#x27;
-#         - cwd is None                  → treat as root &#x27;/&#x27;
-#         - cd = &quot;.&quot;                     → no-op token, cwd processed through stack
-#         - cd = &quot;/&quot;                     → absolute, cwd zeroed, stack stays empty → &quot;/&quot;
-#         - cd = &quot;../../../..&quot; from &quot;/&quot;  → all &quot;..&quot; ignored at root, return &quot;/&quot;
-#         - cd is absolute               → cwd ignored, simplify cd alone
+        Base / edge cases:
+        - cd is None or empty          → return cwd if valid, else &#x27;/&#x27;
+        - cwd is None                  → treat as root &#x27;/&#x27;
+        - cd = &quot;.&quot;                     → no-op token, cwd processed through stack
+        - cd = &quot;/&quot;                     → absolute, cwd zeroed, stack stays empty → &quot;/&quot;
+        - cd = &quot;../../../..&quot; from &quot;/&quot;  → all &quot;..&quot; ignored at root, return &quot;/&quot;
+        - cd is absolute               → cwd ignored, simplify cd alone
 
-#         TC: O(N + M), where N = len(cwd), M = len(cd)
-#             - split + iterate cwd tokens : O(N)
-#             - split + iterate cd tokens  : O(M)
-#             - &#x27;/&#x27;.join(tokens)           : O(N + M) worst case
+        TC: O(N + M), where N = len(cwd), M = len(cd)
+            - split + iterate cwd tokens : O(N)
+            - split + iterate cd tokens  : O(M)
+            - &#x27;/&#x27;.join(tokens)           : O(N + M) worst case
 
-#         SC: O(N + M)
-#             - tokens stack holds at most all components of cwd + cd
-#         &quot;&quot;&quot;
+        SC: O(N + M)
+            - tokens stack holds at most all components of cwd + cd
+        &quot;&quot;&quot;
 
-#         # Guard: None or empty cd → no directory change
-#         #
-#         # Scenario 1 — cwd is always simplified (e.g. result of a previous
-#         # changeDirectory call): safe to return cwd directly.
-#         # Also guard cwd being None/empty → fallback to root &#x27;/&#x27;
-#         #   if not cd:
-#         #       return cwd if cwd else &#x27;/&#x27;
-#         #
-#         # Scenario 2 — cwd could be unsimplified (e.g. &quot;/a//b/&quot;):
-#         # change cd to &#x27;.&#x27; so cwd still gets processed through the stack
-#         # &#x27;.&#x27; is a no-op token so it won&#x27;t affect the final result
-#         #   if not cd:
-#         #       cd = &#x27;.&#x27;
+        # Guard: None or empty cd → no directory change
+        #
+        # Scenario 1 — cwd is always simplified (e.g. result of a previous
+        # changeDirectory call): safe to return cwd directly.
+        # Also guard cwd being None/empty → fallback to root &#x27;/&#x27;
+        #   if not cd:
+        #       return cwd if cwd else &#x27;/&#x27;
+        #
+        # Scenario 2 — cwd could be unsimplified (e.g. &quot;/a//b/&quot;):
+        # change cd to &#x27;.&#x27; so cwd still gets processed through the stack
+        # &#x27;.&#x27; is a no-op token so it won&#x27;t affect the final result
+        #   if not cd:
+        #       cd = &#x27;.&#x27;
 
-#         if not cd:
-#             cd = &#x27;.&#x27;  # assuming cwd may be unsimplified
+        if not cd:
+            cd = &#x27;.&#x27;  # assuming cwd may be unsimplified
 
-#         # Guard: None cwd → treat as root (empty string is safe, None is not)
-#         # Can&#x27;t early return &#x27;/&#x27; here — cd may have content that still needs
-#         # to be processed e.g. cwd=None, cd=&quot;foo/bar&quot; → should return &quot;/foo/bar&quot;
-#         if cwd is None:
-#             cwd = &#x27;/&#x27;
+        # Guard: None cwd → treat as root (empty string is safe, None is not)
+        # Can&#x27;t early return &#x27;/&#x27; here — cd may have content that still needs
+        # to be processed e.g. cwd=None, cd=&quot;foo/bar&quot; → should return &quot;/foo/bar&quot;
+        if cwd is None:
+            cwd = &#x27;/&#x27;
 
-#         # If cd is absolute, ignore cwd entirely — can&#x27;t return cd as-is since
-#         # it may need simplification e.g. &quot;/foo/bar/../baz&quot; → &quot;/foo/baz&quot;
-#         if cd[0] == &#x27;/&#x27;:
-#             cwd = &#x27;&#x27;
+        # If cd is absolute, ignore cwd entirely — can&#x27;t return cd as-is since
+        # it may need simplification e.g. &quot;/foo/bar/../baz&quot; → &quot;/foo/baz&quot;
+        if cd[0] == &#x27;/&#x27;:
+            cwd = &#x27;&#x27;
 
-#         tokens = []
+        tokens = []
 
-#         # Step 1: seed stack with cwd components
-#         for token in cwd.split(&#x27;/&#x27;):
-#             if token:  # skip empty strings from leading/multiple slashes
-#                 tokens.append(token)
+        # Step 1: seed stack with cwd components
+        for token in cwd.split(&#x27;/&#x27;):
+            if token:  # skip empty strings from leading/multiple slashes
+                tokens.append(token)
 
-#         # Step 2: process cd on top of the seeded stack
-#         for token in cd.split(&#x27;/&#x27;):
-#             if token == &#x27;&#x27; or token == &#x27;.&#x27;:
-#                 # empty string (consecutive slashes) or &#x27;.&#x27; (current dir) → no-op
-#                 continue
-#             elif token == &#x27;..&#x27;:
-#                 # go one level up — silently ignore if already at root
-#                 if tokens:
-#                     tokens.pop()
-#             else:
-#                 # valid directory name → descend into it
-#                 tokens.append(token)
+        # Step 2: process cd on top of the seeded stack
+        for token in cd.split(&#x27;/&#x27;):
+            if token == &#x27;&#x27; or token == &#x27;.&#x27;:
+                # empty string (consecutive slashes) or &#x27;.&#x27; (current dir) → no-op
+                continue
+            elif token == &#x27;..&#x27;:
+                # go one level up — silently ignore if already at root
+                if tokens:
+                    tokens.pop()
+            else:
+                # valid directory name → descend into it
+                tokens.append(token)
 
-#         # Step 3: reconstruct absolute path; empty stack means we&#x27;re at root
-#         return &#x27;/&#x27; + &#x27;/&#x27;.join(tokens) if tokens else &#x27;/&#x27;
+        # Step 3: reconstruct absolute path; empty stack means we&#x27;re at root
+        return &#x27;/&#x27; + &#x27;/&#x27;.join(tokens) if tokens else &#x27;/&#x27;
 </code></pre>
       </div>
     </div>
