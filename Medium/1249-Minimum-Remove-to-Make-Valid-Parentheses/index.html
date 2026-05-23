@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1249. Minimum Remove to Make Valid Parentheses - LeetCode Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+
+:root {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --radius:    6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #e6db74; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy   { color: var(--easy);   background: rgba(44,187,93,0.15); }
+.badge-Medium { color: var(--medium); background: rgba(255,161,22,0.15); }
+.badge-Hard   { color: var(--hard);   background: rgba(239,71,67,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--surface2); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: #1e1e1e !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">1249. Minimum Remove to Make Valid Parentheses</span>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (2)</div>
+        <div class="tab" data-tab="similar">Similar (2)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">1249. Minimum Remove to Make Valid Parentheses</div>
+        <div class="prob-meta">
+          <span class="badge badge-Medium">Medium</span>
+          <span class="tag">String</span><span class="tag">Stack</span>
+        </div>
+        <div class="prob-stats">1.1M / 1.5M (71.5%)</div>
+        <div class="prob-desc"><p>Given a string s of <code>&#x27;(&#x27;</code> , <code>&#x27;)&#x27;</code> and lowercase English characters.</p>
+<p>Your task is to remove the minimum number of parentheses ( <code>&#x27;(&#x27;</code> or <code>&#x27;)&#x27;</code>, in any positions ) so that the resulting <em>parentheses string</em> is valid and return <strong>any</strong> valid string.</p>
+<p>Formally, a <em>parentheses string</em> is valid if and only if:</p>
+<ul>
+<li>It is the empty string, contains only lowercase characters, or</li>
+</ul>
+	
+<ul>
+<li>It can be written as <code>AB</code> (<code>A</code> concatenated with <code>B</code>), where <code>A</code> and <code>B</code> are valid strings, or</li>
+</ul>
+	
+<ul>
+<li>It can be written as <code>(A)</code>, where <code>A</code> is a valid string.</li>
+</ul>
+<p>Example 1:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> s = &quot;lee(t(c)o)de)&quot;
+<strong>Output:</strong> &quot;lee(t(c)o)de&quot;
+<strong>Explanation:</strong> &quot;lee(t(co)de)&quot; , &quot;lee(t(c)ode)&quot; would also be accepted.
+</code></pre>
+<p>Example 2:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> s = &quot;a)b(c)d&quot;
+<strong>Output:</strong> &quot;ab(c)d&quot;
+</code></pre>
+<p>Example 3:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> s = &quot;))((&quot;
+<strong>Output:</strong> &quot;&quot;
+<strong>Explanation:</strong> An empty string is also valid.
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= s.length &lt;= 105</code></li>
+</ul>
+	
+<ul>
+<li><code>s[i]</code> is either <code>&#x27;(&#x27;</code> , <code>&#x27;)&#x27;</code>, or lowercase English letter.</li>
+</ul></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        
+<details class="hint-block">
+  <summary>Hint 1</summary>
+  <div class="hint-body"><p>Each prefix of a balanced parentheses has a number of open parentheses greater or equal than closed parentheses, similar idea with each suffix.</p></div>
+</details>
+<details class="hint-block">
+  <summary>Hint 2</summary>
+  <div class="hint-body"><p>Check the array from left to right, remove characters that do not meet the property mentioned above, same idea in backward way.</p></div>
+</details>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/minimum-number-of-swaps-to-make-the-string-balanced/" target="_blank">Minimum Number of Swaps to Make the String Balanced</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/check-if-a-parentheses-string-can-be-valid/" target="_blank">Check if a Parentheses String Can Be Valid</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 1249. Minimum Remove to Make Valid Parentheses
+Difficulty: Medium
+URL: https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/
+&quot;&quot;&quot;
+
+# Brute Force Approach:
+
+# In the brute-force approach, we generate all possible strings by removing any subset of parentheses, then check each one for validity using a balance counter to ensure the parentheses are properly matched. Among all valid strings, we select the longest one, which corresponds to the minimum number of removals needed. For example, for the input &quot;a)b(c)d&quot;, the brute-force method would try all combinations like &quot;a)b(c)d&quot;, &quot;ab(c)d&quot;, &quot;a)bc)d&quot;, etc., and identify &quot;ab(c)d&quot; as the longest valid string. This approach has O(n × 2ⁿ) time and O(n) space complexity.
+
+
+# Check discord comments for other minor follow ups (what if the string is very long, etc)
+
+# Approach : Two pass
+
+class Solution:
+    def minRemoveToMakeValid(self, s: str) -&gt; str:
+        &quot;&quot;&quot; 
+        Approach: Two-pass with counter
+        - Pass 1 (L-&gt;R): Remove unmatched &#x27;)&#x27; and count unmatched &#x27;(&#x27;
+        - Pass 2 (R-&gt;L): Remove unmatched &#x27;(&#x27; based on count from pass 1
+        
+        Time Complexity: O(n)
+            - Pass 1: O(n) to iterate through string
+            - Pass 2: O(n) to iterate through first_pass
+            - Reverse: O(n) to reverse result
+            - Join: O(n) to create final string
+            - Total: O(n) + O(n) + O(n) + O(n) = O(n)
+        
+        Space Complexity: O(n)
+            - first_pass list: O(n) in worst case (all valid chars)
+            - result list: O(n) in worst case
+            - open_count: O(1)
+            - Total: O(n)
+
+        &quot;&quot;&quot;
+
+        # Edge case: empty string
+        if not s:
+            return &quot;&quot;
+        
+        # ========== PASS 1: Remove unmatched closing parentheses ==========
+        # Going left-to-right, we can identify &#x27;)&#x27; that don&#x27;t have matching &#x27;(&#x27;
+        
+        first_pass = []  # Will store valid characters after removing unmatched &#x27;)&#x27;
+        open_count = 0   # Tracks number of unmatched &#x27;(&#x27; seen so far
+        
+        for char in s:
+            if char == &#x27;(&#x27;:
+                # Found opening parenthesis
+                # Increment counter (this &#x27;(&#x27; needs a matching &#x27;)&#x27;)
+                open_count += 1
+                first_pass.append(char)
+                
+            elif char == &#x27;)&#x27;:
+                # Found closing parenthesis
+                # Check if there&#x27;s an unmatched &#x27;(&#x27; to pair with
+                if open_count &gt; 0:
+                    # Valid &#x27;)&#x27; - has a matching &#x27;(&#x27; before it
+                    open_count -= 1  # Match this &#x27;)&#x27; with previous &#x27;(&#x27;
+                    first_pass.append(char)
+                # else: Invalid &#x27;)&#x27; - no matching &#x27;(&#x27; found, so skip it; we can use continue but its redundant
+                
+            else:
+                # Regular character (letter, digit, etc.)
+                # Always keep non-parenthesis characters
+                first_pass.append(char)
+        
+        # After pass 1:
+        # - All unmatched &#x27;)&#x27; are removed
+        # - open_count = number of unmatched &#x27;(&#x27; remaining
+        # - first_pass contains: valid &#x27;)&#x27;, all &#x27;(&#x27;, and all letters
+
+        # print(first_pass)
+        # print(open_count)
+
+        if open_count == 0:
+            return &#x27;&#x27;.join(first_pass)
+        
+        # ========== PASS 2: Remove unmatched opening parentheses ==========
+        # Going right-to-left, remove &#x27;open_count&#x27; number of &#x27;(&#x27;
+        # WHY RIGHT-TO-LEFT instead of LEFT-TO-RIGHT?
+        # 
+        # Example: &quot;(a(b(c)d)&quot; 
+        # After pass 1: first_pass = [&#x27;(&#x27;, &#x27;a&#x27;, &#x27;(&#x27;, &#x27;b&#x27;, &#x27;(&#x27;, &#x27;c&#x27;, &#x27;)&#x27;, &#x27;d&#x27;, &#x27;)&#x27;]
+        #               open_count = 1
+        # 
+        # R-&gt;L (CORRECT): Scan backwards, skip rightmost unmatched &#x27;(&#x27;
+        # → result before reverse = [&#x27;)&#x27;, &#x27;d&#x27;, &#x27;)&#x27;, &#x27;c&#x27;, &#x27;b&#x27;, &#x27;(&#x27;, &#x27;a&#x27;, &#x27;(&#x27;]
+        # → After reverse: &quot;(a(bcd))&quot; ✓
+        # 
+        # L-&gt;R (WRONG): Scan forwards, skip leftmost unmatched &#x27;(&#x27;
+        # → result before reverse = [&#x27;a&#x27;, &#x27;(&#x27;, &#x27;b&#x27;, &#x27;(&#x27;, &#x27;c&#x27;, &#x27;)&#x27;, &#x27;d&#x27;, &#x27;)&#x27;]
+        # → After reverse: &quot;)d)c(b(a&quot; ✗ COMPLETELY BROKEN
+        # 
+        # Key: We build result while scanning, then reverse at end. R-&gt;L naturally
+        # gives us reversed valid string. L-&gt;R gives forward string that becomes
+        # garbage after reversal.
+        
+        result = []  # Will store final valid characters
+        
+        # Iterate through first_pass in reverse order
+        for i in range(len(first_pass)-1, -1, -1):
+            char = first_pass[i]
+            
+            if char == &#x27;(&#x27; and open_count &gt; 0:
+                # This is an unmatched &#x27;(&#x27; that needs to be removed
+                open_count -= 1  # Decrement count of &#x27;(&#x27; to remove
+                # Don&#x27;t append to result (effectively removing it)
+                
+            else:
+                # Either:
+                # 1. It&#x27;s a &#x27;)&#x27; (always valid after pass 1)
+                # 2. It&#x27;s a &#x27;(&#x27; that has a matching &#x27;)&#x27; (open_count is 0)
+                # 3. It&#x27;s a regular character
+                result.append(char)
+
+        # print(result)
+        
+        # After pass 2:
+        # - result contains all valid characters but in REVERSE order
+        # - Need to reverse it back to get correct order
+        
+        
+        # ========== REVERSE AND BUILD FINAL STRING ==========
+        # Reverse the result list to restore original order
+        # WHY DO WE NEED TO REVERSE?
+        # 
+        # Because we scanned R-&gt;L in pass 2, we built result in reverse order.
+        # result = [&#x27;)&#x27;, &#x27;d&#x27;, &#x27;)&#x27;, &#x27;c&#x27;, &#x27;b&#x27;, &#x27;(&#x27;, &#x27;a&#x27;, &#x27;(&#x27;]
+        # 
+        # If we DON&#x27;T reverse and just join:
+        # &#x27;&#x27;.join(result) = &quot;)d)cb(a(&quot; ✗ INVALID - parentheses backwards!
+        # 
+        # After reversing:
+        # result = [&#x27;(&#x27;, &#x27;a&#x27;, &#x27;(&#x27;, &#x27;b&#x27;, &#x27;c&#x27;, &#x27;)&#x27;, &#x27;d&#x27;, &#x27;)&#x27;]
+        # &#x27;&#x27;.join(result) = &quot;(a(bc)d)&quot; ✓ VALID
+        # 
+        # The reversal is ESSENTIAL - it converts the backwards scan result
+        # into the correct forward-reading string.
+
+        l, r = 0, len(result) - 1
+
+        while l &lt; r:
+            result[l], result[r] = result[r], result[l]
+            l, r = l + 1, r - 1
+        
+        # # Join all characters into final string
+        return &#x27;&#x27;.join(result)
+
+
+# Approach : Shortened two pass
+
+class Solution:
+    def minRemoveToMakeValid(self, s: str) -&gt; str:
+        &quot;&quot;&quot;        
+        Time Complexity: O(n) - two passes through string
+        Space Complexity: O(n) - for intermediate and result lists
+        
+        Approach:
+        - Pass 1 (L-&gt;R): Remove unmatched &#x27;)&#x27; and count all &#x27;(&#x27;
+        - Pass 2 (L-&gt;R): Keep only valid &#x27;(&#x27; (first &#x27;keep&#x27; number of them)
+        &quot;&quot;&quot;
+        
+        # Edge case: empty string
+        if not s:
+            return &quot;&quot;
+
+        # ========== PASS 1: Remove all invalid &#x27;)&#x27; ==========
+        # Build a list with valid &#x27;)&#x27; and ALL &#x27;(&#x27; (both matched and unmatched)
+        
+        temp = []  # Temporary result after removing invalid &#x27;)&#x27;
+        
+        # extra_opens: Tracks number of unmatched &#x27;(&#x27; at current position
+        # Acts as a &quot;balance&quot; counter:
+        #   - Increases when we see &#x27;(&#x27; (one more waiting for &#x27;)&#x27;)
+        #   - Decreases when we see &#x27;)&#x27; (matched with a &#x27;(&#x27;)
+        #   - If 0 when we see &#x27;)&#x27;, that &#x27;)&#x27; is invalid
+        extra_opens = 0
+        
+        # total_opens: Total count of ALL &#x27;(&#x27; encountered in the string
+        # We need this to calculate how many &#x27;(&#x27; are actually valid later
+        total_opens = 0
+        
+        for char in s:
+            
+            if char == &quot;(&quot;:
+                # Found opening parenthesis
+                total_opens += 1   # Increment total &#x27;(&#x27; counter
+                extra_opens += 1   # One more unmatched &#x27;(&#x27; (waiting for &#x27;)&#x27;)
+                
+            if char == &quot;)&quot;:
+                # Found closing parenthesis
+                if extra_opens == 0:
+                    # No unmatched &#x27;(&#x27; available to pair with
+                    # This &#x27;)&#x27; is INVALID, skip it (don&#x27;t add to temp)
+                    continue
+                # This &#x27;)&#x27; is VALID - has a matching &#x27;(&#x27; before it
+                extra_opens -= 1  # Match this &#x27;)&#x27; with previous &#x27;(&#x27;
+            
+            # Add character to temporary result
+            # Includes: ALL &#x27;(&#x27;, VALID &#x27;)&#x27;, and ALL letters
+            temp.append(char)
+        
+        # After Pass 1:
+        # - temp contains: ALL &#x27;(&#x27; (valid + invalid), VALID &#x27;)&#x27;, ALL letters
+        # - extra_opens = number of &#x27;(&#x27; that are unmatched (invalid)
+        # - total_opens = total number of &#x27;(&#x27; in temp
+        
+        
+        # ========== PASS 2: Remove rightmost invalid &#x27;(&#x27; ==========
+        # Strategy: Keep only the FIRST &#x27;keep&#x27; number of &#x27;(&#x27; (left-to-right)
+        # The remaining &#x27;(&#x27; at the end are the unmatched ones we need to remove
+        
+        result = []  # Final result list
+        
+        # keep: Number of &#x27;(&#x27; to KEEP (these are the valid ones)
+        # Formula: valid &#x27;(&#x27; = total &#x27;(&#x27; - unmatched &#x27;(&#x27;
+        # In other words: keep = total_opens - extra_opens
+        keep = total_opens - extra_opens
+        
+        # Iterate through temp and keep only first &#x27;keep&#x27; opening parentheses
+        for char in temp:
+            
+            if char == &quot;(&quot;:
+                # Found an opening parenthesis
+                # Check if we&#x27;ve already kept enough valid &#x27;(&#x27;
+                
+                if keep == 0:
+                    # Already kept all valid &#x27;(&#x27;
+                    # This &#x27;(&#x27; is unmatched (invalid), skip it
+                    continue
+                
+                # This &#x27;(&#x27; is valid, we should keep it
+                keep -= 1  # Decrement counter (one less &#x27;(&#x27; to keep)
+                # Character will be added to result below
+            
+            # Add character to final result
+            # Includes: VALID &#x27;(&#x27;, ALL &#x27;)&#x27;, and ALL letters
+            result.append(char)
+        
+        # Join list into final string and return
+        return &quot;&quot;.join(result)
+
+# Example : s = &quot;)())m(s)(&quot;      Output : &quot;()m(s)&quot;
+
+# temp = [&#x27;(&#x27;, &#x27;)&#x27;, &#x27;m&#x27;, &#x27;(&#x27;, &#x27;s&#x27;, &#x27;)&#x27;, &#x27;(&#x27;]
+
+# total_opens = 3  (we saw 3 opening parentheses total)
+# extra_opens = 1  (1 opening parenthesis is unmatched)
+
+# Characters removed in Pass 1:
+#   - Index 0: &#x27;)&#x27; (no matching &#x27;(&#x27;)
+#   - Index 3: &#x27;)&#x27; (no matching &#x27;(&#x27;)
+
+# keep = total_opens - extra_opens
+# keep = 3 - 1
+# keep = 2
+
+# Meaning: Keep the FIRST 2 opening parentheses
+#          Skip the LAST 1 opening parenthesis
+
+# Approach : Using stacks
+
+class Solution:
+    def minRemoveToMakeValid(self, s: str) -&gt; str:
+        &quot;&quot;&quot;
+        Stack approach using list to mark characters for removal.
+        
+        Approach:
+        - Convert string to list for easy in-place marking
+        - Use stack to track indices of unmatched &#x27;(&#x27;
+        - Mark invalid characters as empty string &#x27;&#x27;
+        - Join non-empty characters for final result
+        
+        Time Complexity: O(n)
+            - Convert to list: O(n)
+            - Single pass through string: O(n)
+            - Mark unmatched &#x27;(&#x27; from stack: O(k) where k = unmatched &#x27;(&#x27;
+            - Join operation: O(n)
+            - Total: O(n)
+        
+        Space Complexity: O(n)
+            - chars list: O(n) (copy of input string)
+            - stack: O(k) where k = number of &#x27;(&#x27; (worst case O(n))
+            - Total: O(n)
+        &quot;&quot;&quot;
+        
+        # ========== STEP 1: Convert string to list ==========
+        # Strings are immutable in Python, so we convert to list
+        # This allows us to mark characters for removal by setting them to &#x27;&#x27;
+        chars = list(s)
+        
+        # Stack stores INDICES of unmatched &#x27;(&#x27;
+        # When we find a &#x27;)&#x27;, we pop from stack (matching found)
+        # Remaining indices in stack at the end are unmatched &#x27;(&#x27;
+        stack = []
+        
+        
+        # ========== STEP 2: Single pass - identify and mark invalid &#x27;)&#x27; ==========
+        
+        for i, char in enumerate(chars):
+            
+            if char == &#x27;(&#x27;:
+                # Found an opening parenthesis
+                # Push its index onto stack (waiting for matching &#x27;)&#x27;)
+                stack.append(i)
+                # Note: We don&#x27;t mark it yet, as it might get matched later
+                
+            elif char == &#x27;)&#x27;:
+                # Found a closing parenthesis
+                
+                if stack:
+                    # There&#x27;s at least one unmatched &#x27;(&#x27; in the stack
+                    # This &#x27;)&#x27; matches with the most recent &#x27;(&#x27;
+                    stack.pop()  # Remove the matched &#x27;(&#x27; index from stack
+                    # Both &#x27;(&#x27; and &#x27;)&#x27; are valid, so we keep them (don&#x27;t mark)
+                    
+                else:
+                    # Stack is empty - no unmatched &#x27;(&#x27; available
+                    # This &#x27;)&#x27; has no matching &#x27;(&#x27; before it
+                    # Mark this index for removal by setting to empty string
+                    chars[i] = &#x27;&#x27;
+            
+            # Regular characters (letters, digits, etc.)
+            # Don&#x27;t need to do anything - they stay as is
+        
+        
+        # ========== STEP 3: Mark remaining unmatched &#x27;(&#x27; for removal ==========
+        # After the loop, any indices still in stack are unmatched &#x27;(&#x27;
+        # These &#x27;(&#x27; don&#x27;t have matching &#x27;)&#x27; after them
+        
+        while stack:
+            # Pop each unmatched &#x27;(&#x27; index from stack
+            idx = stack.pop()
+            
+            # Mark that position for removal by setting to empty string
+            chars[idx] = &#x27;&#x27;
+        
+        # Now chars list has:
+        # - Valid &#x27;(&#x27; and &#x27;)&#x27; unchanged
+        # - Invalid &#x27;(&#x27; and &#x27;)&#x27; marked as &#x27;&#x27;
+        # - All letters/regular characters unchanged
+        
+        
+        # ========== STEP 4: Build result from non-empty characters ==========
+        # Join all characters, empty strings &#x27;&#x27; will be skipped naturally
+        return &#x27;&#x27;.join(chars)
+
+# Variant : Do it in place (no additional space). String is given as a list.
+
+class Solution:
+    def minRemoveToMakeValid(self, s: list) -&gt; str:
+        &quot;&quot;&quot;
+        Strategy:
+        - Pass 1 (L→R): Mark invalid &#x27;)&#x27; with &#x27;*&#x27;, count all &#x27;(&#x27;
+        - Pass 2 (L→R): Mark invalid &#x27;(&#x27; with &#x27;*&#x27; using keep count
+        - Pass 3: Filter out all &#x27;*&#x27; markers to build result
+        
+        Time Complexity: O(n)
+            - Pass 1: O(n) to scan and mark invalid &#x27;)&#x27;
+            - Pass 2: O(n) to scan and mark invalid &#x27;(&#x27;
+            - Pass 3: O(n) to filter and build result
+            - Total: O(n)
+        
+        Space Complexity: O(1) auxiliary space
+            - Only uses integer counters (extra_opens, total_opens, keep)
+            - Modifies input array in-place by marking with &#x27;*&#x27;
+            - Output string is O(n) but that&#x27;s required return value
+
+        Example:
+        Input:  [&#x27;)&#x27;,&#x27;(&#x27;,&#x27;)&#x27;,&#x27;)&#x27;,&#x27;m&#x27;,&#x27;(&#x27;,&#x27;s&#x27;,&#x27;)&#x27;,&#x27;(&#x27;]
+        Pass 1: [&#x27;*&#x27;,&#x27;(&#x27;,&#x27;)&#x27;, &#x27;*&#x27;,&#x27;m&#x27;,&#x27;(&#x27;,&#x27;s&#x27;,&#x27;)&#x27;,&#x27;(&#x27;]  # marked invalid &#x27;)&#x27;
+        Pass 2: [&#x27;*&#x27;,&#x27;(&#x27;,&#x27;)&#x27;, &#x27;*&#x27;,&#x27;m&#x27;,&#x27;(&#x27;,&#x27;s&#x27;,&#x27;)&#x27;,&#x27;*&#x27;]  # marked invalid &#x27;(&#x27;
+        Output: &quot;()m(s)&quot;
+        &quot;&quot;&quot;
+        
+        n = len(s)
+        
+        # ========== PASS 1 (L→R): Mark invalid &#x27;)&#x27; and count &#x27;(&#x27; ==========
+        # Purpose: Remove any &#x27;)&#x27; that doesn&#x27;t have a matching &#x27;(&#x27; before it
+        #          Also count all &#x27;(&#x27; for later calculation
+        
+        # extra_opens: Acts as a &quot;balance&quot; counter
+        #   - Increases when we see &#x27;(&#x27; (one more waiting for &#x27;)&#x27;)
+        #   - Decreases when we see &#x27;)&#x27; (matched with a &#x27;(&#x27;)
+        #   - When 0 and we see &#x27;)&#x27;, that &#x27;)&#x27; is invalid
+        extra_opens = 0
+        
+        # total_opens: Total count of ALL &#x27;(&#x27; in the string
+        #   - Needed to calculate how many &#x27;(&#x27; are valid in Pass 2
+        #   - Formula: valid &#x27;(&#x27; = total &#x27;(&#x27; - unmatched &#x27;(&#x27;
+        total_opens = 0
+        
+        for i in range(n):
+            char = s[i]
+            
+            if char == &#x27;(&#x27;:
+                total_opens += 1
+                extra_opens += 1
+                
+            elif char == &#x27;)&#x27;:
+                if extra_opens &gt; 0:
+                    extra_opens -= 1
+                else:
+                    s[i] = &#x27;*&#x27;
+        
+        # After Pass 1 completes:
+        # -------------------------
+        # s now contains:
+        #   - All valid &#x27;)&#x27; (unchanged)
+        #   - All &#x27;(&#x27; - both valid and invalid (we&#x27;ll handle in Pass 2)
+        #   - All regular characters (unchanged)
+        #   - Invalid &#x27;)&#x27; marked as &#x27;*&#x27;
+        #
+        # Variables state:
+        #   - total_opens = total number of &#x27;(&#x27; in the array
+        #   - extra_opens = number of &#x27;(&#x27; that are still unmatched
+        #                 = number of invalid &#x27;(&#x27; that need removal
+        
+        
+        # ========== PASS 2 (L→R): Mark invalid &#x27;(&#x27; going LEFT-TO-RIGHT ==========
+        # Purpose: Remove &#x27;(&#x27; that don&#x27;t have matching &#x27;)&#x27; after them
+        
+        # Calculate how many &#x27;(&#x27; are VALID (have matching &#x27;)&#x27;)
+        # Formula: valid &#x27;(&#x27; = total &#x27;(&#x27; - unmatched &#x27;(&#x27;
+        #
+        # Example: If we have 3 total &#x27;(&#x27; and 1 is unmatched:
+        #          valid = 3 - 1 = 2 (keep first 2, remove last 1)
+        keep = total_opens - extra_opens
+        
+        for i in range(n):
+            char = s[i]
+            
+            if char == &#x27;(&#x27;:
+                if keep &gt; 0:
+                    keep -= 1
+                else:
+                    s[i] = &#x27;*&#x27;
+        
+        # After Pass 2 completes:
+        # -------------------------
+        # s now contains:
+        #   - All VALID parentheses (unchanged)
+        #   - All regular characters (unchanged)
+        #   - All INVALID parentheses marked as &#x27;*&#x27;
+        #
+        # Example: [&#x27;*&#x27;,&#x27;(&#x27;,&#x27;)&#x27;, &#x27;*&#x27;,&#x27;m&#x27;,&#x27;(&#x27;,&#x27;s&#x27;,&#x27;)&#x27;,&#x27;*&#x27;]
+        #          Invalid chars marked with &#x27;*&#x27;
+        
+        
+        # ========== PASS 3: Build result from non-marked chars ==========
+        result = []
+        for i in range(n):
+            if s[i] != &#x27;*&#x27;:
+                result.append(s[i])
+
+        # ========== PASS 3: Compact in-place (NO additional list!) ==========
+        # Use two-pointer technique to overwrite &#x27;*&#x27; markers
+        
+        # j = 0  # Write pointer - position to write next valid character
+        
+        # # Read through entire array
+        # for i in range(n):
+        #     if s[i] != &#x27;*&#x27;:
+        #         # Valid character - write it at position j
+        #         s[j] = s[i]
+        #         j += 1
+        #     # else: Skip &#x27;*&#x27; markers (don&#x27;t write, don&#x27;t increment j)
+
+        # return &#x27;&#x27;.join(s[:j])
+
+        return &#x27;&#x27;.join(result)
+
+# Another approach using write pointer
+
+class Solution:
+    def minRemoveToMakeValid(self, s: str) -&gt; str:
+        &quot;&quot;&quot;
+        Two-Pointer Compaction Approach (Space-Optimized)
+        
+        Key Idea: Use write pointer (j) to compact valid chars in-place
+        - Read pointer: iterates through input (implicit in loop)
+        - Write pointer (j): tracks where to write next valid char
+        
+        Approach:
+        - Pass 1 (L→R): Compact by skipping invalid &#x27;)&#x27;, count unmatched &#x27;(&#x27;
+        - Pass 2 (L→R): Compact by skipping invalid &#x27;(&#x27; using keep count
+        
+        Time Complexity: O(n) - two passes
+        Space Complexity: O(n) in Python (list conversion), O(1) in C++
+        &quot;&quot;&quot;
+        
+        if not s:
+            return &quot;&quot;
+        
+        # Convert to list for in-place modification (Python strings are immutable)
+        s_list = list(s)
+        
+        # ========== PASS 1: Remove invalid closing parentheses ==========
+        # Goal: Skip &#x27;)&#x27; that don&#x27;t have matching &#x27;(&#x27; before them
+        #       Keep all &#x27;(&#x27; (we&#x27;ll handle unmatched ones in Pass 2)
+        #       Keep all other characters
+        
+        j = 0  # Write pointer - position where we write next valid character
+               # Read pointer is implicit (the loop variable)
+               # Invariant: j &lt;= read position (write never ahead of read)
+        
+        extra_opens = 0  # Balance counter: unmatched &#x27;(&#x27; so far
+                         # Increases when we see &#x27;(&#x27;
+                         # Decreases when we see valid &#x27;)&#x27;
+                         # When 0, any &#x27;)&#x27; is invalid
+        
+        total_opens = 0  # Total count of all &#x27;(&#x27; characters
+                         # Needed for Pass 2 calculation
+        
+        # Iterate through each character (read pointer)
+        for ch in s_list:
+            
+            if ch == &#x27;(&#x27;:
+                # Opening parenthesis - always write it for now
+                # (We&#x27;ll determine if it&#x27;s valid in Pass 2)
+                total_opens += 1      # Count total &#x27;(&#x27; for later
+                extra_opens += 1      # One more unmatched &#x27;(&#x27; waiting for &#x27;)&#x27;
+                s_list[j] = ch        # Write to position j
+                j += 1                # Move write pointer forward
+                
+            elif ch == &#x27;)&#x27;:
+                # Closing parenthesis - check if it has a matching &#x27;(&#x27;
+                if extra_opens == 0:
+                    # Invalid &#x27;)&#x27; - no unmatched &#x27;(&#x27; before it
+                    # Skip this character (don&#x27;t write it, don&#x27;t increment j)
+                    # This effectively removes the invalid &#x27;)&#x27;
+                    continue
+                
+                # Valid &#x27;)&#x27; - has a matching &#x27;(&#x27; before it
+                extra_opens -= 1   # Match this &#x27;)&#x27; with a previous &#x27;(&#x27;
+                s_list[j] = ch     # Write to position j
+                j += 1             # Move write pointer forward
+                
+            else:
+                # Regular character (letter, digit, space, etc.)
+                # Always keep these characters
+                s_list[j] = ch  # Write to position j
+                j += 1          # Move write pointer forward
+        
+        # After Pass 1:
+        # ──────────────────────────────────────────────────────────
+        # s_list[0:j] contains compacted result with:
+        #   - All &#x27;(&#x27; (both matched and unmatched)
+        #   - Only valid &#x27;)&#x27; (that had matching &#x27;(&#x27; before them)
+        #   - All regular characters
+        # 
+        # Variables state:
+        #   - j = length of compacted array
+        #   - extra_opens = number of unmatched &#x27;(&#x27; (need to remove these)
+        #   - total_opens = total number of &#x27;(&#x27; in compacted array
+        
+        length = j  # Save compacted length from Pass 1
+        
+        
+        # ========== PASS 2: Remove invalid opening parentheses ==========
+        # Goal: Remove &#x27;(&#x27; that don&#x27;t have matching &#x27;)&#x27; after them
+        #       Keep all &#x27;)&#x27; (they&#x27;re all valid from Pass 1)
+        #       Keep all other characters
+        
+        # Calculate how many &#x27;(&#x27; to keep (the valid ones)
+        # Formula: valid &#x27;(&#x27; = total &#x27;(&#x27; - unmatched &#x27;(&#x27;
+        # Example: If we have 5 total &#x27;(&#x27; and 2 are unmatched
+        #          We keep first 3, skip last 2
+        keep = total_opens - extra_opens
+        
+        j = 0  # Reset write pointer for second compaction
+               # We&#x27;ll only process s_list[0:length] from Pass 1
+        
+        # Process the compacted array from Pass 1
+        for i in range(length):
+            ch = s_list[i]
+            
+            if ch == &#x27;(&#x27;:
+                # Opening parenthesis - check if we should keep it
+                if keep == 0:
+                    # We&#x27;ve already kept enough &#x27;(&#x27; (all valid ones)
+                    # This is an unmatched &#x27;(&#x27; - skip it
+                    # Don&#x27;t write, don&#x27;t increment j
+                    continue
+                
+                # This is a &#x27;(&#x27; we want to keep (has matching &#x27;)&#x27; after it)
+                s_list[j] = ch  # Write to position j
+                j += 1          # Move write pointer forward
+                keep -= 1       # Decrement count of &#x27;(&#x27; still to keep
+                
+            else:
+                # Either &#x27;)&#x27; or regular character
+                # All &#x27;)&#x27; are valid from Pass 1 - always keep
+                # All regular characters - always keep
+                s_list[j] = ch  # Write to position j
+                j += 1          # Move write pointer forward
+        
+        # After Pass 2:
+        # ──────────────────────────────────────────────────────────
+        # s_list[0:j] contains final result with:
+        #   - Only valid, matched &#x27;(&#x27; and &#x27;)&#x27;
+        #   - All regular characters
+        #
+        # j = final length of valid string
+        
+        # Build and return final string from compacted array
+        return &#x27;&#x27;.join(s_list[:j])
+
+# Another approach : Pass 2 is from right to left
+
+class Solution:
+    def minRemoveToMakeValid(self, s: list) -&gt; str:
+        &quot;&quot;&quot;
+        Remove minimum parentheses using marking with R→L Pass 2.
+        
+        Time: O(n)
+        Space: O(1) auxiliary
+        &quot;&quot;&quot;
+        # Convert to list for in-place modification
+        s = list(s)
+        
+        n = len(s)
+
+        # Pass 1 (L→R): Mark invalid &#x27;)&#x27;
+        open_count = 0
+        for i in range(n):
+            if s[i] == &#x27;(&#x27;:
+                open_count += 1
+            elif s[i] == &#x27;)&#x27;:
+                if open_count &gt; 0:
+                    open_count -= 1
+                else:
+                    s[i] = &#x27;*&#x27;  # Mark invalid &#x27;)&#x27;
+        
+        # Pass 2 (R→L): Mark invalid &#x27;(&#x27; from right
+        invalid_open = open_count
+        for i in range(n - 1, -1, -1):
+            if s[i] == &#x27;(&#x27; and invalid_open &gt; 0:
+                s[i] = &#x27;*&#x27;  # Mark invalid &#x27;(&#x27;
+                invalid_open -= 1
+        
+        # Build result (filter &#x27;*&#x27;)
+        return &#x27;&#x27;.join(c for c in s if c != &#x27;*&#x27;)
+
+
+
+# Variant : Multiple parentheses
+
+# Given a string that consists of various types of parentheses ((), [], {}) and 
+# alphanumeric characters, delete the least number of parentheses (any of them) 
+# to make the string balanced and return any result.
+
+# A balanced string is defined as a string where every type of opening parentheses 
+# has a matching closing parentheses.
+
+# IMPORTANT: Each bracket type is balanced INDEPENDENTLY (not requiring proper nesting)
+           
+#            This means we count each type (), [], {} separately. Each type only 
+#            needs equal opening and closing brackets. We DON&#x27;T check if brackets 
+#            are properly nested or follow LIFO order.
+           
+#            Example: &quot;([)]&quot; is VALID (each type has 1 opening + 1 closing)
+#            But with proper nesting: &quot;([)]&quot; would be INVALID (brackets cross)
+
+# CLARIFICATION: This is NOT the &quot;properly nested parentheses&quot; problem
+# ───────────────────────────────────────────────────────────────────────────────
+
+# This problem does NOT follow the formal definition:
+#     A parentheses string is valid if and only if:
+#    * It is the empty string, or
+#    * It can be written as AB (A concatenated with B), or
+#    * It can be written as (A), where A is a valid string.&quot;
+
+# That definition requires PROPER NESTING (LIFO order using a stack).
+
+# This problem uses INDEPENDENT BALANCING (counting each type separately).
+
+# Algorithm Difference:
+#   Proper Nesting: Uses STACK to enforce LIFO order
+#     - Closing bracket must match TOP of stack
+#     - Rejects crossings like &quot;([)]&quot;
+  
+#   Independent Balancing: Uses COUNTERS per bracket type
+#     - Each type tracked separately: {&#x27;(&#x27;: count, &#x27;[&#x27;: count, &#x27;{&#x27;: count}
+#     - Allows crossings like &quot;([)]&quot;
+
+# This Problem Uses: INDEPENDENT BALANCING (counters, no stack needed)
+
+# Examples:
+# ─────────
+# Input:  &quot;([)]&quot;        → Output: &quot;([)]&quot;  (both types balanced independently)
+# Input:  &quot;lee(t(c)o)de)&quot; → Output: &quot;lee(t(c)o)de&quot;
+# Input:  &quot;([{&quot;         → Output: &quot;&quot;  (no closing brackets)
+# Input:  &quot;{a[b(c]d)e}&quot; → Output: &quot;{a[b(c]d)e}&quot; (all types balanced)
+
+# def delete_least_parentheses(s):
+#     &quot;&quot;&quot;
+#     Remove minimum parentheses to make each bracket type independently balanced.
+    
+#     Independent Balancing: Each bracket type (), [], {} is counted separately.
+#     We don&#x27;t check nesting order - only that each type has equal opening/closing.
+    
+#     Time Complexity: O(n)
+#         - Pass 1: O(n) to iterate through string once
+#         - Calculate keep: O(1) to iterate through at most 3 bracket types
+#         - Pass 2: O(n) to iterate through temp array once
+#         - Join: O(n) to build final string
+#         - Total: O(n) + O(1) + O(n) + O(n) = O(n)
+    
+#     Space Complexity: O(n)
+#         - extra_opens: O(1) - at most 3 bracket types
+#         - total_opens: O(1) - at most 3 bracket types
+#         - temp: O(n) - worst case stores all characters
+#         - keep: O(1) - at most 3 bracket types
+#         - result: O(n) - worst case stores all characters
+#         - Total: O(n) dominated by temp and result arrays
+        
+#         Note: Dictionaries are O(1) because they store at most 3 keys each,
+#               which is constant regardless of input size.
+#     &quot;&quot;&quot;
+    
+#     # ========== INITIALIZATION ==========
+    
+#     # Mapping from closing bracket to its corresponding opening bracket
+#     # Used to identify which opening bracket type a closing bracket needs
+#     # Example: &#x27;)&#x27; needs &#x27;(&#x27;, &#x27;]&#x27; needs &#x27;[&#x27;, &#x27;}&#x27; needs &#x27;{&#x27;
+#     mapping = {
+#         &#x27;)&#x27;: &#x27;(&#x27;,
+#         &#x27;]&#x27;: &#x27;[&#x27;,
+#         &#x27;}&#x27;: &#x27;{&#x27;
+#     }
+    
+#     # Dictionary to track UNMATCHED opening brackets for each type
+#     # Key: opening bracket character (&#x27;(&#x27;, &#x27;[&#x27;, or &#x27;{&#x27;)
+#     # Value: count of unmatched opening brackets
+#     # Example: extra_opens = {&#x27;(&#x27;: 2, &#x27;[&#x27;: 1} means 2 unmatched &#x27;(&#x27; and 1 unmatched &#x27;[&#x27;
+#     #
+#     # WITH defaultdict:
+#     # ─────────────────────────────────────────────────────────────
+#     # from collections import defaultdict
+#     # extra_opens = defaultdict(int)  # Auto-initializes to 0
+#     # Then use: extra_opens[ch] += 1  (no .get() needed)
+#     #           extra_opens[ch] -= 1
+#     #           if extra_opens[open_char] == 0:  (instead of .get())
+#     extra_opens = {}
+    
+#     # Dictionary to track TOTAL opening brackets for each type
+#     # Key: opening bracket character (&#x27;(&#x27;, &#x27;[&#x27;, or &#x27;{&#x27;)
+#     # Value: total count of that bracket type seen
+#     # Used to calculate how many opening brackets to keep in Pass 2
+#     #
+#     # WITH defaultdict:
+#     # ─────────────────────────────────────────────────────────────
+#     # total_opens = defaultdict(int)  # Auto-initializes to 0
+#     # Then use: total_opens[ch] += 1  (no .get() needed)
+#     total_opens = {}
+    
+#     # Temporary list to store result after Pass 1
+#     # Contains: all opening brackets, valid closing brackets, all other characters
+#     # Missing: invalid closing brackets (skipped in Pass 1)
+#     temp = []
+    
+    
+#     # ========== PASS 1: Remove Invalid Closing Brackets ==========
+#     # Goal: Skip closing brackets that don&#x27;t have matching opening brackets
+#     #       of the SAME TYPE before them
+    
+#     for ch in s:
+        
+#         # ──────────────────────────────────────────────────────────
+#         # CASE 1: Opening Bracket (&#x27;(&#x27;, &#x27;[&#x27;, or &#x27;{&#x27;)
+#         # ──────────────────────────────────────────────────────────
+#         # CHECK OPENING BRACKETS FIRST (more common in code)
+#         #
+#         # CRITICAL CHECK: Verify character is actually an opening bracket
+#         # 
+#         # Why this check is important:
+#         # ───────────────────────────────────────────────────────────
+#         # WITHOUT this check (using &#x27;else&#x27; instead):
+#         #   Input: &quot;a@b(c)d&quot;
+#         #   Problem: &#x27;@&#x27; is not in mapping, would fall to else
+#         #   Result: &#x27;@&#x27; treated as opening bracket
+#         #   total_opens = {&#x27;@&#x27;: 1, &#x27;(&#x27;: 1}  ← WRONG! &#x27;@&#x27; is not a bracket
+#         #   extra_opens = {&#x27;@&#x27;: 1, &#x27;(&#x27;: 0}  ← Wastes memory
+#         #   keep = {&#x27;@&#x27;: 0, &#x27;(&#x27;: 1}         ← Unnecessary tracking
+#         #
+#         # WITH this check (ch in mapping.values()):
+#         #   Input: &quot;a@b(c)d&quot;
+#         #   &#x27;@&#x27; is not in mapping.values() → goes to else (Case 3)
+#         #   Result: &#x27;@&#x27; treated as regular character ✓
+#         #   total_opens = {&#x27;(&#x27;: 1}          ← CORRECT! Only actual brackets
+#         #   extra_opens = {&#x27;(&#x27;: 0}          ← Clean
+#         #   keep = {&#x27;(&#x27;: 1}                 ← Only tracks real brackets
+#         #
+#         # Impact of missing this check:
+#         #   - Semantic incorrectness: Non-brackets tracked as brackets
+#         #   - Wasted memory: Dictionaries grow with non-bracket chars
+#         #   - Potential bugs: If special chars are processed later
+#         #   - Harder debugging: Confusing state in dictionaries
+#         #
+#         # mapping.values() returns: dict_values([&#x27;(&#x27;, &#x27;[&#x27;, &#x27;{&#x27;])
+#         # This explicitly validates the character is an opening bracket
+#         #
+#         # Alternative if input ONLY contains brackets + alphanumeric:
+#         # ───────────────────────────────────────────────────────────
+#         # If we&#x27;re GUARANTEED the string only has brackets and alphanumeric
+#         # characters (no special chars like @, #, !, etc.), we could simplify:
+#         #
+#         #   if ch in mapping.values():
+#         #       # handle opening bracket
+#         #   elif ch in mapping:
+#         #       # handle closing bracket
+#         #   else:
+#         #       # SAFE to assume it&#x27;s alphanumeric
+#         #       # (because no other characters possible)
+#         #       temp.append(ch)
+#         #
+#         # This works ONLY if the problem guarantees input format.
+#         # Current approach with &#x27;ch in mapping.values()&#x27; is SAFER
+#         # because it works for ANY input (including special characters).
+#         # ───────────────────────────────────────────────────────────
+        
+#         if ch in mapping.values():
+#             # This is an opening bracket
+#             # Verified explicitly using mapping.values()
+            
+#             # Opening bracket - always add to temp for now
+#             # We&#x27;ll determine if it&#x27;s matched or not in Pass 2
+            
+#             # Increment count of unmatched opening brackets for this type
+#             # This bracket is waiting for a matching closing bracket
+#             #
+#             # WITH defaultdict: extra_opens[ch] += 1
+#             extra_opens[ch] = extra_opens.get(ch, 0) + 1
+            
+#             # Increment total count for this bracket type
+#             # Used in Pass 2 to calculate: keep = total - unmatched
+#             #
+#             # WITH defaultdict: total_opens[ch] += 1
+#             total_opens[ch] = total_opens.get(ch, 0) + 1
+            
+#             # Add to temp array
+#             temp.append(ch)
+        
+#         # ──────────────────────────────────────────────────────────
+#         # CASE 2: Closing Bracket (&#x27;), &#x27;]&#x27;, or &#x27;}&#x27;)
+#         # ──────────────────────────────────────────────────────────
+#         elif ch in mapping:
+#             # This is a closing bracket
+#             # Get the corresponding opening bracket for this closing bracket
+#             # Example: if ch = &#x27;)&#x27;, then open_char = &#x27;(&#x27;
+#             open_char = mapping[ch]
+            
+#             # Check if there&#x27;s an unmatched opening bracket of the SAME TYPE
+#             # .get(open_char, 0) returns count if exists, 0 if not in dictionary
+#             #
+#             # WITH defaultdict: if extra_opens[open_char] == 0:
+#             # (defaultdict returns 0 for missing keys automatically)
+#             if extra_opens.get(open_char, 0) == 0:
+#                 # No matching opening bracket available for this closing bracket
+#                 # This closing bracket is INVALID - skip it (don&#x27;t add to temp)
+#                 # Continue to next character without appending
+#                 continue
+            
+#             # Valid closing bracket - has a matching opening bracket before it
+#             # Decrement the count of unmatched opening brackets of this type
+#             # (We just matched one of them with this closing bracket)
+#             #
+#             # WITH defaultdict: extra_opens[open_char] -= 1
+#             extra_opens[open_char] = extra_opens.get(open_char, 0) - 1
+            
+#             # Add this valid closing bracket to temp
+#             temp.append(ch)
+        
+#         # ──────────────────────────────────────────────────────────
+#         # CASE 3: Other Characters (alphanumeric, special chars)
+#         # ──────────────────────────────────────────────────────────
+#         else:
+#             # Not a bracket - could be:
+#             #   - Alphanumeric: &#x27;a&#x27;, &#x27;b&#x27;, &#x27;1&#x27;, &#x27;2&#x27;
+#             #   - Special characters: &#x27;@&#x27;, &#x27;#&#x27;, &#x27;!&#x27;, &#x27; &#x27;, &#x27;.&#x27;, etc.
+#             # Always keep these characters
+#             temp.append(ch)
+    
+#     # After Pass 1:
+#     # ─────────────────────────────────────────────────────────────
+#     # temp[] contains:
+#     #   - All opening brackets (both matched and unmatched)
+#     #   - Only VALID closing brackets (those with matching opening)
+#     #   - All non-bracket characters
+#     #
+#     # extra_opens{} contains:
+#     #   - Count of UNMATCHED opening brackets for each type
+#     #   - These need to be removed in Pass 2
+#     #
+#     # total_opens{} contains:
+#     #   - Total count of opening brackets for each type
+    
+    
+#     # ========== CALCULATE How Many Opening Brackets to Keep ==========
+#     # For each bracket type, calculate: valid = total - unmatched
+#     # This tells us how many opening brackets to KEEP in Pass 2
+#     #
+#     # Example: If we have 3 total &#x27;(&#x27; and 1 is unmatched:
+#     #          keep[&#x27;(&#x27;] = 3 - 1 = 2
+#     #          Meaning: keep first 2 occurrences of &#x27;(&#x27;, skip the 3rd
+    
+#     # WITH defaultdict:
+#     # ─────────────────────────────────────────────────────────────
+#     # keep = defaultdict(int)  # Auto-initializes to 0
+#     # for open_char in total_opens:
+#     #     keep[open_char] = total_opens[open_char] - extra_opens[open_char]
+#     # (No .get() needed since defaultdict handles missing keys)
+#     keep = {}
+#     for open_char, _ in total_opens.items():
+#         # Calculate how many opening brackets of this type to keep
+#         # Formula: keep = total - unmatched
+#         keep[open_char] = total_opens[open_char] - extra_opens.get(open_char, 0)
+    
+    
+#     # ========== PASS 2: Remove Unmatched Opening Brackets ==========
+#     # Goal: Remove opening brackets that don&#x27;t have matching closing brackets
+#     #       Keep only the calculated number of each opening bracket type
+#     #
+#     # Strategy: Keep the FIRST N occurrences of each opening bracket type,
+#     #           where N = keep[bracket_type]
+#     #           This removes the LEFTMOST unmatched opening brackets
+    
+#     result = []  # Final result list
+    
+#     for ch in temp:
+        
+#         # ──────────────────────────────────────────────────────────
+#         # CASE 1: Opening Bracket
+#         # ──────────────────────────────────────────────────────────
+#         if ch in total_opens:
+#             # This is an opening bracket
+#             # (If it&#x27;s in total_opens dictionary, it&#x27;s an opening bracket)
+            
+#             # Check if we should keep this opening bracket
+#             #
+#             # WITH defaultdict: if keep[ch] == 0:
+#             if keep.get(ch, 0) == 0:
+#                 # We&#x27;ve already kept all the opening brackets we need for this type
+#                 # This is an UNMATCHED opening bracket - skip it
+#                 # Don&#x27;t add to result, just continue to next character
+#                 continue
+            
+#             # This is a MATCHED opening bracket - keep it
+#             # Decrement the keep count for this bracket type
+#             #
+#             # WITH defaultdict: keep[ch] -= 1
+#             keep[ch] = keep.get(ch, 0) - 1
+            
+#             # Add to final result
+#             result.append(ch)
+        
+#         # ──────────────────────────────────────────────────────────
+#         # CASE 2: Closing Bracket or Other Character
+#         # ──────────────────────────────────────────────────────────
+#         else:
+#             # Either:
+#             #   - Closing bracket (all are valid from Pass 1)
+#             #   - Non-bracket character (letter, digit, special char)
+#             # Always keep these - add to result
+#             result.append(ch)
+    
+#     # After Pass 2:
+#     # ─────────────────────────────────────────────────────────────
+#     # result[] contains:
+#     #   - Only MATCHED opening brackets
+#     #   - Only MATCHED closing brackets (from Pass 1)
+#     #   - All non-bracket characters
+#     #
+#     # All bracket types are now independently balanced!
+    
+#     # Build final string from result list and return
+#     return &#x27;&#x27;.join(result)
+
+# Check the proper nesting solution too
+        </code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Hard/1216-Valid-Palindrome-III/">&#8592; 1216. Valid Palindrome III</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Easy/1539-Kth-Missing-Positive-Number/">1539. Kth Missing Positive Number &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+</body>
+</html>
