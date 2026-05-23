@@ -230,23 +230,23 @@ URL: https://leetcode.com/problems/powx-n/
 
 # Naive Approach
 
-# class Solution:
-# def myPow(x: float, n: int) -&gt; float:
-#         &quot;&quot;&quot;
-#         Naive approach: multiply x by itself n times
+class Solution:
+def myPow(x: float, n: int) -&gt; float:
+        &quot;&quot;&quot;
+        Naive approach: multiply x by itself n times
         
-#         TC: O(n) - we do n-1 multiplications
-#         SC: O(1) - only use one variable
-#         &quot;&quot;&quot;
-#         if n &lt; 0:
-#             x = 1 / x
-#             n = -n
+        TC: O(n) - we do n-1 multiplications
+        SC: O(1) - only use one variable
+        &quot;&quot;&quot;
+        if n &lt; 0:
+            x = 1 / x
+            n = -n
         
-#         result = 1.0
-#         for i in range(n):
-#             result *= x  # Multiply x exactly n times
+        result = 1.0
+        for i in range(n):
+            result *= x  # Multiply x exactly n times
         
-#         return result
+        return result
 
 
 # Recursive Solution
@@ -349,47 +349,47 @@ class Solution:
 # Recursive Calls (Going Down)
 # Call 1: myPow(2, 6)
 
-# n = 6 (even)
+n = 6 (even)
 # Need to calculate: myPow(2, 3) first
 # Will return: half * half
 
 # Call 2: myPow(2, 3)
 
-# n = 3 (odd)
+n = 3 (odd)
 # Need to calculate: myPow(2, 1) first
 # Will return: half * half * 2
 
 # Call 3: myPow(2, 1)
 
-# n = 1 (odd)
+n = 1 (odd)
 # Need to calculate: myPow(2, 0) first
 # Will return: half * half * 2
 
 # Call 4: myPow(2, 0)
 
-# n = 0 → BASE CASE
+n = 0 → BASE CASE
 # Returns 1
 
 # Unwinding (Coming Back Up)
-# myPow(2, 0):
+myPow(2, 0):
 
 # Returns 1
 
-# myPow(2, 1):
+myPow(2, 1):
 
-# half = 1
+half = 1
 # n is odd → return 1 * 1 * 2 = 2
 # Returns 2
 
-# myPow(2, 3):
+myPow(2, 3):
 
-# half = 2
+half = 2
 # n is odd → return 2 * 2 * 2 = 8
 # Returns 8
 
-# myPow(2, 6):
+myPow(2, 6):
 
-# half = 8
+half = 8
 # n is even → return 8 * 8 = 64
 # Returns 64 ✓
 
