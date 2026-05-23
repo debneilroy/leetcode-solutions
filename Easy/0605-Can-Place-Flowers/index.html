@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>605. Can Place Flowers - LeetCode Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+
+:root {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --radius:    6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #e6db74; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy   { color: var(--easy);   background: rgba(44,187,93,0.15); }
+.badge-Medium { color: var(--medium); background: rgba(255,161,22,0.15); }
+.badge-Hard   { color: var(--hard);   background: rgba(239,71,67,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--surface2); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: #1e1e1e !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">605. Can Place Flowers</span>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (0)</div>
+        <div class="tab" data-tab="similar">Similar (2)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">605. Can Place Flowers</div>
+        <div class="prob-meta">
+          <span class="badge badge-Easy">Easy</span>
+          <span class="tag">Array</span><span class="tag">Greedy</span>
+        </div>
+        <div class="prob-stats">1.4M / 4.8M (29.1%)</div>
+        <div class="prob-desc"><p>You have a long flowerbed in which some of the plots are planted, and some are not. However, flowers cannot be planted in <strong>adjacent</strong> plots.</p>
+<p>Given an integer array <code>flowerbed</code> containing <code>0</code>'s and <code>1</code>'s, where <code>0</code> means empty and <code>1</code> means not empty, and an integer <code>n</code>, return <code>true</code> <em>if</em> <code>n</code> <em>new flowers can be planted in the</em> <code>flowerbed</code> <em>without violating the no-adjacent-flowers rule and</em> <code>false</code> <em>otherwise</em>.</p>
+<p>Example 1:</p>
+<pre class="example-block"><code><strong>Input:</strong> flowerbed = [1,0,0,0,1], n = 1
+<strong>Output:</strong> true
+</code></pre>
+<p>Example 2:</p>
+<pre class="example-block"><code><strong>Input:</strong> flowerbed = [1,0,0,0,1], n = 2
+<strong>Output:</strong> false
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= flowerbed.length &lt;= 2 * 104</code></li>
+</ul>
+	
+<ul>
+<li><code>flowerbed[i]</code> is <code>0</code> or <code>1</code>.</li>
+</ul>
+	
+<ul>
+<li>There are no two adjacent flowers in <code>flowerbed</code>.</li>
+</ul>
+	
+<ul>
+<li><code>0 &lt;= n &lt;= flowerbed.length</code></li>
+</ul></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        <p class="empty-msg">No hints for this problem.</p>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/teemo-attacking/" target="_blank">Teemo Attacking</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/asteroid-collision/" target="_blank">Asteroid Collision</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 605. Can Place Flowers
+Difficulty: Easy
+URL: https://leetcode.com/problems/can-place-flowers/
+&quot;&quot;&quot;
+
+# Brute Force 
+
+# Approach: Try all possible combinations of placing n flowers in valid positions using backtracking/recursion.
+
+# How it works:
+
+# For each empty position, try planting a flower
+# Recursively attempt to place the remaining flowers
+# If it fails, backtrack (remove the flower) and try the next position
+# Return true if we successfully place all n flowers
+
+# Complexity:
+
+# Time: O(2^n) - exponential, trying many combinations
+# Space: O(n) - recursion call stack
+
+# Why it&#x27;s inefficient: Explores many unnecessary combinations when a simple greedy left-to-right scan works perfectly.
+
+# The key insight: Greedy works! Planting flowers as early as possible never hurts, so we don&#x27;t need to try all combinations. This reduces O(2^n) → O(n). 
+
+# Input: flowerbed = [0,0,0], n = 2
+# Attempt 1: Plant at positions [0, 1]
+# [1,1,0] → Invalid! (adjacent flowers) ❌
+
+# Attempt 2: Plant at positions [0, 2]
+# [1,0,1] → Valid! ✓ → Return True
+
+# The brute force explores multiple possibilities even though some are obviously invalid.
+
+# ### Greedy approach (optimal):
+
+# Scan left to right:
+# i=0: [0,0,0] → empty, left OK, right OK → Plant!
+#      [1,0,0], placed=1
+
+# i=1: [1,0,0] → empty, left=1 → Can&#x27;t plant, skip
+
+# i=2: [1,0,0] → empty, left OK, right OK → Plant!
+#      [1,0,1], placed=2 ✓ → Return True
+
+# Approach : Single Scan
+
+class Solution:
+    def canPlaceFlowers(self, flowerbed: List[int], n: int) -&gt; bool:
+        &quot;&quot;&quot;
+        Time Complexity: O(n) where n is the length of flowerbed
+            - Single pass through the array
+            - Each position checked once
+        
+        Space Complexity: O(1)
+            - Only uses constant extra space (count, length, i, empty_left, empty_right)
+            - Modifies input array in-place but doesn&#x27;t use additional data structures
+        &quot;&quot;&quot;
+        if n == 0:
+            return True
+
+        count = 0
+        length = len(flowerbed)
+        
+        for i in range(length):
+            # Check if current position is empty
+            if flowerbed[i] == 0:
+                # Check left neighbor (empty or out of bounds)
+                empty_left = (i == 0) or (flowerbed[i - 1] == 0)
+                # Check right neighbor (empty or out of bounds)
+                empty_right = (i == length - 1) or (flowerbed[i + 1] == 0)
+                
+                # If both neighbors are empty, we can plant here
+                if empty_left and empty_right:
+                    flowerbed[i] = 1  # Plant the flower
+                    count += 1
+                    
+                    # Early exit if we&#x27;ve planted enough flowers
+                    if count &gt;= n:
+                        return True
+        
+        # Early exit guarantees count &gt;= n is caught inside the loop for n &gt; 0.
+        # Without the n == 0 base check, we&#x27;d need `return count &gt;= n` here
+        # since count=0 &gt;= n=0 would be True but never caught by the early exit.
+        # e.g. flowerbed=[1], n=0 -&gt; loop skipped (flowerbed[0]=1), count=0 &gt;= n=0 -&gt; True, not False.
+        return False
+
+# Approach : Intelligent position skipping (preferred in interview)
+
+# class Solution:
+#     def canPlaceFlowers(self, flowerbed: List[int], n: int) -&gt; bool:
+#         &quot;&quot;&quot;
+#         Determine if n flowers can be planted using an optimized greedy approach
+#         with intelligent position skipping.
+        
+#         Time Complexity: O(n) worst case, but ~O(n/2) average case
+#             - Skips positions aggressively (jumps by 2 or 3)
+#             - Approximately 2x faster than standard approach in practice
+        
+#         Space Complexity: O(1)
+#             - Only uses constant extra space
+#             - Does NOT modify the input array
+        
+#         Approach:
+#             Greedy with optimized skipping:
+#             - When we plant: skip next position (i += 2)
+#             - When there&#x27;s a flower: skip next position (i += 2)
+#             - When blocked by neighbor: skip 3 positions (i += 3)
+#         &quot;&quot;&quot;
+#         i = 0  # Current position
+#         placed = 0  # Count of flowers successfully placed
+        
+#         while i &lt; len(flowerbed):
+#             # Check left neighbor: treat boundary as empty (0)
+#             empty_left_plot = 0 if i == 0 else flowerbed[i - 1]
+            
+#             # Check right neighbor: treat boundary as empty (0)
+#             empty_right_plot = 0 if i == len(flowerbed) - 1 else flowerbed[i + 1]
+            
+#             # Case 1: Current position and both neighbors are empty - plant here!
+#             if flowerbed[i] == empty_left_plot == empty_right_plot == 0:
+#                 placed += 1
+#                 i += 2  # Skip next position (can&#x27;t plant adjacent)
+            
+#             # Case 2: Current position has a flower - skip it
+#             elif flowerbed[i]:
+#                 i += 2  # Skip next position (can&#x27;t plant adjacent to existing flower)
+            
+#             # Case 3: Current is empty but blocked by a neighbor
+#             else:
+#                 i += 3  # Jump 3 positions (next valid spot is at least 2 away), flowerbed = [0,1,0,0], n = 2
+            
+#             # Early exit optimization: if we&#x27;ve placed enough flowers
+#             if placed &gt;= n:
+#                 return True
+
+#         # Return False instead of (placed &gt;= n) because:
+#         # If we had placed &gt;= n flowers, we would have already returned True
+#         # in the early exit check above. Reaching here means placed &lt; n.
+#         # Using False is clearer and avoids redundant comparison.
+        
+#         return False
+
+# Variant : Return the most number of flowers that can be planted in the flowerbed without violating the 
+# no-adjacent-flowers rule
+
+# class Solution:
+#     def placeFlowers(self, flowerbed: List[int]) -&gt; int:
+#         i = 0
+#         placed = 0
+#         while i &lt; len(flowerbed):
+#             empty_left_plot = 0 if i == 0 else flowerbed[i - 1]
+#             empty_right_plot = 0 if i == len(flowerbed) - 1 else flowerbed[i + 1]
+#             if flowerbed[i] == empty_left_plot == empty_right_plot == 0:
+#                 placed += 1
+#                 i += 2
+#             elif flowerbed[i]:
+#                 i += 2 
+#             else:
+#                 i += 3
+
+#         return placed</code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Medium/0560-Subarray-Sum-Equals-K/">&#8592; 560. Subarray Sum Equals K</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Medium/0636-Exclusive-Time-of-Functions/">636. Exclusive Time of Functions &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+</body>
+</html>
