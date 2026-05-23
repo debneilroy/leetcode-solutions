@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>766. Toeplitz Matrix - LeetCode Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+
+:root {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --radius:    6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #e6db74; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy   { color: var(--easy);   background: rgba(44,187,93,0.15); }
+.badge-Medium { color: var(--medium); background: rgba(255,161,22,0.15); }
+.badge-Hard   { color: var(--hard);   background: rgba(239,71,67,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--surface2); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: #1e1e1e !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">766. Toeplitz Matrix</span>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (1)</div>
+        <div class="tab" data-tab="similar">Similar (1)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">766. Toeplitz Matrix</div>
+        <div class="prob-meta">
+          <span class="badge badge-Easy">Easy</span>
+          <span class="tag">Array</span><span class="tag">Matrix</span>
+        </div>
+        <div class="prob-stats">457.4K / 656.2K (69.7%)</div>
+        <div class="prob-desc"><p>Given an <code>m x n</code> <code>matrix</code>, return <em><code>true</code> if the matrix is Toeplitz. Otherwise, return <code>false</code>.</em></p>
+<p>A matrix is <strong>Toeplitz</strong> if every diagonal from top-left to bottom-right has the same elements.</p>
+<p>Example 1:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> matrix = [[1,2,3,4],[5,1,2,3],[9,5,1,2]]
+<strong>Output:</strong> true
+<strong>Explanation:</strong>
+In the above grid, the diagonals are:
+&quot;[9]&quot;, &quot;[5, 5]&quot;, &quot;[1, 1, 1]&quot;, &quot;[2, 2, 2]&quot;, &quot;[3, 3]&quot;, &quot;[4]&quot;.
+In each diagonal all elements are the same, so the answer is True.
+</code></pre>
+<p>Example 2:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> matrix = [[1,2],[2,2]]
+<strong>Output:</strong> false
+<strong>Explanation:</strong>
+The diagonal &quot;[1, 2]&quot; has different elements.
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li><code>m == matrix.length</code></li>
+</ul>
+	
+<ul>
+<li><code>n == matrix[i].length</code></li>
+</ul>
+	
+<ul>
+<li><code>1 &lt;= m, n &lt;= 20</code></li>
+</ul>
+	
+<ul>
+<li><code>0 &lt;= matrix[i][j] &lt;= 99</code></li>
+</ul>
+<p><strong>Follow up:</strong></p>
+<ul>
+<li>What if the <code>matrix</code> is stored on disk, and the memory is limited such that you can only load at most one row of the matrix into the memory at once?</li>
+</ul>
+	
+<ul>
+<li>What if the <code>matrix</code> is so large that you can only load up a partial row into the memory at once?</li>
+</ul></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        
+<details class="hint-block">
+  <summary>Hint 1</summary>
+  <div class="hint-body"><p>Check whether each value is equal to the value of it's top-left neighbor.</p></div>
+</details>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/valid-word-square/" target="_blank">Valid Word Square</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 766. Toeplitz Matrix
+Difficulty: Easy
+URL: https://leetcode.com/problems/toeplitz-matrix/
+&quot;&quot;&quot;
+
+# Brute Force Approach:
+# A brute-force way to check if a matrix is Toeplitz is to explicitly compare all elements along each diagonal. For every cell (i, j), we could traverse its diagonal (i+1, j+1), (i+2, j+2), … and ensure all elements are the same.
+
+# Time Complexity: O((m·n)·min(m, n)) since we potentially recheck elements multiple times.
+
+# Space Complexity: O(1).
+
+# Tradeoff: Very simple to reason about, but inefficient because it redundantly checks the same diagonals multiple times.
+
+# class Solution:
+#     def isToeplitzMatrix(self, matrix):
+#         &quot;&quot;&quot;
+#         Brute Force: Check every diagonal from every starting position.
+        
+#         Time Complexity: O(m × n × min(m, n))
+#         - Outer loop: O(m) iterations over all rows
+#         - Inner loop: O(n) iterations over all columns
+#         - While loop: O(min(m, n)) to traverse diagonal from each position
+#           (diagonal length is limited by the smaller dimension - either we run
+#            out of rows or columns, whichever comes first)
+#         - Total: O(m × n × min(m, n))
+#         - Highly inefficient due to redundant diagonal checks:
+#           Each diagonal is checked multiple times from different starting points.
+#           For example, diagonal [matrix[0][0], matrix[1][1], matrix[2][2]] is
+#           checked when starting from (0,0), then partially rechecked when starting
+#           from (1,1), and again from (2,2), leading to massive redundancy.
+        
+#         Space Complexity: O(1)
+#         - Only constant extra space for variables (i, j, r, c)
+#         - No additional data structures
+#         &quot;&quot;&quot;
+#         m, n = len(matrix), len(matrix[0])
+        
+#         for i in range(m):
+#             for j in range(n):
+#                 # Check all elements on this diagonal
+#                 r, c = i, j
+#                 while r &lt; m and c &lt; n:
+#                     if matrix[r][c] != matrix[i][j]:
+#                         return False
+#                     r += 1
+#                     c += 1
+#         return True
+
+# Optimal Approach:
+# Instead of rechecking, we can just ensure each element matches its bottom-right neighbor — if every (i, j) equals (i+1, j+1), all diagonals are constant.
+
+
+class Solution:
+    def isToeplitzMatrix(self, matrix: list[list[int]]) -&gt; bool:
+        &quot;&quot;&quot;
+        Time Complexity:  O(m * n)
+            → We check each element once (except last row/col).
+        Space Complexity: O(1)
+            → Constant extra space; in-place comparisons only.
+        &quot;&quot;&quot;
+
+        # Get matrix dimensions
+        m, n = len(matrix), len(matrix[0])
+
+        # Iterate over all elements except the last row and last column
+        for i in range(m - 1):
+            for j in range(n - 1):
+                # Compare with the element diagonally below-right
+                if matrix[i][j] != matrix[i + 1][j + 1]:
+                    return False  # Found a mismatch; not Toeplitz
+
+        # All diagonals consistent
+        return True
+
+
+# Variant : Matrix given as list
+
+# Given an array list, return true if the array is Toeplitz. Otherwise, return false.
+
+# A list represents a Toeplitz matrix if, when interpreted as a 2D matrix with rows and cols,
+# every diagonal from top-left to bottom-right contains the same elements.
+
+# Example 1:
+
+# Input:
+# matrix = [1,2,3,4,5,1,2,3,9,5,1,2], rows = 3, cols = 4
+
+# Output: True
+
+# Explanation:
+# In the above grid, the diagonals are:
+# [9], [5,5], [1,1,1], [2,2,2], [3,3], [4].
+# In each diagonal all elements are the same, so the answer is True.
+
+# Constraints:
+
+# m == matrix.length
+
+# n == matrix[i].length
+
+# 1 &lt;= m, n &lt;= 20
+
+# 0 &lt;= matrix[i][j] &lt;= 99
+
+# class Solution:
+#     def hasSameDiagonalValues(self, list: List[int], rows: int, cols: int) -&gt; bool:
+#         &quot;&quot;&quot;
+#         Check if a flattened matrix is Toeplitz (all diagonals have same elements).
+        
+#         Time Complexity: O(rows × cols)
+#         - Iterate through every element in the list once
+#         - Each comparison operation is O(1)
+        
+#         Space Complexity: O(1)
+#         - Only constant extra space for variables (i, cr, cc)
+#         - No additional data structures
+#         &quot;&quot;&quot;
+#         # Iterate through each element in the flattened list
+#         for i in range(len(list)):
+#             # Calculate current row: how many complete rows have we passed?
+#             cr = i // cols
+            
+#             # Calculate current column: position within the current row
+#             cc = i % cols
+            
+#             # Skip elements in the last row or last column
+#             # (they don&#x27;t have a bottom-right diagonal neighbor to check)
+#             if cr == rows - 1 or cc == cols - 1:
+#                 continue
+            
+#             # Check if current element matches its bottom-right diagonal neighbor
+#             # Moving to bottom-right: +cols (down one row) + 1 (right one column)
+#             if list[i] != list[i + (cols + 1)]:
+#                 return False
+        
+#         # All diagonal checks passed - matrix is Toeplitz
+#         return True
+
+  
+</code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Medium/0695-Max-Area-of-Island/">&#8592; 695. Max Area of Island</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Hard/0827-Making-A-Large-Island/">827. Making A Large Island &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+</body>
+</html>
