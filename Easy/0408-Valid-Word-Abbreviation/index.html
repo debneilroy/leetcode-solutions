@@ -336,74 +336,74 @@ class Solution:
 
 # Another approach
 
-# class Solution:
-#     def validWordAbbreviation(self, word: str, abbr: str) -&gt; bool:
-#         i = 0  # pointer for word
-#         j = 0  # pointer for abbr
+class Solution:
+    def validWordAbbreviation(self, word: str, abbr: str) -&gt; bool:
+        i = 0  # pointer for word
+        j = 0  # pointer for abbr
         
-#         while i &lt; len(word) and j &lt; len(abbr):
-#             # If current char in abbr is a digit
-#             if abbr[j].isdigit():
-#                 # Check for leading zero
-#                 if abbr[j] == &#x27;0&#x27;:
-#                     return False
+        while i &lt; len(word) and j &lt; len(abbr):
+            # If current char in abbr is a digit
+            if abbr[j].isdigit():
+                # Check for leading zero
+                if abbr[j] == &#x27;0&#x27;:
+                    return False
                 
-#                 # Build the complete number
-#                 num = 0
-#                 while j &lt; len(abbr) and abbr[j].isdigit():
-#                     num = num * 10 + int(abbr[j])
-#                     j += 1
+                # Build the complete number
+                num = 0
+                while j &lt; len(abbr) and abbr[j].isdigit():
+                    num = num * 10 + int(abbr[j])
+                    j += 1
                 
-#                 # Skip &#x27;num&#x27; characters in word
-#                 i += num
-#             else:
-#                 # Characters must match
-#                 if word[i] != abbr[j]:
-#                     return False
-#                 i += 1
-#                 j += 1
+                # Skip &#x27;num&#x27; characters in word
+                i += num
+            else:
+                # Characters must match
+                if word[i] != abbr[j]:
+                    return False
+                i += 1
+                j += 1
         
-#         # Both pointers should reach the end
-#         return i == len(word) and j == len(abbr)
+        # Both pointers should reach the end
+        return i == len(word) and j == len(abbr)
 
 # without using  isalpha() or isdigit()
 
-# class Solution:
-#     def validWordAbbreviation(self, word: str, abbr: str) -&gt; bool:
-#         i, j = 0, 0
+class Solution:
+    def validWordAbbreviation(self, word: str, abbr: str) -&gt; bool:
+        i, j = 0, 0
         
-#         while i &lt; len(word) and j &lt; len(abbr):
-#             # Check if current char is a digit (0-9)
-#             if &#x27;0&#x27; &lt;= abbr[j] &lt;= &#x27;9&#x27;:
-#                 if abbr[j] == &#x27;0&#x27;:  # Leading zero check
-#                     return False
+        while i &lt; len(word) and j &lt; len(abbr):
+            # Check if current char is a digit (0-9)
+            if &#x27;0&#x27; &lt;= abbr[j] &lt;= &#x27;9&#x27;:
+                if abbr[j] == &#x27;0&#x27;:  # Leading zero check
+                    return False
                 
-#                 tmp = 0
-#                 while j &lt; len(abbr) and &#x27;0&#x27; &lt;= abbr[j] &lt;= &#x27;9&#x27;:
-#                     tmp = tmp * 10 + (ord(abbr[j]) - ord(&#x27;0&#x27;))
-#                     j += 1
-#                 i += tmp
-#             else:
-#                 # It&#x27;s a letter
-#                 if word[i] != abbr[j]:
-#                     return False
-#                 i += 1
-#                 j += 1
+                tmp = 0
+                while j &lt; len(abbr) and &#x27;0&#x27; &lt;= abbr[j] &lt;= &#x27;9&#x27;:
+                    tmp = tmp * 10 + (ord(abbr[j]) - ord(&#x27;0&#x27;))
+                    j += 1
+                i += tmp
+            else:
+                # It&#x27;s a letter
+                if word[i] != abbr[j]:
+                    return False
+                i += 1
+                j += 1
         
-#         return i == len(word) and j == len(abbr)
+        return i == len(word) and j == len(abbr)
 
 # What is ord()?
-# ord() returns the ASCII/Unicode value of a character.
-# ord(&#x27;0&#x27;) = 48
-# ord(&#x27;1&#x27;) = 49
-# ord(&#x27;2&#x27;) = 50
+ord() returns the ASCII/Unicode value of a character.
+ord(&#x27;0&#x27;) = 48
+ord(&#x27;1&#x27;) = 49
+ord(&#x27;2&#x27;) = 50
 # ...
-# ord(&#x27;9&#x27;) = 57
+ord(&#x27;9&#x27;) = 57
 # Why subtract ord(&#x27;0&#x27;)?
 # To convert a digit character to its numeric value:
-# ord(&#x27;5&#x27;) - ord(&#x27;0&#x27;) = 53 - 48 = 5
-# ord(&#x27;7&#x27;) - ord(&#x27;0&#x27;) = 55 - 48 = 7
-# ord(&#x27;0&#x27;) - ord(&#x27;0&#x27;) = 48 - 48 = 0
+ord(&#x27;5&#x27;) - ord(&#x27;0&#x27;) = 53 - 48 = 5
+ord(&#x27;7&#x27;) - ord(&#x27;0&#x27;) = 55 - 48 = 7
+ord(&#x27;0&#x27;) - ord(&#x27;0&#x27;) = 48 - 48 = 0
 
 
 # Variant : Valid Word Abbreviation with Wildcard
@@ -434,126 +434,126 @@ class Solution:
 
 # Approach : Recursion
 
-# class Solution:
-#     def wordPatternMatch(self, word: str, abbr: str) -&gt; bool:
-#         &quot;&quot;&quot;
-#         Validates if a word matches an abbreviation pattern with wildcards.
+class Solution:
+    def wordPatternMatch(self, word: str, abbr: str) -&gt; bool:
+        &quot;&quot;&quot;
+        Validates if a word matches an abbreviation pattern with wildcards.
         
-#         Time Complexity: O(2^(n+m)) where n = len(word), m = len(abbr)
-#         - In worst case with wildcards, we explore exponential paths due to branching
-#         - Each wildcard creates 2 choices: skip it or consume a character
-#         - Maximum recursion depth is n+m, and each level can branch into 2
-#         - Without memoization, we revisit the same states multiple times
+        Time Complexity: O(2^(n+m)) where n = len(word), m = len(abbr)
+        - In worst case with wildcards, we explore exponential paths due to branching
+        - Each wildcard creates 2 choices: skip it or consume a character
+        - Maximum recursion depth is n+m, and each level can branch into 2
+        - Without memoization, we revisit the same states multiple times
         
-#         Space Complexity: O(n + m)
-#         - Recursion stack depth is at most n + m
-#         - We use i from 0 to n and j from 0 to m
-#         - Each recursive call uses constant extra space
+        Space Complexity: O(n + m)
+        - Recursion stack depth is at most n + m
+        - We use i from 0 to n and j from 0 to m
+        - Each recursive call uses constant extra space
         
-#         Args:
-#             word: The original word to validate against
-#             abbr: The abbreviation pattern with wildcards (*), numbers, and letters
+        Args:
+            word: The original word to validate against
+            abbr: The abbreviation pattern with wildcards (*), numbers, and letters
             
-#         Returns:
-#             True if word matches the abbreviation pattern, False otherwise
-#         &quot;&quot;&quot;
-#         return self.match(word, abbr, 0, 0)
+        Returns:
+            True if word matches the abbreviation pattern, False otherwise
+        &quot;&quot;&quot;
+        return self.match(word, abbr, 0, 0)
     
-#     def match(self, word: str, abbr: str, i: int, j: int) -&gt; bool:
-#         &quot;&quot;&quot;
-#         Recursively match word and abbr starting from positions i and j.
+    def match(self, word: str, abbr: str, i: int, j: int) -&gt; bool:
+        &quot;&quot;&quot;
+        Recursively match word and abbr starting from positions i and j.
         
-#         Args:
-#             word: The word to match
-#             abbr: The abbreviation pattern
-#             i: Current position in word (0 to len(word))
-#             j: Current position in abbr (0 to len(abbr))
+        Args:
+            word: The word to match
+            abbr: The abbreviation pattern
+            i: Current position in word (0 to len(word))
+            j: Current position in abbr (0 to len(abbr))
             
-#         Returns:
-#             True if remaining parts match, False otherwise
-#         &quot;&quot;&quot;
-#         # Base case: both strings fully consumed - valid match
-#         # Example: word=&quot;ab&quot;, abbr=&quot;ab&quot; → both reach end together ✓
-#         if i == len(word) and j == len(abbr):
-#             return True
+        Returns:
+            True if remaining parts match, False otherwise
+        &quot;&quot;&quot;
+        # Base case: both strings fully consumed - valid match
+        # Example: word=&quot;ab&quot;, abbr=&quot;ab&quot; → both reach end together ✓
+        if i == len(word) and j == len(abbr):
+            return True
         
-#         # Abbr exhausted but word has remaining characters - no match
-#         # Example: word=&quot;abcde&quot;, abbr=&quot;ab&quot; → abbr done but word has &quot;cde&quot; left ✗
-#         if j == len(abbr):
-#             return False
+        # Abbr exhausted but word has remaining characters - no match
+        # Example: word=&quot;abcde&quot;, abbr=&quot;ab&quot; → abbr done but word has &quot;cde&quot; left ✗
+        if j == len(abbr):
+            return False
         
-#         # Word exhausted but abbr has remaining characters
-#         # Example: word=&quot;ab&quot;, abbr=&quot;ab***&quot; or word=&quot;ab&quot;, abbr=&quot;ab**c&quot;
-#         if i == len(word):
-#             # Valid only if all remaining characters in abbr are wildcards
-#             # Wildcards can match empty sequence, so &quot;ab&quot; matches &quot;ab***&quot; ✓
-#             # But &quot;ab&quot; does NOT match &quot;ab**c&quot; because we need &#x27;c&#x27; ✗
-#             while j &lt; len(abbr):
-#                 if abbr[j] != &#x27;*&#x27;:
-#                     # Found a non-wildcard character, but word is exhausted
-#                     # Example: abbr=&quot;ab**c&quot; has &#x27;c&#x27; at the end → cannot match
-#                     return False
-#                 j += 1
-#             # All remaining characters are wildcards → they match empty sequence
-#             # Example: abbr=&quot;ab***&quot; has only wildcards left → valid match ✓
-#             return True
+        # Word exhausted but abbr has remaining characters
+        # Example: word=&quot;ab&quot;, abbr=&quot;ab***&quot; or word=&quot;ab&quot;, abbr=&quot;ab**c&quot;
+        if i == len(word):
+            # Valid only if all remaining characters in abbr are wildcards
+            # Wildcards can match empty sequence, so &quot;ab&quot; matches &quot;ab***&quot; ✓
+            # But &quot;ab&quot; does NOT match &quot;ab**c&quot; because we need &#x27;c&#x27; ✗
+            while j &lt; len(abbr):
+                if abbr[j] != &#x27;*&#x27;:
+                    # Found a non-wildcard character, but word is exhausted
+                    # Example: abbr=&quot;ab**c&quot; has &#x27;c&#x27; at the end → cannot match
+                    return False
+                j += 1
+            # All remaining characters are wildcards → they match empty sequence
+            # Example: abbr=&quot;ab***&quot; has only wildcards left → valid match ✓
+            return True
         
-#         # Case 1: Handle wildcard &#x27;*&#x27; - matches any sequence (0 or more chars)
-#         # Example: word=&quot;helzzp&quot;, abbr=&quot;h2*p&quot; where * needs to match &quot;zz&quot;
-#         if abbr[j] == &#x27;*&#x27;:
-#             # Option A: Match 0 characters (skip the wildcard)
-#             # Try to see if skipping this wildcard works
-#             # Example: word=&quot;abc&quot;, abbr=&quot;*bc&quot; → skip *, try matching &quot;abc&quot; with &quot;bc&quot;
-#             if self.match(word, abbr, i, j + 1):
-#                 return True
+        # Case 1: Handle wildcard &#x27;*&#x27; - matches any sequence (0 or more chars)
+        # Example: word=&quot;helzzp&quot;, abbr=&quot;h2*p&quot; where * needs to match &quot;zz&quot;
+        if abbr[j] == &#x27;*&#x27;:
+            # Option A: Match 0 characters (skip the wildcard)
+            # Try to see if skipping this wildcard works
+            # Example: word=&quot;abc&quot;, abbr=&quot;*bc&quot; → skip *, try matching &quot;abc&quot; with &quot;bc&quot;
+            if self.match(word, abbr, i, j + 1):
+                return True
             
-#             # Option B: Match 1+ characters (consume from word, keep wildcard)
-#             # Wildcard stays at j while we advance i (consume characters)
-#             # Example: word=&quot;helzzp&quot;, abbr=&quot;h2*p&quot; → * consumes &#x27;z&#x27;, then another &#x27;z&#x27;
-#             if self.match(word, abbr, i + 1, j):
-#                 return True
+            # Option B: Match 1+ characters (consume from word, keep wildcard)
+            # Wildcard stays at j while we advance i (consume characters)
+            # Example: word=&quot;helzzp&quot;, abbr=&quot;h2*p&quot; → * consumes &#x27;z&#x27;, then another &#x27;z&#x27;
+            if self.match(word, abbr, i + 1, j):
+                return True
             
-#             # Both options failed - no valid match found
-#             return False
+            # Both options failed - no valid match found
+            return False
         
-#         # Case 2: Handle digit - represents number of characters to skip
-#         # Example: word=&quot;hello&quot;, abbr=&quot;h2lo&quot; → &#x27;2&#x27; means skip 2 chars (&#x27;e&#x27; and &#x27;l&#x27;)
-#         if abbr[j].isdigit():
-#             # Leading zeros are invalid
-#             # Example: abbr=&quot;h0llo&quot; is invalid ✗
-#             if abbr[j] == &#x27;0&#x27;:
-#                 return False
+        # Case 2: Handle digit - represents number of characters to skip
+        # Example: word=&quot;hello&quot;, abbr=&quot;h2lo&quot; → &#x27;2&#x27; means skip 2 chars (&#x27;e&#x27; and &#x27;l&#x27;)
+        if abbr[j].isdigit():
+            # Leading zeros are invalid
+            # Example: abbr=&quot;h0llo&quot; is invalid ✗
+            if abbr[j] == &#x27;0&#x27;:
+                return False
             
-#             # Build the complete multi-digit number
-#             # Example: abbr=&quot;h12o&quot; → skip_count=12 (not just 1 and 2 separately)
-#             skip_count = 0
-#             while j &lt; len(abbr) and abbr[j].isdigit():
-#                 skip_count = skip_count * 10 + int(abbr[j])
-#                 j += 1
+            # Build the complete multi-digit number
+            # Example: abbr=&quot;h12o&quot; → skip_count=12 (not just 1 and 2 separately)
+            skip_count = 0
+            while j &lt; len(abbr) and abbr[j].isdigit():
+                skip_count = skip_count * 10 + int(abbr[j])
+                j += 1
             
-#             # Check if we can skip that many characters without exceeding word length
-#             # Example: word=&quot;hi&quot;, abbr=&quot;h5&quot; → can&#x27;t skip 5 chars from position 1 ✗
-#             if i + skip_count &gt; len(word):
-#                 return False
+            # Check if we can skip that many characters without exceeding word length
+            # Example: word=&quot;hi&quot;, abbr=&quot;h5&quot; → can&#x27;t skip 5 chars from position 1 ✗
+            if i + skip_count &gt; len(word):
+                return False
             
-#             # Recursively match after skipping skip_count characters
-#             # Example: word=&quot;hello&quot;, abbr=&quot;h2lo&quot; → skip 2 chars, match from &quot;llo&quot; vs &quot;lo&quot;
-#             return self.match(word, abbr, i + skip_count, j)
+            # Recursively match after skipping skip_count characters
+            # Example: word=&quot;hello&quot;, abbr=&quot;h2lo&quot; → skip 2 chars, match from &quot;llo&quot; vs &quot;lo&quot;
+            return self.match(word, abbr, i + skip_count, j)
         
-#         # Case 3: Handle letter - must match exactly
-#         # Example: word=&quot;abc&quot;, abbr=&quot;abc&quot; → each letter must match exactly
-#         if abbr[j].isalpha():
-#             # Characters must be identical
-#             # Example: word=&quot;abc&quot;, abbr=&quot;axc&quot; → &#x27;b&#x27; != &#x27;x&#x27; ✗
-#             if word[i] != abbr[j]:
-#                 return False
+        # Case 3: Handle letter - must match exactly
+        # Example: word=&quot;abc&quot;, abbr=&quot;abc&quot; → each letter must match exactly
+        if abbr[j].isalpha():
+            # Characters must be identical
+            # Example: word=&quot;abc&quot;, abbr=&quot;axc&quot; → &#x27;b&#x27; != &#x27;x&#x27; ✗
+            if word[i] != abbr[j]:
+                return False
             
-#             # Move both pointers forward
-#             # Example: word=&quot;abc&quot;, abbr=&quot;abc&quot; → match &#x27;a&#x27;, continue with &quot;bc&quot; vs &quot;bc&quot;
-#             return self.match(word, abbr, i + 1, j + 1)
+            # Move both pointers forward
+            # Example: word=&quot;abc&quot;, abbr=&quot;abc&quot; → match &#x27;a&#x27;, continue with &quot;bc&quot; vs &quot;bc&quot;
+            return self.match(word, abbr, i + 1, j + 1)
         
-#         # Invalid character in abbr (shouldn&#x27;t happen with valid input)
-#         return False
+        # Invalid character in abbr (shouldn&#x27;t happen with valid input)
+        return False
 
 # Time Complexity: O(2^(n+m))
 # For time complexity, in the worst case we have exponential time. Here&#x27;s why:
@@ -572,12 +572,12 @@ class Solution:
 # Call 1: match(word, abbr, i=0, j=0)
 # Current state:
 
-# word[0] = &#x27;h&#x27;
-# abbr[0] = &#x27;h&#x27;
+word[0] = &#x27;h&#x27;
+abbr[0] = &#x27;h&#x27;
 
 # Processing:
 
-# abbr[0] is a letter
+abbr[0] is a letter
 # Check: word[0] == abbr[0]? → &#x27;h&#x27; == &#x27;h&#x27; ✓
 # Recurse: match(word, abbr, i=1, j=1)
 
@@ -585,12 +585,12 @@ class Solution:
 # Call 2: match(word, abbr, i=1, j=1)
 # Current state:
 
-# word[1] = &#x27;e&#x27;
-# abbr[1] = &#x27;2&#x27;
+word[1] = &#x27;e&#x27;
+abbr[1] = &#x27;2&#x27;
 
 # Processing:
 
-# abbr[1] is a digit (&#x27;2&#x27;)
+abbr[1] is a digit (&#x27;2&#x27;)
 # Not a leading zero ✓
 # Build number: skip_count = 2
 # Move j forward: j becomes 2 (past the &#x27;2&#x27;)
@@ -602,18 +602,18 @@ class Solution:
 # Call 3: match(word, abbr, i=3, j=2)
 # Current state:
 
-# word[3] = &#x27;z&#x27;
-# abbr[2] = &#x27;*&#x27;
+word[3] = &#x27;z&#x27;
+abbr[2] = &#x27;*&#x27;
 
 # Processing:
 
-# abbr[2] is a wildcard *
+abbr[2] is a wildcard *
 # We have 2 options:
 
 # Option A: Skip the wildcard (match 0 characters)
 
 # Try: match(word, abbr, i=3, j=3)
-# word[3]=&#x27;z&#x27;, abbr[3]=&#x27;p&#x27;
+word[3]=&#x27;z&#x27;, abbr[3]=&#x27;p&#x27;
 # &#x27;z&#x27; != &#x27;p&#x27; ✗
 # Returns False
 
@@ -626,18 +626,18 @@ class Solution:
 # Call 4: match(word, abbr, i=4, j=2)
 # Current state:
 
-# word[4] = &#x27;z&#x27;
-# abbr[2] = &#x27;*&#x27; (same wildcard)
+word[4] = &#x27;z&#x27;
+abbr[2] = &#x27;*&#x27; (same wildcard)
 
 # Processing:
 
-# abbr[2] is still the wildcard *
+abbr[2] is still the wildcard *
 # We have 2 options again:
 
 # Option A: Skip the wildcard
 
 # Try: match(word, abbr, i=4, j=3)
-# word[4]=&#x27;z&#x27;, abbr[3]=&#x27;p&#x27;
+word[4]=&#x27;z&#x27;, abbr[3]=&#x27;p&#x27;
 # &#x27;z&#x27; != &#x27;p&#x27; ✗
 # Returns False
 
@@ -650,18 +650,18 @@ class Solution:
 # Call 5: match(word, abbr, i=5, j=2)
 # Current state:
 
-# word[5] = &#x27;p&#x27;
-# abbr[2] = &#x27;*&#x27; (same wildcard)
+word[5] = &#x27;p&#x27;
+abbr[2] = &#x27;*&#x27; (same wildcard)
 
 # Processing:
 
-# abbr[2] is still the wildcard *
+abbr[2] is still the wildcard *
 # We have 2 options again:
 
 # Option A: Skip the wildcard
 
 # Try: match(word, abbr, i=5, j=3)
-# word[5]=&#x27;p&#x27;, abbr[3]=&#x27;p&#x27;
+word[5]=&#x27;p&#x27;, abbr[3]=&#x27;p&#x27;
 # &#x27;p&#x27; == &#x27;p&#x27; ✓
 # Continue...
 
@@ -669,18 +669,18 @@ class Solution:
 # Call 6: match(word, abbr, i=6, j=4)
 # Current state:
 
-# word[6] = &#x27;m&#x27;
-# abbr[4] = &#x27;*&#x27;
+word[6] = &#x27;m&#x27;
+abbr[4] = &#x27;*&#x27;
 
 # Processing:
 
-# abbr[4] is a wildcard *
+abbr[4] is a wildcard *
 # We have 2 options:
 
 # Option A: Skip the wildcard
 
 # Try: match(word, abbr, i=6, j=5)
-# word[6]=&#x27;m&#x27;, abbr[5]=&#x27;m&#x27;
+word[6]=&#x27;m&#x27;, abbr[5]=&#x27;m&#x27;
 # &#x27;m&#x27; == &#x27;m&#x27; ✓
 # Continue...
 
@@ -688,12 +688,12 @@ class Solution:
 # Call 7: match(word, abbr, i=7, j=6)
 # Current state:
 
-# word[7] = &#x27;e&#x27;
-# abbr[6] = &#x27;e&#x27;
+word[7] = &#x27;e&#x27;
+abbr[6] = &#x27;e&#x27;
 
 # Processing:
 
-# abbr[6] is a letter
+abbr[6] is a letter
 # Check: word[7] == abbr[6]? → &#x27;e&#x27; == &#x27;e&#x27; ✓
 # Recurse: match(word, abbr, i=8, j=7)
 
@@ -701,8 +701,8 @@ class Solution:
 # Call 8: match(word, abbr, i=8, j=7)
 # Current state:
 
-# i = 8 = len(word)
-# j = 7 = len(abbr)
+i = 8 = len(word)
+j = 7 = len(abbr)
 
 # Processing:
 
@@ -711,219 +711,219 @@ class Solution:
 
 # Previous Approach with nested function instead of 
 
-# class Solution:
-#     def wordPatternMatch(self, word: str, abbr: str) -&gt; bool:
+class Solution:
+    def wordPatternMatch(self, word: str, abbr: str) -&gt; bool:
         
-#         def match(i: int, j: int) -&gt; bool:
-#             # Base case: both strings fully consumed - valid match
-#             if i == len(word) and j == len(abbr):
-#                 return True
+        def match(i: int, j: int) -&gt; bool:
+            # Base case: both strings fully consumed - valid match
+            if i == len(word) and j == len(abbr):
+                return True
             
-#             # Abbr exhausted but word has remaining characters - no match
-#             if j == len(abbr):
-#                 return False
+            # Abbr exhausted but word has remaining characters - no match
+            if j == len(abbr):
+                return False
             
-#             # Word exhausted but abbr has remaining characters
-#             if i == len(word):
-#                 # Valid only if all remaining characters in abbr are wildcards
-#                 # (wildcards can match empty sequence)
-#                 j_temp = j
-#                 while j_temp &lt; len(abbr):
-#                     if abbr[j_temp] != &#x27;*&#x27;:
-#                         return False
-#                     j_temp += 1
-#                 return True
+            # Word exhausted but abbr has remaining characters
+            if i == len(word):
+                # Valid only if all remaining characters in abbr are wildcards
+                # (wildcards can match empty sequence)
+                j_temp = j
+                while j_temp &lt; len(abbr):
+                    if abbr[j_temp] != &#x27;*&#x27;:
+                        return False
+                    j_temp += 1
+                return True
             
-#             # Case 1: Handle wildcard &#x27;*&#x27; - matches any sequence (0 or more chars)
-#             if abbr[j] == &#x27;*&#x27;:
-#                 # Option A: Match 0 characters (skip the wildcard)
-#                 if match(i, j + 1):
-#                     return True
-#                 # Option B: Match 1+ characters (consume from word, keep wildcard)
-#                 if match(i + 1, j):
-#                     return True
-#                 # Both options failed
-#                 return False
+            # Case 1: Handle wildcard &#x27;*&#x27; - matches any sequence (0 or more chars)
+            if abbr[j] == &#x27;*&#x27;:
+                # Option A: Match 0 characters (skip the wildcard)
+                if match(i, j + 1):
+                    return True
+                # Option B: Match 1+ characters (consume from word, keep wildcard)
+                if match(i + 1, j):
+                    return True
+                # Both options failed
+                return False
             
-#             # Case 2: Handle digit - represents number of characters to skip
-#             if abbr[j].isdigit():
-#                 # Leading zeros are invalid
-#                 if abbr[j] == &#x27;0&#x27;:
-#                     return False
+            # Case 2: Handle digit - represents number of characters to skip
+            if abbr[j].isdigit():
+                # Leading zeros are invalid
+                if abbr[j] == &#x27;0&#x27;:
+                    return False
                 
-#                 # Build the complete multi-digit number
-#                 skip_count = 0
-#                 j_temp = j
-#                 while j_temp &lt; len(abbr) and abbr[j_temp].isdigit():
-#                     skip_count = skip_count * 10 + int(abbr[j_temp])
-#                     j_temp += 1
+                # Build the complete multi-digit number
+                skip_count = 0
+                j_temp = j
+                while j_temp &lt; len(abbr) and abbr[j_temp].isdigit():
+                    skip_count = skip_count * 10 + int(abbr[j_temp])
+                    j_temp += 1
                 
-#                 # Check if we can skip that many characters without exceeding word length
-#                 if i + skip_count &gt; len(word):
-#                     return False
+                # Check if we can skip that many characters without exceeding word length
+                if i + skip_count &gt; len(word):
+                    return False
                 
-#                 # Recursively match after skipping
-#                 return match(i + skip_count, j_temp)
+                # Recursively match after skipping
+                return match(i + skip_count, j_temp)
             
-#             # Case 3: Handle letter - must match exactly
-#             if abbr[j].isalpha():
-#                 # Characters must be identical
-#                 if word[i] != abbr[j]:
-#                     return False
-#                 # Move both pointers forward
-#                 return match(i + 1, j + 1)
+            # Case 3: Handle letter - must match exactly
+            if abbr[j].isalpha():
+                # Characters must be identical
+                if word[i] != abbr[j]:
+                    return False
+                # Move both pointers forward
+                return match(i + 1, j + 1)
             
-#             # Invalid character in abbr
-#             return False
+            # Invalid character in abbr
+            return False
         
-#         # Start matching from the beginning
-#         return match(0, 0)
+        # Start matching from the beginning
+        return match(0, 0)
 
 
 # Optimized Approach : Recursion with memoization
 
-# class Solution:
-#     def wordPatternMatch(self, word: str, abbr: str) -&gt; bool:
-#         &quot;&quot;&quot;
-#         Validates if a word matches an abbreviation pattern with wildcards using memoization.
+class Solution:
+    def wordPatternMatch(self, word: str, abbr: str) -&gt; bool:
+        &quot;&quot;&quot;
+        Validates if a word matches an abbreviation pattern with wildcards using memoization.
         
-#         Time Complexity: O(n × m) where n = len(word), m = len(abbr)
-#         - Each unique state (i, j) is computed at most once due to memoization
-#         - Total possible states: (n+1) × (m+1) = O(n × m)
-#         - Each state computation does O(1) work (excluding recursive calls)
+        Time Complexity: O(n × m) where n = len(word), m = len(abbr)
+        - Each unique state (i, j) is computed at most once due to memoization
+        - Total possible states: (n+1) × (m+1) = O(n × m)
+        - Each state computation does O(1) work (excluding recursive calls)
         
-#         Space Complexity: O(n × m)
-#         - Memoization cache stores up to n × m states
-#         - Recursion stack depth is O(n + m)
-#         - Total space: O(n × m) + O(n + m) = O(n × m)
+        Space Complexity: O(n × m)
+        - Memoization cache stores up to n × m states
+        - Recursion stack depth is O(n + m)
+        - Total space: O(n × m) + O(n + m) = O(n × m)
         
-#         Args:
-#             word: The original word to validate against
-#             abbr: The abbreviation pattern with wildcards (*), numbers, and letters
+        Args:
+            word: The original word to validate against
+            abbr: The abbreviation pattern with wildcards (*), numbers, and letters
             
-#         Returns:
-#             True if word matches the abbreviation pattern, False otherwise
-#         &quot;&quot;&quot;
-#         # Memoization cache: maps (i, j) state to boolean result
-#         memo = {}
-#         return self.match(word, abbr, 0, 0, memo)
+        Returns:
+            True if word matches the abbreviation pattern, False otherwise
+        &quot;&quot;&quot;
+        # Memoization cache: maps (i, j) state to boolean result
+        memo = {}
+        return self.match(word, abbr, 0, 0, memo)
     
-#     def match(self, word: str, abbr: str, i: int, j: int, memo: dict) -&gt; bool:
-#         &quot;&quot;&quot;
-#         Recursively match word and abbr starting from positions i and j with memoization.
+    def match(self, word: str, abbr: str, i: int, j: int, memo: dict) -&gt; bool:
+        &quot;&quot;&quot;
+        Recursively match word and abbr starting from positions i and j with memoization.
         
-#         Args:
-#             word: The word to match
-#             abbr: The abbreviation pattern
-#             i: Current position in word (0 to len(word))
-#             j: Current position in abbr (0 to len(abbr))
-#             memo: Dictionary to cache results for (i, j) states
+        Args:
+            word: The word to match
+            abbr: The abbreviation pattern
+            i: Current position in word (0 to len(word))
+            j: Current position in abbr (0 to len(abbr))
+            memo: Dictionary to cache results for (i, j) states
             
-#         Returns:
-#             True if remaining parts match, False otherwise
-#         &quot;&quot;&quot;
-#         # Check if this state has already been computed
-#         if (i, j) in memo:
-#             return memo[(i, j)]
+        Returns:
+            True if remaining parts match, False otherwise
+        &quot;&quot;&quot;
+        # Check if this state has already been computed
+        if (i, j) in memo:
+            return memo[(i, j)]
         
-#         # Base case: both strings fully consumed - valid match
-#         # Example: word=&quot;ab&quot;, abbr=&quot;ab&quot; → both reach end together ✓
-#         if i == len(word) and j == len(abbr):
-#             return True
+        # Base case: both strings fully consumed - valid match
+        # Example: word=&quot;ab&quot;, abbr=&quot;ab&quot; → both reach end together ✓
+        if i == len(word) and j == len(abbr):
+            return True
         
-#         # Abbr exhausted but word has remaining characters - no match
-#         # Example: word=&quot;abcde&quot;, abbr=&quot;ab&quot; → abbr done but word has &quot;cde&quot; left ✗
-#         if j == len(abbr):
-#             memo[(i, j)] = False
-#             return False
+        # Abbr exhausted but word has remaining characters - no match
+        # Example: word=&quot;abcde&quot;, abbr=&quot;ab&quot; → abbr done but word has &quot;cde&quot; left ✗
+        if j == len(abbr):
+            memo[(i, j)] = False
+            return False
         
-#         # Word exhausted but abbr has remaining characters
-#         # Example: word=&quot;ab&quot;, abbr=&quot;ab***&quot; or word=&quot;ab&quot;, abbr=&quot;ab**c&quot;
-#         if i == len(word):
-#             # Valid only if all remaining characters in abbr are wildcards
-#             # Wildcards can match empty sequence, so &quot;ab&quot; matches &quot;ab***&quot; ✓
-#             # But &quot;ab&quot; does NOT match &quot;ab**c&quot; because we need &#x27;c&#x27; ✗
-#             j_temp = j
-#             while j_temp &lt; len(abbr):
-#                 if abbr[j_temp] != &#x27;*&#x27;:
-#                     # Found a non-wildcard character, but word is exhausted
-#                     # Example: abbr=&quot;ab**c&quot; has &#x27;c&#x27; at the end → cannot match
-#                     memo[(i, j)] = False
-#                     return False
-#                 j_temp += 1
-#             # All remaining characters are wildcards → they match empty sequence
-#             # Example: abbr=&quot;ab***&quot; has only wildcards left → valid match ✓
-#             memo[(i, j)] = True
-#             return True
+        # Word exhausted but abbr has remaining characters
+        # Example: word=&quot;ab&quot;, abbr=&quot;ab***&quot; or word=&quot;ab&quot;, abbr=&quot;ab**c&quot;
+        if i == len(word):
+            # Valid only if all remaining characters in abbr are wildcards
+            # Wildcards can match empty sequence, so &quot;ab&quot; matches &quot;ab***&quot; ✓
+            # But &quot;ab&quot; does NOT match &quot;ab**c&quot; because we need &#x27;c&#x27; ✗
+            j_temp = j
+            while j_temp &lt; len(abbr):
+                if abbr[j_temp] != &#x27;*&#x27;:
+                    # Found a non-wildcard character, but word is exhausted
+                    # Example: abbr=&quot;ab**c&quot; has &#x27;c&#x27; at the end → cannot match
+                    memo[(i, j)] = False
+                    return False
+                j_temp += 1
+            # All remaining characters are wildcards → they match empty sequence
+            # Example: abbr=&quot;ab***&quot; has only wildcards left → valid match ✓
+            memo[(i, j)] = True
+            return True
         
-#         # Case 1: Handle wildcard &#x27;*&#x27; - matches any sequence (0 or more chars)
-#         # Example: word=&quot;helzzp&quot;, abbr=&quot;h2*p&quot; where * needs to match &quot;zz&quot;
-#         if abbr[j] == &#x27;*&#x27;:
-#             # Option A: Match 0 characters (skip the wildcard)
-#             # Try to see if skipping this wildcard works
-#             # Example: word=&quot;abc&quot;, abbr=&quot;*bc&quot; → skip *, try matching &quot;abc&quot; with &quot;bc&quot;
-#             if self.match(word, abbr, i, j + 1, memo):
-#                 memo[(i, j)] = True
-#                 return True
+        # Case 1: Handle wildcard &#x27;*&#x27; - matches any sequence (0 or more chars)
+        # Example: word=&quot;helzzp&quot;, abbr=&quot;h2*p&quot; where * needs to match &quot;zz&quot;
+        if abbr[j] == &#x27;*&#x27;:
+            # Option A: Match 0 characters (skip the wildcard)
+            # Try to see if skipping this wildcard works
+            # Example: word=&quot;abc&quot;, abbr=&quot;*bc&quot; → skip *, try matching &quot;abc&quot; with &quot;bc&quot;
+            if self.match(word, abbr, i, j + 1, memo):
+                memo[(i, j)] = True
+                return True
             
-#             # Option B: Match 1+ characters (consume from word, keep wildcard)
-#             # Wildcard stays at j while we advance i (consume characters)
-#             # Example: word=&quot;helzzp&quot;, abbr=&quot;h2*p&quot; → * consumes &#x27;z&#x27;, then another &#x27;z&#x27;
-#             if self.match(word, abbr, i + 1, j, memo):
-#                 memo[(i, j)] = True
-#                 return True
+            # Option B: Match 1+ characters (consume from word, keep wildcard)
+            # Wildcard stays at j while we advance i (consume characters)
+            # Example: word=&quot;helzzp&quot;, abbr=&quot;h2*p&quot; → * consumes &#x27;z&#x27;, then another &#x27;z&#x27;
+            if self.match(word, abbr, i + 1, j, memo):
+                memo[(i, j)] = True
+                return True
             
-#             # Both options failed - no valid match found
-#             memo[(i, j)] = False
-#             return False
+            # Both options failed - no valid match found
+            memo[(i, j)] = False
+            return False
         
-#         # Case 2: Handle digit - represents number of characters to skip
-#         # Example: word=&quot;hello&quot;, abbr=&quot;h2lo&quot; → &#x27;2&#x27; means skip 2 chars (&#x27;e&#x27; and &#x27;l&#x27;)
-#         if abbr[j].isdigit():
-#             # Leading zeros are invalid
-#             # Example: abbr=&quot;h0llo&quot; is invalid ✗
-#             if abbr[j] == &#x27;0&#x27;:
-#                 memo[(i, j)] = False
-#                 return False
+        # Case 2: Handle digit - represents number of characters to skip
+        # Example: word=&quot;hello&quot;, abbr=&quot;h2lo&quot; → &#x27;2&#x27; means skip 2 chars (&#x27;e&#x27; and &#x27;l&#x27;)
+        if abbr[j].isdigit():
+            # Leading zeros are invalid
+            # Example: abbr=&quot;h0llo&quot; is invalid ✗
+            if abbr[j] == &#x27;0&#x27;:
+                memo[(i, j)] = False
+                return False
             
-#             # Build the complete multi-digit number
-#             # Example: abbr=&quot;h12o&quot; → skip_count=12 (not just 1 and 2 separately)
-#             skip_count = 0
-#             j_temp = j
-#             while j_temp &lt; len(abbr) and abbr[j_temp].isdigit():
-#                 skip_count = skip_count * 10 + int(abbr[j_temp])
-#                 j_temp += 1
+            # Build the complete multi-digit number
+            # Example: abbr=&quot;h12o&quot; → skip_count=12 (not just 1 and 2 separately)
+            skip_count = 0
+            j_temp = j
+            while j_temp &lt; len(abbr) and abbr[j_temp].isdigit():
+                skip_count = skip_count * 10 + int(abbr[j_temp])
+                j_temp += 1
             
-#             # Check if we can skip that many characters without exceeding word length
-#             # Example: word=&quot;hi&quot;, abbr=&quot;h5&quot; → can&#x27;t skip 5 chars from position 1 ✗
-#             if i + skip_count &gt; len(word):
-#                 memo[(i, j)] = False
-#                 return False
+            # Check if we can skip that many characters without exceeding word length
+            # Example: word=&quot;hi&quot;, abbr=&quot;h5&quot; → can&#x27;t skip 5 chars from position 1 ✗
+            if i + skip_count &gt; len(word):
+                memo[(i, j)] = False
+                return False
             
-#             # Recursively match after skipping skip_count characters
-#             # Example: word=&quot;hello&quot;, abbr=&quot;h2lo&quot; → skip 2 chars, match from &quot;llo&quot; vs &quot;lo&quot;
-#             result = self.match(word, abbr, i + skip_count, j_temp, memo)
-#             memo[(i, j)] = result
-#             return result
+            # Recursively match after skipping skip_count characters
+            # Example: word=&quot;hello&quot;, abbr=&quot;h2lo&quot; → skip 2 chars, match from &quot;llo&quot; vs &quot;lo&quot;
+            result = self.match(word, abbr, i + skip_count, j_temp, memo)
+            memo[(i, j)] = result
+            return result
         
-#         # Case 3: Handle letter - must match exactly
-#         # Example: word=&quot;abc&quot;, abbr=&quot;abc&quot; → each letter must match exactly
-#         if abbr[j].isalpha():
-#             # Characters must be identical
-#             # Example: word=&quot;abc&quot;, abbr=&quot;axc&quot; → &#x27;b&#x27; != &#x27;x&#x27; ✗
-#             if word[i] != abbr[j]:
-#                 memo[(i, j)] = False
-#                 return False
+        # Case 3: Handle letter - must match exactly
+        # Example: word=&quot;abc&quot;, abbr=&quot;abc&quot; → each letter must match exactly
+        if abbr[j].isalpha():
+            # Characters must be identical
+            # Example: word=&quot;abc&quot;, abbr=&quot;axc&quot; → &#x27;b&#x27; != &#x27;x&#x27; ✗
+            if word[i] != abbr[j]:
+                memo[(i, j)] = False
+                return False
             
-#             # Move both pointers forward
-#             # Example: word=&quot;abc&quot;, abbr=&quot;abc&quot; → match &#x27;a&#x27;, continue with &quot;bc&quot; vs &quot;bc&quot;
-#             result = self.match(word, abbr, i + 1, j + 1, memo)
-#             memo[(i, j)] = result
-#             return result
+            # Move both pointers forward
+            # Example: word=&quot;abc&quot;, abbr=&quot;abc&quot; → match &#x27;a&#x27;, continue with &quot;bc&quot; vs &quot;bc&quot;
+            result = self.match(word, abbr, i + 1, j + 1, memo)
+            memo[(i, j)] = result
+            return result
         
-#         # Invalid character in abbr (shouldn&#x27;t happen with valid input)
-#         memo[(i, j)] = False
-#         return False
+        # Invalid character in abbr (shouldn&#x27;t happen with valid input)
+        memo[(i, j)] = False
+        return False
 
 
 
