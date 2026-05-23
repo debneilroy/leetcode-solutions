@@ -1,0 +1,734 @@
+"""
+LeetCode 1650. Lowest Common Ancestor of a Binary Tree III
+Difficulty: Medium
+URL: https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/
+"""
+
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+        self.parent = None
+"""
+
+# Brute-force Idea:
+
+# 1. Build path from p to root - store all ancestors of p in a list
+# 2. Build path from q to root - store all ancestors of q in a list
+# 3. Find first common node - convert one path to a set, then iterate through the other path to find the first match
+
+# class Solution:
+#     def lowestCommonAncestor(self, p: 'Node', q: 'Node') -> 'Node':
+#         """
+#         Brute force: Store full paths to root, then find first common node.
+        
+#         Time Complexity: O(h) - build two paths + compare
+#         Space Complexity: O(h) - store two paths (WORSE than optimized O(1))
+#         """
+#         # Get complete path from p to root
+#         path_p = []
+#         current = p
+#         while current:
+#             path_p.append(current)
+#             current = current.parent
+        
+#         # Get complete path from q to root
+#         path_q = []
+#         current = q
+#         while current:
+#             path_q.append(current)
+#             current = current.parent
+        
+#         # Convert one path to set for O(1) lookup
+#         set_p = set(path_p)
+        
+#         # Find first common ancestor
+#         for node in path_q:
+#             if node in set_p:
+#                 return node
+        
+#         return None
+
+
+# Approach : Two Pointers
+
+# Use two pointers starting at p and q.
+# At each step, move the pointer to its parent. If it reaches None, restart at the other node.
+
+# Eventually, the two pointers will meet at the LCA.
+
+class Solution:
+    def lowestCommonAncestor(self, p: 'Node', q: 'Node') -> 'Node':
+        """
+        Find the lowest common ancestor (LCA) of two nodes in a binary tree
+        where each node has a parent pointer.
+        
+        Uses a two-pointer approach where both pointers traverse their respective
+        paths to the root, then switch to the other node's starting position.
+        This ensures both pointers travel equal total distance and meet at the LCA.
+        
+        Args:
+            p: First node
+            q: Second node
+        
+        Returns:
+            Node: The lowest common ancestor of p and q
+
+        Algorithm:
+            Traversal paths:
+                p1: p → ancestors of p → root → (switch to q) → ancestors of q → LCA
+                p2: q → ancestors of q → root → (switch to p) → ancestors of p → LCA
+            
+            Because both pointers traverse the same total distance, they will 
+            eventually meet at the Lowest Common Ancestor.
+        
+        Time Complexity: O(h) where h is the height of the tree
+            Let:
+                dp = depth(p)
+                dq = depth(q)
+                dLCA = depth(LCA)
+            
+            Each pointer's journey:
+                p1: travels dp steps to root, then (dq - dLCA) steps from q to LCA
+                    Total: dp + (dq - dLCA) = dp + dq - dLCA
+                
+                p2: travels dq steps to root, then (dp - dLCA) steps from p to LCA
+                    Total: dq + (dp - dLCA) = dp + dq - dLCA
+            
+            Both travel the same distance: dp + dq - dLCA
+            
+            Since dp ≤ h and dq ≤ h:
+                dp + dq - dLCA ≤ h + h - 0 = 2h
+            
+            Therefore the running time is: O(2h) = O(h)
+            
+            Examples:
+                Balanced tree: h = log n → O(log n)
+                Skewed tree:   h = n     → O(n)
+        
+        Space Complexity: O(1)
+            - Only using two pointers (p1, p2)
+            - No additional data structures (no parent map, no sets, no lists)
+            - Constant space regardless of tree size
+
+        Note on Duplicate Values:
+            This algorithm works even if node values are not unique because we
+            compare node objects (identity) using 'p1 != p2', not node values.
+            Each node is a unique object in memory regardless of its value.
+            
+            If we compared values instead (p1.val != p2.val), the algorithm would
+            break with duplicate values - it would stop at the first node where
+            values match, which may not be the actual LCA.
+        
+        Example:
+                3
+               / \
+              5   1
+             / \
+            6   2
+               / \
+              7   4
+            
+            p = 5, q = 1
+            p1 path: 5 → 3 → None → switch to 1 → 3
+            p2 path: 1 → 3 → None → switch to 5 → 3
+            Both meet at 3 (the LCA)
+
+            # Create nodes
+            n3 = Node(3)
+            n5 = Node(5)
+            n1 = Node(1)
+            n6 = Node(6)
+            n2 = Node(2)
+            n7 = Node(7)
+            n4 = Node(4)
+            
+            # Build tree structure
+            n3.left, n3.right = n5, n1
+            n5.left, n5.right = n6, n2
+            n2.left, n2.right = n7, n4
+            
+            # Set parent pointers
+            n5.parent = n3
+            n1.parent = n3
+            n6.parent = n5
+            n2.parent = n5
+            n7.parent = n2
+            n4.parent = n2
+            
+            # Test cases
+            solution = Solution()
+            solution.lowestCommonAncestor(n5, n1).val
+            3
+        """
+        # Base case 1: Handle None inputs
+        # If either node is None, cannot find LCA
+        if p is None or q is None:
+            return None
+        
+        # Base case 2: Same node
+        # A node is the LCA of itself
+        if p == q:
+            return p
+
+        # Initialize two pointers at p and q
+        p1, p2 = p, q
+
+        # Continue until both pointers meet at the LCA
+        while p1 != p2:
+            # Move p1 up to its parent
+            # If p1 has no parent (reached root), switch to q's starting position
+            # This ensures p1 travels: p → root → q → LCA
+            # Alternative: Can check 'if p1' instead of 'if p1.parent'
+            #   - 'if p1.parent': switches immediately at the root (pointer never becomes None)
+            #   - 'if p1': pointer briefly becomes None before switching (common linked-list style)
+            p1 = p1.parent if p1.parent else q
+
+            # Move p2 up to its parent
+            # If p2 has no parent (reached root), switch to p's starting position
+            # This ensures p2 travels: q → root → p → LCA
+            p2 = p2.parent if p2.parent else p
+            
+            # Both pointers travel equal distance:
+            # Distance = depth_p + depth_q - depth_LCA
+            # They are guaranteed to meet at the LCA
+
+        # When p1 == p2, we've found the LCA
+        return p1
+
+# Scenario : Don't know if nodes are in same or different tree
+
+# class Solution:
+#     def lowestCommonAncestor(self, p: 'Node', q: 'Node') -> 'Node':
+#         """
+#         Find LCA of two nodes - handles case where nodes might be in different trees.
+        
+#         Strategy: First verify both nodes are in the same tree by comparing roots,
+#         then use two-pointer approach to find LCA.
+        
+#         Args:
+#             p: First node
+#             q: Second node
+        
+#         Returns:
+#             Node: The LCA if p and q are in the same tree
+#             None: If nodes are in different trees or either is None
+        
+#         Time Complexity: O(h) where h is height of tree
+#             Best case: O(1)
+#                 - When p == q (same node), return immediately
+#                 - No tree traversal needed
+            
+#             Average case: O(h)
+#                 - find_root(p): O(h) to traverse to root
+#                 - find_root(q): O(h) to traverse to root
+#                 - Two pointer LCA: O(h) to find LCA
+#                 - Total: O(h) + O(h) + O(h) = O(3h) = O(h)
+#                 - For balanced tree: h = log n, so O(log n)
+            
+#             Worst case: O(h) where h is height
+#                 - Skewed tree (linked list): h = n, so O(n)
+#                 - Must traverse full height multiple times
+#                 - Example: p at depth n-1, q at depth n-2
+#                   find_root(p): n-1 steps
+#                   find_root(q): n-2 steps
+#                   Two pointers: ~n steps
+#                   Total: O(3n) = O(n)
+        
+#         Space Complexity: O(1)
+#             Best case: O(1)
+#                 - p == q: no additional variables
+            
+#             Average case: O(1)
+#                 - Only using pointer variables (ptr1, ptr2)
+#                 - Helper function uses O(1) space (just iterates)
+            
+#             Worst case: O(1)
+#                 - Space is constant regardless of tree size or height
+#                 - No recursion (no call stack)
+#                 - No additional data structures (no hash maps, sets, or lists)
+        
+#         Algorithm:
+#             1. Handle base cases (None inputs, p == q)
+#             2. Find root of p's tree by traversing up parent pointers
+#             3. Find root of q's tree by traversing up parent pointers
+#             4. If roots differ → return None (different trees)
+#             5. If roots same → use two-pointer approach to find LCA
+        
+#         Example 1 - Same Tree:
+#             Tree:
+#                     1
+#                    / \
+#                   2   3
+#                  /
+#                 4
+            
+#             p = 4, q = 3
+            
+#             Step 1: find_root(4) = 1 (traverse 4→2→1)
+#             Step 2: find_root(3) = 1 (traverse 3→1)
+#             Step 3: Roots match (1 == 1), proceed with LCA
+#             Step 4: Two pointers meet at 1
+#             Result: 1 ✓
+        
+#         Example 2 - Different Trees:
+#             Tree 1:    Tree 2:
+#                1          5
+#               /          /
+#              2          6
+            
+#             p = 2 (in Tree 1)
+#             q = 6 (in Tree 2)
+            
+#             Step 1: find_root(2) = 1 (traverse 2→1)
+#             Step 2: find_root(6) = 5 (traverse 6→5)
+#             Step 3: Roots differ (1 != 5), different trees!
+#             Result: None ✓
+
+#         """
+#         # Base case 1: Handle None inputs
+#         if p is None or q is None:
+#             return None
+        
+#         # Base case 2: Same node
+#         # Optimization: return immediately before any traversal
+#         if p == q:
+#             return p
+        
+#         # Helper function: Find root of a tree
+#         def find_root(node: 'Node') -> 'Node':
+#             """
+#             Traverse up to root of the tree.
+            
+#             Time: O(h) where h is depth of node
+#             Space: O(1)
+            
+#             Args:
+#                 node: Starting node
+            
+#             Returns:
+#                 Node: The root of the tree (node with parent = None)
+#             """
+#             while node.parent:
+#                 node = node.parent
+#             return node
+        
+#         # Step 1: Find root of p's tree
+#         # Time: O(depth_p) = O(h)
+#         root_p = find_root(p)
+        
+#         # Step 2: Find root of q's tree
+#         # Time: O(depth_q) = O(h)
+#         root_q = find_root(q)
+        
+#         # Step 3: Verify both nodes are in the same tree
+#         # If roots are different, nodes are in different trees
+#         if root_p != root_q:
+#             return None  # Different trees, no common ancestor
+        
+#         # Step 4: Both in same tree, find LCA using two pointers
+#         # Time: O(h)
+#         ptr1, ptr2 = p, q
+        
+#         while ptr1 != ptr2:
+#             # Move ptr1 up to parent, or switch to q if at root
+#             ptr1 = ptr1.parent if ptr1.parent else q
+            
+#             # Move ptr2 up to parent, or switch to p if at root
+#             ptr2 = ptr2.parent if ptr2.parent else p
+            
+#             # Both pointers travel equal distance and meet at LCA
+        
+#         # Pointers have met at the LCA
+#         return ptr1
+ 
+
+# Variant 1 : Definition of node is different, val is now a character (or can be a string)
+
+# class Node:
+#     def __init__(self, val: str):
+#         self.val: str = val  # Character value (single character string)
+#         self.left: 'Node' = None
+#         self.right: 'Node' = None
+#         self.parent: 'Node' = None
+
+# No change from the previous code since we do not use val, left and right in the code. We only use the parent pointer.
+
+# Variant 2 : Lowest Common Ancestor of a Binary Tree (without parent pointers)
+
+# Given two nodes of a binary tree p and q as well as a list of all nodes in the tree nodes (where nodes is unordered), return their lowest common ancestor (LCA).
+
+# IMPORTANT CLARIFICATION:
+# This is NOT LC 236. LC 236 provides the root of the tree, making it solvable via DFS.
+# This variant only provides an unordered list of nodes WITHOUT identifying which node 
+# is the root. As stated, this problem is UNSOLVABLE because:
+# 1. You cannot determine which node is the root from an unordered list
+# 2. You cannot traverse the tree without knowing where to start
+# 3. The .left and .right pointers exist in memory but you have no entry point
+#
+# To make this solvable, you would need EITHER:
+# - The root node explicitly provided (which would make it LC 236), OR
+# - Parent pointers in the Node class (which would make it LC 1650), OR
+# - Additional information to identify the root or reconstruct the tree structure
+
+# Node Definition
+# class Node:
+#     def __init__(self, val: int):
+#         self.val: int = val
+#         self.left: Node = None
+#         self.right: Node = None
+
+# Note: Unlike LeetCode 1650, there is no parent pointer in the Node class.
+
+# Definition of LCA
+# According to the definition of LCA: The lowest common ancestor of two nodes p and q in a tree T is the lowest node that has both p and q as descendants (where we allow a node to be a descendant of itself).
+
+# Example:
+
+# Input:
+# nodes = [2, 5, 4, 1, 3, 6]  # unordered list of all nodes
+# p = 4
+# q = 6
+
+# Tree Structure:
+
+#         1
+#        / \
+#       2   3
+#      / \
+#     4   5
+#          \
+#           6
+
+# Output: 2
+
+# Constraints:
+
+# 1. The number of nodes in the tree is in the range [2, 10^5]
+# 2. All node values are unique
+# 3. p != q
+# 4. p and q exist in the tree
+
+# class Node:
+#     def __init__(self, val: int):
+#         self.val = val
+#         self.left = None
+#         self.right = None
+
+
+# class Solution:
+#     def lowestCommonAncestor(self, p: Node, q: Node, nodes: list[Node]) -> Node:
+#         """        
+#         Find the lowest common ancestor (LCA) of two nodes in a binary tree
+#         without parent pointers, given a list of all nodes in the tree.
+        
+#         Args:
+#             p: First node
+#             q: Second node
+#             nodes: List of all nodes in the tree (unordered)
+        
+#         Returns:
+#             Node: The lowest common ancestor of p and q
+        
+#         Time Complexity: O(n) where n is the number of nodes in the tree
+#             - Building parent map: O(n) - must iterate through all nodes
+#             - Two pointer traversal: O(h) where h is height of tree
+#             - Overall: O(n) since h <= n
+#             - Best case: O(n) - cannot avoid building parent map
+#             - Worst case: O(n)
+        
+#         Space Complexity: O(n)
+#             - Parent map stores up to n-1 entries (all nodes except root)
+#             - Two pointers use O(1) additional space
+#             - Overall: O(n)
+#             - Best case: O(n) - must store parent relationships
+#             - Worst case: O(n)
+        
+#         Example:
+#             Build the tree:
+#                     1
+#                    / \
+#                   2   3
+#                  / \
+#                 4   5
+#                      \
+#                       6
+            
+#             # Create nodes
+#             n1 = Node(1)
+#             n2 = Node(2)
+#             n3 = Node(3)
+#             n4 = Node(4)
+#             n5 = Node(5)
+#             n6 = Node(6)
+            
+#             # Build tree structure
+#             n1.left = n2
+#             n1.right = n3
+#             n2.left = n4
+#             n2.right = n5
+#             n5.right = n6
+            
+#             # Unordered nodes list (as given in problem)
+#             nodes = [n2, n5, n4, n1, n3, n6]
+            
+#             # Test cases
+#             >>> solution = Solution()
+#             >>> solution.lowestCommonAncestor(n4, n6, nodes).val
+#             2
+#             >>> solution.lowestCommonAncestor(n4, n5, nodes).val
+#             2
+#             >>> solution.lowestCommonAncestor(n4, n3, nodes).val
+#             1
+#         """
+
+#         # Base case 1: Handle None inputs (defensive programming)
+#         if p is None or q is None or nodes is None:
+#             return None
+        
+#         # Base case 2: Same node
+#         if p == q:
+#             return p
+        
+#         # Optional: Validate p and q are in nodes (ONLY if interviewer requests)
+#         # Uncomment below if explicitly asked to handle invalid inputs:
+#         # 
+#         # nodes_set = set(nodes)  # O(n) space and time
+#         # if p not in nodes_set or q not in nodes_set:
+#         #     return None  # p or q not in the tree
+
+
+#         # Step 1: Build parent mapping from the nodes list
+#         # Key: child node, Value: parent node
+#         # Note: Using regular dict instead of defaultdict because we use .get() with different defaults (q vs p), making defaultdict unnecessary
+#         # Time: O(n), Space: O(n)
+#         child_to_parent = {}
+#         for node in nodes:
+#             # If node has a left child, record the parent relationship
+#             if node.left:
+#                 child_to_parent[node.left] = node
+#             # If node has a right child, record the parent relationship
+#             if node.right:
+#                 child_to_parent[node.right] = node
+        
+#         # Step 2: Two pointer approach to find LCA
+#         # Initialize both pointers at p and q
+#         ptr1, ptr2 = p, q
+        
+#         # Continue until both pointers meet at the LCA
+#         # Time: O(h) where h is height of tree
+#         # Space: O(1) - only using two pointers
+#         while ptr1 != ptr2:
+#             # Move ptr1 up to its parent
+#             # If ptr1 is at root (no parent exists), switch to q's starting position
+#             # This ensures ptr1 traverses: p → root → q → LCA
+#             ptr1 = child_to_parent.get(ptr1, q)
+
+#             # if ptr1 in child_to_parent:
+#             #     ptr1 = child_to_parent[ptr1]
+#             # else:
+#             #     ptr1 = q  
+            
+#             # Move ptr2 up to its parent
+#             # If ptr2 is at root (no parent exists), switch to p's starting position
+#             # This ensures ptr2 traverses: q → root → p → LCA
+#             ptr2 = child_to_parent.get(ptr2, p)
+
+#             # if ptr2 in child_to_parent:
+#             #     ptr2 = child_to_parent[ptr2]
+#             # else:
+#             #     ptr2 = p
+        
+#         # When ptr1 == ptr2, we've found the LCA
+#         return ptr1
+
+
+# Scenario : p and q might be in different trees
+
+# class Solution:
+#     def lowestCommonAncestor(self, p: Node, q: Node, 
+#                             nodes: list[Node]) -> Node:
+#         """
+#         Find LCA of two nodes WITHOUT parent pointers.
+#         Given a list of all nodes (may contain nodes from multiple trees - forest).
+        
+#         Args:
+#             p: First node
+#             q: Second node
+#             nodes: List of all nodes (can be from one tree or multiple trees)
+        
+#         Returns:
+#             NodeWithoutParent: The LCA if p and q are in the same tree
+#             None: If p and q are in different trees, or any input is None
+        
+#         Time Complexity: O(n) where n is the number of nodes in the list
+#             Best case: O(1)
+#                 - When p == q AND p is in nodes, return immediately
+#                 - Empty nodes list → O(1) to return None
+            
+#             Average case: O(n)
+#                 - Building parent map: O(n) - must iterate through all nodes
+#                 - Membership check: O(n) to build set
+#                 - Finding roots: O(h) for each node
+#                 - Two pointer traversal: O(h) where h is height of tree
+#                 - Overall: O(n) since we must scan all nodes
+            
+#             Worst case: O(n)
+#                 - Building parent map: O(n) for n nodes
+#                 - Membership check: O(n)
+#                 - Finding roots: O(n) in skewed tree
+#                 - Two pointer traversal: O(n) in skewed tree
+#                 - Total: O(n) + O(n) + O(n) + O(n) = O(4n) = O(n)
+        
+#         Space Complexity: O(n)
+#             Best case: O(1)
+#                 - When empty nodes or p == q with early return
+            
+#             Average case: O(n)
+#                 - child_to_parent map: O(n-1) entries
+#                 - nodes_set for validation: O(n)
+#                 - ptr1, ptr2: O(1) for two pointer variables
+#                 - Total: O(2n) = O(n)
+            
+#             Worst case: O(n)
+#                 - Parent map + nodes_set = O(2n) = O(n)
+#                 - Space is O(n) regardless of tree structure
+        
+#         Example 1 - Same Tree:
+#             Tree:
+#                     1
+#                    / \
+#                   2   3
+            
+#             nodes = [1, 2, 3]
+#             p = 2, q = 3
+            
+#             Step 1: Validate p, q in nodes ✓
+#             Step 2: Build parent map: {2: 1, 3: 1}
+#             Step 3: find_root(2) = 1, find_root(3) = 1
+#             Step 4: Roots match (1 == 1), proceed with LCA
+#             Step 5: Two pointers meet at 1
+#             Result: 1 ✓
+        
+#         Example 2 - Different Trees (Forest):
+#             Tree 1:  1      Tree 2:  5
+#                     / \             / \
+#                    2   3           6   7
+            
+#             nodes = [1, 2, 3, 5, 6, 7]  (forest with 2 trees)
+#             p = 2 (Tree 1), q = 6 (Tree 2)
+            
+#             Step 1: Validate p, q in nodes ✓
+#             Step 2: Build parent map: {2: 1, 3: 1, 6: 5, 7: 5}
+#             Step 3: find_root(2) = 1, find_root(6) = 5
+#             Step 4: Roots differ (1 != 5), different trees!
+#             Result: None ✓
+        
+#         Example 3 - Same Node in nodes:
+#             nodes = [1, 2, 3]
+#             p = 2, q = 2
+            
+#             Step 1: Validate p in nodes ✓
+#             Step 2: p == q, return immediately
+#             Result: 2 ✓
+        
+#         Example 4 - Same Node NOT in nodes:
+#             nodes = [1, 3]
+#             p = 2, q = 2
+            
+#             Step 1: Validate p in nodes ✗
+#             Result: None (p not in nodes) ✓
+            
+#         """
+#         # Base case 1: Handle None inputs
+#         if p is None or q is None or nodes is None:
+#             return None
+        
+#         # Base case 2: Empty nodes list
+#         if len(nodes) == 0:
+#             return None
+        
+#         # Base case 3: Single node tree
+#         # The only node must be both p and q
+#         if len(nodes) == 1:
+#             # Check if both p and q are this single node
+#             if p == nodes[0] and q == nodes[0]:
+#                 return nodes[0]
+#             return None  # p or q not in tree
+        
+#         # Base case 4: Validate p and q are in nodes list
+#         # This is REQUIRED to handle cases where p or q are not in the tree
+#         nodes_set = set(nodes)  # O(n) space and time
+        
+#         if p not in nodes_set:
+#             return None  # p not in tree
+        
+#         if q not in nodes_set:
+#             return None  # q not in tree
+        
+#         # Base case 5: Same node (both p and q in nodes)
+#         # Now safe to return since we know p is in nodes
+#         if p == q:
+#             return p
+        
+#         # Step 1: Build parent mapping from the nodes list
+#         # Key: child node, Value: parent node
+#         # Time: O(n), Space: O(n)
+#         child_to_parent = {}
+#         for node in nodes:
+#             if node.left:
+#                 child_to_parent[node.left] = node
+#             if node.right:
+#                 child_to_parent[node.right] = node
+        
+#         # Helper function: Find root of a tree using parent map
+#         def find_root(node: Node) -> Node:
+#             """
+#             Traverse up to root using parent map.
+            
+#             Time: O(h) where h is depth of node
+#             Space: O(1)
+            
+#             Args:
+#                 node: Starting node
+            
+#             Returns:
+#                 NodeWithoutParent: The root (node not in child_to_parent map)
+#             """
+#             while node in child_to_parent:
+#                 node = child_to_parent[node]
+#             return node
+        
+#         # Step 2: Find root of p's tree
+#         # Time: O(h)
+#         root_p = find_root(p)
+        
+#         # Step 3: Find root of q's tree
+#         # Time: O(h)
+#         root_q = find_root(q)
+        
+#         # Step 4: Verify both nodes are in the same tree
+#         # If roots are different, nodes are in different trees
+#         if root_p != root_q:
+#             return None  # Different trees, no common ancestor
+        
+#         # Step 5: Both in same tree, find LCA using two pointers
+#         # Time: O(h)
+#         ptr1, ptr2 = p, q
+        
+#         while ptr1 != ptr2:
+#             # Move ptr1 up to parent, or switch to q if at root
+#             ptr1 = child_to_parent.get(ptr1, q)
+            
+#             # Move ptr2 up to parent, or switch to p if at root
+#             ptr2 = child_to_parent.get(ptr2, p)
+        
+#         # Pointers have met at the LCA
+#         return ptr1
+
+
+
+
