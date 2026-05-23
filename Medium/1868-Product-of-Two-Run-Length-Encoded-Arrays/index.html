@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1868. Product of Two Run-Length Encoded Arrays - LeetCode Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+
+:root {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --radius:    6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #e6db74; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy   { color: var(--easy);   background: rgba(44,187,93,0.15); }
+.badge-Medium { color: var(--medium); background: rgba(255,161,22,0.15); }
+.badge-Hard   { color: var(--hard);   background: rgba(239,71,67,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--surface2); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: #1e1e1e !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">1868. Product of Two Run-Length Encoded Arrays</span>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (2)</div>
+        <div class="tab" data-tab="similar">Similar (0)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">1868. Product of Two Run-Length Encoded Arrays</div>
+        <div class="prob-meta">
+          <span class="badge badge-Medium">Medium</span>
+          <span class="tag">Array</span><span class="tag">Two Pointers</span>
+        </div>
+        <div class="prob-stats">64K / 107.3K (59.6%)</div>
+        <div class="prob-desc"><p><strong>Run-length encoding</strong> is a compression algorithm that allows for an integer array <code>nums</code> with many segments of <strong>consecutive repeated</strong> numbers to be represented by a (generally smaller) 2D array <code>encoded</code>. Each <code>encoded[i] = [vali, freqi]</code> describes the <code>ith</code> segment of repeated numbers in <code>nums</code> where <code>vali</code> is the value that is repeated <code>freqi</code> times.</p>
+<ul>
+<li>For example, <code>nums = [1,1,1,2,2,2,2,2]</code> is represented by the <strong>run-length encoded</strong> array <code>encoded = [[1,3],[2,5]]</code>. Another way to read this is "three <code>1</code>'s followed by five <code>2</code>'s".</li>
+</ul>
+<p>The <strong>product</strong> of two run-length encoded arrays <code>encoded1</code> and <code>encoded2</code> can be calculated using the following steps:</p>
+<ul>
+<li><strong>Expand</strong> both <code>encoded1</code> and <code>encoded2</code> into the full arrays <code>nums1</code> and <code>nums2</code> respectively.</li>
+</ul>
+	
+<ul>
+<li>Create a new array <code>prodNums</code> of length <code>nums1.length</code> and set <code>prodNums[i] = nums1[i] * nums2[i]</code>.</li>
+</ul>
+	
+<ul>
+<li><strong>Compress</strong> <code>prodNums</code> into a run-length encoded array and return it.</li>
+</ul>
+<p>You are given two <strong>run-length encoded</strong> arrays <code>encoded1</code> and <code>encoded2</code> representing full arrays <code>nums1</code> and <code>nums2</code> respectively. Both <code>nums1</code> and <code>nums2</code> have the <strong>same length</strong>. Each <code>encoded1[i] = [vali, freqi]</code> describes the <code>ith</code> segment of <code>nums1</code>, and each <code>encoded2[j] = [valj, freqj]</code> describes the <code>jth</code> segment of <code>nums2</code>.</p>
+<p>Return the <strong>product</strong> of <code>encoded1</code><em> and </em><code>encoded2</code>.</p>
+<p><strong>Note:</strong> Compression should be done such that the run-length encoded array has the <strong>minimum</strong> possible length.</p>
+<p>Example 1:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> encoded1 = [[1,3],[2,3]], encoded2 = [[6,3],[3,3]]
+<strong>Output:</strong> [[6,6]]
+<strong>Explanation:</strong> encoded1 expands to [1,1,1,2,2,2] and encoded2 expands to [6,6,6,3,3,3].
+prodNums = [6,6,6,6,6,6], which is compressed into the run-length encoded array [[6,6]].
+</code></pre>
+<p>Example 2:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> encoded1 = [[1,3],[2,1],[3,2]], encoded2 = [[2,3],[3,3]]
+<strong>Output:</strong> [[2,3],[6,1],[9,2]]
+<strong>Explanation:</strong> encoded1 expands to [1,1,1,2,3,3] and encoded2 expands to [2,2,2,3,3,3].
+prodNums = [2,2,2,6,9,9], which is compressed into the run-length encoded array [[2,3],[6,1],[9,2]].
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= encoded1.length, encoded2.length &lt;= 105</code></li>
+</ul>
+	
+<ul>
+<li><code>encoded1[i].length == 2</code></li>
+</ul>
+	
+<ul>
+<li><code>encoded2[j].length == 2</code></li>
+</ul>
+	
+<ul>
+<li><code>1 &lt;= vali, freqi &lt;= 104</code> for each <code>encoded1[i]</code>.</li>
+</ul>
+	
+<ul>
+<li><code>1 &lt;= valj, freqj &lt;= 104</code> for each <code>encoded2[j]</code>.</li>
+</ul>
+	
+<ul>
+<li>The full arrays that <code>encoded1</code> and <code>encoded2</code> represent are the same length.</li>
+</ul></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        
+<details class="hint-block">
+  <summary>Hint 1</summary>
+  <div class="hint-body"><p>Keep track of the indices on both RLE arrays and join the parts together.</p></div>
+</details>
+<details class="hint-block">
+  <summary>Hint 2</summary>
+  <div class="hint-body"><p>What is the maximum number of segments if we took the minimum number of elements left on both the current segments every time?</p></div>
+</details>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        <p class="empty-msg">No similar problems listed.</p>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 1868. Product of Two Run-Length Encoded Arrays
+Difficulty: Medium
+URL: https://leetcode.com/problems/product-of-two-run-length-encoded-arrays/
+&quot;&quot;&quot;
+
+class Solution:
+    def findRLEArray(self, encoded1, encoded2):
+        &quot;&quot;&quot;
+        Find the product of two run-length encoded arrays.
+        
+        Time Complexity: O(n + m) where n = len(encoded1), m = len(encoded2)
+        - We traverse each encoded array exactly once
+        - Each element is processed once with constant-time operations
+        
+        Space Complexity: O(k) where k is the length of the output array
+        - Best case: O(1) when all products can be merged into one element
+        - Worst case: O(n + m) when no consecutive products can be merged
+        - Auxiliary space: O(1) for pointers and temporary variables
+        
+        Args:
+            encoded1: List[List[int]] - RLE array [[val, freq], ...]
+            encoded2: List[List[int]] - RLE array [[val, freq], ...]
+        
+        Returns:
+            List[List[int]] - Product array in RLE format
+        &quot;&quot;&quot;
+        result = []
+        i = j = 0  # Pointers for encoded1 and encoded2
+        
+        # Track remaining frequencies for current elements
+        freq1_remaining = encoded1[0][1]
+        freq2_remaining = encoded2[0][1]
+        
+        # Process both arrays until we&#x27;ve consumed all elements
+        while i &lt; len(encoded1) and j &lt; len(encoded2):
+            # Get current values from both arrays
+            val1 = encoded1[i][0]
+            val2 = encoded2[j][0]
+            
+            # Calculate product of current values
+            product = val1 * val2
+            
+            # Take minimum of remaining frequencies
+            # This is how many times we can use this product before
+            # one of the arrays moves to its next element
+            min_freq = min(freq1_remaining, freq2_remaining)
+            
+            # Add to result, merging with previous element if same product
+            # This keeps the output optimally compressed
+            if result and result[-1][0] == product:
+                result[-1][1] += min_freq
+            else:
+                result.append([product, min_freq])
+            
+            # Decrease remaining frequencies by amount we just used
+            freq1_remaining -= min_freq
+            freq2_remaining -= min_freq
+            
+            # Move to next element in encoded1 if current is exhausted
+            if freq1_remaining == 0:
+                i += 1
+                if i &lt; len(encoded1):
+                    freq1_remaining = encoded1[i][1]
+            
+            # Move to next element in encoded2 if current is exhausted
+            if freq2_remaining == 0:
+                j += 1
+                if j &lt; len(encoded2):
+                    freq2_remaining = encoded2[j][1]
+        
+        return result
+
+
+
+# class Solution:
+#     def findRLEArray(self, encoded1: List[List[int]], encoded2: List[List[int]]):
+#         i, j = 0, 0
+#         result = []
+
+#         # Loop through both RLE lists until we reach the end of either list
+#         while i &lt; len(encoded1) and j &lt; len(encoded2):
+#             # Get the value and the count from both encoded arrays
+#             val1, freq1 = encoded1[i]
+#             val2, freq2 = encoded2[j]
+
+#             # Calculate the product of values
+#             product = val1 * val2
+
+#             # The run length for the product is the minimum of both run lengths
+#             freq = min(freq1, freq2)
+
+#             # Add product to result if it&#x27;s not zero, or the result list is empty
+#             if not result or result[-1][0] != product:
+#                 result.append([product, freq])
+#             else:
+#                  # If the last product is the same, merge it by increasing its length
+#                 result[-1][1] += freq
+
+#             # Update the lengths of current RLE segments
+              # These lines MODIFY the input arrays:
+#             encoded1[i][1] -= freq
+#             encoded2[j][1] -= freq
+
+#             # Move to next segment in RLE if the current segment is exhausted
+#             if encoded1[i][1] == 0:
+#                 i += 1
+#             if encoded2[j][1] == 0:
+#                 j += 1
+
+#         return result
+
+# Testcase for segments merge : encoded1 = [[1,3],[2,1],[3,2]], encoded2 = [[2,3],[1,3]]
+# TC : O(n + m), n is the number of segments in encoded1 and m is the number of segments in encoded2.
+# SC : O(n + m)
+        </code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Medium/1650-Lowest-Common-Ancestor-of-a-Binary-Tree-III/">&#8592; 1650. Lowest Common Ancestor of a Binary Tree III</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Medium/2265-Count-Nodes-Equal-to-Average-of-Subtree/">2265. Count Nodes Equal to Average of Subtree &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+</body>
+</html>
