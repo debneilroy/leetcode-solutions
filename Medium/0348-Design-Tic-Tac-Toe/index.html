@@ -563,23 +563,23 @@ class TicTacToe:
         # No win detected, board not full → return 0 (game continues)
         return 0
 
-# # Example 1: Player 1 wins with diagonal
-# ticTacToe = TicTacToe(3)
+# Example 1: Player 1 wins with diagonal
+ticTacToe = TicTacToe(3)
 # ticTacToe.move(0, 0, 1)  # return 0 (no winner)
 # ticTacToe.move(0, 1, 2)  # return 0
 # ticTacToe.move(1, 1, 1)  # return 0
 # ticTacToe.move(0, 2, 2)  # return 0
 # ticTacToe.move(2, 2, 1)  # return 1 (Player 1 wins)
 
-# # Board state:
-# # X O O
-# # . X .
-# # . . X
-# # Player 1 completes main diagonal
+# Board state:
+# X O O
+# . X .
+# . . X
+# Player 1 completes main diagonal
 
 
-# # Example 2: Player 2 wins with column
-# ticTacToe = TicTacToe(3)
+# Example 2: Player 2 wins with column
+ticTacToe = TicTacToe(3)
 # ticTacToe.move(0, 0, 1)  # return 0
 # ticTacToe.move(0, 1, 2)  # return 0
 # ticTacToe.move(1, 0, 1)  # return 0
@@ -587,15 +587,15 @@ class TicTacToe:
 # ticTacToe.move(2, 2, 1)  # return 0
 # ticTacToe.move(2, 1, 2)  # return 2 (Player 2 wins)
 
-# # Board state:
-# # X O .
-# # X O .
-# # . O X
-# # Player 2 completes column 1
+# Board state:
+# X O .
+# X O .
+# . O X
+# Player 2 completes column 1
 
 
-# # Example 3: Draw
-# ticTacToe = TicTacToe(3)
+# Example 3: Draw
+ticTacToe = TicTacToe(3)
 # ticTacToe.move(0, 0, 1)  # return 0
 # ticTacToe.move(0, 1, 2)  # return 0
 # ticTacToe.move(0, 2, 1)  # return 0
@@ -606,11 +606,11 @@ class TicTacToe:
 # ticTacToe.move(2, 2, 2)  # return 0
 # ticTacToe.move(2, 1, 1)  # return -1 (Draw)
 
-# # Board state:
-# # X O X
-# # O X X
-# # O X O
-# # Board full, no winner
+# Board state:
+# X O X
+# O X X
+# O X O
+# Board full, no winner
 
 # Variant : isWin Function
 
@@ -635,15 +635,15 @@ class TicTacToe:
 
 # Input:
 
-# board = [
-#     [1, 1, 0],
-#     [2, 2, 0],
-#     [0, 0, 0]
+board = [
+    [1, 1, 0],
+    [2, 2, 0],
+    [0, 0, 0]
 # ]
 
-# player = 1
-# row = 0
-# col = 2
+player = 1
+row = 0
+col = 2
 
 # Output: True
 
@@ -661,14 +661,14 @@ class TicTacToe:
 
 # Input:
 
-# board = [
-#     [1, 2, 0],
-#     [2, 1, 0],
-#     [0, 0, 0]
+board = [
+    [1, 2, 0],
+    [2, 1, 0],
+    [0, 0, 0]
 # ]
-# player = 1
-# row = 2
-# col = 1
+player = 1
+row = 2
+col = 1
 
 # Output: False
 
@@ -679,150 +679,150 @@ class TicTacToe:
 # [2, 1, 0]
 # [0, 1, 0]  ← Player 1 places mark
 
-# def isWin(board, player, row, col):
-#     &quot;&quot;&quot;
-#     Check if the move at (row, col) by player resulted in a win.
+def isWin(board, player, row, col):
+    &quot;&quot;&quot;
+    Check if the move at (row, col) by player resulted in a win.
     
-#     A player wins by placing n marks in a line. There are 4 possible winning lines:
-#     1. Horizontal (complete row)
-#     2. Vertical (complete column)
-#     3. Main diagonal (top-left to bottom-right)
-#     4. Anti-diagonal (top-right to bottom-left)
+    A player wins by placing n marks in a line. There are 4 possible winning lines:
+    1. Horizontal (complete row)
+    2. Vertical (complete column)
+    3. Main diagonal (top-left to bottom-right)
+    4. Anti-diagonal (top-right to bottom-left)
     
-#     This version uses a SINGLE LOOP to check all 4 directions simultaneously,
-#     making it more efficient than checking each line separately.
+    This version uses a SINGLE LOOP to check all 4 directions simultaneously,
+    making it more efficient than checking each line separately.
     
-#     Args:
-#         board: List[List[int]] - n x n board (0 = empty, 1 = player 1, 2 = player 2)
-#         player: int - player number (1 or 2)
-#         row: int - row index of the move (0 to n-1)
-#         col: int - column index of the move (0 to n-1)
+    Args:
+        board: List[List[int]] - n x n board (0 = empty, 1 = player 1, 2 = player 2)
+        player: int - player number (1 or 2)
+        row: int - row index of the move (0 to n-1)
+        col: int - column index of the move (0 to n-1)
     
-#     Returns:
-#         bool - True if player won with this move, False otherwise
+    Returns:
+        bool - True if player won with this move, False otherwise
     
-#     Time Complexity: O(n) - single pass through n positions
-#     Space Complexity: O(1) - only use 4 counter variables
-#     &quot;&quot;&quot;
+    Time Complexity: O(n) - single pass through n positions
+    Space Complexity: O(1) - only use 4 counter variables
+    &quot;&quot;&quot;
     
-#     # ============================================================
-#     # BASE CHECKS (Optional - uncomment for production)
-#     # ============================================================
-#     # if not board or len(board) == 0:
-#     #     raise ValueError(&quot;Board cannot be empty&quot;)
+    # ============================================================
+    # BASE CHECKS (Optional - uncomment for production)
+    # ============================================================
+    # if not board or len(board) == 0:
+    #     raise ValueError(&quot;Board cannot be empty&quot;)
     
-#     # n = len(board)
-#     # for i, r in enumerate(board):
-#     #     if not r or len(r) != n:  # Handles None/empty rows + wrong length
-#     #         raise ValueError(&quot;Board must be square&quot;)
+    # n = len(board)
+    # for i, r in enumerate(board):
+    #     if not r or len(r) != n:  # Handles None/empty rows + wrong length
+    #         raise ValueError(&quot;Board must be square&quot;)
     
-#     # if player not in [1, 2]:
-#     #     raise ValueError(&quot;Player must be 1 or 2&quot;)
+    # if player not in [1, 2]:
+    #     raise ValueError(&quot;Player must be 1 or 2&quot;)
     
-#     # if not (0 &lt;= row &lt; n and 0 &lt;= col &lt; n):
-#     #     raise ValueError(&quot;Move out of bounds&quot;)
+    # if not (0 &lt;= row &lt; n and 0 &lt;= col &lt; n):
+    #     raise ValueError(&quot;Move out of bounds&quot;)
     
-#     # if board[row][col] != 0:
-#     #     raise ValueError(&quot;Cell already occupied&quot;)
+    # if board[row][col] != 0:
+    #     raise ValueError(&quot;Cell already occupied&quot;)
 
-#     # # Validate all board values are 0, 1, or 2
-#     # for i in range(n):
-#     #     for j in range(n):
-#     #         if board[i][j] not in [0, 1, 2]:
-#     #             raise ValueError(&quot;Invalid board value&quot;)
+    # # Validate all board values are 0, 1, or 2
+    # for i in range(n):
+    #     for j in range(n):
+    #         if board[i][j] not in [0, 1, 2]:
+    #             raise ValueError(&quot;Invalid board value&quot;)
     
     
-#     # ============================================================
-#     # CORE LOGIC
-#     # ============================================================
+    # ============================================================
+    # CORE LOGIC
+    # ============================================================
     
-#     board[row][col] = player
-#     n = len(board)
+    board[row][col] = player
+    n = len(board)
     
-#     # Initialize counters for all possible winning lines
-#     rows = 0
-#     cols = 0
-#     diagonal = 0
-#     anti_diagonal = 0
+    # Initialize counters for all possible winning lines
+    rows = 0
+    cols = 0
+    diagonal = 0
+    anti_diagonal = 0
     
-#     # Single loop to count all lines simultaneously (more efficient than 4 separate loops)
-#     for i in range(n):
-#         # Check row: count marks in affected row
-#         if board[row][i] == player:
-#             rows += 1
+    # Single loop to count all lines simultaneously (more efficient than 4 separate loops)
+    for i in range(n):
+        # Check row: count marks in affected row
+        if board[row][i] == player:
+            rows += 1
         
-#         # Check column: count marks in affected column
-#         if board[i][col] == player:
-#             cols += 1
+        # Check column: count marks in affected column
+        if board[i][col] == player:
+            cols += 1
         
-#         # Check main diagonal: ONLY if move is on it (row == col)
-#         # Saves n comparisons when move is NOT on diagonal
-#         if row == col and board[i][i] == player:
-#             diagonal += 1
+        # Check main diagonal: ONLY if move is on it (row == col)
+        # Saves n comparisons when move is NOT on diagonal
+        if row == col and board[i][i] == player:
+            diagonal += 1
         
-#         # Check anti-diagonal: ONLY if move is on it (row + col == n - 1)
-#         # Saves n comparisons when move is NOT on anti-diagonal
-#         if row + col == n - 1 and board[i][n - 1 - i] == player:
-#             anti_diagonal += 1
+        # Check anti-diagonal: ONLY if move is on it (row + col == n - 1)
+        # Saves n comparisons when move is NOT on anti-diagonal
+        if row + col == n - 1 and board[i][n - 1 - i] == player:
+            anti_diagonal += 1
 
-#         # Optional: Early exit optimization
-#         # Uncomment to return immediately when win is detected (can save iterations)
-#         # Trade-off: Adds extra check per iteration but can exit early
-#         # if rows == n or cols == n or diagonal == n or anti_diagonal == n:
-#         #     return True
+        # Optional: Early exit optimization
+        # Uncomment to return immediately when win is detected (can save iterations)
+        # Trade-off: Adds extra check per iteration but can exit early
+        # if rows == n or cols == n or diagonal == n or anti_diagonal == n:
+        #     return True
     
-#     # Win if any line has n marks
-#     # If diagonal wasn&#x27;t checked (move not on it), diagonal stays 0, so diagonal == n is False (no false positive)
-#     return rows == n or cols == n or diagonal == n or anti_diagonal == n
+    # Win if any line has n marks
+    # If diagonal wasn&#x27;t checked (move not on it), diagonal stays 0, so diagonal == n is False (no false positive)
+    return rows == n or cols == n or diagonal == n or anti_diagonal == n
 
 
 # Another approach : Built in function
 
-# def isWin(board, player, row, col):
-#     &quot;&quot;&quot;
-#     Check if the move at (row, col) by player resulted in a win.
+def isWin(board, player, row, col):
+    &quot;&quot;&quot;
+    Check if the move at (row, col) by player resulted in a win.
     
-#     A player wins by placing n marks in a line. There are 4 possible winning lines:
-#     1. Horizontal (complete row)
-#     2. Vertical (complete column)
-#     3. Main diagonal (top-left to bottom-right)
-#     4. Anti-diagonal (top-right to bottom-left)
+    A player wins by placing n marks in a line. There are 4 possible winning lines:
+    1. Horizontal (complete row)
+    2. Vertical (complete column)
+    3. Main diagonal (top-left to bottom-right)
+    4. Anti-diagonal (top-right to bottom-left)
     
-#     This version uses a built-in function (all) instead of explicit loops.
+    This version uses a built-in function (all) instead of explicit loops.
     
-#     Args:
-#         board: List[List[int]] - n x n board (0 = empty, 1 = player 1, 2 = player 2)
-#         player: int - player number (1 or 2)
-#         row: int - row index of the move (0 to n-1)
-#         col: int - column index of the move (0 to n-1)
+    Args:
+        board: List[List[int]] - n x n board (0 = empty, 1 = player 1, 2 = player 2)
+        player: int - player number (1 or 2)
+        row: int - row index of the move (0 to n-1)
+        col: int - column index of the move (0 to n-1)
     
-#     Returns:
-#         bool - True if player won with this move, False otherwise
+    Returns:
+        bool - True if player won with this move, False otherwise
     
-#     Time Complexity: O(n) - check up to 4 lines of length n
-#     Space Complexity: O(1) - no additional space used
-#     &quot;&quot;&quot;
+    Time Complexity: O(n) - check up to 4 lines of length n
+    Space Complexity: O(1) - no additional space used
+    &quot;&quot;&quot;
     
-#     board[row][col] = player
-#     n = len(board)
+    board[row][col] = player
+    n = len(board)
     
-#     # Check row: all cells in this row match player
-#     if all(board[row][c] == player for c in range(n)):
-#         return True
+    # Check row: all cells in this row match player
+    if all(board[row][c] == player for c in range(n)):
+        return True
     
-#     # Check column: all cells in this column match player
-#     if all(board[r][col] == player for r in range(n)):
-#         return True
+    # Check column: all cells in this column match player
+    if all(board[r][col] == player for r in range(n)):
+        return True
     
-#     # Check main diagonal: ONLY if move is on it (row == col)
-#     if row == col and all(board[i][i] == player for i in range(n)):
-#         return True
+    # Check main diagonal: ONLY if move is on it (row == col)
+    if row == col and all(board[i][i] == player for i in range(n)):
+        return True
     
-#     # Check anti-diagonal: ONLY if move is on it (row + col == n - 1)
-#     if row + col == n - 1 and all(board[i][n - 1 - i] == player for i in range(n)):
-#         return True
+    # Check anti-diagonal: ONLY if move is on it (row + col == n - 1)
+    if row + col == n - 1 and all(board[i][n - 1 - i] == player for i in range(n)):
+        return True
     
-#     return False</code></pre>
+    return False</code></pre>
       </div>
     </div>
 
