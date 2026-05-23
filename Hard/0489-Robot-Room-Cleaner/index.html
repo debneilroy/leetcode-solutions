@@ -260,10 +260,10 @@ Difficulty: Hard
 URL: https://leetcode.com/problems/robot-room-cleaner/
 &quot;&quot;&quot;
 
-# &quot;&quot;&quot;
+&quot;&quot;&quot;
 # This is the robot&#x27;s control interface.
 # You should not implement it, or speculate about its implementation
-# &quot;&quot;&quot;
+&quot;&quot;&quot;
 class Robot:
    def move(self):
        &quot;&quot;&quot;
@@ -821,12 +821,12 @@ class Solution:
 
 # Grid Coordinate System
 # In most grid/matrix problems, we use this coordinate system:
-#         Column (x-axis)
-#         0   1   2   3
+        Column (x-axis)
+        0   1   2   3
 # R   0   •   •   •   •
 # o   1   •   •   •   •
 # w   2   •   •   •   •
-#     3   •   •   •   •
+    3   •   •   •   •
 # 
 # (y-axis)
 
@@ -840,7 +840,7 @@ class Solution:
 
 # UP: (-1, 0)
 # Starting at (2, 1):
-#     0   1   2
+    0   1   2
 # 0   •   •   •
 # 1   •   ↑   •    ← Move to (1, 1)
 # 2   •   X   •    ← Currently at (2, 1)
@@ -852,7 +852,7 @@ class Solution:
 
 # RIGHT: (0, 1)
 # Starting at (2, 1):
-#     0   1   2
+    0   1   2
 # 0   •   •   •
 # 1   •   •   •
 # 2   •   X → •    ← Move to (2, 2)
@@ -864,7 +864,7 @@ class Solution:
 
 # DOWN: (1, 0)
 # Starting at (2, 1):
-#     0   1   2
+    0   1   2
 # 0   •   •   •
 # 1   •   •   •
 # 2   •   X   •    ← Currently at (2, 1)
@@ -876,7 +876,7 @@ class Solution:
 
 # LEFT: (0, -1)
 # Starting at (2, 1):
-#     0   1   2
+    0   1   2
 # 0   •   •   •
 # 1   •   •   •
 # 2   • ← X   •    ← Move to (2, 0)
@@ -928,11 +928,11 @@ class Solution:
 
 # You are given a mouse that starts at position (0, 0) in a maze represented as a 2D grid. The mouse has limited vision and can only use two API methods to navigate:
 
-# move(direction, row, col) - Checks if the mouse can move in the specified direction from position (row, col). Returns True if the move is valid (no wall, within bounds), False otherwise.
+move(direction, row, col) - Checks if the mouse can move in the specified direction from position (row, col). Returns True if the move is valid (no wall, within bounds), False otherwise.
 
 # KNOWN BUG: Even when this method returns False (blocked by wall or boundary), the mouse still incorrectly moves in that direction. To remedy this, you must immediately call move() in the opposite direction to compensate and return the mouse to its original position.
 
-# hasCheese(row, col) - Returns True if there is cheese at position (row, col), False otherwise.
+hasCheese(row, col) - Returns True if there is cheese at position (row, col), False otherwise.
 
 # The maze contains:
 
@@ -952,8 +952,8 @@ class Solution:
 # 3. There is at most one cheese in the maze
 # 4. The mouse can only move in 4 directions: UP, RIGHT, DOWN, LEFT
 # 5. A move is considered &quot;valid&quot; only if:
-#     The target position is within grid boundaries (0 ≤ row &lt; N, 0 ≤ col &lt; M)
-#     The target position is not a wall (grid[row][col] != &#x27;X&#x27;)
+    The target position is within grid boundaries (0 ≤ row &lt; N, 0 ≤ col &lt; M)
+    The target position is not a wall (grid[row][col] != &#x27;X&#x27;)
 # 6. Critical Bug: The move() API has a bug - it moves the mouse even when returning False. You must compensate by calling move() in the opposite direction immediately after any failed move attempt.
 # 7. You can only use the two provided API methods: move(direction, row, col) and hasCheese(row, col)
 # Mouse position is tracked logically via function parameters in your implementation - the actual mouse position is managed by the buggy API
@@ -974,13 +974,13 @@ class Solution:
 # Step-by-step:
 # 1. Start at (0,0): hasCheese(0,0)? No
 # 2. Try UP from (0,0): move((-1,0), 0, 0) → False (out of bounds)
-#    BUG: Mouse moved to (-1,0) anyway!
-#    FIX: Immediately call move((1,0), -1, 0) to compensate → back at (0,0)
+   BUG: Mouse moved to (-1,0) anyway!
+   FIX: Immediately call move((1,0), -1, 0) to compensate → back at (0,0)
 # 3. Try RIGHT from (0,0): move((0,1), 0, 0) → True ✓
-#    Logically track position as (0,1), recursively explore
+   Logically track position as (0,1), recursively explore
 # 4. At (0,1): hasCheese(0,1)? No
 # 5. Try DOWN from (0,1): move((1,0), 0, 1) → True ✓
-#    Logically track position as (1,1), recursively explore
+   Logically track position as (1,1), recursively explore
 # 6. At (1,1): hasCheese(1,1)? Yes! ✓
 
 # Logical path: (0,0) → (0,1) → (1,1)
@@ -1216,16 +1216,16 @@ class Mouse:
 # S = Start at (0, 0)
 # X = Wall at (0, 1)
 # . = Empty at (1, 0)
-# # = Cheese at (1, 1)
+# = Cheese at (1, 1)
 
 # Cheese location: (1, 1)
 
 # Initial State
-# visited = {}
-# directions = [(-1, 0), (0, 1), (1, 0), (0, -1)]  # UP, RIGHT, DOWN, LEFT
-# opposite_directions = [(1, 0), (0, -1), (-1, 0), (0, 1)]
+visited = {}
+directions = [(-1, 0), (0, 1), (1, 0), (0, -1)]  # UP, RIGHT, DOWN, LEFT
+opposite_directions = [(1, 0), (0, -1), (-1, 0), (0, 1)]
 
-# # Execution Begins
+# Execution Begins
 
 # CALL 1: dfs(row=0, col=0)
 
@@ -1234,133 +1234,133 @@ class Mouse:
 # ├─ col = 0
 # └─ Local scope for this call
 # Step 1.1: Check for cheese
-# hasCheese(0, 0)?
-#     return (0 == 1 and 0 == 1)
-#     return False
+hasCheese(0, 0)?
+    return (0 == 1 and 0 == 1)
+    return False
 # No cheese here.
 # Step 1.2: Mark as visited
 # visited.add((0, 0))
-# visited = {(0, 0)}
+visited = {(0, 0)}
 # Step 1.3: Try all 4 directions
 
 # Direction i=0: Try UP
-# i = 0
+i = 0
 # dr, dc = directions[0] = (-1, 0)
-# new_row = row + dr = 0 + (-1) = -1
-# new_col = col + dc = 0 + 0 = 0
+new_row = row + dr = 0 + (-1) = -1
+new_col = col + dc = 0 + 0 = 0
 
-# # Check if already visited
+# Check if already visited
 # (-1, 0) in visited? No
 
-# # Validate move
-# move((-1, 0), row=0, col=0):
-#     dr, dc = (-1, 0)
-#     new_row = 0 + (-1) = -1
-#     new_col = 0 + 0 = 0
+# Validate move
+move((-1, 0), row=0, col=0):
+    dr, dc = (-1, 0)
+    new_row = 0 + (-1) = -1
+    new_col = 0 + 0 = 0
     
-#     # Check bounds
-#     if -1 &lt; 0:  # True!
-#         return False
+    # Check bounds
+    if -1 &lt; 0:  # True!
+        return False
 
-# # Move invalid!
-# # ⚠️ BUG: Physical mouse moved to (-1, 0) anyway!
+# Move invalid!
+# ⚠️ BUG: Physical mouse moved to (-1, 0) anyway!
 
-# # Bug compensation:
-# move(opposite_directions[0], new_row=-1, new_col=0):
-#     # opposite_directions[0] = (1, 0) = DOWN
-#     dr, dc = (1, 0)
-#     new_row = -1 + 1 = 0
-#     new_col = 0 + 0 = 0
+# Bug compensation:
+move(opposite_directions[0], new_row=-1, new_col=0):
+    # opposite_directions[0] = (1, 0) = DOWN
+    dr, dc = (1, 0)
+    new_row = -1 + 1 = 0
+    new_col = 0 + 0 = 0
     
-#     # Check if (0, 0) is valid
-#     0 &gt;= 0 and 0 &lt; 2? Yes
-#     0 &gt;= 0 and 0 &lt; 2? Yes
-#     grid[0][0] = &#x27;S&#x27; (not &#x27;X&#x27;)? Yes
-#     return True
+    # Check if (0, 0) is valid
+    0 &gt;= 0 and 0 &lt; 2? Yes
+    0 &gt;= 0 and 0 &lt; 2? Yes
+    grid[0][0] = &#x27;S&#x27; (not &#x27;X&#x27;)? Yes
+    return True
 
-# # Compensation validated moving back from (-1,0) to (0,0)
-# # Continue to next direction
+# Compensation validated moving back from (-1,0) to (0,0)
+# Continue to next direction
 # State after i=0:
 
-# visited = {(0, 0)}
+visited = {(0, 0)}
 # Still in CALL 1 at (row=0, col=0)
 
 
 # Direction i=1: Try RIGHT
-# i = 1
+i = 1
 # dr, dc = directions[1] = (0, 1)
-# new_row = row + dr = 0 + 0 = 0
-# new_col = col + dc = 0 + 1 = 1
+new_row = row + dr = 0 + 0 = 0
+new_col = col + dc = 0 + 1 = 1
 
-# # Check if already visited
+# Check if already visited
 # (0, 1) in visited? No
 
-# # Validate move
-# move((0, 1), row=0, col=0):
-#     dr, dc = (0, 1)
-#     new_row = 0 + 0 = 0
-#     new_col = 0 + 1 = 1
+# Validate move
+move((0, 1), row=0, col=0):
+    dr, dc = (0, 1)
+    new_row = 0 + 0 = 0
+    new_col = 0 + 1 = 1
     
-#     # Check bounds
-#     0 &gt;= 0 and 0 &lt; 2? Yes
-#     1 &gt;= 0 and 1 &lt; 2? Yes
+    # Check bounds
+    0 &gt;= 0 and 0 &lt; 2? Yes
+    1 &gt;= 0 and 1 &lt; 2? Yes
     
-#     # Check wall
-#     grid[0][1] = &#x27;X&#x27;  # Wall!
-#     return False
+    # Check wall
+    grid[0][1] = &#x27;X&#x27;  # Wall!
+    return False
 
-# # Move invalid!
-# # ⚠️ BUG: Physical mouse moved to (0, 1) - inside wall!
+# Move invalid!
+# ⚠️ BUG: Physical mouse moved to (0, 1) - inside wall!
 
-# # Bug compensation:
-# move(opposite_directions[1], new_row=0, new_col=1):
-#     # opposite_directions[1] = (0, -1) = LEFT
-#     dr, dc = (0, -1)
-#     new_row = 0 + 0 = 0
-#     new_col = 1 + (-1) = 0
+# Bug compensation:
+move(opposite_directions[1], new_row=0, new_col=1):
+    # opposite_directions[1] = (0, -1) = LEFT
+    dr, dc = (0, -1)
+    new_row = 0 + 0 = 0
+    new_col = 1 + (-1) = 0
     
-#     # Check if (0, 0) is valid
-#     0 &gt;= 0 and 0 &lt; 2? Yes
-#     0 &gt;= 0 and 0 &lt; 2? Yes
-#     grid[0][0] = &#x27;S&#x27; (not &#x27;X&#x27;)? Yes
-#     return True
+    # Check if (0, 0) is valid
+    0 &gt;= 0 and 0 &lt; 2? Yes
+    0 &gt;= 0 and 0 &lt; 2? Yes
+    grid[0][0] = &#x27;S&#x27; (not &#x27;X&#x27;)? Yes
+    return True
 
-# # Compensation validated moving back from (0,1) to (0,0)
-# # Continue to next direction
+# Compensation validated moving back from (0,1) to (0,0)
+# Continue to next direction
 # State after i=1:
 
-# visited = {(0, 0)}
+visited = {(0, 0)}
 # Still in CALL 1 at (row=0, col=0)
 
 
 # Direction i=2: Try DOWN
-# i = 2
+i = 2
 # dr, dc = directions[2] = (1, 0)
-# new_row = row + dr = 0 + 1 = 1
-# new_col = col + dc = 0 + 0 = 0
+new_row = row + dr = 0 + 1 = 1
+new_col = col + dc = 0 + 0 = 0
 
-# # Check if already visited
+# Check if already visited
 # (1, 0) in visited? No
 
-# # Validate move
-# move((1, 0), row=0, col=0):
-#     dr, dc = (1, 0)
-#     new_row = 0 + 1 = 1
-#     new_col = 0 + 0 = 0
+# Validate move
+move((1, 0), row=0, col=0):
+    dr, dc = (1, 0)
+    new_row = 0 + 1 = 1
+    new_col = 0 + 0 = 0
     
-#     # Check bounds
-#     1 &gt;= 0 and 1 &lt; 2? Yes
-#     0 &gt;= 0 and 0 &lt; 2? Yes
+    # Check bounds
+    1 &gt;= 0 and 1 &lt; 2? Yes
+    0 &gt;= 0 and 0 &lt; 2? Yes
     
-#     # Check wall
-#     grid[1][0] = &#x27;.&#x27; (not &#x27;X&#x27;)? Yes
-#     return True
+    # Check wall
+    grid[1][0] = &#x27;.&#x27; (not &#x27;X&#x27;)? Yes
+    return True
 
-# # Move is VALID! ✓
-# # Physical mouse moved to (1, 0) - this time intentionally
+# Move is VALID! ✓
+# Physical mouse moved to (1, 0) - this time intentionally
 
-# # Recursive call
-# dfs(new_row=1, new_col=0)
+# Recursive call
+dfs(new_row=1, new_col=0)
 
 # CALL 2: dfs(row=1, col=0)
 
@@ -1374,55 +1374,55 @@ class Mouse:
 # ├─ col = 0  ← Still 0!
 # └─ Waiting at i=2
 # Step 2.1: Check for cheese
-# hasCheese(1, 0)?
-#     return (1 == 1 and 0 == 1)
-#     return False
+hasCheese(1, 0)?
+    return (1 == 1 and 0 == 1)
+    return False
 # No cheese here.
 # Step 2.2: Mark as visited
 # visited.add((1, 0))
-# visited = {(0, 0), (1, 0)}
+visited = {(0, 0), (1, 0)}
 # Step 2.3: Try all 4 directions
 
 # Direction i=0: Try UP
-# i = 0
+i = 0
 # dr, dc = directions[0] = (-1, 0)
-# new_row = row + dr = 1 + (-1) = 0
-# new_col = col + dc = 0 + 0 = 0
+new_row = row + dr = 1 + (-1) = 0
+new_col = col + dc = 0 + 0 = 0
 
-# # Check if already visited
+# Check if already visited
 # (0, 0) in visited? YES!
 
-# # Skip this direction
-# continue
+# Skip this direction
+continue
 
 # Direction i=1: Try RIGHT
-# i = 1
+i = 1
 # dr, dc = directions[1] = (0, 1)
-# new_row = row + dr = 1 + 0 = 1
-# new_col = col + dc = 0 + 1 = 1
+new_row = row + dr = 1 + 0 = 1
+new_col = col + dc = 0 + 1 = 1
 
-# # Check if already visited
+# Check if already visited
 # (1, 1) in visited? No
 
-# # Validate move
-# move((0, 1), row=1, col=0):
-#     dr, dc = (0, 1)
-#     new_row = 1 + 0 = 1
-#     new_col = 0 + 1 = 1
+# Validate move
+move((0, 1), row=1, col=0):
+    dr, dc = (0, 1)
+    new_row = 1 + 0 = 1
+    new_col = 0 + 1 = 1
     
-#     # Check bounds
-#     1 &gt;= 0 and 1 &lt; 2? Yes
-#     1 &gt;= 0 and 1 &lt; 2? Yes
+    # Check bounds
+    1 &gt;= 0 and 1 &lt; 2? Yes
+    1 &gt;= 0 and 1 &lt; 2? Yes
     
-#     # Check wall
-#     grid[1][1] = &#x27;#&#x27; (not &#x27;X&#x27;)? Yes
-#     return True
+    # Check wall
+    grid[1][1] = &#x27;#&#x27; (not &#x27;X&#x27;)? Yes
+    return True
 
-# # Move is VALID! ✓
-# # Physical mouse moved to (1, 1)
+# Move is VALID! ✓
+# Physical mouse moved to (1, 1)
 
-# # Recursive call
-# dfs(new_row=1, new_col=1)
+# Recursive call
+dfs(new_row=1, new_col=1)
 
 # CALL 3: dfs(row=1, col=1)
 
@@ -1441,12 +1441,12 @@ class Mouse:
 # ├─ col = 0  ← Still 0!
 # └─ Waiting at i=2
 # Step 3.1: Check for cheese
-# hasCheese(1, 1)?
-#     return (1 == 1 and 1 == 1)
-#     return True  ✓✓✓
+hasCheese(1, 1)?
+    return (1 == 1 and 1 == 1)
+    return True  ✓✓✓
 
-# # CHEESE FOUND!
-# return True
+# CHEESE FOUND!
+return True
 
 # RETURN to CALL 2
 
@@ -1456,10 +1456,10 @@ class Mouse:
 # └─ At i=1 (RIGHT direction)
 
 # Code location:
-# if self.dfs(new_row=1, new_col=1):  # This just returned True!
-#     return True  # Propagate success
+if self.dfs(new_row=1, new_col=1):  # This just returned True!
+    return True  # Propagate success
 
-# # Return True to CALL 1
+# Return True to CALL 1
 
 # RETURN to CALL 1
 # Back in Stack Frame 1:
@@ -1468,14 +1468,14 @@ class Mouse:
 # └─ At i=2 (DOWN direction)
 
 # Code location:
-# if self.dfs(new_row=1, new_col=0):  # This just returned True!
-#     return True  # Propagate success
+if self.dfs(new_row=1, new_col=0):  # This just returned True!
+    return True  # Propagate success
 
-# # Return True to getCheese()
+# Return True to getCheese()
 
 # Final Result
-# getCheese() returns: True
-# visited = {(0, 0), (1, 0), (1, 1)}
+getCheese() returns: True
+visited = {(0, 0), (1, 0), (1, 1)}
 
 # Path taken:
 # (0, 0) → (1, 0) → (1, 1) ✓
@@ -1498,201 +1498,201 @@ class Mouse:
 
 # NO CHEESE!
 
-# class Mouse:
-#     &quot;&quot;&quot;
-#     Mouse with limited API to find cheese in a maze.
+class Mouse:
+    &quot;&quot;&quot;
+    Mouse with limited API to find cheese in a maze.
     
-#     IMPORTANT: move() has a bug - even when returning False, 
-#     it still moves the mouse. We compensate by calling move() 
-#     in the opposite direction to undo the buggy movement.
+    IMPORTANT: move() has a bug - even when returning False, 
+    it still moves the mouse. We compensate by calling move() 
+    in the opposite direction to undo the buggy movement.
 
-#     Time Complexity: O(N x M)
-#         - Each cell is visited at most once due to visited set
-#         - Each cell performs O(1) work (try 4 directions)
-#         - Worst case: cheese unreachable, all N x M cells explored
+    Time Complexity: O(N x M)
+        - Each cell is visited at most once due to visited set
+        - Each cell performs O(1) work (try 4 directions)
+        - Worst case: cheese unreachable, all N x M cells explored
 
-#     Space Complexity: O(N x M)
-#         - visited set stores at most N x M cells
-#         - Recursion stack depth up to N x M in worst case
+    Space Complexity: O(N x M)
+        - visited set stores at most N x M cells
+        - Recursion stack depth up to N x M in worst case
 
-#     Example (worst case - no cheese, all 4 cells explored):
-#         Grid:
-#             S .
-#             . .
-#         Cheese at (-1,-1). DFS explores all 4 cells:
-#         (0,0) → (0,1) → (1,1) → (1,0) → return False
-#         All 4 cells in visited set → O(N x M) space
-#         All 4 cells visited → O(N x M) time
+    Example (worst case - no cheese, all 4 cells explored):
+        Grid:
+            S .
+            . .
+        Cheese at (-1,-1). DFS explores all 4 cells:
+        (0,0) → (0,1) → (1,1) → (1,0) → return False
+        All 4 cells in visited set → O(N x M) space
+        All 4 cells visited → O(N x M) time
 
-#     Returns:
-#         True if cheese found from current position, False otherwise
-#     &quot;&quot;&quot;
+    Returns:
+        True if cheese found from current position, False otherwise
+    &quot;&quot;&quot;
     
-#     def __init__(self, grid: List[List[str]], cheese_location: Tuple[int, int]):
-#         &quot;&quot;&quot;
-#         Initialize the mouse in the maze.
+    def __init__(self, grid: List[List[str]], cheese_location: Tuple[int, int]):
+        &quot;&quot;&quot;
+        Initialize the mouse in the maze.
         
-#         Args:
-#             grid: 2D maze where &#x27;S&#x27;/&#x27;.&#x27; = empty, &#x27;X&#x27; = wall, &#x27;#&#x27; = cheese
-#             cheese_location: (row, col) position of the cheese
-#         &quot;&quot;&quot;
-#         self.grid = grid
-#         self.cheese_location = cheese_location
-#         self.rows = len(grid)
-#         self.cols = len(grid[0])
+        Args:
+            grid: 2D maze where &#x27;S&#x27;/&#x27;.&#x27; = empty, &#x27;X&#x27; = wall, &#x27;#&#x27; = cheese
+            cheese_location: (row, col) position of the cheese
+        &quot;&quot;&quot;
+        self.grid = grid
+        self.cheese_location = cheese_location
+        self.rows = len(grid)
+        self.cols = len(grid[0])
         
-#         # Track actual physical mouse position as instance variables
-#         # This allows dfs() to work without parameters - position is
-#         # stored in the object state rather than passed as arguments
-#         self.current_row = 0
-#         self.current_col = 0
+        # Track actual physical mouse position as instance variables
+        # This allows dfs() to work without parameters - position is
+        # stored in the object state rather than passed as arguments
+        self.current_row = 0
+        self.current_col = 0
         
-#         self.directions = [
-#             (-1, 0),  # UP
-#             (0, 1),   # RIGHT
-#             (1, 0),   # DOWN
-#             (0, -1)   # LEFT
-#         ]
+        self.directions = [
+            (-1, 0),  # UP
+            (0, 1),   # RIGHT
+            (1, 0),   # DOWN
+            (0, -1)   # LEFT
+        ]
         
-#         self.opposite_directions = [
-#             (1, 0),   # DOWN (opposite of UP)
-#             (0, -1),  # LEFT (opposite of RIGHT)
-#             (-1, 0),  # UP (opposite of DOWN)
-#             (0, 1)    # RIGHT (opposite of LEFT)
-#         ]
+        self.opposite_directions = [
+            (1, 0),   # DOWN (opposite of UP)
+            (0, -1),  # LEFT (opposite of RIGHT)
+            (-1, 0),  # UP (opposite of DOWN)
+            (0, 1)    # RIGHT (opposite of LEFT)
+        ]
         
-#         self.visited = set()
+        self.visited = set()
     
-#     def move(self, direction: Tuple[int, int]) -&gt; bool:
-#         &quot;&quot;&quot;
-#         Actually moves the mouse - updates self.current_row/col.
+    def move(self, direction: Tuple[int, int]) -&gt; bool:
+        &quot;&quot;&quot;
+        Actually moves the mouse - updates self.current_row/col.
         
-#         Args:
-#             direction: (dr, dc) direction vector to move
+        Args:
+            direction: (dr, dc) direction vector to move
         
-#         Returns:
-#             True if move is valid (within bounds and not a wall)
-#             False if move is invalid (out of bounds or wall)
+        Returns:
+            True if move is valid (within bounds and not a wall)
+            False if move is invalid (out of bounds or wall)
         
-#         KNOWN BUG (in actual API):
-#             Even when this returns False, the mouse physically moves!
-#             Caller must compensate by immediately calling move() in 
-#             the opposite direction to undo the buggy movement.
-#         &quot;&quot;&quot;
-#         dr, dc = direction
-#         new_row = self.current_row + dr
-#         new_col = self.current_col + dc
+        KNOWN BUG (in actual API):
+            Even when this returns False, the mouse physically moves!
+            Caller must compensate by immediately calling move() in 
+            the opposite direction to undo the buggy movement.
+        &quot;&quot;&quot;
+        dr, dc = direction
+        new_row = self.current_row + dr
+        new_col = self.current_col + dc
 
-#         is_valid = (0 &lt;= new_row &lt; self.rows and 
-#                     0 &lt;= new_col &lt; self.cols and 
-#                     self.grid[new_row][new_col] != &#x27;X&#x27;)
+        is_valid = (0 &lt;= new_row &lt; self.rows and 
+                    0 &lt;= new_col &lt; self.cols and 
+                    self.grid[new_row][new_col] != &#x27;X&#x27;)
         
-#         # BUG: Mouse physically moves regardless of validity!
-#         # This updates the actual position even when returning False
-#         self.current_row = new_row
-#         self.current_col = new_col
+        # BUG: Mouse physically moves regardless of validity!
+        # This updates the actual position even when returning False
+        self.current_row = new_row
+        self.current_col = new_col
         
-#         return is_valid
+        return is_valid
     
-#     def hasCheese(self) -&gt; bool:
-#         &quot;&quot;&quot;
-#         Check if cheese at current mouse position.
+    def hasCheese(self) -&gt; bool:
+        &quot;&quot;&quot;
+        Check if cheese at current mouse position.
         
-#         Uses instance variables (self.current_row/col) which is why
-#         dfs() doesn&#x27;t need parameters - the position is in object state.
-#         &quot;&quot;&quot;
-#         return (self.current_row == self.cheese_location[0] and 
-#                 self.current_col == self.cheese_location[1])
+        Uses instance variables (self.current_row/col) which is why
+        dfs() doesn&#x27;t need parameters - the position is in object state.
+        &quot;&quot;&quot;
+        return (self.current_row == self.cheese_location[0] and 
+                self.current_col == self.cheese_location[1])
     
-#     def dfs(self) -&gt; bool:
-#         &quot;&quot;&quot;
-#         DFS with backtracking to find cheese.
+    def dfs(self) -&gt; bool:
+        &quot;&quot;&quot;
+        DFS with backtracking to find cheese.
         
-#         WHY NO PARAMETERS?
-#         ------------------
-#         Position is tracked via instance variables (self.current_row/col)
-#         rather than function parameters. This means:
-#         - The mouse&#x27;s position is part of the object&#x27;s state
-#         - When move() is called, it updates this state
-#         - When we recurse, the state is already updated
-#         - This models actual physical mouse movement
+        WHY NO PARAMETERS?
+        ------------------
+        Position is tracked via instance variables (self.current_row/col)
+        rather than function parameters. This means:
+        - The mouse&#x27;s position is part of the object&#x27;s state
+        - When move() is called, it updates this state
+        - When we recurse, the state is already updated
+        - This models actual physical mouse movement
         
-#         Returns:
-#             True if cheese found from current position, False otherwise
-#         &quot;&quot;&quot;
-#         if self.hasCheese():
-#             return True
+        Returns:
+            True if cheese found from current position, False otherwise
+        &quot;&quot;&quot;
+        if self.hasCheese():
+            return True
         
-#         # Use instance variables for current position
-#         self.visited.add((self.current_row, self.current_col))
+        # Use instance variables for current position
+        self.visited.add((self.current_row, self.current_col))
         
-#         for i in range(len(self.directions)):
-#             dr, dc = self.directions[i]
-#             new_row = self.current_row + dr
-#             new_col = self.current_col + dc
+        for i in range(len(self.directions)):
+            dr, dc = self.directions[i]
+            new_row = self.current_row + dr
+            new_col = self.current_col + dc
             
-#             if (new_row, new_col) in self.visited:
-#                 continue
+            if (new_row, new_col) in self.visited:
+                continue
             
-#             # Try to move - this PHYSICALLY moves the mouse
-#             # Updates self.current_row/col regardless of return value (bug!)
-#             move_success = self.move(self.directions[i])
+            # Try to move - this PHYSICALLY moves the mouse
+            # Updates self.current_row/col regardless of return value (bug!)
+            move_success = self.move(self.directions[i])
             
-#             if not move_success:
-#                 # WHY CALL move() AGAIN? (First time - Bug Compensation)
-#                 # =====================================================
-#                 # Move failed (wall/boundary) BUT mouse still moved due to bug!
-#                 # Mouse is now at invalid position (new_row, new_col)
-#                 # We must immediately move in opposite direction to undo
-#                 # and return mouse to the original valid position
-#                 self.move(self.opposite_directions[i])
-#                 # Now mouse is back at (current_pos) where it should be
-#                 continue
+            if not move_success:
+                # WHY CALL move() AGAIN? (First time - Bug Compensation)
+                # =====================================================
+                # Move failed (wall/boundary) BUT mouse still moved due to bug!
+                # Mouse is now at invalid position (new_row, new_col)
+                # We must immediately move in opposite direction to undo
+                # and return mouse to the original valid position
+                self.move(self.opposite_directions[i])
+                # Now mouse is back at (current_pos) where it should be
+                continue
             
-#             # Move succeeded - mouse is now physically at (new_row, new_col)
-#             # self.current_row = new_row, self.current_col = new_col
+            # Move succeeded - mouse is now physically at (new_row, new_col)
+            # self.current_row = new_row, self.current_col = new_col
             
-#             # Recursively explore from new position
-#             # No parameters needed - position already updated in instance variables
-#             if self.dfs():
-#                 return True  # Cheese found, stay at this position
+            # Recursively explore from new position
+            # No parameters needed - position already updated in instance variables
+            if self.dfs():
+                return True  # Cheese found, stay at this position
             
-#             # WHY CALL move() AGAIN? (Second time - Explicit Backtracking)
-#             # ===========================================================
-#             # Cheese not found in this direction, need to backtrack
-#             # Mouse is still physically at (new_row, new_col) after dfs() returns
-#             # We need to return to previous position to try other directions
-#             # 
-#             # This is DIFFERENT from the first move() call:
-#             # - First call: Compensates for bug when move failed
-#             # - Second call: Backtracks after successful exploration that found no cheese
-#             # 
-#             # Without this, the mouse would stay at (new_row, new_col) and
-#             # the next iteration would try directions from wrong position!
+            # WHY CALL move() AGAIN? (Second time - Explicit Backtracking)
+            # ===========================================================
+            # Cheese not found in this direction, need to backtrack
+            # Mouse is still physically at (new_row, new_col) after dfs() returns
+            # We need to return to previous position to try other directions
+            # 
+            # This is DIFFERENT from the first move() call:
+            # - First call: Compensates for bug when move failed
+            # - Second call: Backtracks after successful exploration that found no cheese
+            # 
+            # Without this, the mouse would stay at (new_row, new_col) and
+            # the next iteration would try directions from wrong position!
 
-#             self.move(self.opposite_directions[i])
+            self.move(self.opposite_directions[i])
 
-#             # Now mouse is back at original position for next direction attempt
+            # Now mouse is back at original position for next direction attempt
 
-#             # The final backtrack is reached when the recursive dfs() call returns False, which happens in two  cases:
+            # The final backtrack is reached when the recursive dfs() call returns False, which happens in two  cases:
 
-#             # No cheese exists - backtrack executed for every failed exploration
-#             # Cheese is unreachable - backtrack executed for every failed exploration
-#             # Cheese IS found - return True executes immediately, skipping backtrack
+            # No cheese exists - backtrack executed for every failed exploration
+            # Cheese is unreachable - backtrack executed for every failed exploration
+            # Cheese IS found - return True executes immediately, skipping backtrack
                 
-#         return False
+        return False
     
-#     def getCheese(self) -&gt; bool:
-#         &quot;&quot;&quot;
-#         Find cheese starting from position (0, 0) using DFS.
+    def getCheese(self) -&gt; bool:
+        &quot;&quot;&quot;
+        Find cheese starting from position (0, 0) using DFS.
         
-#         Returns:
-#             True if cheese is reachable from (0, 0)
-#             False if cheese is not reachable
-#         &quot;&quot;&quot;
-#         # Position already initialized to (0,0) in __init__
-#         # No need to re-initialize for single-use pattern
-#         return self.dfs()
+        Returns:
+            True if cheese is reachable from (0, 0)
+            False if cheese is not reachable
+        &quot;&quot;&quot;
+        # Position already initialized to (0,0) in __init__
+        # No need to re-initialize for single-use pattern
+        return self.dfs()
 
 # Example where backtrack is used
 
@@ -1702,10 +1702,10 @@ class Mouse:
 
 # Cheese at (1,0). Mouse starts at (0,0).
 
-# dfs() — mouse at (0,0)
+dfs() — mouse at (0,0)
 
-# hasCheese()? No
-# visited = {(0,0)}
+hasCheese()? No
+visited = {(0,0)}
 # Try UP: new=(-1,0) → move(UP) → out of bounds, bug fires, current=(-1,0), returns False
 
 # compensate: move(DOWN) → current=(-1+1, 0)=(0,0) ✅
@@ -1713,9 +1713,9 @@ class Mouse:
 
 # Try RIGHT: new=(0,1) → move(RIGHT) → current=(0+0, 1+1)=(0,1), returns True
 
-# dfs() — mouse at (0,1)
-# hasCheese()? No
-# visited = {(0,0),(0,1)}
+dfs() — mouse at (0,1)
+hasCheese()? No
+visited = {(0,0),(0,1)}
 # Try UP: new=(-1,1) → move(UP) → out of bounds, bug fires, current=(0-1,1)=(-1,1), returns False
 
 # compensate: move(DOWN) → current=(-1+1,1)=(0,1) ✅
@@ -1738,8 +1738,8 @@ class Mouse:
 # Gets False → FINAL BACKTRACK FIRES: move(LEFT) → current=(0,1-1)=(0,0) ✅
 # Try DOWN: new=(1,0) → move(DOWN) → current=(0+1,0)=(1,0), returns True
 
-# dfs() — mouse at (1,0)
-# hasCheese()? Yes → return True
+dfs() — mouse at (1,0)
+hasCheese()? Yes → return True
 
 
 # Gets True → return True ✅
@@ -1749,303 +1749,303 @@ class Mouse:
 
 # Mouse position in parameters, no compensation or backtracking needed
 
-# class Mouse:
-#     &quot;&quot;&quot;
-#     Mouse with limited API to find cheese in a maze - STATELESS VERSION.
+class Mouse:
+    &quot;&quot;&quot;
+    Mouse with limited API to find cheese in a maze - STATELESS VERSION.
     
-#     In this version, move() does NOT have a bug and position is tracked
-#     via function parameters rather than instance variables.
+    In this version, move() does NOT have a bug and position is tracked
+    via function parameters rather than instance variables.
     
-#     Time Complexity: O(N × M)
-#         - Visit each cell at most once due to visited set
-#         - Each cell performs O(1) work (try 4 directions)
+    Time Complexity: O(N × M)
+        - Visit each cell at most once due to visited set
+        - Each cell performs O(1) work (try 4 directions)
         
-#     Space Complexity: O(N × M)
-#         - visited set stores up to N × M cells
-#         - Recursion stack depth up to N × M in worst case
-#     &quot;&quot;&quot;
+    Space Complexity: O(N × M)
+        - visited set stores up to N × M cells
+        - Recursion stack depth up to N × M in worst case
+    &quot;&quot;&quot;
     
-#     def __init__(self, grid: List[List[str]], cheese_location: Tuple[int, int]):
-#         &quot;&quot;&quot;
-#         Initialize the mouse in the maze.
+    def __init__(self, grid: List[List[str]], cheese_location: Tuple[int, int]):
+        &quot;&quot;&quot;
+        Initialize the mouse in the maze.
         
-#         Args:
-#             grid: 2D maze where &#x27;S&#x27;/&#x27;.&#x27; = empty, &#x27;X&#x27; = wall, &#x27;#&#x27; = cheese
-#             cheese_location: (row, col) position of the cheese
-#         &quot;&quot;&quot;
-#         self.grid = grid
-#         self.cheese_location = cheese_location
-#         self.rows = len(grid)
-#         self.cols = len(grid[0])
+        Args:
+            grid: 2D maze where &#x27;S&#x27;/&#x27;.&#x27; = empty, &#x27;X&#x27; = wall, &#x27;#&#x27; = cheese
+            cheese_location: (row, col) position of the cheese
+        &quot;&quot;&quot;
+        self.grid = grid
+        self.cheese_location = cheese_location
+        self.rows = len(grid)
+        self.cols = len(grid[0])
         
-#         # NO instance variables for position tracking!
-#         # Position is tracked via function parameters
+        # NO instance variables for position tracking!
+        # Position is tracked via function parameters
         
-#         # Direction vectors: UP, RIGHT, DOWN, LEFT
-#         self.directions = [
-#             (-1, 0),  # UP
-#             (0, 1),   # RIGHT
-#             (1, 0),   # DOWN
-#             (0, -1)   # LEFT
-#         ]
+        # Direction vectors: UP, RIGHT, DOWN, LEFT
+        self.directions = [
+            (-1, 0),  # UP
+            (0, 1),   # RIGHT
+            (1, 0),   # DOWN
+            (0, -1)   # LEFT
+        ]
         
-#         # Track visited cells to prevent infinite loops
-#         self.visited = set()
+        # Track visited cells to prevent infinite loops
+        self.visited = set()
     
-#     def move(self, direction: Tuple[int, int], row: int, col: int) -&gt; bool:
-#         &quot;&quot;&quot;
-#         Check if move in direction from (row, col) is valid.
-#         Does NOT actually move the mouse - just validates.
+    def move(self, direction: Tuple[int, int], row: int, col: int) -&gt; bool:
+        &quot;&quot;&quot;
+        Check if move in direction from (row, col) is valid.
+        Does NOT actually move the mouse - just validates.
         
-#         Args:
-#             direction: (dr, dc) direction vector to move
-#             row: Current row position
-#             col: Current column position
+        Args:
+            direction: (dr, dc) direction vector to move
+            row: Current row position
+            col: Current column position
         
-#         Returns:
-#             True if move is valid (within bounds and not a wall)
-#             False if move is invalid
+        Returns:
+            True if move is valid (within bounds and not a wall)
+            False if move is invalid
         
-#         NO BUG: This function only validates, never updates position.
-#         Position is tracked via parameters in the DFS recursion.
-#         &quot;&quot;&quot;
-#         dr, dc = direction
-#         new_row = row + dr
-#         new_col = col + dc
+        NO BUG: This function only validates, never updates position.
+        Position is tracked via parameters in the DFS recursion.
+        &quot;&quot;&quot;
+        dr, dc = direction
+        new_row = row + dr
+        new_col = col + dc
         
-#         # Check if new position is within bounds
-#         if not (0 &lt;= new_row &lt; self.rows and 0 &lt;= new_col &lt; self.cols):
-#             return False
+        # Check if new position is within bounds
+        if not (0 &lt;= new_row &lt; self.rows and 0 &lt;= new_col &lt; self.cols):
+            return False
         
-#         # Check if new position is a wall
-#         if self.grid[new_row][new_col] == &#x27;X&#x27;:
-#             return False
+        # Check if new position is a wall
+        if self.grid[new_row][new_col] == &#x27;X&#x27;:
+            return False
         
-#         # Move is valid
-#         return True
+        # Move is valid
+        return True
     
-#     def hasCheese(self, row: int, col: int) -&gt; bool:
-#         &quot;&quot;&quot;
-#         Check if cheese is at the given position.
+    def hasCheese(self, row: int, col: int) -&gt; bool:
+        &quot;&quot;&quot;
+        Check if cheese is at the given position.
         
-#         Args:
-#             row: Row position to check
-#             col: Column position to check
+        Args:
+            row: Row position to check
+            col: Column position to check
         
-#         Returns:
-#             True if cheese is at (row, col)
-#         &quot;&quot;&quot;
-#         return (row == self.cheese_location[0] and 
-#                 col == self.cheese_location[1])
+        Returns:
+            True if cheese is at (row, col)
+        &quot;&quot;&quot;
+        return (row == self.cheese_location[0] and 
+                col == self.cheese_location[1])
     
-#     def dfs(self, row: int, col: int) -&gt; bool:
-#         &quot;&quot;&quot;
-#         DFS with implicit backtracking to find cheese.
-#         Position is tracked via parameters.
+    def dfs(self, row: int, col: int) -&gt; bool:
+        &quot;&quot;&quot;
+        DFS with implicit backtracking to find cheese.
+        Position is tracked via parameters.
         
-#         Args:
-#             row: Current row position
-#             col: Current column position
+        Args:
+            row: Current row position
+            col: Current column position
         
-#         Returns:
-#             True if cheese found from this position, False otherwise
-#         &quot;&quot;&quot;
-#         # Check if cheese at current position
-#         if self.hasCheese(row, col):
-#             return True
+        Returns:
+            True if cheese found from this position, False otherwise
+        &quot;&quot;&quot;
+        # Check if cheese at current position
+        if self.hasCheese(row, col):
+            return True
         
-#         # Mark current position as visited
-#         self.visited.add((row, col))
+        # Mark current position as visited
+        self.visited.add((row, col))
         
-#         # Try all 4 directions
-#         for i in range(len(self.directions)):
-#             dr, dc = self.directions[i]
-#             new_row = row + dr
-#             new_col = col + dc
+        # Try all 4 directions
+        for i in range(len(self.directions)):
+            dr, dc = self.directions[i]
+            new_row = row + dr
+            new_col = col + dc
             
-#             # Skip if already visited
-#             if (new_row, new_col) in self.visited:
-#                 continue
+            # Skip if already visited
+            if (new_row, new_col) in self.visited:
+                continue
             
-#             # Validate move (doesn&#x27;t actually move)
-#             if not self.move(self.directions[i], row, col):
-#                 # Move is invalid (wall or out of bounds)
-#                 # No compensation needed - move() doesn&#x27;t change state
-#                 continue
+            # Validate move (doesn&#x27;t actually move)
+            if not self.move(self.directions[i], row, col):
+                # Move is invalid (wall or out of bounds)
+                # No compensation needed - move() doesn&#x27;t change state
+                continue
             
-#             # Move is valid - recursively explore with new position
-#             # Position passed as parameters (new_row, new_col)
-#             if self.dfs(new_row, new_col):
-#                 return True  # Cheese found
+            # Move is valid - recursively explore with new position
+            # Position passed as parameters (new_row, new_col)
+            if self.dfs(new_row, new_col):
+                return True  # Cheese found
             
-#             # Cheese not found in this direction
-#             # 
-#             # NO EXPLICIT BACKTRACKING NEEDED:
-#             # Position is in parameters, not instance variables
-#             # When recursion returns, we&#x27;re automatically back at (row, col)
-#             # The call stack preserves parameter values
+            # Cheese not found in this direction
+            # 
+            # NO EXPLICIT BACKTRACKING NEEDED:
+            # Position is in parameters, not instance variables
+            # When recursion returns, we&#x27;re automatically back at (row, col)
+            # The call stack preserves parameter values
         
-#         return False
+        return False
     
-#     def getCheese(self) -&gt; bool:
-#         &quot;&quot;&quot;
-#         Find cheese starting from position (0, 0).
+    def getCheese(self) -&gt; bool:
+        &quot;&quot;&quot;
+        Find cheese starting from position (0, 0).
         
-#         Returns:
-#             True if cheese is reachable from (0, 0)
-#             False if cheese is not reachable
-#         &quot;&quot;&quot;
-#         return self.dfs(0, 0)
+        Returns:
+            True if cheese is reachable from (0, 0)
+            False if cheese is not reachable
+        &quot;&quot;&quot;
+        return self.dfs(0, 0)
 
 # Mouse physically moves only to valid positions and explicitly backtracks
 
-# class Mouse:
-#     &quot;&quot;&quot;
-#     Mouse with limited API to find cheese in a maze.
+class Mouse:
+    &quot;&quot;&quot;
+    Mouse with limited API to find cheese in a maze.
     
-#     IMPORTANT: In this version, move() does NOT have a bug.
-#     The mouse only moves when the move is valid. No compensation needed.
+    IMPORTANT: In this version, move() does NOT have a bug.
+    The mouse only moves when the move is valid. No compensation needed.
     
-#     Time Complexity: O(N × M)
-#         - Visit each cell at most once due to visited set
-#         - Each cell performs O(1) work (try 4 directions)
+    Time Complexity: O(N × M)
+        - Visit each cell at most once due to visited set
+        - Each cell performs O(1) work (try 4 directions)
         
-#     Space Complexity: O(N × M)
-#         - visited set stores up to N × M cells
-#         - Recursion stack depth up to N × M in worst case
-#     &quot;&quot;&quot;
+    Space Complexity: O(N × M)
+        - visited set stores up to N × M cells
+        - Recursion stack depth up to N × M in worst case
+    &quot;&quot;&quot;
     
-#     def __init__(self, grid: List[List[str]], cheese_location: Tuple[int, int]):
-#         &quot;&quot;&quot;
-#         Initialize the mouse in the maze.
+    def __init__(self, grid: List[List[str]], cheese_location: Tuple[int, int]):
+        &quot;&quot;&quot;
+        Initialize the mouse in the maze.
         
-#         Args:
-#             grid: 2D maze where &#x27;S&#x27;/&#x27;.&#x27; = empty, &#x27;X&#x27; = wall, &#x27;#&#x27; = cheese
-#             cheese_location: (row, col) position of the cheese
-#         &quot;&quot;&quot;
-#         self.grid = grid
-#         self.cheese_location = cheese_location
-#         self.rows = len(grid)
-#         self.cols = len(grid[0])
+        Args:
+            grid: 2D maze where &#x27;S&#x27;/&#x27;.&#x27; = empty, &#x27;X&#x27; = wall, &#x27;#&#x27; = cheese
+            cheese_location: (row, col) position of the cheese
+        &quot;&quot;&quot;
+        self.grid = grid
+        self.cheese_location = cheese_location
+        self.rows = len(grid)
+        self.cols = len(grid[0])
         
-#         # Track actual physical mouse position
-#         self.current_row = 0
-#         self.current_col = 0
+        # Track actual physical mouse position
+        self.current_row = 0
+        self.current_col = 0
         
-#         # Direction vectors: UP, RIGHT, DOWN, LEFT
-#         self.directions = [
-#             (-1, 0),  # UP
-#             (0, 1),   # RIGHT
-#             (1, 0),   # DOWN
-#             (0, -1)   # LEFT
-#         ]
+        # Direction vectors: UP, RIGHT, DOWN, LEFT
+        self.directions = [
+            (-1, 0),  # UP
+            (0, 1),   # RIGHT
+            (1, 0),   # DOWN
+            (0, -1)   # LEFT
+        ]
         
-#         # Opposite direction vectors for backtracking
-#         self.opposite_directions = [
-#             (1, 0),   # DOWN (opposite of UP)
-#             (0, -1),  # LEFT (opposite of RIGHT)
-#             (-1, 0),  # UP (opposite of DOWN)
-#             (0, 1)    # RIGHT (opposite of LEFT)
-#         ]
+        # Opposite direction vectors for backtracking
+        self.opposite_directions = [
+            (1, 0),   # DOWN (opposite of UP)
+            (0, -1),  # LEFT (opposite of RIGHT)
+            (-1, 0),  # UP (opposite of DOWN)
+            (0, 1)    # RIGHT (opposite of LEFT)
+        ]
         
-#         # Track visited cells to prevent infinite loops
-#         self.visited = set()
+        # Track visited cells to prevent infinite loops
+        self.visited = set()
     
-#     def move(self, direction: Tuple[int, int]) -&gt; bool:
-#         &quot;&quot;&quot;
-#         Move the mouse in the specified direction ONLY if valid.
+    def move(self, direction: Tuple[int, int]) -&gt; bool:
+        &quot;&quot;&quot;
+        Move the mouse in the specified direction ONLY if valid.
         
-#         Args:
-#             direction: (dr, dc) direction vector to move
+        Args:
+            direction: (dr, dc) direction vector to move
         
-#         Returns:
-#             True if move was successful (mouse actually moved)
-#             False if move was invalid (mouse did NOT move)
+        Returns:
+            True if move was successful (mouse actually moved)
+            False if move was invalid (mouse did NOT move)
         
-#         NO BUG: Mouse only moves if the move is valid.
-#         If invalid, mouse stays at current position.
-#         &quot;&quot;&quot;
-#         dr, dc = direction
+        NO BUG: Mouse only moves if the move is valid.
+        If invalid, mouse stays at current position.
+        &quot;&quot;&quot;
+        dr, dc = direction
 
-#         new_row = self.current_row + dr
-#         new_col = self.current_col + dc
+        new_row = self.current_row + dr
+        new_col = self.current_col + dc
         
-#         # Check if new position is within bounds
-#         if not (0 &lt;= new_row &lt; self.rows and 0 &lt;= new_col &lt; self.cols):
-#             return False  # Out of bounds - don&#x27;t move
+        # Check if new position is within bounds
+        if not (0 &lt;= new_row &lt; self.rows and 0 &lt;= new_col &lt; self.cols):
+            return False  # Out of bounds - don&#x27;t move
         
-#         # Check if new position is a wall
-#         if self.grid[new_row][new_col] == &#x27;X&#x27;:
-#             return False  # Wall - don&#x27;t move
+        # Check if new position is a wall
+        if self.grid[new_row][new_col] == &#x27;X&#x27;:
+            return False  # Wall - don&#x27;t move
         
-#         # Move is valid - actually move the mouse
-#         self.current_row = new_row
-#         self.current_col = new_col
+        # Move is valid - actually move the mouse
+        self.current_row = new_row
+        self.current_col = new_col
 
-#         return True
+        return True
     
-#     def hasCheese(self) -&gt; bool:
-#         &quot;&quot;&quot;Check if cheese at current mouse position.&quot;&quot;&quot;
-#         return (self.current_row == self.cheese_location[0] and 
-#                 self.current_col == self.cheese_location[1])
+    def hasCheese(self) -&gt; bool:
+        &quot;&quot;&quot;Check if cheese at current mouse position.&quot;&quot;&quot;
+        return (self.current_row == self.cheese_location[0] and 
+                self.current_col == self.cheese_location[1])
     
-#     def dfs(self) -&gt; bool:
-#         &quot;&quot;&quot;
-#         DFS with backtracking to find cheese.
+    def dfs(self) -&gt; bool:
+        &quot;&quot;&quot;
+        DFS with backtracking to find cheese.
         
-#         Returns:
-#             True if cheese found, False otherwise
-#         &quot;&quot;&quot;
-#         # Check if cheese at current position
-#         if self.hasCheese():
-#             return True
+        Returns:
+            True if cheese found, False otherwise
+        &quot;&quot;&quot;
+        # Check if cheese at current position
+        if self.hasCheese():
+            return True
         
-#         # Mark current position as visited
-#         self.visited.add((self.current_row, self.current_col))
+        # Mark current position as visited
+        self.visited.add((self.current_row, self.current_col))
         
-#         # Try all 4 directions
-#         for i in range(len(self.directions)):
-#             dr, dc = self.directions[i]
-#             new_row = self.current_row + dr
-#             new_col = self.current_col + dc
+        # Try all 4 directions
+        for i in range(len(self.directions)):
+            dr, dc = self.directions[i]
+            new_row = self.current_row + dr
+            new_col = self.current_col + dc
             
-#             # Skip if already visited
-#             if (new_row, new_col) in self.visited:
-#                 continue
+            # Skip if already visited
+            if (new_row, new_col) in self.visited:
+                continue
             
-#             # Try to move - mouse only moves if valid
-#             if not self.move(self.directions[i]):
-#                 # Move failed (wall or out of bounds)
-#                 # Mouse did NOT move - still at current position
-#                 # No compensation needed!
-#                 continue
+            # Try to move - mouse only moves if valid
+            if not self.move(self.directions[i]):
+                # Move failed (wall or out of bounds)
+                # Mouse did NOT move - still at current position
+                # No compensation needed!
+                continue
             
-#             # Move succeeded - mouse is now at (new_row, new_col)
-#             # Recursively explore from new position
-#             if self.dfs():
-#                 return True  # Cheese found, stay here
+            # Move succeeded - mouse is now at (new_row, new_col)
+            # Recursively explore from new position
+            if self.dfs():
+                return True  # Cheese found, stay here
             
-#             # Cheese not found - backtrack
-#             # Move back to previous position
-#             self.move(self.opposite_directions[i])
+            # Cheese not found - backtrack
+            # Move back to previous position
+            self.move(self.opposite_directions[i])
         
-#         return False
+        return False
     
-#     def getCheese(self) -&gt; bool:
-#         &quot;&quot;&quot;
-#         Find cheese starting from position (0, 0).
+    def getCheese(self) -&gt; bool:
+        &quot;&quot;&quot;
+        Find cheese starting from position (0, 0).
         
-#         Returns:
-#             True if cheese is reachable from (0, 0)
-#             False if cheese is not reachable
-#         &quot;&quot;&quot;
-#         # Reset state to allow getCheese() to be called multiple times.
-#         # __init__ sets these once at construction, but does not re-run
-#         # on subsequent calls, so we reset manually here.
-#         self.visited.clear()
-#         self.current_row = 0
-#         self.current_col = 0
-#         return self.dfs()
+        Returns:
+            True if cheese is reachable from (0, 0)
+            False if cheese is not reachable
+        &quot;&quot;&quot;
+        # Reset state to allow getCheese() to be called multiple times.
+        # __init__ sets these once at construction, but does not re-run
+        # on subsequent calls, so we reset manually here.
+        self.visited.clear()
+        self.current_row = 0
+        self.current_col = 0
+        return self.dfs()
 
 
 
