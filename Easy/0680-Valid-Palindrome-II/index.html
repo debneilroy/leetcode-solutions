@@ -217,7 +217,7 @@ URL: https://leetcode.com/problems/valid-palindrome-ii/
 &quot;&quot;&quot;
 
 # Brute-force: For each index i in the string (including the case of deleting nothing if you first check the original), form a new string by skipping s[i]:
-# t = s[0:i]+s[i+1:]
+t = s[0:i]+s[i+1:]
 # Then check if t is a palindrome using two pointers. If any such t is a palindrome (or the original string is already one), return true; otherwise return false.
 
 # Time Complexity: O(n²) - we try n deletions, each palindrome check takes O(n)
