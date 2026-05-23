@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>34. Find First and Last Position of Element in Sorted Array - LeetCode Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+
+:root {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --radius:    6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #e6db74; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy   { color: var(--easy);   background: rgba(44,187,93,0.15); }
+.badge-Medium { color: var(--medium); background: rgba(255,161,22,0.15); }
+.badge-Hard   { color: var(--hard);   background: rgba(239,71,67,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--surface2); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: #1e1e1e !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">34. Find First and Last Position of Element in Sorted Array</span>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (0)</div>
+        <div class="tab" data-tab="similar">Similar (3)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">34. Find First and Last Position of Element in Sorted Array</div>
+        <div class="prob-meta">
+          <span class="badge badge-Medium">Medium</span>
+          <span class="tag">Array</span><span class="tag">Binary Search</span>
+        </div>
+        <div class="prob-stats">3.3M / 6.8M (48.9%)</div>
+        <div class="prob-desc"><p>Given an array of integers <code>nums</code> sorted in non-decreasing order, find the starting and ending position of a given <code>target</code> value.</p>
+<p>If <code>target</code> is not found in the array, return <code>[-1, -1]</code>.</p>
+<p>You must write an algorithm with <code>O(log n)</code> runtime complexity.</p>
+<p>Example 1:</p>
+<pre class="example-block"><code><strong>Input:</strong> nums = [5,7,7,8,8,10], target = 8
+<strong>Output:</strong> [3,4]
+</code></pre>
+<p>Example 2:</p>
+<pre class="example-block"><code><strong>Input:</strong> nums = [5,7,7,8,8,10], target = 6
+<strong>Output:</strong> [-1,-1]
+</code></pre>
+<p>Example 3:</p>
+<pre class="example-block"><code><strong>Input:</strong> nums = [], target = 0
+<strong>Output:</strong> [-1,-1]
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li><code>0 &lt;= nums.length &lt;= 105</code></li>
+</ul>
+	
+<ul>
+<li><code>-109 &lt;= nums[i] &lt;= 109</code></li>
+</ul>
+	
+<ul>
+<li><code>nums</code> is a non-decreasing array.</li>
+</ul>
+	
+<ul>
+<li><code>-109 &lt;= target &lt;= 109</code></li>
+</ul></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        <p class="empty-msg">No hints for this problem.</p>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/first-bad-version/" target="_blank">First Bad Version</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/plates-between-candles/" target="_blank">Plates Between Candles</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/find-target-indices-after-sorting-array/" target="_blank">Find Target Indices After Sorting Array</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 34. Find First and Last Position of Element in Sorted Array
+Difficulty: Medium
+URL: https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+&quot;&quot;&quot;
+
+# Brute Force Approach : Linear Scan
+
+# class Solution:
+#     def searchRange(nums, target):
+#         &quot;&quot;&quot;
+#         Brute Force: Single pass to find both positions.
+        
+#         Time Complexity: O(n) - scan entire array once
+#         Space Complexity: O(1)
+
+#         This violates the problem&#x27;s requirement of O(log n) time.
+#         &quot;&quot;&quot;
+#         if not nums:
+#             return [-1, -1]
+
+#         if target &lt; nums[0] or target &gt; nums[-1]:
+#             return [-1, -1]
+        
+#         left_pos = -1
+#         right_pos = -1
+        
+#         # Single pass: Update positions as we find target
+#         for i in range(len(nums)):
+#             if nums[i] == target:
+#                 if left_pos == -1:
+#                     # First occurrence found
+#                     left_pos = i
+#                 # Always update right position when we find target
+#                 right_pos = i
+        
+#         # If target never found, both will be -1
+#         return [left_pos, right_pos]
+
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -&gt; List[int]:
+        &quot;&quot;&quot;
+        Find the starting and ending position of a given target value in a sorted 
+        array.
+    
+        Args:
+            nums: List[int] - sorted array in non-decreasing order
+            target: int - target value to search for
+        
+        Returns:
+            List[int] - [start_pos, end_pos] or [-1, -1] if not found
+        
+        Time Complexity: O(log n)
+        Space Complexity: O(1)
+
+        &quot;&quot;&quot;
+
+        def findLeft(nums, target):
+            &quot;&quot;&quot;
+            Find the leftmost (first) occurrence of target using binary search.
+            
+            Strategy: When we find the target, we don&#x27;t stop - we continue
+            searching in the left half to find an earlier occurrence.
+            &quot;&quot;&quot;
+            left, right = 0, len(nums) - 1
+            result = -1  # -1 indicates target not found
+            
+            # WHY left &lt;= right and NOT left &lt; right?
+            # We use &lt;= because we need to check the case when left == right
+            # (single element remaining). If we used &lt;, we&#x27;d miss checking
+            # the last remaining element.
+            # Example: nums = [5], target = 5
+            #   - Initially: left = 0, right = 0
+            #   - With &lt;=: We enter loop, check nums[0], find target ✓
+            #   - With &lt;: We skip loop entirely, return -1 ✗
+            while left &lt;= right:
+                # Calculate middle index (avoids overflow compared to (left+right)/2)
+                mid = (left + right) // 2
+                
+                if nums[mid] == target:
+                    # Found target! But there might be earlier occurrences
+                    result = mid  # Save this position
+                    right = mid - 1  # Continue searching in left half
+                    
+                elif nums[mid] &lt; target:
+                    # Target is in the right half
+                    left = mid + 1
+                    
+                else:  # nums[mid] &gt; target
+                    # Target is in the left half
+                    right = mid - 1
+                    
+            return result
+    
+        def findRight(nums, target):
+            &quot;&quot;&quot;
+            Find the rightmost (last) occurrence of target using binary search.
+            
+            Strategy: When we find the target, we don&#x27;t stop - we continue
+            searching in the right half to find a later occurrence.
+            &quot;&quot;&quot;
+            left, right = 0, len(nums) - 1
+            result = -1  # -1 indicates target not found
+            
+            # WHY left &lt;= right and NOT left &lt; right?
+            # Same reason as findLeft - we need to check when left == right
+            # to handle single element or last remaining element cases.
+            while left &lt;= right:
+                # Calculate middle index
+                mid = (left + right) // 2
+                
+                if nums[mid] == target:
+                    # Found target! But there might be later occurrences
+                    result = mid  # Save this position
+                    left = mid + 1  # Continue searching in right half
+                    
+                elif nums[mid] &lt; target:
+                    # Target is in the right half
+                    left = mid + 1
+                    
+                else:  # nums[mid] &gt; target
+                    # Target is in the left half
+                    right = mid - 1
+                    
+            return result
+        
+        # ==================== Main Logic ====================
+        
+        # Base case: empty array
+        if not nums:
+            return [-1, -1]
+        
+        # Early exit optimization: Check if target is outside array bounds
+        # Since array is sorted, if target is smaller than first element
+        # or larger than last element, it cannot be in the array
+        if target &lt; nums[0] or target &gt; nums[-1]:
+            return [-1, -1]
+        
+        # Find the leftmost position of target
+        left_pos = findLeft(nums, target)
+
+        # Early exit: If leftmost position is -1, target doesn&#x27;t exist
+        # No need to search for rightmost position
+        if left_pos == -1:
+            return [-1, -1]
+        
+        # Find the rightmost position of target
+        # We know target exists, so this will definitely find a position
+        right_pos = findRight(nums, target)
+        
+        # Return the range [leftmost, rightmost]
+        return [left_pos, right_pos]
+
+# Alternative one-pass solution using single binary search function
+class Solution:
+    def searchRange(self, nums, target):
+        &quot;&quot;&quot;
+        Alternative approach using a single helper function with a flag.
+        
+        Instead of two separate functions (findLeft and findRight), we use
+        one function with a boolean parameter to control search direction.
+        
+        Pros: Less code duplication
+        Cons: Slightly less readable than two separate functions
+        
+        Time Complexity: O(log n)
+        Space Complexity: O(1)
+        &quot;&quot;&quot;
+        
+        def binarySearch(nums, target, findLeft):
+            &quot;&quot;&quot;
+            Generic binary search that can find either leftmost or rightmost occurrence.
+            
+            Args:
+                nums: sorted array
+                target: value to search for
+                findLeft: boolean flag
+                    - True: find leftmost (first) occurrence
+                    - False: find rightmost (last) occurrence
+            
+            Returns:
+                Index of target (leftmost or rightmost based on flag), or -1 if not found
+            &quot;&quot;&quot;
+            left, right = 0, len(nums) - 1
+            result = -1  # -1 indicates target not found
+            
+            # WHY left &lt;= right?
+            # We need to check when left == right (single element remaining)
+            # Using &lt; would skip the last element
+            while left &lt;= right:
+                # Calculate middle index
+                mid = (left + right) // 2
+                
+                if nums[mid] == target:
+                    # Found the target! But don&#x27;t stop yet
+                    result = mid  # Save current position
+                    
+                    # KEY DIFFERENCE: Direction controlled by findLeft flag
+                    if findLeft:
+                        # Looking for LEFTMOST occurrence
+                        # Continue searching in left half for earlier occurrence
+                        right = mid - 1
+                    else:
+                        # Looking for RIGHTMOST occurrence
+                        # Continue searching in right half for later occurrence
+                        left = mid + 1
+                        
+                elif nums[mid] &lt; target:
+                    # Target is in the right half
+                    left = mid + 1
+                    
+                else:  # nums[mid] &gt; target
+                    # Target is in the left half
+                    right = mid - 1
+                    
+            return result
+        
+        # ==================== Main Logic ====================
+        
+        # Base case: empty array
+        if not nums:
+            return [-1, -1]
+        
+        # Early exit optimization: Check if target is outside array bounds
+        # Since array is sorted, if target is smaller than first element
+        # or larger than last element, it cannot be in the array
+        # This saves us from doing TWO binary searches unnecessarily
+        if target &lt; nums[0] or target &gt; nums[-1]:
+            return [-1, -1]
+        
+        # First call: Find LEFTMOST occurrence
+        # Pass True to search for the first occurrence
+        left_pos = binarySearch(nums, target, True)
+        
+        # Early exit: If leftmost position is -1, target doesn&#x27;t exist
+        # No need to search for rightmost position
+        if left_pos == -1:
+            return [-1, -1]
+        
+        # Second call: Find RIGHTMOST occurrence
+        # Pass False to search for the last occurrence
+        # We know target exists (left_pos != -1), so this will find a position
+        right_pos = binarySearch(nums, target, False)
+        
+        # Return the range [leftmost, rightmost]
+        return [left_pos, right_pos]
+
+
+
+# Variant 1 : Count Occurrences of Target in Sorted Array
+
+# Given an array of integers nums sorted in non-decreasing order, 
+# count the number of occurrences of a given target value.
+
+# You must write an algorithm with O(log n) runtime complexity.
+
+# Example:
+# Input: nums = [5,7,7,8,8,10], target = 8
+# Output: 2
+# Explanation: 8 appears twice in the array
+
+# def countTarget(nums, target):
+#     &quot;&quot;&quot;
+#     Count the number of occurrences of target in a sorted array.
+    
+#     Args:
+#         nums: List[int] - sorted array in non-decreasing order
+#         target: int - target value to count
+    
+#     Returns:
+#         int - count of target occurrences
+    
+#     Time Complexity: O(log n)
+#     Space Complexity: O(1)
+#     &quot;&quot;&quot;
+#     def findLeft(nums, target):
+#         &quot;&quot;&quot;Find the leftmost occurrence of target&quot;&quot;&quot;
+#         left, right = 0, len(nums) - 1
+#         result = -1
+        
+#         while left &lt;= right:
+#             mid = (left + right) // 2
+            
+#             if nums[mid] == target:
+#                 result = mid
+#                 right = mid - 1  # Continue searching left
+#             elif nums[mid] &lt; target:
+#                 left = mid + 1
+#             else:
+#                 right = mid - 1
+                
+#         return result
+    
+#     def findRight(nums, target):
+#         &quot;&quot;&quot;Find the rightmost occurrence of target&quot;&quot;&quot;
+#         left, right = 0, len(nums) - 1
+#         result = -1
+        
+#         while left &lt;= right:
+#             mid = (left + right) // 2
+            
+#             if nums[mid] == target:
+#                 result = mid
+#                 left = mid + 1   # Continue searching right
+#             elif nums[mid] &lt; target:
+#                 left = mid + 1
+#             else:
+#                 right = mid - 1
+                
+#         return result
+    
+#     if not nums:
+#         return 0
+
+#     if target &lt; nums[0] or target &gt; nums[-1]:
+#         return 0
+
+#     left_pos = findLeft(nums, target)
+
+#     if left_pos == -1:
+#         return 0  # Target not found
+    
+#     right_pos = findRight(nums, target)
+    
+#     # Count = right_pos - left_pos + 1
+#     return right_pos - left_pos + 1
+
+
+# Variant 2 : Count Unique Elements in Sorted Array
+
+# Given an array of integers nums sorted in non-decreasing order, count the number of unique (distinct) elements in the array.
+
+# Examples:
+#     Input: nums = [1, 1, 2, 2, 2, 3]
+#     Output: 3
+#     Explanation: The unique elements are 1, 2, and 3
+    
+#     Input: nums = [1, 2, 3, 4, 5]
+#     Output: 5
+#     Explanation: All elements are unique
+    
+#     Input: nums = [7, 7, 7, 7]
+#     Output: 1
+#     Explanation: Only one unique element (7)
+    
+#     Input: nums = []
+#     Output: 0
+#     Explanation: Empty array has no elements
+
+# Note: Linear scan is more optimal O(n) vs O(k*log n).
+# This binary search approach only wins when k &lt;&lt; n (very few unique elements).
+
+# def countUniqueElementsBinarySearch(nums):
+#     &quot;&quot;&quot;
+#     Count unique elements using binary search.
+    
+#     Time: O(k * log n) where k = unique elements
+#     Space: O(1)
+    
+#     Approach:
+#         1. Start at first element
+#         2. Binary search to find where it ends
+#         3. Jump to next unique element
+#         4. Repeat
+    
+#     Example: nums = [1, 1, 2, 2, 2, 3]
+#                      ↑     ↑        ↑
+#                      i=0   i=2      i=5
+#         Step 1: i=0, find end of 1 at index 1, jump to i=2
+#         Step 2: i=2, find end of 2 at index 4, jump to i=5
+#         Step 3: i=5, find end of 3 at index 5, jump to i=6 (done)
+#         Result: 3 unique
+    
+#     Why not findLeft()?
+#         - We scan left-to-right, so &#x27;i&#x27; is always the leftmost position
+#         - We jump past complete groups: i = right_pos + 1
+#         - Calling findLeft would just return &#x27;i&#x27; (redundant)
+    
+#     When Binary Search WINS:
+#         nums = [1]*500,000 + [2]*500,000  (n=1M, k=2)
+#         Linear:  1,000,000 operations
+#         Binary:  2 * log(1M) ≈ 40 operations  ✅ Binary wins!
+    
+#     When Linear WINS (most common):
+#         nums = [1, 2, 3, ..., 1000]  (n=1000, k=1000, all unique)
+#         Linear:  1,000 operations  ✅ Linear wins!
+#         Binary:  1000 * log(1000) ≈ 10,000 operations
+#     &quot;&quot;&quot;
+    
+#     if not nums:
+#         return 0
+    
+#     def findRight(nums, target):
+#         &quot;&quot;&quot;Find rightmost occurrence of target.&quot;&quot;&quot;
+#         left, right = 0, len(nums) - 1
+#         result = -1
+        
+#         while left &lt;= right:  # Use &lt;= to check when left == right
+#             mid = (left + right) // 2
+            
+#             if nums[mid] == target:
+#                 result = mid
+#                 left = mid + 1  # Continue searching right
+#             elif nums[mid] &lt; target:
+#                 left = mid + 1
+#             else:
+#                 right = mid - 1
+                
+#         return result
+    
+#     unique_count = 0
+#     i = 0  # i is always the leftmost position of current element
+    
+#     # Process array by jumping from one unique element to the next
+#     # ⚠️  Note: Even though we &quot;jump&quot;, we still examine O(n) positions
+#     # in total across all jumps, then add O(k * log n) for binary searches.
+#     # This is why the total complexity is O(k * log n), not better.
+
+#     while i &lt; len(nums):
+#         current = nums[i]
+        
+#         # Use binary search to find where this element ends
+#         # (rightmost occurrence of current element)
+#         # 
+#         # Why binary search instead of linear scan from i?
+#         # If current element appears many times (e.g., 1000 times),
+#         # binary search finds the end in ~log(n) steps,
+#         # while linear scan would take 1000 steps.
+#         # 
+#         # However, this is the ONLY benefit, and it only helps when
+#         # individual groups are large AND there are few unique elements.
+#         right_pos = findRight(nums, current)
+        
+#         unique_count += 1
+        
+#         # Skip to next unique element
+#         i = right_pos + 1
+    
+#     return unique_count
+
+# def countUniqueElementsLinear(nums):
+#     &quot;&quot;&quot;
+#     ✅ OPTIMAL SOLUTION - Linear scan
+    
+#     Time: O(n) - always optimal, matches lower bound
+#     Space: O(1)
+    
+#     Why better than binary search:
+#         - Must examine every element anyway (lower bound is Ω(n))
+#         - Binary search is O(k*log n), worst case O(n*log n) when k=n
+#         - Simpler code, better cache locality
+    
+#     When Linear WINS (common):
+#         Example 1: nums = [1, 2, 3, 4, 5] (all unique, k=n)
+#             Linear:  5 operations  ✅
+#             Binary:  5 * log(5) ≈ 12 operations
+        
+#         Example 2: nums = [1,1,2,2,3,3,4,4,5,5] (k=n/2)
+#             Linear:  10 operations  ✅
+#             Binary:  5 * log(10) ≈ 17 operations
+    
+#     When Binary WINS (rare):
+#         Example: nums = [1]*1M + [2]*1M (only 2 unique, k=2)
+#             Linear:  2,000,000 operations
+#             Binary:  2 * log(2M) ≈ 42 operations  ✅
+#             BUT: This scenario is uncommon in practice!
+    
+#     Use this for production code!
+#     &quot;&quot;&quot;
+#     if not nums:
+#         return 0
+    
+#     unique_count = 1  # First element always unique
+    
+#     for i in range(1, len(nums)):
+#         if nums[i] != nums[i-1]:
+#             unique_count += 1
+    
+#     return unique_count
+ 
+        
+        </code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Medium/0031-Next-Permutation/">&#8592; 31. Next Permutation</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Medium/0050-Powx-n/">50. Pow(x, n) &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+</body>
+</html>
