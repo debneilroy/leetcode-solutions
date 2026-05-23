@@ -331,25 +331,25 @@ class Solution:
 # Example
 
 # Build the tree:
-#     1
-#    / \
-#   2   3
-#  /     \
+    1
+   / \
+  2   3
+ /     \
 # 4       5
 
-# root = TreeNode(1)
+root = TreeNode(1)
 # root.left = TreeNode(2)
 # root.right = TreeNode(3)
 # root.left.left = TreeNode(4)
 # root.right.right = TreeNode(5)
 
-# # Grab references to the target nodes directly from the tree
-# p = root.left.left    # node with val = 4
-# q = root.right.right  # node with val = 5
+# Grab references to the target nodes directly from the tree
+p = root.left.left    # node with val = 4
+q = root.right.right  # node with val = 5
 
-# sol = Solution()
-# res = sol.lowestCommonAncestor(root, p, q)
-# print(res.val)  # 1
+sol = Solution()
+res = sol.lowestCommonAncestor(root, p, q)
+print(res.val)  # 1
       
 # Approach : Iterative using parent pointers (can be asked as follow up)
 
@@ -526,407 +526,407 @@ class Solution:
 # Variant 1 : Find LCA of N-ary tree : Given an n-ary tree where each node can have multiple children, find the LCA of two nodes p and q.
 
 # N-ary tree:
-#            1
-#         /  |  \
-#        2   3   4
-#       /|\     / \
-#      5 6 7   8   9
+           1
+        /  |  \
+       2   3   4
+      /|\     / \
+     5 6 7   8   9
 
 # Definition for a Node.
-# class Node:
-#     def __init__(self, val):
-#         self.val = val
-#         self.children = []  # List of child nodes
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.children = []  # List of child nodes
 
-# # Recursive Approach:
+# Recursive Approach:
 
-# class Solution:
-#     def lowestCommonAncestor(self, root: &#x27;Node&#x27;, p: &#x27;Node&#x27;, q: &#x27;Node&#x27;) -&gt; &#x27;Node&#x27;:
-#         &quot;&quot;&quot;
-#         Recursive DFS for N-ary tree LCA.
+class Solution:
+    def lowestCommonAncestor(self, root: &#x27;Node&#x27;, p: &#x27;Node&#x27;, q: &#x27;Node&#x27;) -&gt; &#x27;Node&#x27;:
+        &quot;&quot;&quot;
+        Recursive DFS for N-ary tree LCA.
         
-#         Algorithm:
-#         1. If current node is None or matches p or q, return current node
-#         2. Recursively search ALL children
-#         3. Count how many children found p or q
-#         4. If 2+ children found nodes, current is LCA (split point)
-#         5. If 1 child found both, propagate that result up
-#         6. If current node is p/q and a child found the other, current is LCA
+        Algorithm:
+        1. If current node is None or matches p or q, return current node
+        2. Recursively search ALL children
+        3. Count how many children found p or q
+        4. If 2+ children found nodes, current is LCA (split point)
+        5. If 1 child found both, propagate that result up
+        6. If current node is p/q and a child found the other, current is LCA
         
-#         Time Complexity: O(n)
-#             - Visit each node exactly once
-#             - n = total number of nodes
+        Time Complexity: O(n)
+            - Visit each node exactly once
+            - n = total number of nodes
         
-#         Space Complexity: O(h)
-#             - Recursion stack depth
-#             - h = height of tree
-#             - Best: O(log n) for balanced tree
-#             - Worst: O(n) for skewed tree
+        Space Complexity: O(h)
+            - Recursion stack depth
+            - h = height of tree
+            - Best: O(log n) for balanced tree
+            - Worst: O(n) for skewed tree
         
-#         Example:
-#                         1
-#                      /  |  \
-#                     2   3   4
-#                    / \      |
-#                   5   6     7
-#                  /
-#                 8
+        Example:
+                        1
+                     /  |  \
+                    2   3   4
+                   / \      |
+                  5   6     7
+                 /
+                8
         
-#             Case 1: p = 8, q = 6 -&gt; LCA = 2 (split across children)
-#                 - LCA(8) returns 8, LCA(6) returns 6
-#                 - At node 2: two children return non-null -&gt; return 2
-#                 - At node 1: one child returns non-null -&gt; propagate 2 upward
+            Case 1: p = 8, q = 6 -&gt; LCA = 2 (split across children)
+                - LCA(8) returns 8, LCA(6) returns 6
+                - At node 2: two children return non-null -&gt; return 2
+                - At node 1: one child returns non-null -&gt; propagate 2 upward
             
-#             Case 2: p = 2, q = 8 -&gt; LCA = 2 (p is ancestor of q)
-#                 - LCA(2) matches p and returns immediately (no recursion into its children)
-#                 - At node 1: other children (3, 4) are still explored and return None
-#                 - Only one child returns non-null -&gt; propagate 2 upward
+            Case 2: p = 2, q = 8 -&gt; LCA = 2 (p is ancestor of q)
+                - LCA(2) matches p and returns immediately (no recursion into its children)
+                - At node 1: other children (3, 4) are still explored and return None
+                - Only one child returns non-null -&gt; propagate 2 upward
         
-#         Notes:
-#         - Local pruning: when a node matches p or q, its subtree is not explored further.
-#         - No global pruning: sibling subtrees may still be explored at ancestor nodes.
-#         - Correctness relies on the assumption that both p and q exist in the tree.
-#         &quot;&quot;&quot;
+        Notes:
+        - Local pruning: when a node matches p or q, its subtree is not explored further.
+        - No global pruning: sibling subtrees may still be explored at ancestor nodes.
+        - Correctness relies on the assumption that both p and q exist in the tree.
+        &quot;&quot;&quot;
         
-#         # Base case: if node is None or matches p or q, return it
-#         if not root or root == p or root == q:
-#             return root
+        # Base case: if node is None or matches p or q, return it
+        if not root or root == p or root == q:
+            return root
         
-#         # Recursively search in ALL children (not just left/right)
-#         #  children_results is LOCAL per call — each recursive invocation
-#         # needs its own list to track only ITS children&#x27;s returns. A global
-#         # list would mix results across unrelated subtrees and break the
-#         # &quot;how many of my children found a target?&quot; logic. Python&#x27;s stack
-#         # frame isolation gives us this per-call scope for free.
-#         children_results = []
-#         for child in root.children:
-#             result = self.lowestCommonAncestor(child, p, q)
-#             if result:  # Only store non-null results
-#                 children_results.append(result)
+        # Recursively search in ALL children (not just left/right)
+        #  children_results is LOCAL per call — each recursive invocation
+        # needs its own list to track only ITS children&#x27;s returns. A global
+        # list would mix results across unrelated subtrees and break the
+        # &quot;how many of my children found a target?&quot; logic. Python&#x27;s stack
+        # frame isolation gives us this per-call scope for free.
+        children_results = []
+        for child in root.children:
+            result = self.lowestCommonAncestor(child, p, q)
+            if result:  # Only store non-null results
+                children_results.append(result)
         
-#         # Analyze results from children
-#         # If 2+ children returned non-null, current node is the split point (LCA)
-#         if len(children_results) &gt;= 2:
-#             return root
+        # Analyze results from children
+        # If 2+ children returned non-null, current node is the split point (LCA)
+        if len(children_results) &gt;= 2:
+            return root
         
-#         # If exactly 1 child returned non-null, propagate it up.
-#         # The result is either p, q, or the LCA (if both targets were already
-#         # found deeper in this child&#x27;s subtree). Either way, the current node
-#         # is not the LCA — pass the result up so an ancestor can decide.
-#         if len(children_results) == 1:
-#             return children_results[0]
+        # If exactly 1 child returned non-null, propagate it up.
+        # The result is either p, q, or the LCA (if both targets were already
+        # found deeper in this child&#x27;s subtree). Either way, the current node
+        # is not the LCA — pass the result up so an ancestor can decide.
+        if len(children_results) == 1:
+            return children_results[0]
         
-#         # No children found anything, return None
-#         return None
+        # No children found anything, return None
+        return None
 
 # Example:
 
 # Build the tree:
-#                 1
-#              /  |  \
-#             2   3   4
-#            / \      |
-#           5   6     7
-#          /
-#         8
+                1
+             /  |  \
+            2   3   4
+           / \      |
+          5   6     7
+         /
+        8
 
-# root = Node(1)
+root = Node(1)
 # n2, n3, n4 = Node(2), Node(3), Node(4)
 # n5, n6, n7 = Node(5), Node(6), Node(7)
-# n8 = Node(8)
+n8 = Node(8)
 # root.children = [n2, n3, n4]
 # n2.children = [n5, n6]
 # n4.children = [n7]
 # n5.children = [n8]
 
-# # Case 1: p = 8, q = 6 -&gt; LCA = 2 (split across children)
-# p = n8
-# q = n6
-# sol = Solution()
-# res = sol.lowestCommonAncestor(root, p, q)
-# print(res.val)  # 2
+# Case 1: p = 8, q = 6 -&gt; LCA = 2 (split across children)
+p = n8
+q = n6
+sol = Solution()
+res = sol.lowestCommonAncestor(root, p, q)
+print(res.val)  # 2
 
-# # Case 2: p = 2, q = 8 -&gt; LCA = 2 (p is ancestor of q)
-# p = n2
-# q = n8
-# sol = Solution()
-# res = sol.lowestCommonAncestor(root, p, q)
-# print(res.val)  # 2
+# Case 2: p = 2, q = 8 -&gt; LCA = 2 (p is ancestor of q)
+p = n2
+q = n8
+sol = Solution()
+res = sol.lowestCommonAncestor(root, p, q)
+print(res.val)  # 2
 
 
 # Cleaner alternative with same logic
 
-# class Solution:
-#     def lowestCommonAncestor(self, root: &#x27;Node&#x27;, p: &#x27;Node&#x27;, q: &#x27;Node&#x27;) -&gt; &#x27;Node&#x27;:
-#         &quot;&quot;&quot;
-#         Recursive DFS for Lowest Common Ancestor (LCA) in an N-ary tree.
-#         Count-based variant: tracks how many children returned non-null,
-#         without building a list of results.
+class Solution:
+    def lowestCommonAncestor(self, root: &#x27;Node&#x27;, p: &#x27;Node&#x27;, q: &#x27;Node&#x27;) -&gt; &#x27;Node&#x27;:
+        &quot;&quot;&quot;
+        Recursive DFS for Lowest Common Ancestor (LCA) in an N-ary tree.
+        Count-based variant: tracks how many children returned non-null,
+        without building a list of results.
         
-#         Algorithm:
-#         1. If the current node is None or matches p or q, return the current node
-#         2. Recursively search all children of the current node
-#         3. Count how many children return a non-null result
-#         4. If two or more children return non-null, the current node is the LCA (split point)
-#         5. If exactly one child returns non-null, propagate that result upward
-#         6. If no children return non-null, return None
+        Algorithm:
+        1. If the current node is None or matches p or q, return the current node
+        2. Recursively search all children of the current node
+        3. Count how many children return a non-null result
+        4. If two or more children return non-null, the current node is the LCA (split point)
+        5. If exactly one child returns non-null, propagate that result upward
+        6. If no children return non-null, return None
         
-#         Key Insight:
-#         - The function returns a node if and only if the subtree rooted at that node
-#           contains at least one of {p, q}.
-#         - The first node where results come from two different child branches is the LCA.
-#         - If one node is an ancestor of the other, the ancestor node is returned via the base case without      exploring its subtree.
+        Key Insight:
+        - The function returns a node if and only if the subtree rooted at that node
+          contains at least one of {p, q}.
+        - The first node where results come from two different child branches is the LCA.
+        - If one node is an ancestor of the other, the ancestor node is returned via the base case without      exploring its subtree.
         
-#         Time Complexity: O(n)
-#             - Each node is visited exactly once
-#             - n = total number of nodes
+        Time Complexity: O(n)
+            - Each node is visited exactly once
+            - n = total number of nodes
         
-#         Space Complexity: O(h)
-#             - Recursion call stack depth equals tree height
-#             - h = height of the tree
-#             - Best case (balanced tree): O(log n)
-#             - Worst case (skewed tree): O(n)
+        Space Complexity: O(h)
+            - Recursion call stack depth equals tree height
+            - h = height of the tree
+            - Best case (balanced tree): O(log n)
+            - Worst case (skewed tree): O(n)
             
-#             Why O(h) and not O(1), even though we use scalars instead of a list?
-#             - Total space = (number of active stack frames) * (space per frame)
-#             - Per-frame space: O(1) with scalars (O(k) with the list version,
-#               where k = number of children). Swapping list -&gt; scalars reduced
-#               per-frame space but NOT the number of frames.
-#             - Stack depth: O(h), because recursion must descend to find p and q.
-#               Each frame on the path from root to a target is paused mid-loop,
-#               waiting for its child&#x27;s result — those frames stay on the stack.
-#             - So total is O(h) * O(1) = O(h). The scalar optimization is a
-#               constant-factor win, not an asymptotic one.
+            Why O(h) and not O(1), even though we use scalars instead of a list?
+            - Total space = (number of active stack frames) * (space per frame)
+            - Per-frame space: O(1) with scalars (O(k) with the list version,
+              where k = number of children). Swapping list -&gt; scalars reduced
+              per-frame space but NOT the number of frames.
+            - Stack depth: O(h), because recursion must descend to find p and q.
+              Each frame on the path from root to a target is paused mid-loop,
+              waiting for its child&#x27;s result — those frames stay on the stack.
+            - So total is O(h) * O(1) = O(h). The scalar optimization is a
+              constant-factor win, not an asymptotic one.
             
-#             Why O(n) in the worst case?
-#             - In a skewed/degenerate tree (each node has one child), h = n,
-#               so O(h) = O(n). The stack itself holds n frames at peak depth.
-#             - This is about tree SHAPE, not about what each frame stores.
+            Why O(n) in the worst case?
+            - In a skewed/degenerate tree (each node has one child), h = n,
+              so O(h) = O(n). The stack itself holds n frames at peak depth.
+            - This is about tree SHAPE, not about what each frame stores.
             
-#             To beat O(h), you need a fundamentally different approach:
-#             - Pre-existing parent pointers on nodes: O(1) aux space per query
-#               (walk up from p and q without recursion).
-#             - Iterative with explicit stack: O(n) worst-case space (like BFS/DFS frontier), though recursion uses only O(h) call stack.
-#             - Euler tour + RMQ / sparse table: O(n) preprocessing, O(1) per query;
-#               best for multi-query workloads.
-#             - Tarjan&#x27;s offline LCA: O(alpha(n)) per query on average with union-find.
-#             - None of these beat O(h) for a SINGLE query on a tree lacking
-#               built-in parent pointers.
+            To beat O(h), you need a fundamentally different approach:
+            - Pre-existing parent pointers on nodes: O(1) aux space per query
+              (walk up from p and q without recursion).
+            - Iterative with explicit stack: O(n) worst-case space (like BFS/DFS frontier), though recursion uses only O(h) call stack.
+            - Euler tour + RMQ / sparse table: O(n) preprocessing, O(1) per query;
+              best for multi-query workloads.
+            - Tarjan&#x27;s offline LCA: O(alpha(n)) per query on average with union-find.
+            - None of these beat O(h) for a SINGLE query on a tree lacking
+              built-in parent pointers.
         
-#         Example tree:
-#                         1
-#                      /  |  \
-#                     2   3   4
-#                    / \      |
-#                   5   6     7
-#                  /
-#                 8
+        Example tree:
+                        1
+                     /  |  \
+                    2   3   4
+                   / \      |
+                  5   6     7
+                 /
+                8
             
-#             Case 1: p = 8, q = 6 -&gt; LCA = 2 (split across children)
-#                 - LCA(8) returns 8, LCA(6) returns 6
-#                 - At node 2: two children return non-null -&gt; return 2
-#                 - At node 1: one child returns non-null -&gt; propagate 2 upward
+            Case 1: p = 8, q = 6 -&gt; LCA = 2 (split across children)
+                - LCA(8) returns 8, LCA(6) returns 6
+                - At node 2: two children return non-null -&gt; return 2
+                - At node 1: one child returns non-null -&gt; propagate 2 upward
             
-#             Case 2: p = 2, q = 8 -&gt; LCA = 2 (p is ancestor of q)
-#                 - LCA(2) matches p and returns immediately (no recursion into its children)
-#                 - At node 1: other children (3, 4) are still explored and return None
-#                 - Only one child returns non-null -&gt; propagate 2 upward
+            Case 2: p = 2, q = 8 -&gt; LCA = 2 (p is ancestor of q)
+                - LCA(2) matches p and returns immediately (no recursion into its children)
+                - At node 1: other children (3, 4) are still explored and return None
+                - Only one child returns non-null -&gt; propagate 2 upward
         
-#         Notes:
-#         - Local pruning: when a node matches p or q, its subtree is not explored further.
-#         - No global pruning: sibling subtrees may still be explored at ancestor nodes.
-#         - Early-exit optimization: once `found_count == 2`, the current node is
-#           guaranteed to be the LCA, so remaining children can be skipped.
-#         - Correctness relies on the assumption that both p and q exist in the tree.
-#         &quot;&quot;&quot;
+        Notes:
+        - Local pruning: when a node matches p or q, its subtree is not explored further.
+        - No global pruning: sibling subtrees may still be explored at ancestor nodes.
+        - Early-exit optimization: once `found_count == 2`, the current node is
+          guaranteed to be the LCA, so remaining children can be skipped.
+        - Correctness relies on the assumption that both p and q exist in the tree.
+        &quot;&quot;&quot;
         
-#         # Base case: if node is None or matches p or q, return it
-#         if not root or root == p or root == q:
-#             return root
+        # Base case: if node is None or matches p or q, return it
+        if not root or root == p or root == q:
+            return root
         
-#         # Track children that contain p or q.
-#         # Using two scalars instead of a list: O(1) extra space per call,
-#         # and we only ever need the COUNT of matches and the LAST match
-#         # (for the count == 1 case). Both are kept local to this call —
-#         # a shared/global version would mix results across unrelated subtrees.
-#         found_count = 0
-#         found_node = None
+        # Track children that contain p or q.
+        # Using two scalars instead of a list: O(1) extra space per call,
+        # and we only ever need the COUNT of matches and the LAST match
+        # (for the count == 1 case). Both are kept local to this call —
+        # a shared/global version would mix results across unrelated subtrees.
+        found_count = 0
+        found_node = None
         
-#         # Recursively search in ALL children (not just left/right)
-#         for child in root.children:
-#             result = self.lowestCommonAncestor(child, p, q)
-#             if result:
-#                 found_count += 1
-#                 found_node = result  # overwritten if more matches come; that&#x27;s fine
+        # Recursively search in ALL children (not just left/right)
+        for child in root.children:
+            result = self.lowestCommonAncestor(child, p, q)
+            if result:
+                found_count += 1
+                found_node = result  # overwritten if more matches come; that&#x27;s fine
                 
-#                 # Early exit: once two children have returned non-null,
-#                 # we already know `root` is the LCA. Skip remaining siblings.
-#                 if found_count == 2:
-#                     break
+                # Early exit: once two children have returned non-null,
+                # we already know `root` is the LCA. Skip remaining siblings.
+                if found_count == 2:
+                    break
         
-#         # Case A: 2+ children returned non-null -&gt; current node is the split point (LCA)
-#         # Note: given the early break above, found_count is always 0, 1, or 2 here,
-#         # so `&gt;= 2` is effectively `== 2`. Kept for defensiveness — if the break is
-#         # ever removed, this still correctly identifies the split case.
-#         if found_count &gt;= 2:
-#             return root
+        # Case A: 2+ children returned non-null -&gt; current node is the split point (LCA)
+        # Note: given the early break above, found_count is always 0, 1, or 2 here,
+        # so `&gt;= 2` is effectively `== 2`. Kept for defensiveness — if the break is
+        # ever removed, this still correctly identifies the split case.
+        if found_count &gt;= 2:
+            return root
         
-#         # Case B: exactly 1 child returned non-null -&gt; propagate it upward.
-#         # `found_node` is either p, q, or the LCA (if both targets were already
-#         # found deeper in this child&#x27;s subtree). Either way, the current node
-#         # is NOT the LCA — pass the result up so an ancestor can decide.
-#         if found_count == 1:
-#             return found_node
+        # Case B: exactly 1 child returned non-null -&gt; propagate it upward.
+        # `found_node` is either p, q, or the LCA (if both targets were already
+        # found deeper in this child&#x27;s subtree). Either way, the current node
+        # is NOT the LCA — pass the result up so an ancestor can decide.
+        if found_count == 1:
+            return found_node
         
-#         # Case C: no children found anything -&gt; neither p nor q in this subtree
-#         return None
+        # Case C: no children found anything -&gt; neither p nor q in this subtree
+        return None
 
-# # Another compact version
+# Another compact version
 
-# class Solution:
-#     def lowestCommonAncestor(self, root: &#x27;Node&#x27;, p: &#x27;Node&#x27;, q: &#x27;Node&#x27;) -&gt; &#x27;Node&#x27;:
-#         &quot;&quot;&quot;
-#         Recursive DFS for LCA in an N-ary tree. Compact variant.
+class Solution:
+    def lowestCommonAncestor(self, root: &#x27;Node&#x27;, p: &#x27;Node&#x27;, q: &#x27;Node&#x27;) -&gt; &#x27;Node&#x27;:
+        &quot;&quot;&quot;
+        Recursive DFS for LCA in an N-ary tree. Compact variant.
         
-#         Time Complexity: O(n) — each node visited at most once.
-#         Space Complexity: O(h) — recursion stack depth.
-#             Best case (balanced): O(log n). Worst case (skewed): O(n).
-#         &quot;&quot;&quot;
-#         # Base case: None, or the node itself is p or q
-#         if not root or root == p or root == q:
-#             return root
+        Time Complexity: O(n) — each node visited at most once.
+        Space Complexity: O(h) — recursion stack depth.
+            Best case (balanced): O(log n). Worst case (skewed): O(n).
+        &quot;&quot;&quot;
+        # Base case: None, or the node itself is p or q
+        if not root or root == p or root == q:
+            return root
         
-#         # Track the single non-null result from children seen so far.
-#         # If we see a SECOND non-null, this node is the split point (LCA).
-#         found_node = None
+        # Track the single non-null result from children seen so far.
+        # If we see a SECOND non-null, this node is the split point (LCA).
+        found_node = None
         
-#         for child in root.children:
-#             result = self.lowestCommonAncestor(child, p, q)
-#             if result:
-#                 if found_node:
-#                     return root  # second match -&gt; current node is LCA
-#                 found_node = result  # first match -&gt; remember and keep searching
+        for child in root.children:
+            result = self.lowestCommonAncestor(child, p, q)
+            if result:
+                if found_node:
+                    return root  # second match -&gt; current node is LCA
+                found_node = result  # first match -&gt; remember and keep searching
         
-#         # Loop ended with 0 or 1 matches:
-#         # - 0 matches: found_node is None -&gt; neither target in this subtree
-#         # - 1 match: found_node is p, q, or deeper LCA -&gt; propagate upward
-#         return found_node
+        # Loop ended with 0 or 1 matches:
+        # - 0 matches: found_node is None -&gt; neither target in this subtree
+        # - 1 match: found_node is p, q, or deeper LCA -&gt; propagate upward
+        return found_node
 
-# # Parent Pointers Approach:
+# Parent Pointers Approach:
 
-# class Solution:
-#     def lowestCommonAncestor(self, root: &#x27;Node&#x27;, p: &#x27;Node&#x27;, q: &#x27;Node&#x27;) -&gt; &#x27;Node&#x27;:
-#         &quot;&quot;&quot;
-#         Parent pointer approach for N-ary tree LCA (iterative DFS).
+class Solution:
+    def lowestCommonAncestor(self, root: &#x27;Node&#x27;, p: &#x27;Node&#x27;, q: &#x27;Node&#x27;) -&gt; &#x27;Node&#x27;:
+        &quot;&quot;&quot;
+        Parent pointer approach for N-ary tree LCA (iterative DFS).
         
-#         Algorithm:
-#         1. Build parent map using DFS traversal (stops early once p and q found)
-#         2. Collect all ancestors of p in a set
-#         3. Walk up from q until finding first common ancestor
+        Algorithm:
+        1. Build parent map using DFS traversal (stops early once p and q found)
+        2. Collect all ancestors of p in a set
+        3. Walk up from q until finding first common ancestor
         
-#         Time Complexity: O(n)
-#             - Building parent map: O(n) worst case
-#             - Collecting p&#x27;s ancestors: O(h)
-#             - Finding common ancestor: O(h)
-#             - Overall: O(n)
+        Time Complexity: O(n)
+            - Building parent map: O(n) worst case
+            - Collecting p&#x27;s ancestors: O(h)
+            - Finding common ancestor: O(h)
+            - Overall: O(n)
         
-#         Space Complexity: O(n)
-#             - Parent map: O(n) for all nodes visited
-#             - Ancestors set: O(h) for ancestor chain
-#             - Stack for DFS traversal: O(n) worst case
-#             - Overall: O(n)
+        Space Complexity: O(n)
+            - Parent map: O(n) for all nodes visited
+            - Ancestors set: O(h) for ancestor chain
+            - Stack for DFS traversal: O(n) worst case
+            - Overall: O(n)
         
-#         Multi-query variant:
-#             For k LCA queries on the SAME tree, build the parent map ONCE
-#             in a constructor and reuse it across all queries:
+        Multi-query variant:
+            For k LCA queries on the SAME tree, build the parent map ONCE
+            in a constructor and reuse it across all queries:
             
-#                 class LCAFinder:
-#                     def __init__(self, root):
-#                         self.parent = {root: None}
-#                         stack = [root]
-#                         while stack:
-#                             node = stack.pop()
-#                             for child in node.children:
-#                                 self.parent[child] = node
-#                                 stack.append(child)
+                class LCAFinder:
+                    def __init__(self, root):
+                        self.parent = {root: None}
+                        stack = [root]
+                        while stack:
+                            node = stack.pop()
+                            for child in node.children:
+                                self.parent[child] = node
+                                stack.append(child)
                     
-#                     def lca(self, p, q):
-#                         ancestors = set()
-#                         cur = p
-#                         while cur:
-#                             ancestors.add(cur)
-#                             cur = self.parent[cur]
-#                         cur = q
-#                         while cur not in ancestors:
-#                             cur = self.parent[cur]
-#                         return cur
+                    def lca(self, p, q):
+                        ancestors = set()
+                        cur = p
+                        while cur:
+                            ancestors.add(cur)
+                            cur = self.parent[cur]
+                        cur = q
+                        while cur not in ancestors:
+                            cur = self.parent[cur]
+                        return cur
             
-#             Cost breakdown for k queries:
-#             - Construction: O(n) time, O(n) space (parent map, kept across queries)
-#             - Per query: O(h) time (two upward walks), O(h) space (ancestors set,
-#               transient — freed after each call)
-#             - Total: O(n + k * h) time, O(n) peak space
+            Cost breakdown for k queries:
+            - Construction: O(n) time, O(n) space (parent map, kept across queries)
+            - Per query: O(h) time (two upward walks), O(h) space (ancestors set,
+              transient — freed after each call)
+            - Total: O(n + k * h) time, O(n) peak space
             
-#             Compared to calling the single-query version k times:
-#             - Single-query repeated: O(k * n) time (rebuilds map each call)
-#             - Multi-query cached:    O(n + k * h) time (reuses map)
-#             - For balanced tree (h ~ log n), this is ~k times faster.
+            Compared to calling the single-query version k times:
+            - Single-query repeated: O(k * n) time (rebuilds map each call)
+            - Multi-query cached:    O(n + k * h) time (reuses map)
+            - For balanced tree (h ~ log n), this is ~k times faster.
             
-#             For very heavy workloads, consider specialized algorithms:
-#             - Euler tour + RMQ: O(n log n) preprocessing, O(1) per query
-#             - Binary lifting:   O(n log n) preprocessing, O(log n) per query
-#         &quot;&quot;&quot;
+            For very heavy workloads, consider specialized algorithms:
+            - Euler tour + RMQ: O(n log n) preprocessing, O(1) per query
+            - Binary lifting:   O(n log n) preprocessing, O(log n) per query
+        &quot;&quot;&quot;
         
-#         # Pre-check: handle None inputs
-#         if not root or not p or not q:
-#             return None
+        # Pre-check: handle None inputs
+        if not root or not p or not q:
+            return None
         
-#         # Optional short-circuit: if root itself is p or q, it&#x27;s the LCA.
-#         # Not strictly needed — the main algorithm handles this correctly
-#         # (root ends up in p&#x27;s ancestor set, and q&#x27;s walk-up finds it).
-#         # Kept as a cheap optimization to skip the parent-map build entirely
-#         # in this common edge case. Safe to remove for a leaner implementation.
-#         if root == p or root == q:
-#             return root
+        # Optional short-circuit: if root itself is p or q, it&#x27;s the LCA.
+        # Not strictly needed — the main algorithm handles this correctly
+        # (root ends up in p&#x27;s ancestor set, and q&#x27;s walk-up finds it).
+        # Kept as a cheap optimization to skip the parent-map build entirely
+        # in this common edge case. Safe to remove for a leaner implementation.
+        if root == p or root == q:
+            return root
         
-#         # Step 1: Build parent pointer map via iterative DFS.
-#         # Early termination: stop once both p and q are seen.
-#         # `stack and` guard prevents IndexError if p or q isn&#x27;t in the tree.
-#         parent = {root: None}
-#         stack = [root]
+        # Step 1: Build parent pointer map via iterative DFS.
+        # Early termination: stop once both p and q are seen.
+        # `stack and` guard prevents IndexError if p or q isn&#x27;t in the tree.
+        parent = {root: None}
+        stack = [root]
         
-#         while stack and (p not in parent or q not in parent):
-#             node = stack.pop()
-#             for child in node.children:  # ALL children, not just left/right
-#                 parent[child] = node
-#                 stack.append(child)
+        while stack and (p not in parent or q not in parent):
+            node = stack.pop()
+            for child in node.children:  # ALL children, not just left/right
+                parent[child] = node
+                stack.append(child)
         
-#         # Safety check: if p or q weren&#x27;t reachable from root, return None.
-#         # Not needed when inputs are guaranteed valid, but prevents KeyError below.
-#         if p not in parent or q not in parent:
-#             return None
+        # Safety check: if p or q weren&#x27;t reachable from root, return None.
+        # Not needed when inputs are guaranteed valid, but prevents KeyError below.
+        if p not in parent or q not in parent:
+            return None
         
-#         # Step 2: Collect all ancestors of p in a set (O(1) lookup)
-#         # Use `cur` instead of mutating p — keeps input reference intact
-#         ancestors = set()
-#         cur = p
-#         while cur:
-#             ancestors.add(cur)
-#             cur = parent[cur]
+        # Step 2: Collect all ancestors of p in a set (O(1) lookup)
+        # Use `cur` instead of mutating p — keeps input reference intact
+        ancestors = set()
+        cur = p
+        while cur:
+            ancestors.add(cur)
+            cur = parent[cur]
         
-#         # Step 3: Walk up from q to find first common ancestor
-#         cur = q
-#         while cur not in ancestors:
-#             cur = parent[cur]
-#         return cur
+        # Step 3: Walk up from q to find first common ancestor
+        cur = q
+        while cur not in ancestors:
+            cur = parent[cur]
+        return cur
 
 # Balanced ternary tree (each node has exactly 3 children):
 
-#             1
-#          /  |  \
-#         2   3   4
-#        /|\ /|\ /|\
-#       5 6 7 8 9 10 11 12 13
+            1
+         /  |  \
+        2   3   4
+       /|\ /|\ /|\
+      5 6 7 8 9 10 11 12 13
 
 # Total nodes: n = 13
 # Height: h = 2 (levels: 0, 1, 2)
@@ -937,12 +937,12 @@ class Solution:
 # 1. Parent Map: O(n)
 # Parent map stores ALL nodes:
 
-# parent = {
-#     1: None,
-#     2: 1, 3: 1, 4: 1,
-#     5: 2, 6: 2, 7: 2,
-#     8: 3, 9: 3, 10: 3,
-#     11: 4, 12: 4, 13: 4
+parent = {
+    1: None,
+    2: 1, 3: 1, 4: 1,
+    5: 2, 6: 2, 7: 2,
+    8: 3, 9: 3, 10: 3,
+    11: 4, 12: 4, 13: 4
 # }
 
 # Total entries: 13 = n
@@ -953,43 +953,43 @@ class Solution:
 # DFS traversal with stack:
 
 # Initial:
-# stack = [1]
+stack = [1]
 
 # Step 1: Pop 1, push its 3 children
-# stack = [2, 3, 4]  ← Size = 3
+stack = [2, 3, 4]  ← Size = 3
 
 # Step 2: Pop 4, push its 3 children
-# stack = [2, 3, 11, 12, 13]  ← Size = 5
+stack = [2, 3, 11, 12, 13]  ← Size = 5
 
 # Step 3: Pop 13 (leaf, no children)
-# stack = [2, 3, 11, 12]  ← Size = 4
+stack = [2, 3, 11, 12]  ← Size = 4
 
 # Step 4: Pop 12 (leaf) ← Found q!
-# stack = [2, 3, 11]  ← Size = 3
+stack = [2, 3, 11]  ← Size = 3
 
 # Step 5: Pop 11 (leaf)
-# stack = [2, 3]  ← Size = 2
+stack = [2, 3]  ← Size = 2
 
 # Step 6: Pop 3, push its 3 children
-# stack = [2, 8, 9, 10]  ← Size = 4
+stack = [2, 8, 9, 10]  ← Size = 4
 
 # Step 7: Pop 10 (leaf)
-# stack = [2, 8, 9]  ← Size = 3
+stack = [2, 8, 9]  ← Size = 3
 
 # Step 8: Pop 9 (leaf)
-# stack = [2, 8]  ← Size = 2
+stack = [2, 8]  ← Size = 2
 
 # Step 9: Pop 8 (leaf)
-# stack = [2]  ← Size = 1
+stack = [2]  ← Size = 1
 
 # Step 10: Pop 2, push its 3 children
-# stack = [5, 6, 7]  ← Size = 3
+stack = [5, 6, 7]  ← Size = 3
 
 # Step 11: Pop 7 (leaf)
-# stack = [5, 6]  ← Size = 2
+stack = [5, 6]  ← Size = 2
 
 # Step 12: Pop 6 (leaf) ← Found p! Stop
-# stack = [5]
+stack = [5]
 
 # Maximum stack size during traversal: 5
 # Stack space: O(5)
@@ -1007,7 +1007,7 @@ class Solution:
 
 # Path: 6 → 2 → 1 → None
 
-# ancestors = set()
+ancestors = set()
 
 # Step 1: ancestors.add(6) → {6}
 # Step 2: ancestors.add(2) → {6, 2}
@@ -1040,9 +1040,9 @@ class Solution:
 
 # Worst case for stack space: All nodes at one level (maximum width)
 
-#                     1
-#     / / / / / / / / | \ \ \ \ \ \ \ \
-#    2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17
+                    1
+    / / / / / / / / | \ \ \ \ \ \ \ \
+   2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17
 
 # Total nodes: n = 17
 # Height: h = 1 (only 2 levels: root and children)
@@ -1053,10 +1053,10 @@ class Solution:
 
 # Parent map stores ALL nodes:
 
-# parent = {
-#     1: None,
-#     2: 1, 3: 1, 4: 1, 5: 1, 6: 1, 7: 1, 8: 1, 9: 1,
-#     10: 1, 11: 1, 12: 1, 13: 1, 14: 1, 15: 1, 16: 1, 17: 1
+parent = {
+    1: None,
+    2: 1, 3: 1, 4: 1, 5: 1, 6: 1, 7: 1, 8: 1, 9: 1,
+    10: 1, 11: 1, 12: 1, 13: 1, 14: 1, 15: 1, 16: 1, 17: 1
 # }
 
 # Total entries: 17 = n
@@ -1067,20 +1067,20 @@ class Solution:
 # DFS traversal - THIS IS WHERE IT GETS BAD:
 
 # Initial:
-# stack = [1]
+stack = [1]
 
 # Step 1: Pop 1, push ALL 16 children at once
-# stack = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
-#         ↑___________________________________________________↑
-#                     16 nodes in stack!
+stack = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+        ↑___________________________________________________↑
+                    16 nodes in stack!
                     
 # MAXIMUM STACK SIZE: 16 = O(w) = O(n) ← WORST CASE! ⚠️
 
 # Step 2: Pop 17 (leaf, no children)
-# stack = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]  ← Still 15!
+stack = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]  ← Still 15!
 
 # Step 3: Pop 16 (found q!)
-# stack = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]  ← Still 14!
+stack = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]  ← Still 14!
 
 # ... continues popping until we find p at node 5
 
@@ -1092,7 +1092,7 @@ class Solution:
 
 # Path: 5 → 1 → None
 
-# ancestors = set()
+ancestors = set()
 
 # Step 1: ancestors.add(5) → {5}
 # Step 2: ancestors.add(1) → {5, 1}
@@ -1120,80 +1120,80 @@ class Solution:
 
 # Variant : Find LCA of Binary Search Tree
 
-#            6
-#          /   \
-#         2     8
-#        / \   / \
-#       0   4 7   9
-#          / \
-#         3   5
+           6
+         /   \
+        2     8
+       / \   / \
+      0   4 7   9
+         / \
+        3   5
 
-# p = 3, q = 5  LCA is 4
+p = 3, q = 5  LCA is 4
 
 # Approach : Recursive
 
-# class Solution:
-#     def lowestCommonAncestor(self, root: &#x27;TreeNode&#x27;, p: &#x27;TreeNode&#x27;, q: &#x27;TreeNode&#x27;) -&gt; &#x27;TreeNode&#x27;:
-#         &quot;&quot;&quot;
-#         LCA in BST - leverages BST property for optimization.
+class Solution:
+    def lowestCommonAncestor(self, root: &#x27;TreeNode&#x27;, p: &#x27;TreeNode&#x27;, q: &#x27;TreeNode&#x27;) -&gt; &#x27;TreeNode&#x27;:
+        &quot;&quot;&quot;
+        LCA in BST - leverages BST property for optimization.
         
-#         Key Insight:
-#         - If both p and q &lt; root: LCA is in left subtree
-#         - If both p and q &gt; root: LCA is in right subtree
-#         - Otherwise: root is the LCA (split point)
+        Key Insight:
+        - If both p and q &lt; root: LCA is in left subtree
+        - If both p and q &gt; root: LCA is in right subtree
+        - Otherwise: root is the LCA (split point)
         
-#         Time Complexity: O(h)
-#             - Only traverse ONE path from root to LCA
-#             - h = height of tree
-#             - Best: O(log n) for balanced BST
-#             - Worst: O(n) for skewed BST
+        Time Complexity: O(h)
+            - Only traverse ONE path from root to LCA
+            - h = height of tree
+            - Best: O(log n) for balanced BST
+            - Worst: O(n) for skewed BST
         
-#         Space Complexity: O(h)
-#             - Recursion stack depth
-#             - Best: O(log n) for balanced
-#             - Worst: O(n) for skewed
-#         &quot;&quot;&quot;
+        Space Complexity: O(h)
+            - Recursion stack depth
+            - Best: O(log n) for balanced
+            - Worst: O(n) for skewed
+        &quot;&quot;&quot;
         
-#         # Both p and q are smaller than root - LCA is in left subtree
-#         if p.val &lt; root.val and q.val &lt; root.val:
-#             return self.lowestCommonAncestor(root.left, p, q)
+        # Both p and q are smaller than root - LCA is in left subtree
+        if p.val &lt; root.val and q.val &lt; root.val:
+            return self.lowestCommonAncestor(root.left, p, q)
         
-#         # Both p and q are greater than root - LCA is in right subtree
-#         elif p.val &gt; root.val and q.val &gt; root.val:
-#             return self.lowestCommonAncestor(root.right, p, q)
+        # Both p and q are greater than root - LCA is in right subtree
+        elif p.val &gt; root.val and q.val &gt; root.val:
+            return self.lowestCommonAncestor(root.right, p, q)
         
-#         # Split point: one on left, one on right (or one is root)
-#         # This means current root is the LCA
-#         else:
-#             return root
+        # Split point: one on left, one on right (or one is root)
+        # This means current root is the LCA
+        else:
+            return root
 
 # Approach : Iterative (Better space, optimal solution)
 
-# class Solution:
-#     def lowestCommonAncestor(self, root: &#x27;TreeNode&#x27;, p: &#x27;TreeNode&#x27;, q: &#x27;TreeNode&#x27;) -&gt; &#x27;TreeNode&#x27;:
-#         &quot;&quot;&quot;
-#         Iterative approach - OPTIMAL space for BST.
+class Solution:
+    def lowestCommonAncestor(self, root: &#x27;TreeNode&#x27;, p: &#x27;TreeNode&#x27;, q: &#x27;TreeNode&#x27;) -&gt; &#x27;TreeNode&#x27;:
+        &quot;&quot;&quot;
+        Iterative approach - OPTIMAL space for BST.
         
-#         Time Complexity: O(h)
-#         Space Complexity: O(1) - No recursion, no extra data structures! 
-#         &quot;&quot;&quot;
+        Time Complexity: O(h)
+        Space Complexity: O(1) - No recursion, no extra data structures! 
+        &quot;&quot;&quot;
         
-#         current = root
+        current = root
         
-#         while current:
-#             # Both in left subtree
-#             if p.val &lt; current.val and q.val &lt; current.val:
-#                 current = current.left
+        while current:
+            # Both in left subtree
+            if p.val &lt; current.val and q.val &lt; current.val:
+                current = current.left
             
-#             # Both in right subtree
-#             elif p.val &gt; current.val and q.val &gt; current.val:
-#                 current = current.right
+            # Both in right subtree
+            elif p.val &gt; current.val and q.val &gt; current.val:
+                current = current.right
             
-#             # Found split point - this is LCA
-#             else:
-#                 return current
+            # Found split point - this is LCA
+            else:
+                return current
         
-#         return None  # Should never reach if p and q exist in tree
+        return None  # Should never reach if p and q exist in tree
 
 
 
