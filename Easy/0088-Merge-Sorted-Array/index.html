@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>88. Merge Sorted Array - LeetCode Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+
+:root {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --radius:    6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #e6db74; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy   { color: var(--easy);   background: rgba(44,187,93,0.15); }
+.badge-Medium { color: var(--medium); background: rgba(255,161,22,0.15); }
+.badge-Hard   { color: var(--hard);   background: rgba(239,71,67,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--surface2); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: #1e1e1e !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">88. Merge Sorted Array</span>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (2)</div>
+        <div class="tab" data-tab="similar">Similar (4)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">88. Merge Sorted Array</div>
+        <div class="prob-meta">
+          <span class="badge badge-Easy">Easy</span>
+          <span class="tag">Array</span><span class="tag">Two Pointers</span><span class="tag">Sorting</span>
+        </div>
+        <div class="prob-stats">5.7M / 10.4M (54.9%)</div>
+        <div class="prob-desc"><p>You are given two integer arrays <code>nums1</code> and <code>nums2</code>, sorted in <strong>non-decreasing order</strong>, and two integers <code>m</code> and <code>n</code>, representing the number of elements in <code>nums1</code> and <code>nums2</code> respectively.</p>
+<p><strong>Merge</strong> <code>nums1</code> and <code>nums2</code> into a single array sorted in <strong>non-decreasing order</strong>.</p>
+<p>The final sorted array should not be returned by the function, but instead be <em>stored inside the array </em><code>nums1</code>. To accommodate this, <code>nums1</code> has a length of <code>m + n</code>, where the first <code>m</code> elements denote the elements that should be merged, and the last <code>n</code> elements are set to <code>0</code> and should be ignored. <code>nums2</code> has a length of <code>n</code>.</p>
+<p>Example 1:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
+<strong>Output:</strong> [1,2,2,3,5,6]
+<strong>Explanation:</strong> The arrays we are merging are [1,2,3] and [2,5,6].
+The result of the merge is [1,2,2,3,5,6] with the underlined elements coming from nums1.
+</code></pre>
+<p>Example 2:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> nums1 = [1], m = 1, nums2 = [], n = 0
+<strong>Output:</strong> [1]
+<strong>Explanation:</strong> The arrays we are merging are [1] and [].
+The result of the merge is [1].
+</code></pre>
+<p>Example 3:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> nums1 = [0], m = 0, nums2 = [1], n = 1
+<strong>Output:</strong> [1]
+<strong>Explanation:</strong> The arrays we are merging are [] and [1].
+The result of the merge is [1].
+Note that because m = 0, there are no elements in nums1. The 0 is only there to ensure the merge result can fit in nums1.
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li><code>nums1.length == m + n</code></li>
+</ul>
+	
+<ul>
+<li><code>nums2.length == n</code></li>
+</ul>
+	
+<ul>
+<li><code>0 &lt;= m, n &lt;= 200</code></li>
+</ul>
+	
+<ul>
+<li><code>1 &lt;= m + n &lt;= 200</code></li>
+</ul>
+	
+<ul>
+<li><code>-109 &lt;= nums1[i], nums2[j] &lt;= 109</code></li>
+</ul>
+<p><strong>Follow up: </strong>Can you come up with an algorithm that runs in <code>O(m + n)</code> time?</p></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        
+<details class="hint-block">
+  <summary>Hint 1</summary>
+  <div class="hint-body"><p>You can easily solve this problem if you simply think about two elements at a time rather than two arrays. We know that each of the individual arrays is sorted. What we don't know is how they will intertwine. Can we take a local decision and arrive at an optimal solution?</p></div>
+</details>
+<details class="hint-block">
+  <summary>Hint 2</summary>
+  <div class="hint-body"><p>If you simply consider one element each at a time from the two arrays and make a decision and proceed accordingly, you will arrive at the optimal solution.</p></div>
+</details>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/merge-two-sorted-lists/" target="_blank">Merge Two Sorted Lists</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/squares-of-a-sorted-array/" target="_blank">Squares of a Sorted Array</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/interval-list-intersections/" target="_blank">Interval List Intersections</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/take-k-of-each-character-from-left-and-right/" target="_blank">Take K of Each Character From Left and Right</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 88. Merge Sorted Array
+Difficulty: Easy
+URL: https://leetcode.com/problems/merge-sorted-array/
+&quot;&quot;&quot;
+
+# Brute Force Approach : Concatenate, then sort
+
+# class Solution:
+#     def merge(self, nums1: list[int], m: int, nums2: list[int], n: int) -&gt; None:
+#         &quot;&quot;&quot;
+#         Brute force: Copy nums2 into nums1, then sort the entire array.
+        
+#         TC: Best O(m + n) - Timsort detects already sorted runs
+#             Worst O((m + n) log(m + n)) - general sorting case
+#         SC: Best O(log(m + n)) - recursion depth for small merges
+#             Worst O(m + n) - Timsort&#x27;s auxiliary space for merging
+        
+#         Args:
+#             nums1: First sorted array with extra space at end
+#             m: Number of valid elements in nums1
+#             nums2: Second sorted array
+#             n: Number of elements in nums2
+#         &quot;&quot;&quot;
+#         # Copy all elements from nums2 into the end of nums1
+#         # nums1[m:m+n] = nums2 is slice assignment (in-place)
+#         for i in range(n):
+#             nums1[m + i] = nums2[i]
+        
+#         # Sort the entire array of size m + n in-place
+#         # This destroys the fact that nums1 and nums2 were already sorted
+#         # Timsort can detect the two sorted runs and merge efficiently
+#         # Best case: O(m + n) if runs are already ordered
+#         # Example: nums1=[1,2,3], nums2=[4,5,6] → already sorted after copy
+#         # Worst case: O((m + n) log(m + n)) for general case
+#         # Example: nums1=[4,5,6], nums2=[1,2,3] → needs full sort
+#         nums1.sort()
+
+# Optimal approach : Three Pointers (Start From the End)
+
+class Solution:
+    def merge(self, nums1: list[int], m: int, nums2: list[int], n: int) -&gt; None:
+        &quot;&quot;&quot;
+        Merge nums2 into nums1 in-place.
+        
+        TC: O(m + n) - single pass, each element processed once
+        SC: O(1) - only three pointers used
+        
+        Args:
+            nums1: First sorted array with extra space at end
+            m: Number of valid elements in nums1
+            nums2: Second sorted array
+            n: Number of elements in nums2
+        &quot;&quot;&quot;
+        # Edge case: nums2 is empty, nums1 already sorted
+        if n == 0:
+            return
+        
+        # Edge case: nums1 has no valid elements, copy all of nums2
+        # Note: not strictly required since main loop handles it
+        # (p1 = -1, so p1 &gt;= 0 is always false, we copy all nums2)
+        # nums1[:] = nums2 is slice assignment (in-place), NOT a copy
+        # Equivalent to: for i in range(n): nums1[i] = nums2[i]
+        # Space complexity remains O(1)
+        if m == 0:
+            nums1[:] = nums2
+            return
+        
+        # Start from end of valid elements in both arrays
+        p1, p2 = m - 1, n - 1
+        # Start from end of nums1&#x27;s total capacity
+        p = m + n - 1
+        
+        # Continue while nums2 has elements to merge
+        while p2 &gt;= 0:
+            # If nums1 still has elements AND nums1&#x27;s element is larger
+            if p1 &gt;= 0 and nums1[p1] &gt; nums2[p2]:
+                nums1[p] = nums1[p1]
+                p1 -= 1
+            else:
+                # Either nums1 exhausted OR nums2&#x27;s element is larger/equal
+                nums1[p] = nums2[p2]
+                p2 -= 1
+            p -= 1
+        
+        # No need to copy remaining nums1 elements - already in place
+
+# Approach : Three Pointers (Start From the Beginning)
+
+class Solution:
+    def merge(self, nums1: list[int], m: int, nums2: list[int], n: int) -&gt; None:
+        &quot;&quot;&quot;
+        Merge nums2 into nums1 using forward-fill with extra space.
+        
+        TC: O(m + n) - single pass through both arrays
+        SC: O(m) - temporary copy of nums1&#x27;s valid elements
+        
+        Args:
+            nums1: First sorted array with extra space at end
+            m: Number of valid elements in nums1
+            nums2: Second sorted array
+            n: Number of elements in nums2
+        &quot;&quot;&quot;
+        # Edge case: nums2 is empty
+        if n == 0:
+            return
+        
+        # Edge case: nums1 has no valid elements
+        if m == 0:
+            nums1[:] = nums2
+            return
+        
+        # Copy valid elements from nums1 to avoid overwriting
+        # WHY: Forward-fill writes at position p starting from 0
+        # Without copy: nums1=[1,2,3,0,0,0], nums2=[2,5,6]
+        # At p=2, we write nums2[0]=2, overwriting nums1[2]=3 before reading it
+        # With copy: we read from nums1_copy (immutable), write to nums1 (safe)
+        # This is why forward-fill requires O(m) extra space
+        nums1_copy = nums1[:m]
+        
+        # Start from beginning of both arrays
+        p1, p2 = 0, 0
+        # Start from beginning of nums1
+        p = 0
+        
+        # Merge while both arrays have elements
+        while p1 &lt; m and p2 &lt; n:
+            # Compare elements from nums1_copy and nums2
+            if nums1_copy[p1] &lt;= nums2[p2]:
+                nums1[p] = nums1_copy[p1]
+                p1 += 1
+            else:
+                nums1[p] = nums2[p2]
+                p2 += 1
+            p += 1
+        
+        # Copy remaining elements from nums1_copy (if any)
+        # Example: nums1_copy=[4,5,6], nums2=[1,2,3]
+        # After main loop: nums1=[1,2,3,?,?,?], p1=0, p2=3, p=3
+        # Need to copy nums1_copy[0:3] = [4,5,6] to nums1[3:6]
+        while p1 &lt; m:
+            nums1[p] = nums1_copy[p1]
+            p1 += 1
+            p += 1
+        
+        # Copy remaining elements from nums2 (if any)
+        # Example: nums1_copy=[1,2,3], nums2=[4,5,6]
+        # After main loop: nums1=[1,2,3,?,?,?], p1=3, p2=0, p=3
+        # Need to copy nums2[0:3] = [4,5,6] to nums1[3:6]
+        while p2 &lt; n:
+            nums1[p] = nums2[p2]
+            p2 += 1
+            p += 1
+
+# Variant : No m and n given explicitly
+
+# You are given two integer arrays list_a and list_b, sorted in non-decreasing order.
+# Merge list_a and list_b into a single array sorted in non-decreasing order.
+# The final sorted array should not be returned by the function, but instead be stored inside the array list_a. To accommodate this, list_a is double the length of list_b, where the first half of elements denote the elements that should be merged, and the last half of elements are set to 0 and should be ignored.
+
+# Example 1:
+# Input: list_a = [1, 8, 0, 0], list_b = [3, 5]
+# Output: [1, 3, 5, 8]
+# Explanation: The arrays we are merging are [1, 8] and [3, 5].
+# The result of the merge is [1, 3, 5, 8] with the underlined elements coming from list_a.
+
+# Example 2:
+# Input: list_a = [1, 0], list_b = [2]
+# Output: [1, 2]
+# Explanation: The arrays we are merging are [1] and [2].
+# The result of the merge is [1, 2].
+
+# class Variant:
+#     def mergeSortedArray(self, list_a: list[int], list_b: list[int]) -&gt; None:
+#         &quot;&quot;&quot;
+#         Merge two sorted arrays list_a and list_b into list_a in-place.
+        
+#         TC: O(m + n) - single pass, each element processed once
+#             where m = len(list_a) // 2, n = len(list_b)
+#         SC: O(1) - only three pointers used
+        
+#         Args:
+#             list_a: First sorted array, length = 2 * len(list_b)
+#                    First half contains valid elements, second half is zeros
+#             list_b: Second sorted array
+#         &quot;&quot;&quot;
+#         # Start from end of valid elements in list_a
+#         # list_a has length 2n where first n elements are valid
+#         p1 = len(list_a) // 2 - 1
+        
+#         # Start from end of list_b
+#         p2 = len(list_b) - 1
+        
+#         # Start from end of list_a&#x27;s total capacity
+#         p = len(list_a) - 1
+        
+#         # Continue while list_b has elements to merge
+#         while p2 &gt;= 0:
+#             # If list_a still has elements AND list_a&#x27;s element is larger/equal
+#             if p1 &gt;= 0 and list_a[p1] &gt;= list_b[p2]:
+#                 list_a[p] = list_a[p1]
+#                 p1 -= 1
+#             else:
+#                 # Either list_a exhausted OR list_b&#x27;s element is larger
+#                 list_a[p] = list_b[p2]
+#                 p2 -= 1
+#             p -= 1
+        
+#         # No need to copy remaining list_a elements - already in place
+
+
+# Variant : Merge three arrays
+
+# You are given three integer arrays list_a, list_b, and list_c, sorted in non-decreasing order. Arrays can contain duplicate elements.
+# Merge list_a, list_b, and list_c into a single array sorted in non-decreasing order.
+# The final sorted array should be stored inside the array list_a. To accommodate this, list_a has length equal to len(list_a_valid) + len(list_b) + len(list_c), where the first portion contains valid elements from list_a, and the remaining positions are set to 0 and should be ignored.
+
+# Example 1:
+# Input: list_a = [1, 5, 9, 0, 0, 0, 0], list_b = [2, 6], list_c = [3, 7]
+# Output: [1, 2, 3, 5, 6, 7, 9]
+# Explanation: Merging [1, 5, 9], [2, 6], and [3, 7]
+
+# Example 2:
+# Input: list_a = [1, 2, 2, 0, 0, 0], list_b = [2, 3], list_c = [4]
+# Output: [1, 2, 2, 2, 3, 4]
+# Explanation: Merging [1, 2, 2], [2, 3], and [4] with duplicates
+
+# class Variant3Arrays:
+#     def mergeSortedArrays(self, list_a: list[int], list_b: list[int], list_c: list[int]) -&gt; None:
+#         &quot;&quot;&quot;
+#         Merge three sorted arrays list_a, list_b, and list_c into list_a in-place.
+        
+#         TC: O(m + n + k) - single pass, each element processed once
+#             where m = len(list_a_valid), n = len(list_b), k = len(list_c)
+#         SC: O(1) - only four pointers used
+        
+#         Args:
+#             list_a: First sorted array with extra space at end
+#             list_b: Second sorted array
+#             list_c: Third sorted array
+#         &quot;&quot;&quot;
+
+#         # Check if list_a has enough capacity
+#         if len(list_a) &lt; len(list_b) + len(list_c):
+#             raise ValueError(&quot;list_a doesn&#x27;t have enough space to merge all arrays&quot;)
+
+#         # Calculate number of valid elements in list_a
+#         # list_a total length = m + n + k
+#         n = len(list_b)
+#         k = len(list_c)
+#         m = len(list_a) - n - k
+        
+#         # Edge case: all arrays empty or list_a already contains everything
+#         if n == 0 and k == 0:
+#             return
+        
+#         # Start from end of valid elements in each array
+#         # Example: list_a = [1, 5, 9, 0, 0, 0, 0], list_b = [2, 6], list_c = [3, 7]
+#         # m = 7 - 2 - 2 = 3, valid elements in list_a are [1, 5, 9]
+#         # p1 = 3 - 1 = 2 (points to 9)
+#         p1 = m - 1
+#         p2 = n - 1
+#         p3 = k - 1
+        
+#         # Start from end of list_a&#x27;s total capacity
+#         p = len(list_a) - 1
+        
+#         # Continue while any array has elements to merge
+#         while p1 &gt;= 0 or p2 &gt;= 0 or p3 &gt;= 0:
+#             # Get current values from each array (use -infinity if exhausted)
+#             val1 = list_a[p1] if p1 &gt;= 0 else float(&#x27;-inf&#x27;)
+#             val2 = list_b[p2] if p2 &gt;= 0 else float(&#x27;-inf&#x27;)
+#             val3 = list_c[p3] if p3 &gt;= 0 else float(&#x27;-inf&#x27;)
+            
+#             # Find maximum of the three values
+#             # Place the largest at position p and move corresponding pointer
+#             if val1 &gt;= val2 and val1 &gt;= val3:
+#                 list_a[p] = val1
+#                 p1 -= 1
+#             elif val2 &gt;= val1 and val2 &gt;= val3:
+#                 list_a[p] = val2
+#                 p2 -= 1
+#             else:
+#                 list_a[p] = val3
+#                 p3 -= 1
+            
+#             p -= 1
+        
+#         # No need to copy remaining list_a elements - already in place
+</code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Medium/0078-Subsets/">&#8592; 78. Subsets</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Easy/0121-Best-Time-to-Buy-and-Sell-Stock/">121. Best Time to Buy and Sell Stock &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+</body>
+</html>
