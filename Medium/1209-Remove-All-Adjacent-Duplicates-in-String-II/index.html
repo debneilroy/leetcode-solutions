@@ -281,52 +281,52 @@ class Solution:
 
 # Approach : Two pointer
 
-# class Solution:
-#     def removeDuplicates(self, s: str, k: int) -&gt; str:
-#         &quot;&quot;&quot;
-#         Two-pointer in-place approach (simulating stack).
+class Solution:
+    def removeDuplicates(self, s: str, k: int) -&gt; str:
+        &quot;&quot;&quot;
+        Two-pointer in-place approach (simulating stack).
         
-#         Key Idea:
-#         - &#x27;write&#x27; pointer indicates where to write next character (stack top + 1)
-#         - When we see k consecutive chars, move write pointer back by k
-#         - This simulates popping k elements from stack
+        Key Idea:
+        - &#x27;write&#x27; pointer indicates where to write next character (stack top + 1)
+        - When we see k consecutive chars, move write pointer back by k
+        - This simulates popping k elements from stack
         
-#         Time Complexity: O(n)
-#         Space Complexity: O(n) for chars array + counts array
-#         &quot;&quot;&quot;
-#         # Convert to list for in-place modification
-#         chars = list(s)
+        Time Complexity: O(n)
+        Space Complexity: O(n) for chars array + counts array
+        &quot;&quot;&quot;
+        # Convert to list for in-place modification
+        chars = list(s)
         
-#         # counts[i] = number of consecutive identical chars ending at position i
-#         counts = [0] * len(s)
+        # counts[i] = number of consecutive identical chars ending at position i
+        counts = [0] * len(s)
         
-#         # Write pointer (stack top position)
-#         write = 0
+        # Write pointer (stack top position)
+        write = 0
         
-#         for read in range(len(s)):
-#             # Place current character at write position
-#             chars[write] = chars[read]
+        for read in range(len(s)):
+            # Place current character at write position
+            chars[write] = chars[read]
             
-#             # Calculate count for this position
-#             if write == 0:
-#                 # First position
-#                 counts[write] = 1
-#             elif chars[write] == chars[write - 1]:
-#                 # Same as previous character
-#                 counts[write] = counts[write - 1] + 1
-#             else:
-#                 # Different from previous character
-#                 counts[write] = 1
+            # Calculate count for this position
+            if write == 0:
+                # First position
+                counts[write] = 1
+            elif chars[write] == chars[write - 1]:
+                # Same as previous character
+                counts[write] = counts[write - 1] + 1
+            else:
+                # Different from previous character
+                counts[write] = 1
             
-#             # If we&#x27;ve accumulated k consecutive chars, remove them
-#             if counts[write] == k:
-#                 write -= k  # Move write pointer back (simulate k pops)
+            # If we&#x27;ve accumulated k consecutive chars, remove them
+            if counts[write] == k:
+                write -= k  # Move write pointer back (simulate k pops)
             
-#             # Move write pointer forward for next character
-#             write += 1
+            # Move write pointer forward for next character
+            write += 1
         
-#         # Return valid portion of the array
-#         return &#x27;&#x27;.join(chars[:write])
+        # Return valid portion of the array
+        return &#x27;&#x27;.join(chars[:write])
 
         
         </code></pre>
