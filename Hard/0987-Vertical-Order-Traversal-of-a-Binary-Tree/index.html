@@ -228,11 +228,11 @@ URL: https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/
 # Example Where They Differ
 
 # Tree:
-#       1
-#      / \
-#     2   3
-#    / \ / \
-#   4  6 5  7
+      1
+     / \
+    2   3
+   / \ / \
+  4  6 5  7
 
 # Column 0 has three nodes:
 # - Node 1 at row 0
@@ -242,32 +242,32 @@ URL: https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/
 # LC 314: Nodes at same position follow BFS encounter order
 
 # Output: [[4], [2], [1, 6, 5], [3], [7]]
-# #                     ↑  ↑
-# # 6 before 5 (left child processed before right)
+#                     ↑  ↑
+# 6 before 5 (left child processed before right)
 
 # LC 987: Nodes at same position sorted by value
 
 # Output: [[4], [2], [1, 5, 6], [3], [7]]
-# #                     ↑  ↑
-# # 5 before 6 (5 &lt; 6)
+#                     ↑  ↑
+# 5 before 6 (5 &lt; 6)
 
 # Algorithm Difference
 
 # LC 314:
 
-# # Store only values (no row tracking)
-# col_map[col].append(node.val)
+# Store only values (no row tracking)
+col_map[col].append(node.val)
 
-# # No sorting - BFS order is enough
+# No sorting - BFS order is enough
 # result.append(col_map[col])
 
 # LC 987:
 
-# # Store (row, val) tuples
-# col_map[col].append((row, node.val))
+# Store (row, val) tuples
+col_map[col].append((row, node.val))
 
-# # Must sort by (row, val)
-# col_map[col].sort()
+# Must sort by (row, val)
+col_map[col].sort()
 # result.append([val for row, val in col_map[col]])
 
 # Complexity
@@ -279,11 +279,11 @@ URL: https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/
 # Bottom line: LC 987 requires sorting by value when nodes share the same position. LC 314 just uses BFS order. 
 
 # Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 
 
 # Approach : Brute Force
@@ -604,66 +604,66 @@ class Solution:
 
 # Special cases:
 # - Worst case: O(N log N)
-#   When Θ(N) nodes fall into a single column
-#   Example (zig-zag pattern, N=7):
-#       1        (col=0)
-#        \
-#         2      (col=1)
-#        /
-#       3        (col=0)
-#        \
-#         4      (col=1)
-#        /
-#       5        (col=0)
-#        \
-#         6      (col=1)
-#        /
-#       7        (col=0)
+  When Θ(N) nodes fall into a single column
+  Example (zig-zag pattern, N=7):
+      1        (col=0)
+       \
+        2      (col=1)
+       /
+      3        (col=0)
+       \
+        4      (col=1)
+       /
+      5        (col=0)
+       \
+        6      (col=1)
+       /
+      7        (col=0)
 
-#   Column distribution:
-#   - col=0 → [1, 3, 5, 7] → 4 nodes (dominates)
-#   - col=1 → [2, 4, 6] → 3 nodes
-#   Sorting largest column dominates → total time is O(N log N)
+  Column distribution:
+  - col=0 → [1, 3, 5, 7] → 4 nodes (dominates)
+  - col=1 → [2, 4, 6] → 3 nodes
+  Sorting largest column dominates → total time is O(N log N)
   
 # - Best case: O(N)
-#   When each column has at most one node
-#   Example (left-skewed tree, N=5):
-#       1       (col=0)
-#      /
-#     2         (col=-1)
-#    /
-#   3           (col=-2)
-#  /
+  When each column has at most one node
+  Example (left-skewed tree, N=5):
+      1       (col=0)
+     /
+    2         (col=-1)
+   /
+  3           (col=-2)
+ /
 # 4             (col=-3)
 # /
 # 5             (col=-4)
 
-#   Column distribution:
-#   - Each of 5 columns has exactly 1 node
-#   Sorting cost: 5 × O(1 log 1) = O(N)
+  Column distribution:
+  - Each of 5 columns has exactly 1 node
+  Sorting cost: 5 × O(1 log 1) = O(N)
   
 # - Average/Typical case (balanced tree): O(N log N)
-#   Example (complete binary tree, N=7):
-#        1           (col=0)
-#       / \
-#      2   3         (col=-1, col=1)
-#     / \ / \
-#    4  5 6  7       (col=-2, col=0, col=0, col=2)
+  Example (complete binary tree, N=7):
+       1           (col=0)
+      / \
+     2   3         (col=-1, col=1)
+    / \ / \
+   4  5 6  7       (col=-2, col=0, col=0, col=2)
 
-#   Column distribution:
-#   - col=-2 → [4]      (1 node)
-#   - col=-1 → [2]      (1 node)
-#   - col=0  → [1,5,6]  (3 nodes, largest)
-#   - col=1  → [3]      (1 node)
-#   - col=2  → [7]      (1 node)
+  Column distribution:
+  - col=-2 → [4]      (1 node)
+  - col=-1 → [2]      (1 node)
+  - col=0  → [1,5,6]  (3 nodes, largest)
+  - col=1  → [3]      (1 node)
+  - col=2  → [7]      (1 node)
 
-#   Observations:
-#   - Number of columns: k = Θ(log N)
-#     (Θ means a tight bound — grows on the order of log N)
-#   - Largest column has Θ(N / √log N) nodes, not Θ(N)
-#     (grows on the order of N/√log N)
-#   - Distribution is uneven but no single column fully dominates
-#   Overall sorting cost: O(N log N)
+  Observations:
+  - Number of columns: k = Θ(log N)
+    (Θ means a tight bound — grows on the order of log N)
+  - Largest column has Θ(N / √log N) nodes, not Θ(N)
+    (grows on the order of N/√log N)
+  - Distribution is uneven but no single column fully dominates
+  Overall sorting cost: O(N log N)
 
 # Note on notation:
 # - O(f(N)) = upper bound (runtime grows at most proportional to f(N))
@@ -672,105 +672,105 @@ class Solution:
 
 # Approach : DFS
 
-# class Solution:
-#     def verticalTraversal(self, root: Optional[TreeNode]) -&gt; List[List[int]]:
-#         &quot;&quot;&quot;
-#         Vertical order traversal of binary tree using DFS.
+class Solution:
+    def verticalTraversal(self, root: Optional[TreeNode]) -&gt; List[List[int]]:
+        &quot;&quot;&quot;
+        Vertical order traversal of binary tree using DFS.
         
-#         Strategy:
-#         1. Use DFS to traverse tree and assign (row, col) coordinates to each node
-#         2. Group nodes by column using hashmap
-#         3. Sort within each column by (row, value)
-#         4. Build result by processing columns left-to-right
+        Strategy:
+        1. Use DFS to traverse tree and assign (row, col) coordinates to each node
+        2. Group nodes by column using hashmap
+        3. Sort within each column by (row, value)
+        4. Build result by processing columns left-to-right
         
-#         Coordinate system:
-#         - Root starts at (row=0, col=0)
-#         - Left child: row+1, col-1 (go down, go left)
-#         - Right child: row+1, col+1 (go down, go right)
+        Coordinate system:
+        - Root starts at (row=0, col=0)
+        - Left child: row+1, col-1 (go down, go left)
+        - Right child: row+1, col+1 (go down, go right)
         
-#         Time Complexity: O(N log(N/k))
-#             Where N = total number of nodes, k = number of unique columns
-#             - DFS traversal: O(N)
-#             - Sorting within columns: O(N log(N/k))
+        Time Complexity: O(N log(N/k))
+            Where N = total number of nodes, k = number of unique columns
+            - DFS traversal: O(N)
+            - Sorting within columns: O(N log(N/k))
             
-#         Space Complexity: O(N)
-#             - Recursion stack: O(H) where H = height, worst case O(N)
-#             - HashMap: O(N)
-#             - Result: O(N)
-#         &quot;&quot;&quot;
-#         # Base case: empty tree
-#         if root is None:
-#             return []
+        Space Complexity: O(N)
+            - Recursion stack: O(H) where H = height, worst case O(N)
+            - HashMap: O(N)
+            - Result: O(N)
+        &quot;&quot;&quot;
+        # Base case: empty tree
+        if root is None:
+            return []
         
-#         # HashMap: column_index -&gt; list of (row, value) tuples
-#         # defaultdict auto-creates empty list for new keys when accessed
-#         # With regular dict: need &quot;if col not in col_map: col_map[col] = []&quot; first
-#         col_map = defaultdict(list)
+        # HashMap: column_index -&gt; list of (row, value) tuples
+        # defaultdict auto-creates empty list for new keys when accessed
+        # With regular dict: need &quot;if col not in col_map: col_map[col] = []&quot; first
+        col_map = defaultdict(list)
         
-#         # Track the leftmost and rightmost columns seen
-#         # Using nonlocal keyword to modify these variables in nested function
-#         # 
-#         # Alternative approach using instance variables:
-#         # self.min_col = 0
-#         # self.max_col = 0
-#         # Then access with self.min_col and self.max_col in dfs()
-#         min_col = 0
-#         max_col = 0
+        # Track the leftmost and rightmost columns seen
+        # Using nonlocal keyword to modify these variables in nested function
+        # 
+        # Alternative approach using instance variables:
+        # self.min_col = 0
+        # self.max_col = 0
+        # Then access with self.min_col and self.max_col in dfs()
+        min_col = 0
+        max_col = 0
         
-#         def dfs(node, row, col):
-#             &quot;&quot;&quot;
-#             Recursively traverse tree and record node coordinates.
+        def dfs(node, row, col):
+            &quot;&quot;&quot;
+            Recursively traverse tree and record node coordinates.
             
-#             Args:
-#                 node: Current tree node
-#                 row: Current row (depth level, 0 at root)
-#                 col: Current column (horizontal position, 0 at root)
-#             &quot;&quot;&quot;
-#             # nonlocal declares we want to modify outer scope variables
-#             # Without this: UnboundLocalError (Python thinks min_col is local variable)
-#             # Alternative: use instance variables (self.min_col, self.max_col)
-#             nonlocal min_col, max_col
+            Args:
+                node: Current tree node
+                row: Current row (depth level, 0 at root)
+                col: Current column (horizontal position, 0 at root)
+            &quot;&quot;&quot;
+            # nonlocal declares we want to modify outer scope variables
+            # Without this: UnboundLocalError (Python thinks min_col is local variable)
+            # Alternative: use instance variables (self.min_col, self.max_col)
+            nonlocal min_col, max_col
             
-#             # Base case: reached null node
-#             if not node:
-#                 return
+            # Base case: reached null node
+            if not node:
+                return
             
-#             # Update column boundaries
-#             # These modify the outer scope variables (enabled by nonlocal)
-#             min_col = min(min_col, col)
-#             max_col = max(max_col, col)
+            # Update column boundaries
+            # These modify the outer scope variables (enabled by nonlocal)
+            min_col = min(min_col, col)
+            max_col = max(max_col, col)
             
-#             col_map[col].append((row, node.val))
+            col_map[col].append((row, node.val))
             
-#             # Recurse on left subtree
-#             # Go one level deeper (row+1) and one column left (col-1)
-#             dfs(node.left, row + 1, col - 1)
+            # Recurse on left subtree
+            # Go one level deeper (row+1) and one column left (col-1)
+            dfs(node.left, row + 1, col - 1)
             
-#             # Recurse on right subtree
-#             # Go one level deeper (row+1) and one column right (col+1)
-#             dfs(node.right, row + 1, col + 1)
+            # Recurse on right subtree
+            # Go one level deeper (row+1) and one column right (col+1)
+            dfs(node.right, row + 1, col + 1)
         
-#         # Start DFS from root at position (0, 0)
-#         dfs(root, 0, 0)
+        # Start DFS from root at position (0, 0)
+        dfs(root, 0, 0)
         
-#         # Build final result by processing columns from left to right
-#         result = []
+        # Build final result by processing columns from left to right
+        result = []
         
-#         for col in range(min_col, max_col + 1):
-#             items = col_map[col]
-#             items.sort()
-#             result.append([val for row, val in items])
+        for col in range(min_col, max_col + 1):
+            items = col_map[col]
+            items.sort()
+            result.append([val for row, val in items])
         
-#         return result
+        return result
 
 # Variant 1 : Print the vertical order traversal of the binary tree, separating each column by a new line. Clarify the formatting with interviewer.
 
 # Tree:
-#       3
-#      / \
-#     9  20
-#       /  \
-#      15   7
+      3
+     / \
+    9  20
+      /  \
+     15   7
 
 # Vertical Traversal:
 # 9 
@@ -780,44 +780,44 @@ class Solution:
 
 # Print each column on a new line
 
-# for col in range(min_col, max_col + 1):
-#     # Get all (row, val) tuples for this column
-#     items = col_map[col]
+for col in range(min_col, max_col + 1):
+    # Get all (row, val) tuples for this column
+    items = col_map[col]
             
-#     # Sort by (row, val) - natural tuple ordering
-#     items.sort()
+    # Sort by (row, val) - natural tuple ordering
+    items.sort()
 
-#     Print all values in this column, space-separated
-#     end=&#x27; &#x27; keeps values on same line with space separator
-#     Example: for items = [(0,3), (2,15)]
-#     With end=&#x27; &#x27;: prints &quot;3 15 &quot; (on same line)
-#     Without end:  prints &quot;3\n15\n&quot; (each on separate line)
-#     for row, val in items:
-#         print(val, end=&#x27; &#x27;)
+    Print all values in this column, space-separated
+    end=&#x27; &#x27; keeps values on same line with space separator
+    Example: for items = [(0,3), (2,15)]
+    With end=&#x27; &#x27;: prints &quot;3 15 &quot; (on same line)
+    Without end:  prints &quot;3\n15\n&quot; (each on separate line)
+    for row, val in items:
+        print(val, end=&#x27; &#x27;)
             
-#     # Newline after each column (REQUIRED to separate columns)
-#     print()
+    # Newline after each column (REQUIRED to separate columns)
+    print()
 
 # As list comprehension + join
 
 # Print each column on a new line
-# for col in range(min_col, max_col + 1):
-#     items = col_map[col]
-#     items.sort() 
-#     # Extract values, convert to strings, and join with spaces
-#     # str(val) needed because .join() requires strings, not integers
-#     print(&#x27; &#x27;.join(str(val) for row, val in items))
+for col in range(min_col, max_col + 1):
+    items = col_map[col]
+    items.sort() 
+    # Extract values, convert to strings, and join with spaces
+    # str(val) needed because .join() requires strings, not integers
+    print(&#x27; &#x27;.join(str(val) for row, val in items))
 
 # Print each column as a list on a new line
-# for col in range(min_col, max_col + 1):
-#     items = col_map[col]
-#     items.sort()
+for col in range(min_col, max_col + 1):
+    items = col_map[col]
+    items.sort()
     
-#     # Extract values into a list
-#     values = [val for row, val in items]
+    # Extract values into a list
+    values = [val for row, val in items]
     
-#     # Print the list
-#     print(values)
+    # Print the list
+    print(values)
 
 # Output:
 
@@ -829,16 +829,16 @@ class Solution:
 
 # Variant : Return traversal as a single 1D list (check Leetcode 314 Binary Tree Vertical Order Traversal)
 
-# result = []
-# for col in range(min_col, max_col + 1):
-#     items = col_map[col]
-#     items.sort() # Sort by (row, val)
+result = []
+for col in range(min_col, max_col + 1):
+    items = col_map[col]
+    items.sort() # Sort by (row, val)
             
-#     # Add all values from this column to result
-#     for row, val in items:
-#         result.append(val)
+    # Add all values from this column to result
+    for row, val in items:
+        result.append(val)
 
-# return result
+return result
 
 
 
