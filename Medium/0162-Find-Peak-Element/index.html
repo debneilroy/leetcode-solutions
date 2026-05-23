@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>162. Find Peak Element - LeetCode Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+
+:root {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --radius:    6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #e6db74; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy   { color: var(--easy);   background: rgba(44,187,93,0.15); }
+.badge-Medium { color: var(--medium); background: rgba(255,161,22,0.15); }
+.badge-Hard   { color: var(--hard);   background: rgba(239,71,67,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--surface2); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: #1e1e1e !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">162. Find Peak Element</span>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (0)</div>
+        <div class="tab" data-tab="similar">Similar (5)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">162. Find Peak Element</div>
+        <div class="prob-meta">
+          <span class="badge badge-Medium">Medium</span>
+          <span class="tag">Array</span><span class="tag">Binary Search</span>
+        </div>
+        <div class="prob-stats">2.4M / 5.2M (47.0%)</div>
+        <div class="prob-desc"><p>A peak element is an element that is strictly greater than its neighbors.</p>
+<p>Given a <strong>0-indexed</strong> integer array <code>nums</code>, find a peak element, and return its index. If the array contains multiple peaks, return the index to <strong>any of the peaks</strong>.</p>
+<p>You may imagine that <code>nums[-1] = nums[n] = -&amp;infin;</code>. In other words, an element is always considered to be strictly greater than a neighbor that is outside the array.</p>
+<p>You must write an algorithm that runs in <code>O(log n)</code> time.</p>
+<p>Example 1:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> nums = [1,2,3,1]
+<strong>Output:</strong> 2
+<strong>Explanation:</strong> 3 is a peak element and your function should return the index number 2.</code></pre>
+<p>Example 2:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> nums = [1,2,1,3,5,6,4]
+<strong>Output:</strong> 5
+<strong>Explanation:</strong> Your function can return either index number 1 where the peak element is 2, or index number 5 where the peak element is 6.</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= nums.length &lt;= 1000</code></li>
+</ul>
+	
+<ul>
+<li><code>-231 &lt;= nums[i] &lt;= 231 - 1</code></li>
+</ul>
+	
+<ul>
+<li><code>nums[i] != nums[i + 1]</code> for all valid <code>i</code>.</li>
+</ul></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        <p class="empty-msg">No hints for this problem.</p>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/peak-index-in-a-mountain-array/" target="_blank">Peak Index in a Mountain Array</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/find-a-peak-element-ii/" target="_blank">Find a Peak Element II</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/pour-water-between-buckets-to-make-water-levels-equal/" target="_blank">Pour Water Between Buckets to Make Water Levels Equal</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/count-hills-and-valleys-in-an-array/" target="_blank">Count Hills and Valleys in an Array</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/find-the-peaks/" target="_blank">Find the Peaks</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 162. Find Peak Element
+Difficulty: Medium
+URL: https://leetcode.com/problems/find-peak-element/
+&quot;&quot;&quot;
+
+
+# Linear Scan (TC : O(n) SC : O(1))
+
+# class Solution:
+#     def findPeakElement(self, nums: List[int]) -&gt; int:
+#         for i in range(len(nums)-1):
+#             if nums[i] &gt; nums[i+1]:
+#                 return i
+#         return len(nums)-1
+
+# Variant:
+# Here are the other variants they might ask:
+# What if a peak element must be equal or greater than its neighbors?
+# What if a valley element must be equal or lower than its neighbors?
+# For 1 and 2, you just have to change the equality signs in the If Statement. And yes, this means you&#x27;ll have duplicate elements in your input array.
+
+# What if you were given duplicate elements in SUCH A WAY that makes binary search unusable?
+# Okay, the interviewer won&#x27;t phrase it like this, but if this is the case, use a O(N) linear search.
+# This is also known as the Even Terrain variant. 
+
+# Example Walkthrough:
+# Find me the peak (or valley) element, where said element is strictly greater (or lower) than its neighbors.
+# Follow-up: What if there were duplicates? The answer is to use linear search. The presence of duplicates will render binary search useless.
+
+# Find me the peak (or valley) element, where said element is equal or greater than (or equal or lower than) its neighbors. Note there are duplicates.
+# If this is the first question asked, then chances are you&#x27;ll have to implement binary search with the &gt;=, &lt;= equality signs.
+# Follow-up: What if there weren&#x27;t duplicates? Change signs to &gt;, &lt;.
+
+# Overall, it&#x27;s tricky but it all depends on how the input array has duplicate elements.
+
+# How important is this variant?
+# Very. LC162 is extremely common, and so are its variants. 
+
+# For the original question, here are the questions you need to ask:
+
+# 1. Does each value in the array only have unique values neighboring it? Yes
+# 2. Are we given atleast one element in the array? Yes
+# 3. Are there multiple peaks in the array? Can be
+# 4. Are we guaranteed atleast one peak in the array? Yes. LeetCode guarantees nums[i] != nums[i+1] and treats out-of-bounds as -∞, so a peak always exists.
+# 5. Are the edges of the array negative infinity (nums[-1] = nums[n] = -inf)? Yes
+
+# Original problem (Strict peak, no duplicates)
+
+# LC162 guarantees:
+
+# nums[i] != nums[i+1]
+
+# So:
+
+# 1. no duplicates
+
+# 2. slope always goes up or down
+
+# 3. a peak always exists
+
+# Can use both the versions below 
+
+class Solution:
+    def findPeakElement(self, nums: list[int]) -&gt; int:
+        &quot;&quot;&quot;
+        Version 1: Simpler approach (left &lt; right)
+        - Cleaner logic with fewer edge case checks
+        - Shrinks search space to single element
+        
+        Time Complexity: O(log n) - binary search halves search space each iteration
+        Space Complexity: O(1) - only uses constant extra space for pointers
+        &quot;&quot;&quot;
+        # Edge case: empty array (though problem guarantees n &gt;= 1)
+        if not nums:
+            return -1
+        
+        # Base case: single element is always a peak
+        if len(nums) == 1:
+            return 0
+        
+        # Base case: two elements - return index of larger one
+        if len(nums) == 2:
+            return 0 if nums[0] &gt; nums[1] else 1
+        
+        # Edge case: first element is peak
+        if nums[0] &gt; nums[1]:
+            return 0
+        
+        # Edge case: last element is peak
+        if nums[-1] &gt; nums[-2]:
+            return len(nums) - 1
+
+        left, right = 0, len(nums) - 1
+        
+        while left &lt; right:
+            mid = (left + right) // 2
+            
+            if nums[mid] &lt; nums[mid + 1]:
+                # Peak must be on the right side (mid+1 or beyond)
+                left = mid + 1
+            else:
+                # nums[mid] &gt; nums[mid+1], so peak could be at mid or to the left
+                right = mid
+        
+        # Why return left (or right, they&#x27;re equal)?
+        # - Loop exits when left == right
+        # - At this point, we&#x27;ve narrowed down to a single element
+        # - This element is GUARANTEED to be a peak because:
+        #   1. We always moved toward the &quot;upward slope&quot; direction
+        #   2. The algorithm ensures we never eliminate the peak
+        #   3. When left == right, it points to a valid peak
+        # - We could return either left or right since they&#x27;re equal
+        return left
+
+class Solution:
+    def findPeakElement(self, nums: list[int]) -&gt; int:
+        &quot;&quot;&quot;
+        Version 2: Explicit peak checking (left &lt;= right)
+        - Checks if current mid is a peak before moving
+        - Uses traditional binary search pattern
+
+        Examples:
+        - [1, 2, 3, 1]: Returns 2 (value 3 is peak, 3 &gt; 2 and 3 &gt; 1)
+        - [1, 2, 1, 3, 5, 6, 4]: Returns 5 (value 6 is peak, could also return 1)
+        - [1, 3, 2]: Returns 1 (value 3 is peak at middle)
+        - [3, 1]: Returns 0 (value 3 is peak at boundary)
+        - [1, 5]: Returns 1 (value 5 is peak at boundary)
+        - [5]: Returns 0 (single element is always a peak)
+        
+        Time Complexity: O(log n) - binary search halves search space each iteration
+        Space Complexity: O(1) - only uses constant extra space for pointers
+        &quot;&quot;&quot;
+
+        left = 0
+        right = len(nums) - 1
+        
+        # Using left &lt;= right (not left &lt; right) because:
+        # - We explicitly CHECK if mid is a peak inside the loop
+        # - We need to examine every potential position, including when left == right
+        # - We move PAST mid (left = mid + 1 or right = mid - 1), so we won&#x27;t infinite loop
+        # - This pattern is for &quot;find exact target&quot; style binary search
+        # 
+        # Alternative (left &lt; right) is used when:
+        # - You DON&#x27;T check for answer inside loop
+        # - You return left/right AFTER loop ends
+        # - You do right = mid (not mid - 1) to avoid skipping the answer
+        while left &lt;= right:
+            mid = (left + right) // 2
+            
+            # Check if mid is a peak (greater than both neighbors)
+            # A peak must satisfy BOTH conditions (connected by AND):
+            # 
+            # Why check &quot;mid == len(nums) - 1&quot; and &quot;mid == 0&quot;?
+            # - These prevent INDEX OUT OF BOUNDS errors
+            # - If mid is last element (mid == len(nums) - 1), we CAN&#x27;T access nums[mid+1]
+            #   So we treat last element as having no right neighbor (auto-satisfies right condition)
+            # - If mid is first element (mid == 0), we CAN&#x27;T access nums[mid-1]
+            #   So we treat first element as having no left neighbor (auto-satisfies left condition)
+            # - By problem definition, elements outside array are considered -infinity
+            #   So boundary elements only need to beat their ONE existing neighbor
+            # 
+            # Why use OR within each condition?
+            # - Left condition: (mid == 0 OR nums[mid] &gt; nums[mid-1])
+            #   Reads as: &quot;Left side OK if we&#x27;re at boundary OR we beat left neighbor&quot;
+            #   The OR allows short-circuiting: if mid==0, skip the comparison (prevents index error)
+            # 
+            # - Right condition: (mid == len(nums)-1 OR nums[mid] &gt; nums[mid+1])
+            #   Reads as: &quot;Right side OK if we&#x27;re at boundary OR we beat right neighbor&quot;
+            #   The OR allows short-circuiting: if at last position, skip the comparison
+            # 
+            # Why use AND between the two conditions?
+            # - A peak must satisfy BOTH left AND right
+            # - Format: (left side OK) AND (right side OK)
+            # - Not enough to beat just one neighbor
+            # 
+            # Example [1, 3, 2] at mid=1:
+            #   Left:  (False OR 3&gt;1) = True ✓
+            #   Right: (False OR 3&gt;2) = True ✓
+            #   Result: True AND True = Peak found!
+            if (mid == 0 or nums[mid - 1] &lt; nums[mid]) and \
+            (mid == len(nums) - 1 or nums[mid + 1] &lt; nums[mid]):
+                return mid
+            
+            # Move towards higher neighbor
+            if nums[mid] &lt; nums[mid+1]:
+                left = mid + 1
+            else:
+                right = mid - 1
+        
+        return -1  # Unreachable
+
+# Variant A — STRICT Peak + Duplicates
+
+# 1️⃣ Definition (UNCHANGED)
+
+# Peak is still:
+
+# nums[i] &gt; nums[i-1] and nums[i] &gt; nums[i+1]
+
+# ⚠️ Strictly greater — equality NOT allowed.
+
+# 2️⃣ What changed?
+
+# Now duplicates are allowed.
+
+# Example:
+
+# [1, 2, 2, 2, 1]
+
+# 3️⃣ First big realization (VERY IMPORTANT)
+
+# A strict peak may NOT exist.
+
+# Check the middle:
+
+# 2 &gt; 2   ❌
+
+# So:
+
+# No strict peak exists.
+
+# This is already very different from OG LC162.
+
+# Why we don’t use binary search?
+
+# Binary search relies on comparing:
+
+# nums[mid] vs nums[mid+1]
+
+# With duplicates, they may be equal:
+
+# nums[mid] == nums[mid+1]
+
+# Then there is no clear direction to discard half the array safely.
+
+# So we switch to linear scan.
+
+# class Solution:
+#     def findPeakElement(self, nums: list[int]) -&gt; int:
+#         &quot;&quot;&quot;
+#         Strict peak (&gt; neighbors), duplicates allowed.
+#         Linear Scan Solution
+
+#         Time: O(n)
+#         Space: O(1)
+#         &quot;&quot;&quot;
+#         n = len(nums)
+
+#         for i in range(n):
+#             left = nums[i - 1] if i &gt; 0 else float(&quot;-inf&quot;)
+#             right = nums[i + 1] if i &lt; n - 1 else float(&quot;-inf&quot;)
+
+#             if nums[i] &gt; left and nums[i] &gt; right:
+#                 return i
+
+#         return -1   # no strict peak
+
+# Variant B — NON-STRICT Peak (&gt;=) + Duplicates
+
+# Definition
+
+# Peak means:
+
+# nums[i] &gt;= nums[i-1] and nums[i] &gt;= nums[i+1]
+
+# Equality is allowed.
+
+# So plateaus are valid peaks.
+
+# Example:
+
+# [1, 2, 2, 2, 1]
+
+# Any 2 is a peak.
+
+# Key idea
+
+# Because equality is allowed:
+
+# nums[mid] == nums[mid+1] is NOT a problem anymore — either side can still contain a valid peak.
+
+# ➡️ Binary search works again.
+
+# class Solution:
+#     def findPeakElement(self, nums: list[int]) -&gt; int:
+#         &quot;&quot;&quot;
+#         Variant: Non-strict peak (&gt;= neighbors) with duplicates
+#         Peak = &gt;= neighbors, duplicates allowed
+
+#         Time: O(log n)
+#         Space: O(1)
+#         &quot;&quot;&quot;
+#         left, right = 0, len(nums) - 1
+
+#         while left &lt; right:
+#             mid = (left + right) // 2
+
+#             # Same condition as original, but else now handles equality too
+#             if nums[mid] &lt; nums[mid + 1]:
+#                 left = mid + 1
+#             else:  # nums[mid] &gt;= nums[mid + 1]
+#                 right = mid
+
+#         return left
+
+# class Solution:
+#     def findPeakElement(self, nums: list[int]) -&gt; int:
+#         &quot;&quot;&quot;
+#         Variant 3:
+#         Peak = &gt;= neighbors
+#         Explicit mid-check version
+#         &quot;&quot;&quot;
+
+#         left, right = 0, len(nums) - 1
+
+#         while left &lt;= right:
+#             mid = (left + right) // 2
+
+#             # explicit peak check (NON-STRICT)
+#             if (mid == 0 or nums[mid] &gt;= nums[mid - 1]) and \
+#                (mid == len(nums) - 1 or nums[mid] &gt;= nums[mid + 1]):
+#                 return mid
+
+#             # move toward higher side
+#             if nums[mid] &lt; nums[mid + 1]:
+#                 left = mid + 1
+#             else:
+#                 right = mid - 1
+
+#         return -1
+
+# Variant C — NON-STRICT Peak (&gt;=) with No Duplicates
+# Definition
+
+# Peak means:
+
+# nums[i] &gt;= nums[i-1] and nums[i] &gt;= nums[i+1]
+
+# But the array has no duplicates.
+
+# Key observation
+
+# If there are no duplicates:
+
+# &gt;=   is effectively the same as   &gt;
+
+# Because equality never happens.
+
+# So:
+
+# ➡️ Variant 4 behaves exactly like the OG problem.
+
+# Find all peaks 
+
+# class Solution:
+#     def findAllPeaks(self, nums: List[int]) -&gt; List[int]:
+#         &quot;&quot;&quot;
+#         Find all peak indices.
+#         A peak is an index i such that nums[i] &gt; nums[i-1] and nums[i] &gt; nums[i+1].
+#         Endpoints are compared against -inf, so index 0 is a peak if nums[0] &gt; nums[1],
+#         and index n-1 is a peak if nums[n-1] &gt; nums[n-2].
+#         (Original LC162 also assumes nums[i] != nums[i+1], but this works regardless.)
+
+#         Time Complexity: O(n)  — you must inspect each element at least once to list all peaks.
+#         Space Complexity: O(1) extra (excluding the output list).
+#         &quot;&quot;&quot;
+#         n = len(nums)
+#         if n == 0:
+#             return []
+#         if n == 1:
+#             return [0]
+
+#         peaks = []
+#         for i in range(n):
+#             left  = nums[i - 1] if i &gt; 0 else float(&quot;-inf&quot;)
+#             right = nums[i + 1] if i &lt; n - 1 else float(&quot;-inf&quot;)
+#             if nums[i] &gt; left and nums[i] &gt; right:
+#                 peaks.append(i)
+#         return peaks
+
+
+# Another Variant : Find Valley Element
+
+# A valley element is an element that is strictly less than its neighbors.
+
+# Given a 0-indexed integer array nums, find a valley element, and return its index.
+# If the array contains multiple valleys, return the index to any of the valleys.
+
+# You may imagine that nums[-1] = nums[n] = +∞.
+# In other words, an element is always considered to be strictly lesser than a neighbor that is outside the array.
+
+# You must write an algorithm that runs in O(log n) time.
+
+# Example 1:
+# Input: nums = [1, 2, 3, 1]
+# Output: 0
+# Explanation: 0 is a valley element and your function should return the index number 0.
+
+# Constraints:
+
+# 1 &lt;= nums.length &lt;= 1000
+
+# -2^31 &lt;= nums[i] &lt;= 2^31 - 1
+
+# nums[i] != nums[i + 1] for all valid i
+
+# Original LC162 - Valley Version (Strict valley, no duplicates)
+
+# class Solution:
+#     def findValleyElement(self, nums: list[int]) -&gt; int:
+#         &quot;&quot;&quot;
+#         Version 1: Simpler approach (left &lt; right)
+#         Find a valley element where valley &lt; both neighbors
+        
+#         Time Complexity: O(log n)
+#         Space Complexity: O(1)
+#         &quot;&quot;&quot;
+#         # Edge case: empty array
+#         if not nums:
+#             return -1
+        
+#         # Base case: single element is always a valley
+#         if len(nums) == 1:
+#             return 0
+        
+#         # Base case: two elements - return index of smaller one
+#         if len(nums) == 2:
+#             return 0 if nums[0] &lt; nums[1] else 1
+        
+#         # Edge case: first element is valley
+#         if nums[0] &lt; nums[1]:
+#             return 0
+        
+#         # Edge case: last element is valley
+#         if nums[-1] &lt; nums[-2]:
+#             return len(nums) - 1
+
+#         left, right = 0, len(nums) - 1
+        
+#         while left &lt; right:
+#             mid = (left + right) // 2
+            
+#             if nums[mid] &gt; nums[mid + 1]:
+#                 # Valley must be on the right side (mid+1 or beyond)
+#                 left = mid + 1
+#             else:
+#                 # nums[mid] &lt; nums[mid+1], so valley could be at mid or to the left
+#                 right = mid
+        
+#         # Loop exits when left == right (single element remaining)
+#         # This element is guaranteed to be a valley
+#         return left
+
+
+# class Solution:
+#     def findValleyElement(self, nums: list[int]) -&gt; int:
+#         &quot;&quot;&quot;
+#         Version 2: Explicit valley checking (left &lt;= right)
+#         Find a valley element where valley &lt; both neighbors
+        
+#         Examples:
+#         - [3, 2, 1, 3]: Returns 2 (value 1 is valley)
+#         - [3, 1, 2]: Returns 1 (value 1 is valley at middle)
+#         - [1, 5]: Returns 0 (boundary valley)
+        
+#         Time Complexity: O(log n)
+#         Space Complexity: O(1)
+#         &quot;&quot;&quot;
+#         left = 0
+#         right = len(nums) - 1
+        
+#         # Use left &lt;= right because we check for valley inside loop
+#         while left &lt;= right:
+#             mid = (left + right) // 2
+            
+#             # Check if mid is a valley (less than both neighbors)
+#             # Valley check: (left OK) AND (right OK)
+#             # - OR within condition: skip comparison at boundary OR beat neighbor
+#             # - AND between conditions: must satisfy both sides
+#             if (mid == 0 or nums[mid] &lt; nums[mid - 1]) and \
+#                (mid == len(nums) - 1 or nums[mid] &lt; nums[mid + 1]):
+#                 return mid
+            
+#             # Move towards lower neighbor
+#             if nums[mid] &gt; nums[mid + 1]:
+#                 left = mid + 1
+#             else:
+#                 right = mid - 1
+        
+#         return -1  # Unreachable
+
+
+# # Variant A — STRICT Valley + Duplicates
+
+# # Definition:
+# # Valley is: nums[i] &lt; nums[i-1] and nums[i] &lt; nums[i+1]
+# # Strictly less — equality NOT allowed
+
+# # With duplicates allowed, a strict valley may NOT exist.
+# # Example: [3, 2, 2, 2, 3] - no strict valley exists (2 is not &lt; 2)
+
+# # Why linear search?
+# # When nums[mid] == nums[mid+1], no clear direction to eliminate half safely.
+
+# class Solution:
+#     def findValleyElement(self, nums: list[int]) -&gt; int:
+#         &quot;&quot;&quot;
+#         Strict valley (&lt; neighbors), duplicates allowed.
+#         Linear Scan Solution
+
+#         Time: O(n)
+#         Space: O(1)
+#         &quot;&quot;&quot;
+#         n = len(nums)
+
+#         for i in range(n):
+#             left = nums[i - 1] if i &gt; 0 else float(&quot;inf&quot;)
+#             right = nums[i + 1] if i &lt; n - 1 else float(&quot;inf&quot;)
+
+#             if nums[i] &lt; left and nums[i] &lt; right:
+#                 return i
+
+#         return -1  # no strict valley
+
+
+# # Variant B — NON-STRICT Valley (&lt;=) + Duplicates
+
+# # Definition:
+# # Valley means: nums[i] &lt;= nums[i-1] and nums[i] &lt;= nums[i+1]
+# # Equality is allowed, so plateaus are valid valleys
+
+# # Example: [3, 2, 2, 2, 3]
+# # Any 2 is a valley
+
+# # Binary search works because equality is not a problem
+
+# class Solution:
+#     def findValleyElement(self, nums: list[int]) -&gt; int:
+#         &quot;&quot;&quot;
+#         Variant: Non-strict valley (&lt;= neighbors) with duplicates
+#         Valley = &lt;= neighbors, duplicates allowed
+
+#         Time: O(log n)
+#         Space: O(1)
+#         &quot;&quot;&quot;
+#         left, right = 0, len(nums) - 1
+
+#         while left &lt; right:
+#             mid = (left + right) // 2
+
+#             # Same condition as original, but else now handles equality too
+#             if nums[mid] &gt; nums[mid + 1]:
+#                 left = mid + 1
+#             else:  # nums[mid] &lt;= nums[mid + 1]
+#                 right = mid
+
+#         return left
+
+
+# class Solution:
+#     def findValleyElement(self, nums: list[int]) -&gt; int:
+#         &quot;&quot;&quot;
+#         Variant: Non-strict valley (&lt;= neighbors) with duplicates
+#         Explicit mid-check version
+
+#         Time: O(log n)
+#         Space: O(1)
+#         &quot;&quot;&quot;
+#         left, right = 0, len(nums) - 1
+
+#         while left &lt;= right:
+#             mid = (left + right) // 2
+
+#             # Explicit valley check (NON-STRICT)
+#             if (mid == 0 or nums[mid] &lt;= nums[mid - 1]) and \
+#                (mid == len(nums) - 1 or nums[mid] &lt;= nums[mid + 1]):
+#                 return mid
+
+#             # Move toward lower side
+#             if nums[mid] &gt; nums[mid + 1]:
+#                 left = mid + 1
+#             else:
+#                 right = mid - 1
+
+#         return -1
+
+
+# # Variant C — NON-STRICT Valley (&lt;=) with No Duplicates
+
+# # Definition:
+# # Valley means: nums[i] &lt;= nums[i-1] and nums[i] &lt;= nums[i+1]
+# # But no duplicates allowed
+
+# # Key observation:
+# # If no duplicates, &lt;= is effectively the same as 
+# # Behaves exactly like the original problem
+
+
+# # Find All Valleys
+
+# class Solution:
+#     def findAllValleys(self, nums: List[int]) -&gt; List[int]:
+#         &quot;&quot;&quot;
+#         Find all valley indices.
+#         A valley is an index i such that nums[i] &lt; nums[i-1] and nums[i] &lt; nums[i+1].
+#         Endpoints are compared against +inf, so index 0 is a valley if nums[0] &lt; nums[1],
+#         and index n-1 is a valley if nums[n-1] &lt; nums[n-2].
+
+#         Time Complexity: O(n) — must inspect each element to list all valleys
+#         Space Complexity: O(1) extra (excluding output list)
+#         &quot;&quot;&quot;
+#         n = len(nums)
+#         if n == 0:
+#             return []
+#         if n == 1:
+#             return [0]
+
+#         valleys = []
+#         for i in range(n):
+#             left  = nums[i - 1] if i &gt; 0 else float(&quot;inf&quot;)
+#             right = nums[i + 1] if i &lt; n - 1 else float(&quot;inf&quot;)
+#             if nums[i] &lt; left and nums[i] &lt; right:
+#                 valleys.append(i)
+#         return valleys
+
+
+
+
+
+
+
+
+
+
+
+         
+        </code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Medium/0146-LRU-Cache/">&#8592; 146. LRU Cache</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Easy/0163-Missing-Ranges/">163. Missing Ranges &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+</body>
+</html>
