@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>227. Basic Calculator II - LeetCode Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+
+:root {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --radius:    6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #e6db74; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy   { color: var(--easy);   background: rgba(44,187,93,0.15); }
+.badge-Medium { color: var(--medium); background: rgba(255,161,22,0.15); }
+.badge-Hard   { color: var(--hard);   background: rgba(239,71,67,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--surface2); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: #1e1e1e !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">227. Basic Calculator II</span>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (0)</div>
+        <div class="tab" data-tab="similar">Similar (4)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">227. Basic Calculator II</div>
+        <div class="prob-meta">
+          <span class="badge badge-Medium">Medium</span>
+          <span class="tag">Math</span><span class="tag">String</span><span class="tag">Stack</span>
+        </div>
+        <div class="prob-stats">953.9K / 2M (46.9%)</div>
+        <div class="prob-desc"><p>Given a string <code>s</code> which represents an expression, <em>evaluate this expression and return its value</em>.</p>
+<p>The integer division should truncate toward zero.</p>
+<p>You may assume that the given expression is always valid. All intermediate results will be in the range of <code>[-231, 231 - 1]</code>.</p>
+<p><strong>Note:</strong> You are not allowed to use any built-in function which evaluates strings as mathematical expressions, such as <code>eval()</code>.</p>
+<p>Example 1:</p>
+<pre class="example-block"><code><strong>Input:</strong> s = &quot;3+2*2&quot;
+<strong>Output:</strong> 7
+</code></pre>
+<p>Example 2:</p>
+<pre class="example-block"><code><strong>Input:</strong> s = &quot; 3/2 &quot;
+<strong>Output:</strong> 1
+</code></pre>
+<p>Example 3:</p>
+<pre class="example-block"><code><strong>Input:</strong> s = &quot; 3+5 / 2 &quot;
+<strong>Output:</strong> 5
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= s.length &lt;= 3 * 105</code></li>
+</ul>
+	
+<ul>
+<li><code>s</code> consists of integers and operators <code>(&#x27;+&#x27;, &#x27;-&#x27;, &#x27;*&#x27;, &#x27;/&#x27;)</code> separated by some number of spaces.</li>
+</ul>
+	
+<ul>
+<li><code>s</code> represents <strong>a valid expression</strong>.</li>
+</ul>
+	
+<ul>
+<li>All the integers in the expression are non-negative integers in the range <code>[0, 231 - 1]</code>.</li>
+</ul>
+	
+<ul>
+<li>The answer is <strong>guaranteed</strong> to fit in a <strong>32-bit integer</strong>.</li>
+</ul></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        <p class="empty-msg">No hints for this problem.</p>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/basic-calculator/" target="_blank">Basic Calculator</a>
+  <span style="color:#ef4743; font-size:12px;">Hard</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/expression-add-operators/" target="_blank">Expression Add Operators</a>
+  <span style="color:#ef4743; font-size:12px;">Hard</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/basic-calculator-iii/" target="_blank">Basic Calculator III</a>
+  <span style="color:#ef4743; font-size:12px;">Hard</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/evaluate-valid-expressions/" target="_blank">Evaluate Valid Expressions</a>
+  <span style="color:#ef4743; font-size:12px;">Hard</span>
+</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 227. Basic Calculator II
+Difficulty: Medium
+URL: https://leetcode.com/problems/basic-calculator-ii/
+&quot;&quot;&quot;
+
+# Can see the solution from this video too https://www.youtube.com/watch?v=W3Rg4HVSZ9k
+
+# Brute Force
+
+# I would first parse the string into two arrays — one for numbers and one for operators.
+# Then I process the expression in two passes:
+
+# Resolve all * and / operations first by computing and updating the arrays.
+
+# Finally, evaluate remaining + and - operations from left to right.
+
+# Time Complexity: O(n²) (due to list deletions/shifting during evaluation)
+# Space Complexity: O(n) (to store numbers and operators)
+
+
+# Approach : Without stack (optimal solution)
+
+class Solution:
+    def calculate(self, s):
+        &quot;&quot;&quot;
+        Calculate the result of a mathematical expression string.
+        
+        Time Complexity: O(n)
+            - We iterate through the string exactly once
+            - Each character is processed in constant time O(1)
+            - n is the length of the input string
+        
+        Space Complexity: O(1)
+            - We only use a fixed number of variables (curr_num, prev_num, result, op)
+            - No additional data structures that grow with input size
+            - This is an optimization over the O(n) stack-based approach
+        
+        Args:
+            s: String containing non-negative integers and operators (+, -, *, /)
+        
+        Returns:
+            Integer result of the expression
+            
+        Example:
+            s = &quot;10-3*2/2+5&quot;
+            
+            This comprehensive example includes:
+            - Multi-digit numbers: 10
+            - Addition: +5
+            - Subtraction: 10-3
+            - Multiplication: 3*2
+            - Division: 2/2
+            - Operator precedence: * and / before + and -
+            - Left-to-right evaluation: 3*2/2 = (3*2)/2 = 6/2 = 3
+            
+            Step-by-step evaluation:
+            10 - 3*2/2 + 5
+            = 10 - 6/2 + 5    (multiply first: 3*2=6)
+            = 10 - 3 + 5      (divide next: 6/2=3)
+            = 7 + 5           (subtract: 10-3=7)
+            = 12              (add: 7+5=12)
+            
+            Execution trace:
+            i=0,1: &#x27;10&#x27; → curr_num=10
+            i=2, &#x27;-&#x27;: op was &#x27;+&#x27; → result=0, prev_num=10, op=&#x27;-&#x27;
+            i=3: &#x27;3&#x27; → curr_num=3
+            i=4, &#x27;*&#x27;: op was &#x27;-&#x27; → result=10, prev_num=-3, op=&#x27;*&#x27;
+            i=5: &#x27;2&#x27; → curr_num=2
+            i=6, &#x27;/&#x27;: op was &#x27;*&#x27; → prev_num=-3*2=-6, op=&#x27;/&#x27;
+            i=7: &#x27;2&#x27; → curr_num=2
+            i=8, &#x27;+&#x27;: op was &#x27;/&#x27; → prev_num=-6/2=-3, op=&#x27;+&#x27;
+            i=9: &#x27;5&#x27; → curr_num=5
+            END: op was &#x27;+&#x27; → result=7, prev_num=5
+            Final: result + prev_num = 7 + 5 = 12 ✓
+        &quot;&quot;&quot;
+
+        # Base case: empty string
+        if not s:
+            return 0
+
+        # The number we&#x27;re currently building from consecutive digits
+        # Example: for &quot;42&quot;, first curr_num=4, then curr_num=42
+        curr_num = 0
+        
+        # The number that was processed but not yet added to result
+        # This is like the &quot;top of stack&quot; - it might still be multiplied/divided
+        # We keep it separate because the NEXT operator might be * or /
+        # Example: in &quot;3+2*4&quot;, when we see &#x27;*&#x27;, prev_num=2 (will be multiplied)
+        prev_num = 0
+        
+        # Running total of all numbers that are COMPLETELY DONE
+        # We only add prev_num to result when we&#x27;re SURE it won&#x27;t be multiplied/divided
+        # Example: in &quot;3+2*4&quot;, result=3 after we see &#x27;*&#x27; (3 is safe, won&#x27;t be affected)
+        result = 0
+        
+        # The last operator we encountered (initialized to &#x27;+&#x27; to handle first number)
+        # This is the operator we&#x27;ll APPLY in the current iteration
+        # Example: when we see &#x27;2&#x27; followed by &#x27;*&#x27;, we use the PREVIOUS operator
+        op = &#x27;+&#x27;
+        
+        # Iterate through every character in the string
+        for i in range(len(s)):
+            # If current character is a digit, build the multi-digit number
+            # We multiply by 10 and add the new digit to handle numbers like &quot;42&quot;
+            # Example: &quot;42&quot; → curr_num = 0*10+4 = 4, then curr_num = 4*10+2 = 42
+            if s[i].isdigit():
+                curr_num = curr_num * 10 + int(s[i])
+            
+            # Process when we hit an operator OR reach the end of string
+            # Check (not digit AND not space) to identify operators
+            # Alternative: s[i] in &#x27;+-*/&#x27; or i == len(s) - 1
+            #
+            # WHY CHECK END OF STRING (i == len(s) - 1)?
+            # Without it, the LAST NUMBER would never be processed!
+            # Example: &quot;3+5&quot; → we&#x27;d process 3, but never process 5
+            # The last character might be a digit, so we force processing at the end
+            if (not s[i].isdigit() and s[i] != &#x27; &#x27;) or i == len(s) - 1:
+                
+                # KEY INSIGHT: We apply the PREVIOUS operator (not current)
+                # We&#x27;re processing the number (curr_num) that came BEFORE this operator
+                # Using the operator (op) from the PREVIOUS iteration
+                #
+                # Example timeline for &quot;3+2*4&quot;:
+                # - See &#x27;3&#x27; then &#x27;+&#x27;: apply op=&#x27;+&#x27; to curr_num=3
+                # - See &#x27;2&#x27; then &#x27;*&#x27;: apply op=&#x27;+&#x27; to curr_num=2  
+                # - See &#x27;4&#x27; then END: apply op=&#x27;*&#x27; to curr_num=4
+                
+                if op == &#x27;+&#x27;:
+                    # WHY ADD prev_num NOT curr_num?
+                    # Because prev_num is &quot;safe&quot; - we know it won&#x27;t be multiplied/divided
+                    # curr_num is NOT safe yet - the next operator might be * or /
+                    # 
+                    # Example: &quot;3+2*4&quot; at the &#x27;*&#x27; operator:
+                    # - result += prev_num (add 3, it&#x27;s safe now)
+                    # - prev_num = curr_num (store 2, might be multiplied next)
+                    result += prev_num
+                    prev_num = curr_num
+                
+                elif op == &#x27;-&#x27;:
+                    # Same logic as &#x27;+&#x27;, but store curr_num as NEGATIVE
+                    # We negate it now so that multiplication/division work correctly
+                    # Example: &quot;5-2*3&quot; → store -2, then -2*3 = -6 (correct!)
+                    result += prev_num
+                    prev_num = curr_num * -1
+                
+                elif op == &#x27;*&#x27;:
+                    # HIGH PRECEDENCE: Apply multiplication IMMEDIATELY to prev_num
+                    # Don&#x27;t add to result yet - might be more * or / coming
+                    # 
+                    # Example: &quot;3+2*4&quot; when we see END:
+                    # - prev_num = 2, curr_num = 4
+                    # - prev_num = 2 * 4 = 8 (update in place)
+                    # - Later we&#x27;ll add this 8 to result
+                    prev_num = prev_num * curr_num
+                
+                elif op == &#x27;/&#x27;:
+                    # HIGH PRECEDENCE: Apply division IMMEDIATELY to prev_num
+                    # 
+                    # CRITICAL: Use int(/) not // 
+                    # - int(/) truncates toward zero: int(7/-2) = int(-3.5) = -3
+                    # - // is floor division toward -∞: 7//-2 = -4 (WRONG for LeetCode)
+                    # LeetCode expects C/Java behavior (truncate toward zero)
+                    prev_num = int(prev_num / curr_num)
+                
+                # Reset curr_num for the next number we&#x27;ll parse
+                # We&#x27;ve processed it, so start building the next number from scratch
+                curr_num = 0
+                
+                # Update operator to the current character for NEXT iteration
+                # This operator will be applied when we process the NEXT number
+                # Example: &quot;3+2&quot; → when at &#x27;+&#x27;, we store op=&#x27;+&#x27; to use for &#x27;2&#x27;
+                op = s[i]
+        
+        # Add the last prev_num to result (handles the final number)
+        # 
+        # WHY IS prev_num NOT ADDED YET?
+        # Because when we processed the last number/operator, we updated prev_num
+        # but never added it to result (no more operators to trigger addition)
+        # 
+        # Example: &quot;3+2*4&quot; at end:
+        # - result = 3 (from the &#x27;+&#x27; operation)
+        # - prev_num = 8 (from 2*4)
+        # - We need this final addition: 3 + 8 = 11
+        result += prev_num
+        
+        return result
+
+
+# Approach : Using stack
+
+# class Solution:
+#     def calculate(self, s):
+#         &quot;&quot;&quot;
+#         Calculate the result of a mathematical expression string using a stack.
+        
+#         Time Complexity: O(n)
+#             - We iterate through the string exactly once
+#             - Each character is processed in constant time O(1)
+#             - n is the length of the input string
+        
+#         Space Complexity: O(n)
+#             - Stack can grow up to n/2 elements in worst case
+#             - Example: &quot;1+2+3+4+5&quot; creates stack [1, 2, 3, 4, 5]
+#             - This is less space-efficient than the O(1) approach but more intuitive
+        
+#         Args:
+#             s: String containing non-negative integers and operators (+, -, *, /)
+        
+#         Returns:
+#             Integer result of the expression
+            
+#         Example:
+#             s = &quot;10-3*2/2+5&quot;
+            
+#             This comprehensive example includes:
+#             - Multi-digit numbers: 10
+#             - Addition: +5
+#             - Subtraction: 10-3
+#             - Multiplication: 3*2
+#             - Division: 2/2
+#             - Operator precedence: * and / before + and -
+#             - Left-to-right evaluation: 3*2/2 = (3*2)/2 = 6/2 = 3
+            
+#             Step-by-step evaluation:
+#             10 - 3*2/2 + 5
+#             = 10 - 6/2 + 5    (multiply first: 3*2=6)
+#             = 10 - 3 + 5      (divide next: 6/2=3)
+#             = 7 + 5           (subtract: 10-3=7)
+#             = 12              (add: 7+5=12)
+            
+#             Stack trace:
+#             i=0,1: &#x27;10&#x27; → num=10
+#             i=2, &#x27;-&#x27;: op was &#x27;+&#x27; → stack=[10], op=&#x27;-&#x27;
+#             i=3: &#x27;3&#x27; → num=3
+#             i=4, &#x27;*&#x27;: op was &#x27;-&#x27; → stack=[10, -3], op=&#x27;*&#x27;
+#             i=5: &#x27;2&#x27; → num=2
+#             i=6, &#x27;/&#x27;: op was &#x27;*&#x27; → stack=[10, -6] (pop -3, push -3*2=-6), op=&#x27;/&#x27;
+#             i=7: &#x27;2&#x27; → num=2
+#             i=8, &#x27;+&#x27;: op was &#x27;/&#x27; → stack=[10, -3] (pop -6, push -6/2=-3), op=&#x27;+&#x27;
+#             i=9: &#x27;5&#x27; → num=5
+#             END: op was &#x27;+&#x27; → stack=[10, -3, 5]
+#             Final: sum(stack) = 10 + (-3) + 5 = 12 ✓
+#         &quot;&quot;&quot;
+#         # Edge case: empty string
+#         if not s:
+#             return 0
+        
+#         # Stack to store numbers
+#         # HOW THE STACK WORKS:
+#         # - For + and -: Push numbers directly (negative for subtraction)
+#         # - For * and /: Pop last number, compute, push result back
+#         # - This naturally handles operator precedence without extra logic
+#         # - At the end, sum all numbers in stack for final result
+#         # Example: &quot;3+2*4&quot; → [3] → [3,2] → [3,8] → sum=11
+#         stack = []
+        
+#         # The number we&#x27;re currently building from consecutive digits
+#         # Example: for &quot;42&quot;, first num=4, then num=42
+#         num = 0
+        
+#         # The last operator we encountered (initialized to &#x27;+&#x27; to handle first number)
+#         # This is the operator we&#x27;ll APPLY when we finish building the current number
+#         # Example: when we see &#x27;2&#x27; followed by &#x27;*&#x27;, we use the PREVIOUS operator
+#         operation = &#x27;+&#x27;
+        
+#         # Iterate through every character in the string
+#         for i in range(len(s)):
+#             # If current character is a digit, build the multi-digit number
+#             # We multiply by 10 and add the new digit to handle numbers like &quot;42&quot;
+#             # Example: &quot;42&quot; → num = 0*10+4 = 4, then num = 4*10+2 = 42
+#             if s[i].isdigit():
+#                 num = num * 10 + int(s[i])
+            
+#             # Process when we hit an operator OR reach the end of string
+#             # Check (not digit AND not space) to identify operators
+#             # Alternative: s[i] in &#x27;+-*/&#x27; or i == len(s) - 1
+#             #
+#             # WHY CHECK END OF STRING (i == len(s) - 1)?
+#             # Without it, the LAST NUMBER would never be processed!
+#             # Example: &quot;3+5&quot; → we&#x27;d process 3, but never process 5
+#             # The last character might be a digit, so we force processing at the end
+#             if (not s[i].isdigit() and s[i] != &#x27; &#x27;) or i == len(s) - 1:
+                
+#                 # KEY INSIGHT: We apply the PREVIOUS operator (not current)
+#                 # We&#x27;re processing the number (num) that came BEFORE this operator
+#                 # Using the operator (operation) from the PREVIOUS iteration
+#                 #
+#                 # Example timeline for &quot;3+2*4&quot;:
+#                 # - See &#x27;3&#x27; then &#x27;+&#x27;: apply operation=&#x27;+&#x27; to num=3
+#                 # - See &#x27;2&#x27; then &#x27;*&#x27;: apply operation=&#x27;+&#x27; to num=2  
+#                 # - See &#x27;4&#x27; then END: apply operation=&#x27;*&#x27; to num=4
+                
+#                 if operation == &#x27;+&#x27;:
+#                     # For addition: simply push the number onto the stack
+#                     # We&#x27;ll sum everything at the end
+#                     # WHY NOT ADD TO RESULT NOW?
+#                     # Because the NEXT operator might be * or /, which has higher precedence
+#                     # Example: &quot;3+2*4&quot; → push 3, push 2, then multiply 2*4 later
+#                     stack.append(num)
+                
+#                 elif operation == &#x27;-&#x27;:
+#                     # For subtraction: push the NEGATIVE number
+#                     # This way, we can just sum the stack at the end
+#                     # We negate NOW so multiplication/division work correctly later
+#                     # Example: &quot;5-2*3&quot; → push -2, then -2*3=-6 (correct!)
+#                     stack.append(-num)
+                
+#                 elif operation == &#x27;*&#x27;:
+#                     # HIGH PRECEDENCE: Apply multiplication IMMEDIATELY
+#                     # Pop the last number from stack, multiply with current number, push back
+#                     # This handles operator precedence (multiply before add/subtract)
+#                     # 
+#                     # Example: &quot;3+2*4&quot; when we see END:
+#                     # - stack = [3, 2], num = 4
+#                     # - pop 2, compute 2*4=8, push 8
+#                     # - stack = [3, 8]
+#                     # - Later sum: 3 + 8 = 11
+#                     stack.append(stack.pop() * num)
+                
+#                 elif operation == &#x27;/&#x27;:
+#                     # HIGH PRECEDENCE: Apply division IMMEDIATELY
+#                     # Pop the last number from stack, divide by current number, push back
+#                     # 
+#                     # CRITICAL: Use int(/) not //
+#                     # - int(/) truncates toward zero: int(7/-2) = int(-3.5) = -3
+#                     # - // is floor division toward -∞: 7//-2 = -4 (WRONG for LeetCode)
+#                     # LeetCode expects C/Java behavior (truncate toward zero)
+#                     stack.append(int(stack.pop() / num))
+                
+#                 # Reset num for the next number we&#x27;ll parse
+#                 # We&#x27;ve processed it, so start building the next number from scratch
+#                 num = 0
+                
+#                 # Update operator to the current character for NEXT iteration
+#                 # This operator will be applied when we process the NEXT number
+#                 # Example: &quot;3+2&quot; → when at &#x27;+&#x27;, we store operation=&#x27;+&#x27; to use for &#x27;2&#x27;
+#                 operation = s[i]
+        
+#         # Sum all numbers in the stack to get final result
+#         # WHY SUM THE STACK?
+#         # All operator precedence has been handled during stack operations:
+#         # - + and - created separate stack entries
+#         # - * and / were applied immediately (pop, compute, push)
+#         # Now we just add everything together
+#         # 
+#         # Example: &quot;3+2*4&quot; at end:
+#         # - stack = [3, 8] (3 was pushed for +, 8 is result of 2*4)
+#         # - sum(stack) = 3 + 8 = 11
+#         return sum(stack)
+
+
+        </code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Medium/0207-Course-Schedule/">&#8592; 207. Course Schedule</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Medium/0236-Lowest-Common-Ancestor-of-a-Binary-Tree/">236. Lowest Common Ancestor of a Binary Tree &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+</body>
+</html>
