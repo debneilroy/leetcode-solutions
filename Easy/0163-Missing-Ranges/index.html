@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>163. Missing Ranges - LeetCode Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+
+:root {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --radius:    6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #e6db74; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy   { color: var(--easy);   background: rgba(44,187,93,0.15); }
+.badge-Medium { color: var(--medium); background: rgba(255,161,22,0.15); }
+.badge-Hard   { color: var(--hard);   background: rgba(239,71,67,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--surface2); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: #1e1e1e !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">163. Missing Ranges</span>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (0)</div>
+        <div class="tab" data-tab="similar">Similar (2)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">163. Missing Ranges</div>
+        <div class="prob-meta">
+          <span class="badge badge-Easy">Easy</span>
+          <span class="tag">Array</span>
+        </div>
+        <div class="prob-stats">311.4K / 873.1K (35.7%)</div>
+        <div class="prob-desc"><p>You are given an inclusive range <code>[lower, upper]</code> and a <strong>sorted unique</strong> integer array <code>nums</code>, where all elements are within the inclusive range.</p>
+<p>A number <code>x</code> is considered <strong>missing</strong> if <code>x</code> is in the range <code>[lower, upper]</code> and <code>x</code> is not in <code>nums</code>.</p>
+<p>Return <em>the <strong>shortest sorted</strong> list of ranges that exactly covers all the missing numbers</em>. That is, no element of <code>nums</code> is included in any of the ranges, and each missing number is covered by one of the ranges.</p>
+<p>Example 1:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> nums = [0,1,3,50,75], lower = 0, upper = 99
+<strong>Output:</strong> [[2,2],[4,49],[51,74],[76,99]]
+<strong>Explanation:</strong> The ranges are:
+[2,2]
+[4,49]
+[51,74]
+[76,99]
+</code></pre>
+<p>Example 2:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> nums = [-1], lower = -1, upper = -1
+<strong>Output:</strong> []
+<strong>Explanation:</strong> There are no missing ranges since there are no missing numbers.
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li><code>-109 &lt;= lower &lt;= upper &lt;= 109</code></li>
+</ul>
+	
+<ul>
+<li><code>0 &lt;= nums.length &lt;= 100</code></li>
+</ul>
+	
+<ul>
+<li><code>lower &lt;= nums[i] &lt;= upper</code></li>
+</ul>
+	
+<ul>
+<li>All the values of <code>nums</code> are <strong>unique</strong>.</li>
+</ul></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        <p class="empty-msg">No hints for this problem.</p>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/summary-ranges/" target="_blank">Summary Ranges</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/find-maximal-uncovered-ranges/" target="_blank">Find Maximal Uncovered Ranges</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 163. Missing Ranges
+Difficulty: Easy
+URL: https://leetcode.com/problems/missing-ranges/
+&quot;&quot;&quot;
+
+# Brute Force Approach
+
+# Idea: Iterate through every single number from lower to upper one by one. For each number, check if it exists in the nums array using linear search. If a number is missing, track it as part of a missing range. When we hit a number that exists in nums, close the current missing range and add it to the result.
+
+# Example: nums = [0, 1, 5], lower = 0, upper = 7
+# Step-by-Step Execution:
+# We check every number from 0 to 7:
+
+# num = 0: Is 0 in [0,1,5]? YES → Skip it
+# num = 1: Is 1 in [0,1,5]? YES → Skip it
+# num = 2: Is 2 in [0,1,5]? NO → Start missing range at 2
+# num = 3: Is 3 in [0,1,5]? NO → Continue missing range
+# num = 4: Is 4 in [0,1,5]? NO → Continue missing range
+# num = 5: Is 5 in [0,1,5]? YES → Close range [2, 4], add to result
+# num = 6: Is 6 in [0,1,5]? NO → Start new missing range at 6
+# num = 7: Is 7 in [0,1,5]? NO → Continue missing range
+# End of range → Close range [6, 7], add to result
+
+# Output: [[2, 4], [6, 7]]
+
+# Time Complexity: O((upper - lower) × n)
+
+# We check every number in the range [lower, upper]: O(upper - lower)
+# For each number, we do a linear search in nums: O(n)
+# Total: O((upper - lower) × n)
+
+# Space Complexity: O(1) auxiliary space (excluding output)
+
+# Why it&#x27;s bad: If upper - lower = 10^9 and n = 100, we&#x27;d do 10^11 operations. The optimal solution only processes the n elements in the array, achieving O(n) time regardless of how large the range is.
+
+# class Solution:
+#     def findMissingRanges(
+#         self, nums: list[int], lower: int, upper: int
+#     ) -&gt; list[list[int]]:
+#         &quot;&quot;&quot;
+#         Find all missing ranges between lower and upper that are not in nums.
+        
+#         Time Complexity: O(n)
+#             - We iterate through the nums array once: O(n)
+#             - All operations inside the loop are O(1)
+#             - Overall: O(n) where n is the length of nums
+        
+#         Space Complexity: O(n)
+#             - Output space:
+#                 - Maximum number of missing ranges = n + 1
+#                 - 1 gap before first element + (n-1) gaps between elements + 1 gap after last
+#                 - Each range takes O(1) space
+#                 - Total output space: O(n + 1) = O(n)
+#             - Auxiliary space (excluding output): O(1)
+#                 - Only use constant extra variables (n, i)
+#             - Overall space: O(n)
+            
+#             Example: nums = [2, 4, 6, 8], lower = 1, upper = 10
+#                 Output: [[1,1], [3,3], [5,5], [7,7], [9,10]] → 5 ranges (n+1 where n=4)
+#         &quot;&quot;&quot;
+#         n = len(nums)
+#         missing_ranges = []
+        
+#         # If array is empty, the entire range [lower, upper] is missing
+#         if n == 0:
+#             missing_ranges.append([lower, upper])
+#             return missing_ranges
+        
+#         # Check if there are missing numbers before the first element
+#         if lower &lt; nums[0]:
+#             missing_ranges.append([lower, nums[0] - 1])
+        
+#         # Check for missing numbers between consecutive elements
+#         for i in range(n - 1):
+#             # If difference is 1 or less, no gap exists
+#             if nums[i + 1] - nums[i] &lt;= 1:
+#                 continue
+#             # Add the missing range between current and next element
+#             missing_ranges.append([nums[i] + 1, nums[i + 1] - 1])
+        
+#         # Check if there are missing numbers after the last element
+#         if upper &gt; nums[-1]:
+#             missing_ranges.append([nums[-1] + 1, upper])
+        
+#         return missing_ranges
+
+# Check with example : nums = [5,8,9,15,16,18,20], lower = 2, upper = 87. Output : [[2,4],[6,7],[10,14],[17,17],[19,19],[21,87]]
+
+# Approach : Merge all cases in a single loop (may be asked to implement instead of previous approach)
+
+class Solution:
+    def findMissingRanges(
+        self, nums: list[int], lower: int, upper: int
+    ) -&gt; list[list[int]]:
+        &quot;&quot;&quot;
+        Find missing ranges between lower and upper that are not in nums.
+        
+        Approach: Track the next expected number (curr_lower) and calculate
+        the gap between it and each number in the array. This unifies all
+        three cases (before first, between elements, after last) into one loop.
+        
+        Time Complexity: O(n)
+            Rationale:
+            - We iterate through (n + 1) elements once: O(n + 1)
+            - Inside the loop, all operations are O(1):
+            - Total: O(n + 1) × O(1) = O(n)
+            - Where n is the length of the input array nums
+        
+        Space Complexity: O(n)
+            Rationale:
+            - Output space:
+                * Maximum number of missing ranges = n + 1
+                * Why n + 1? We can have:
+                    - 1 gap before the first element
+                    - (n - 1) gaps between n consecutive elements
+                    - 1 gap after the last element
+                    - Total: 1 + (n - 1) + 1 = n + 1
+                * Each range [start, end] takes O(1) space
+                * Total output space: (n + 1) × O(1) = O(n)
+            
+            - Auxiliary space (excluding output):
+                * Variables (curr_lower, i, curr, gap): O(1)
+                * No additional data structures created
+                * Total auxiliary: O(1)
+            
+            - Overall: O(n) (output) + O(1) (auxiliary) = O(n)
+        
+        Example: nums = [0, 1, 3, 50, 75], lower = 0, upper = 99
+            curr_lower tracks: 0 → 1 → 2 → 4 → 51 → 76
+            Output: [[2, 2], [4, 49], [51, 74], [76, 99]]
+        &quot;&quot;&quot;
+        missing_ranges = []
+        
+        # curr_lower represents the next expected number in our range [lower, upper]
+        # We start with lower because that&#x27;s where our valid range begins
+        curr_lower = lower
+        
+        # Loop (n + 1) times to process all n elements plus one extra for upper boundary
+        # Why n + 1?
+        #   - First n iterations (i = 0 to n-1): process actual array elements
+        #   - Last iteration (i = n): use upper + 1 as sentinel to detect missing
+        #     numbers after the last element
+        for i in range(len(nums) + 1):
+            # Determine current number to compare against
+            # If i &lt; len(nums): use the actual array element at index i
+            # If i == len(nums): use (upper + 1) as a virtual boundary
+            # 
+            # Why upper + 1 for the last iteration?
+            #   - It acts as a sentinel to detect missing numbers after nums[-1]
+            #   - Example: If nums[-1] = 75 and upper = 99
+            #     Setting curr = 100 will create gap = 100 - 76 = 24
+            #     This correctly identifies [76, 99] as missing
+            curr = nums[i] if i &lt; len(nums) else upper + 1
+
+
+            # Skip if curr is outside valid range, e.g., nums = [-10, 0, 5, 100], lower = 0, upper = 10. Additional check, not required for this problem since lower &lt;= nums[i] &lt;= upper
+            # if curr &lt; lower:
+            #     continue
+            
+            # Calculate the gap between the current expected number and actual number
+            # gap represents how many positions are between curr_lower and curr
+            # Examples:
+            #   - If curr_lower = 2 and curr = 3: gap = 1 (only 2 is missing)
+            #   - If curr_lower = 2 and curr = 5: gap = 3 (2, 3, 4 are missing)
+            #   - If curr_lower = 2 and curr = 2: gap = 0 (no missing numbers)
+            gap = curr - curr_lower
+            
+            # If gap &gt;= 1, there&#x27;s at least one missing number
+            # The missing range is [curr_lower, curr - 1]
+            # Why curr - 1?
+            #   - curr_lower is the first missing number
+            #   - curr - 1 is the last missing number (since curr itself is present)
+            # Examples:
+            #   - curr_lower = 2, curr = 3: missing [2, 2] (just 2)
+            #   - curr_lower = 4, curr = 50: missing [4, 49] (4 through 49)
+            if gap &gt;= 1:
+                missing_ranges.append([curr_lower, curr - 1])
+            
+            # Update curr_lower to the next number after curr
+            # Why curr + 1?
+            #   - curr is either in the array or is (upper + 1)
+            #   - Either way, we&#x27;ve accounted for it, so the next expected number is curr + 1
+            # Example: If curr = 3, then curr_lower becomes 4 for the next iteration
+            curr_lower = curr + 1
+        
+        return missing_ranges
+
+# Variant : Formatting Rules
+
+# You are given an inclusive range [lower, upper] and a sorted unique integer array nums, where all elements are within the inclusive range.
+
+# A number x is considered missing if x is in the range [lower, upper] and x is not in nums.
+# Additionally, there are formatting rules:
+
+# If there are more than two consecutive missing numbers, then use a &quot;–&quot; between the missing lower- and upper-numbers.
+
+# If there is one missing number, push it as an individual string.
+
+# If there are exactly two consecutive missing numbers, push them individually.
+
+# Return the shortest sorted list of ranges that exactly covers all the missing numbers as a list of strings.
+
+# Example 1
+
+# Input:
+
+# nums = [5,8,9,15,16,18,20], lower = 2, upper = 87
+
+
+# Output:
+
+# [&quot;2-4&quot;, &quot;6&quot;, &quot;7&quot;, &quot;10-14&quot;, &quot;17&quot;, &quot;19&quot;, &quot;21-87&quot;]
+
+# Constraints
+
+# 0 &lt;= lower &lt;= upper &lt;= 10^9
+
+# 0 &lt;= nums.length &lt;= 100
+
+# lower &lt;= nums[i] &lt;= upper
+
+# All values of nums are unique
+
+
+# class Solution:
+#     def findMissingRanges(
+#         self, nums: list[int], lower: int, upper: int
+#     ) -&gt; list[str]:
+#         &quot;&quot;&quot;
+#         Find missing ranges with specific formatting rules:
+#         - Single missing number: &quot;x&quot;
+#         - Two consecutive missing numbers: &quot;x&quot;, &quot;y&quot; (separately)
+#         - More than two consecutive: &quot;x-&gt;y&quot;
+        
+#         Approach: Track the next expected number (curr_lower) and calculate
+#         the gap between it and each number, using index-based iteration to
+#         avoid creating a new list.
+        
+#         Time Complexity: O(n)
+#             Rationale:
+#             - We iterate through (n + 1) elements once: O(n + 1)
+#             - Inside the loop, all operations are O(1):
+#             - Total: O(n + 1) × O(1) = O(n)
+#             - Where n is the length of the input array nums
+        
+#         Space Complexity: O(n)
+#             Rationale:
+#             - Output space:
+#                 * Maximum number of string ranges = n + 1
+#                 * For two consecutive missing, we add 2 strings, so worst case
+#                   could be more than n+1, but still O(n)
+#                 * Example: nums = [2,4,6,8], lower=1, upper=9
+#                   Output has 5 strings for 4 elements
+#                 * Each string takes O(log(upper)) space for number representation
+#                 * Total output space: O(n × log(upper))
+            
+#             - Auxiliary space (excluding output):
+#                 * Variables (curr_lower, i, curr, gap): O(1)
+#                 * No additional data structures created
+#                 * Total auxiliary: O(1)
+            
+#             - Overall: O(n × log(upper)) for output + O(1) auxiliary
+#                        Simplified as O(n) when log(upper) is considered constant
+        
+#         Example: nums = [5,8,9,15,16,18,20], lower = 2, upper = 87
+#             Output: [&quot;2-&gt;4&quot;, &quot;6&quot;, &quot;7&quot;, &quot;10-&gt;14&quot;, &quot;17&quot;, &quot;19&quot;, &quot;21-&gt;87&quot;]
+#         &quot;&quot;&quot;
+#         missing_ranges = []
+        
+#         # curr_lower represents the next expected number in our range [lower, upper]
+#         # We start with lower because that&#x27;s where our valid range begins
+#         curr_lower = lower
+        
+#         # Loop (n + 1) times to process all n elements plus one extra for upper boundary
+#         # Why n + 1?
+#         #   - First n iterations (i = 0 to n-1): process actual array elements
+#         #   - Last iteration (i = n): use upper + 1 as sentinel to detect missing
+#         #     numbers after the last element
+#         for i in range(len(nums) + 1):
+#             # Determine current number to compare against
+#             # If i &lt; len(nums): use the actual array element at index i
+#             # If i == len(nums): use (upper + 1) as a virtual boundary
+#             # 
+#             # Why upper + 1 for the last iteration?
+#             #   - It acts as a sentinel to detect missing numbers after nums[-1]
+#             #   - Example: If nums[-1] = 20 and upper = 87
+#             #     Setting curr = 88 will create gap = 88 - 21 = 67
+#             #     This correctly identifies [21, 87] as missing
+#             curr = nums[i] if i &lt; len(nums) else upper + 1
+            
+#             # Calculate the gap between the current expected number and actual number
+#             # gap represents how many numbers are missing between curr_lower and curr
+#             # Examples:
+#             #   - If curr_lower = 6 and curr = 8: gap = 2 (6, 7 are missing)
+#             #   - If curr_lower = 10 and curr = 15: gap = 5 (10-14 are missing)
+#             #   - If curr_lower = 8 and curr = 8: gap = 0 (no missing numbers)
+#             gap = curr - curr_lower
+            
+#             # Format the output based on the number of missing values
+#             # We check gap instead of checking gap &gt;= 1 because we need different
+#             # formatting for different gap sizes
+            
+#             if gap &gt; 2:
+#                 # More than 2 missing numbers: use &quot;x-&gt;y&quot; format
+#                 # Example: curr_lower = 4, curr = 50, gap = 46
+#                 #   Missing: [4, 5, 6, ..., 49]
+#                 #   Output: &quot;4-&gt;49&quot;
+#                 missing_ranges.append(f&quot;{curr_lower}-&gt;{curr - 1}&quot;)
+#             elif gap == 2:
+#                 # Exactly 2 missing numbers: push them individually
+#                 # Example: curr_lower = 6, curr = 8, gap = 2
+#                 #   Missing: [6, 7]
+#                 #   Output: &quot;6&quot;, &quot;7&quot; (two separate strings)
+#                 missing_ranges.append(str(curr_lower))
+#                 missing_ranges.append(str(curr_lower + 1))
+#             elif gap == 1:
+#                 # Exactly 1 missing number: push as single string
+#                 # Example: curr_lower = 17, curr = 18, gap = 1
+#                 #   Missing: [17]
+#                 #   Output: &quot;17&quot;
+#                 missing_ranges.append(str(curr_lower))
+#             # If gap == 0: no missing numbers (curr_lower == curr), do nothing
+            
+#             # Update curr_lower to the next number after curr
+#             # Why curr + 1?
+#             #   - curr is either in the array or is (upper + 1)
+#             #   - Either way, we&#x27;ve accounted for it, so the next expected number is curr + 1
+#             # Example: If curr = 8, then curr_lower becomes 9 for the next iteration
+#             curr_lower = curr + 1
+        
+#         return missing_ranges
+
+# Space for String Representation:
+# When we do str(curr_lower) or f&quot;{curr_lower}-&gt;{curr - 1}&quot;:
+
+# The largest number we can represent is upper
+# upper has approximately log₁₀(upper) digits
+# Storing this string takes O(log₁₀(upper)) space
+# In Big-O notation, we write this as O(log(upper))
+
+# Number of Digits Formula:
+# For a number x, the number of digits = ⌊log₁₀(x)⌋ + 1
+# Examples:
+
+# x = 9: 1 digit → log₁₀(9) ≈ 0.95 → ⌊0.95⌋ + 1 = 1
+# x = 99: 2 digits → log₁₀(99) ≈ 1.99 → ⌊1.99⌋ + 1 = 2
+# x = 999: 3 digits → log₁₀(999) ≈ 2.99 → ⌊2.99⌋ + 1 = 3
+# x = 87: 2 digits → log₁₀(87) ≈ 1.94 → ⌊1.94⌋ + 1 = 2
+
+
+
+</code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Medium/0162-Find-Peak-Element/">&#8592; 162. Find Peak Element</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Medium/0199-Binary-Tree-Right-Side-View/">199. Binary Tree Right Side View &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+</body>
+</html>
