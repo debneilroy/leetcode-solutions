@@ -501,13 +501,13 @@ class LRUCache:
         self.tail.prev = self.head
 
 # Your LRUCache object will be instantiated and called as such:
-# obj = LRUCache(capacity)
-# param_1 = obj.get(key)
+obj = LRUCache(capacity)
+param_1 = obj.get(key)
 # obj.put(key,value)
 
 # Example
 
-# cache = LRUCache(2)  # capacity = 2
+cache = LRUCache(2)  # capacity = 2
 
 # cache.put(1, 1)
 # List: Head &lt;-&gt; [1:1] &lt;-&gt; Tail
@@ -760,10 +760,10 @@ class LRUCache:
 # Implement the LRUCache class:
 
 # LRUCache(): Initialize the LRU cache.
-# int get(int key): Return the value of the key if the key exists, otherwise return -1.
+int get(int key): Return the value of the key if the key exists, otherwise return -1.
 # void put(int key, int value): Update the value of the key if the key exists. Otherwise, add the key-value pair to the cache.
 # boolean del(int key): Deletes the key-value pair if the key exists and return true. Otherwise, return false.
-# int last(): Returns the value if at least one entry exists. Otherwise, return -1.
+int last(): Returns the value if at least one entry exists. Otherwise, return -1.
 
 # The functions get, put, and del must each run in O(1) average time complexity, with the exception of last which should run in O(1) time complexity.
 
@@ -787,280 +787,280 @@ class LRUCache:
 # lRUCache.del(3);      // true
 # lRUCache.last();      // -1
 
-# class LRUCache:
-#     &quot;&quot;&quot;
-#     LRU Cache with delete and last operations.
-#     Design where MRU is at the TAIL end.
+class LRUCache:
+    &quot;&quot;&quot;
+    LRU Cache with delete and last operations.
+    Design where MRU is at the TAIL end.
     
-#     List Structure:
-#         Head (dummy) &lt;-&gt; [LRU] &lt;-&gt; ... &lt;-&gt; [MRU] &lt;-&gt; Tail (dummy)
-#         - Head.next = Least Recently Used item
-#         - Tail.prev = Most Recently Used item
+    List Structure:
+        Head (dummy) &lt;-&gt; [LRU] &lt;-&gt; ... &lt;-&gt; [MRU] &lt;-&gt; Tail (dummy)
+        - Head.next = Least Recently Used item
+        - Tail.prev = Most Recently Used item
     
-#     Time Complexity:
-#         - get(key): O(1)
-#         - put(key, value): O(1)
-#         - del(key): O(1)
-#         - last(): O(1)
-#     &quot;&quot;&quot;
+    Time Complexity:
+        - get(key): O(1)
+        - put(key, value): O(1)
+        - del(key): O(1)
+        - last(): O(1)
+    &quot;&quot;&quot;
     
-#     def __init__(self):
-#         &quot;&quot;&quot;Initialize the LRU cache (no capacity limit in this variant).&quot;&quot;&quot;
-#         self.cache = {}  # HashMap: key -&gt; Node
+    def __init__(self):
+        &quot;&quot;&quot;Initialize the LRU cache (no capacity limit in this variant).&quot;&quot;&quot;
+        self.cache = {}  # HashMap: key -&gt; Node
         
-#         # Create dummy head and tail nodes
-#         self.head = Node(-1, -1)
-#         self.tail = Node(-1, -1)
+        # Create dummy head and tail nodes
+        self.head = Node(-1, -1)
+        self.tail = Node(-1, -1)
         
-#         # Initially empty: Head &lt;-&gt; Tail
-#         self.head.next = self.tail
-#         self.tail.prev = self.head
+        # Initially empty: Head &lt;-&gt; Tail
+        self.head.next = self.tail
+        self.tail.prev = self.head
     
-#     def _remove(self, node: Node) -&gt; None:
-#         &quot;&quot;&quot;
-#         Remove a node from the doubly linked list.
+    def _remove(self, node: Node) -&gt; None:
+        &quot;&quot;&quot;
+        Remove a node from the doubly linked list.
         
-#         Time Complexity: O(1)
-#         &quot;&quot;&quot;
-#         node.prev.next = node.next
-#         node.next.prev = node.prev
+        Time Complexity: O(1)
+        &quot;&quot;&quot;
+        node.prev.next = node.next
+        node.next.prev = node.prev
     
-#     def _add_to_tail(self, node: Node) -&gt; None:
-#         &quot;&quot;&quot;
-#         Add a node right BEFORE the tail (most recently used position).
+    def _add_to_tail(self, node: Node) -&gt; None:
+        &quot;&quot;&quot;
+        Add a node right BEFORE the tail (most recently used position).
         
-#         Time Complexity: O(1)
-#         &quot;&quot;&quot;
-#         node.next = self.tail
-#         node.prev = self.tail.prev
-#         self.tail.prev.next = node
-#         self.tail.prev = node
+        Time Complexity: O(1)
+        &quot;&quot;&quot;
+        node.next = self.tail
+        node.prev = self.tail.prev
+        self.tail.prev.next = node
+        self.tail.prev = node
     
-#     def _move_to_tail(self, node: Node) -&gt; None:
-#         &quot;&quot;&quot;
-#         Move an existing node to the tail (mark as most recently used).
+    def _move_to_tail(self, node: Node) -&gt; None:
+        &quot;&quot;&quot;
+        Move an existing node to the tail (mark as most recently used).
         
-#         Time Complexity: O(1)
-#         &quot;&quot;&quot;
-#         self._remove(node)
-#         self._add_to_tail(node)
+        Time Complexity: O(1)
+        &quot;&quot;&quot;
+        self._remove(node)
+        self._add_to_tail(node)
     
-#     def get(self, key: int) -&gt; int:
-#         &quot;&quot;&quot;
-#         Return the value of the key if it exists, otherwise return -1.
+    def get(self, key: int) -&gt; int:
+        &quot;&quot;&quot;
+        Return the value of the key if it exists, otherwise return -1.
         
-#         Time Complexity: O(1)
-#         &quot;&quot;&quot;
-#         if key not in self.cache:
-#             return -1
+        Time Complexity: O(1)
+        &quot;&quot;&quot;
+        if key not in self.cache:
+            return -1
         
-#         node = self.cache[key]
-#         self._move_to_tail(node)  # Mark as most recently used
-#         return node.value
+        node = self.cache[key]
+        self._move_to_tail(node)  # Mark as most recently used
+        return node.value
     
-#     def put(self, key: int, value: int) -&gt; None:
-#         &quot;&quot;&quot;
-#         Update the value of the key if it exists. Otherwise, add the key-value pair.
+    def put(self, key: int, value: int) -&gt; None:
+        &quot;&quot;&quot;
+        Update the value of the key if it exists. Otherwise, add the key-value pair.
         
-#         Time Complexity: O(1)
-#         &quot;&quot;&quot;
-#         if key in self.cache:
-#             # Update existing key
-#             node = self.cache[key]
-#             node.value = value
-#             self._move_to_tail(node)
-#         else:
-#             # Add new key
-#             new_node = Node(key, value)
-#             self.cache[key] = new_node
-#             self._add_to_tail(new_node)
+        Time Complexity: O(1)
+        &quot;&quot;&quot;
+        if key in self.cache:
+            # Update existing key
+            node = self.cache[key]
+            node.value = value
+            self._move_to_tail(node)
+        else:
+            # Add new key
+            new_node = Node(key, value)
+            self.cache[key] = new_node
+            self._add_to_tail(new_node)
     
-#     def delete(self, key: int) -&gt; bool:
-#         &quot;&quot;&quot;
-#         Delete the key-value pair if the key exists and return true.
-#         Otherwise, return false.
+    def delete(self, key: int) -&gt; bool:
+        &quot;&quot;&quot;
+        Delete the key-value pair if the key exists and return true.
+        Otherwise, return false.
 
-#         Note: This removes the node entirely from both the list and HashMap.
-#         Unlike get() or put(), we do NOT move the node to tail - we&#x27;re deleting it.
+        Note: This removes the node entirely from both the list and HashMap.
+        Unlike get() or put(), we do NOT move the node to tail - we&#x27;re deleting it.
         
-#         Time Complexity: O(1)
-#         &quot;&quot;&quot;
-#         if key not in self.cache:
-#             return False
+        Time Complexity: O(1)
+        &quot;&quot;&quot;
+        if key not in self.cache:
+            return False
         
-#         # Get the node
-#         node = self.cache[key]
+        # Get the node
+        node = self.cache[key]
         
-#         # Remove from list
-#         self._remove(node)
+        # Remove from list
+        self._remove(node)
         
-#         # Remove from HashMap
-#         del self.cache[key]
+        # Remove from HashMap
+        del self.cache[key]
 
-#         return True
+        return True
 
-#         # if delete has a void return type
-#         # if key not in self.cache:
-#         # return  # ← Just return (do nothing)
+        # if delete has a void return type
+        # if key not in self.cache:
+        # return  # ← Just return (do nothing)
     
-#         # node = self.cache[key]
-#         # self._remove(node)
-#         # del self.cache[key]
-#         # ← No return statement needed (implicitly returns None)
+        # node = self.cache[key]
+        # self._remove(node)
+        # del self.cache[key]
+        # ← No return statement needed (implicitly returns None)
 
-#     def last(self) -&gt; int:
-#         &quot;&quot;&quot;
-#         Return the value of the most recently used entry if at least one entry exists.
-#         Otherwise, return -1.
+    def last(self) -&gt; int:
+        &quot;&quot;&quot;
+        Return the value of the most recently used entry if at least one entry exists.
+        Otherwise, return -1.
         
-#         Time Complexity: O(1)
+        Time Complexity: O(1)
         
-#         Note: Based on the example, last() returns the MRU value (tail.prev),
-#         not the LRU value despite the confusing name.
-#         &quot;&quot;&quot;
-#         # Check if cache is empty
-#         if self.head.next == self.tail:
-#             return -1
+        Note: Based on the example, last() returns the MRU value (tail.prev),
+        not the LRU value despite the confusing name.
+        &quot;&quot;&quot;
+        # Check if cache is empty
+        if self.head.next == self.tail:
+            return -1
         
-#         # Return the most recently used value (before tail)
-#         return self.tail.prev.value
+        # Return the most recently used value (before tail)
+        return self.tail.prev.value
 
-# # Add to Head Implementation
+# Add to Head Implementation
 
-# class LRUCache:
-#     &quot;&quot;&quot;
-#     LRU Cache with delete and last operations.
-#     Design where MRU is at the HEAD end.
+class LRUCache:
+    &quot;&quot;&quot;
+    LRU Cache with delete and last operations.
+    Design where MRU is at the HEAD end.
     
-#     List Structure:
-#         Head (dummy) &lt;-&gt; [MRU] &lt;-&gt; ... &lt;-&gt; [LRU] &lt;-&gt; Tail (dummy)
-#         - Head.next = Most Recently Used item
-#         - Tail.prev = Least Recently Used item
+    List Structure:
+        Head (dummy) &lt;-&gt; [MRU] &lt;-&gt; ... &lt;-&gt; [LRU] &lt;-&gt; Tail (dummy)
+        - Head.next = Most Recently Used item
+        - Tail.prev = Least Recently Used item
     
-#     Time Complexity:
-#         - get(key): O(1)
-#         - put(key, value): O(1)
-#         - delete(key): O(1)
-#         - last(): O(1)
-#     &quot;&quot;&quot;
+    Time Complexity:
+        - get(key): O(1)
+        - put(key, value): O(1)
+        - delete(key): O(1)
+        - last(): O(1)
+    &quot;&quot;&quot;
     
-#     def __init__(self):
-#         &quot;&quot;&quot;Initialize the LRU cache (no capacity limit in this variant).&quot;&quot;&quot;
-#         self.cache = {}  # HashMap: key -&gt; Node
+    def __init__(self):
+        &quot;&quot;&quot;Initialize the LRU cache (no capacity limit in this variant).&quot;&quot;&quot;
+        self.cache = {}  # HashMap: key -&gt; Node
         
-#         # Create dummy head and tail nodes
-#         self.head = Node(-1, -1)
-#         self.tail = Node(-1, -1)
+        # Create dummy head and tail nodes
+        self.head = Node(-1, -1)
+        self.tail = Node(-1, -1)
         
-#         # Initially empty: Head &lt;-&gt; Tail
-#         self.head.next = self.tail
-#         self.tail.prev = self.head
+        # Initially empty: Head &lt;-&gt; Tail
+        self.head.next = self.tail
+        self.tail.prev = self.head
     
-#     def _remove(self, node: Node) -&gt; None:
-#         &quot;&quot;&quot;
-#         Remove a node from the doubly linked list.
+    def _remove(self, node: Node) -&gt; None:
+        &quot;&quot;&quot;
+        Remove a node from the doubly linked list.
         
-#         Time Complexity: O(1)
-#         &quot;&quot;&quot;
-#         node.prev.next = node.next
-#         node.next.prev = node.prev
+        Time Complexity: O(1)
+        &quot;&quot;&quot;
+        node.prev.next = node.next
+        node.next.prev = node.prev
     
-#     def _add_to_head(self, node: Node) -&gt; None:
-#         &quot;&quot;&quot;
-#         Add a node right AFTER the head (most recently used position).
+    def _add_to_head(self, node: Node) -&gt; None:
+        &quot;&quot;&quot;
+        Add a node right AFTER the head (most recently used position).
         
-#         Time Complexity: O(1)
-#         &quot;&quot;&quot;
-#         node.prev = self.head
-#         node.next = self.head.next
-#         self.head.next.prev = node
-#         self.head.next = node
+        Time Complexity: O(1)
+        &quot;&quot;&quot;
+        node.prev = self.head
+        node.next = self.head.next
+        self.head.next.prev = node
+        self.head.next = node
     
-#     def _move_to_head(self, node: Node) -&gt; None:
-#         &quot;&quot;&quot;
-#         Move an existing node to the head (mark as most recently used).
+    def _move_to_head(self, node: Node) -&gt; None:
+        &quot;&quot;&quot;
+        Move an existing node to the head (mark as most recently used).
         
-#         Time Complexity: O(1)
-#         &quot;&quot;&quot;
-#         self._remove(node)
-#         self._add_to_head(node)
+        Time Complexity: O(1)
+        &quot;&quot;&quot;
+        self._remove(node)
+        self._add_to_head(node)
     
-#     def get(self, key: int) -&gt; int:
-#         &quot;&quot;&quot;
-#         Return the value of the key if it exists, otherwise return -1.
+    def get(self, key: int) -&gt; int:
+        &quot;&quot;&quot;
+        Return the value of the key if it exists, otherwise return -1.
         
-#         Time Complexity: O(1)
-#         &quot;&quot;&quot;
-#         if key not in self.cache:
-#             return -1
+        Time Complexity: O(1)
+        &quot;&quot;&quot;
+        if key not in self.cache:
+            return -1
         
-#         node = self.cache[key]
-#         self._move_to_head(node)  # Mark as most recently used
-#         return node.value
+        node = self.cache[key]
+        self._move_to_head(node)  # Mark as most recently used
+        return node.value
     
-#     def put(self, key: int, value: int) -&gt; None:
-#         &quot;&quot;&quot;
-#         Update the value of the key if it exists. Otherwise, add the key-value pair.
+    def put(self, key: int, value: int) -&gt; None:
+        &quot;&quot;&quot;
+        Update the value of the key if it exists. Otherwise, add the key-value pair.
         
-#         Time Complexity: O(1)
-#         &quot;&quot;&quot;
-#         if key in self.cache:
-#             # Update existing key
-#             node = self.cache[key]
-#             node.value = value
-#             self._move_to_head(node)
-#         else:
-#             # Add new key
-#             new_node = Node(key, value)
-#             self.cache[key] = new_node
-#             self._add_to_head(new_node)
+        Time Complexity: O(1)
+        &quot;&quot;&quot;
+        if key in self.cache:
+            # Update existing key
+            node = self.cache[key]
+            node.value = value
+            self._move_to_head(node)
+        else:
+            # Add new key
+            new_node = Node(key, value)
+            self.cache[key] = new_node
+            self._add_to_head(new_node)
     
-#     def delete(self, key: int) -&gt; bool:
-#         &quot;&quot;&quot;
-#         Delete the key-value pair if the key exists and return true.
-#         Otherwise, return false.
+    def delete(self, key: int) -&gt; bool:
+        &quot;&quot;&quot;
+        Delete the key-value pair if the key exists and return true.
+        Otherwise, return false.
         
-#         Time Complexity: O(1)
-#         &quot;&quot;&quot;
-#         if key not in self.cache:
-#             return False
+        Time Complexity: O(1)
+        &quot;&quot;&quot;
+        if key not in self.cache:
+            return False
         
-#         # Get the node
-#         node = self.cache[key]
+        # Get the node
+        node = self.cache[key]
         
-#         # Remove from list
-#         self._remove(node)
+        # Remove from list
+        self._remove(node)
         
-#         # Remove from HashMap
-#         del self.cache[key]
+        # Remove from HashMap
+        del self.cache[key]
         
-#         return True
+        return True
         
-#         # If delete has a void return type:
-#         # if key not in self.cache:
-#         #     return  # Just return (do nothing)
-#         # 
-#         # node = self.cache[key]
-#         # self._remove(node)
-#         # del self.cache[key]
-#         # No return statement needed (implicitly returns None)
+        # If delete has a void return type:
+        # if key not in self.cache:
+        #     return  # Just return (do nothing)
+        # 
+        # node = self.cache[key]
+        # self._remove(node)
+        # del self.cache[key]
+        # No return statement needed (implicitly returns None)
     
-#     def last(self) -&gt; int:
-#         &quot;&quot;&quot;
-#         Return the value of the most recently used entry if at least one entry exists.
-#         Otherwise, return -1.
+    def last(self) -&gt; int:
+        &quot;&quot;&quot;
+        Return the value of the most recently used entry if at least one entry exists.
+        Otherwise, return -1.
         
-#         Time Complexity: O(1)
+        Time Complexity: O(1)
         
-#         Note: Based on the example, last() returns the MRU value (head.next),
-#         not the LRU value despite the confusing name.
-#         &quot;&quot;&quot;
-#         # Check if cache is empty
-#         if self.head.next == self.tail:
-#             return -1
+        Note: Based on the example, last() returns the MRU value (head.next),
+        not the LRU value despite the confusing name.
+        &quot;&quot;&quot;
+        # Check if cache is empty
+        if self.head.next == self.tail:
+            return -1
         
-#         # Return the most recently used value (after head)
-#         return self.head.next.value
+        # Return the most recently used value (after head)
+        return self.head.next.value
 
 
 # LRU Cache: Specific Data Type Example (Add to Tail Version)
@@ -1083,377 +1083,377 @@ class LRUCache:
 # 3. Delete user
 # 4. Get most recently accessed user
 
-# class Node:
-#     &quot;&quot;&quot;Doubly linked list node that stores user information.&quot;&quot;&quot;
+class Node:
+    &quot;&quot;&quot;Doubly linked list node that stores user information.&quot;&quot;&quot;
     
-#     def __init__(self, user_id: int, name: str, email: str, age: int):
-#         self.user_id = user_id
-#         self.name = name
-#         self.email = email
-#         self.age = age
-#         self.prev = None
-#         self.next = None
+    def __init__(self, user_id: int, name: str, email: str, age: int):
+        self.user_id = user_id
+        self.name = name
+        self.email = email
+        self.age = age
+        self.prev = None
+        self.next = None
     
-#     def __repr__(self):
-#         &quot;&quot;&quot;
-#         Detailed representation - shows all node data.
+    def __repr__(self):
+        &quot;&quot;&quot;
+        Detailed representation - shows all node data.
         
-#         Usage: repr(node), print([node]), or print({node})
-#         Note: Cannot use print(node) directly - that calls __str__ instead
+        Usage: repr(node), print([node]), or print({node})
+        Note: Cannot use print(node) directly - that calls __str__ instead
         
-#         Example: Node(id=101, name=&#x27;Alice&#x27;, email=&#x27;alice@email.com&#x27;, age=30)
+        Example: Node(id=101, name=&#x27;Alice&#x27;, email=&#x27;alice@email.com&#x27;, age=30)
         
-#         Optional: This method is NOT required for interviews - can be removed to save time.
-#         Helpful for debugging but not essential for core LRU cache functionality.
-#         &quot;&quot;&quot;
-#         return f&quot;Node(id={self.user_id}, name=&#x27;{self.name}&#x27;, email=&#x27;{self.email}&#x27;, age={self.age})&quot;
+        Optional: This method is NOT required for interviews - can be removed to save time.
+        Helpful for debugging but not essential for core LRU cache functionality.
+        &quot;&quot;&quot;
+        return f&quot;Node(id={self.user_id}, name=&#x27;{self.name}&#x27;, email=&#x27;{self.email}&#x27;, age={self.age})&quot;
     
-#     def __str__(self):
-#         &quot;&quot;&quot;
-#         Simple representation - just name and email.
+    def __str__(self):
+        &quot;&quot;&quot;
+        Simple representation - just name and email.
         
-#         Usage: print(node), str(node), or f&quot;{node}&quot;
+        Usage: print(node), str(node), or f&quot;{node}&quot;
         
-#         Example: Alice (alice@email.com)
+        Example: Alice (alice@email.com)
         
-#         Optional: This method is NOT required for interviews - can be removed to save time.
-#         Helpful for debugging but not essential for core LRU cache functionality.
-#         &quot;&quot;&quot;
-#         return f&quot;{self.name} ({self.email})&quot;
+        Optional: This method is NOT required for interviews - can be removed to save time.
+        Helpful for debugging but not essential for core LRU cache functionality.
+        &quot;&quot;&quot;
+        return f&quot;{self.name} ({self.email})&quot;
 
 
-# class UserLRUCache:
-#     &quot;&quot;&quot;
-#     LRU Cache for storing user information directly in nodes.
-#     Design where MRU is at the TAIL end.
+class UserLRUCache:
+    &quot;&quot;&quot;
+    LRU Cache for storing user information directly in nodes.
+    Design where MRU is at the TAIL end.
     
-#     List Structure:
-#         Head (dummy) &lt;-&gt; [LRU] &lt;-&gt; ... &lt;-&gt; [MRU] &lt;-&gt; Tail (dummy)
-#         - Head.next = Least Recently Used user
-#         - Tail.prev = Most Recently Used user
+    List Structure:
+        Head (dummy) &lt;-&gt; [LRU] &lt;-&gt; ... &lt;-&gt; [MRU] &lt;-&gt; Tail (dummy)
+        - Head.next = Least Recently Used user
+        - Tail.prev = Most Recently Used user
     
-#     Time Complexity:
-#         - get_user(user_id): O(1)
-#         - add_user(user_id, name, email, age): O(1)
-#         - update_user(user_id, **kwargs): O(1)
-#         - delete_user(user_id): O(1)
-#         - get_most_recent_user(): O(1)
-#         - get_least_recent_user(): O(1)
+    Time Complexity:
+        - get_user(user_id): O(1)
+        - add_user(user_id, name, email, age): O(1)
+        - update_user(user_id, **kwargs): O(1)
+        - delete_user(user_id): O(1)
+        - get_most_recent_user(): O(1)
+        - get_least_recent_user(): O(1)
     
-#     Space Complexity: O(n) where n is the number of users
-#     &quot;&quot;&quot;
+    Space Complexity: O(n) where n is the number of users
+    &quot;&quot;&quot;
     
-#     def __init__(self, capacity: int):
-#         &quot;&quot;&quot;
-#         Initialize the User LRU cache with given capacity.
+    def __init__(self, capacity: int):
+        &quot;&quot;&quot;
+        Initialize the User LRU cache with given capacity.
         
-#         Args:
-#             capacity: Maximum number of users the cache can hold
-#         &quot;&quot;&quot;
-#         if capacity &lt;= 0:
-#             raise ValueError(&quot;Capacity must be greater than 0&quot;)
+        Args:
+            capacity: Maximum number of users the cache can hold
+        &quot;&quot;&quot;
+        if capacity &lt;= 0:
+            raise ValueError(&quot;Capacity must be greater than 0&quot;)
 
-#         self.capacity = capacity
-#         self.cache = {}  # HashMap: user_id -&gt; Node
+        self.capacity = capacity
+        self.cache = {}  # HashMap: user_id -&gt; Node
         
-#         # Create dummy head and tail nodes with placeholder values
-#         self.head = Node(-1, &quot;&quot;, &quot;&quot;, -1)  # Dummy head
-#         self.tail = Node(-1, &quot;&quot;, &quot;&quot;, -1)  # Dummy tail
+        # Create dummy head and tail nodes with placeholder values
+        self.head = Node(-1, &quot;&quot;, &quot;&quot;, -1)  # Dummy head
+        self.tail = Node(-1, &quot;&quot;, &quot;&quot;, -1)  # Dummy tail
         
-#         # Initially empty: Head &lt;-&gt; Tail
-#         self.head.next = self.tail
-#         self.tail.prev = self.head
+        # Initially empty: Head &lt;-&gt; Tail
+        self.head.next = self.tail
+        self.tail.prev = self.head
     
-#     def _remove(self, node: Node) -&gt; None:
-#         &quot;&quot;&quot;
-#         Remove a node from the doubly linked list.
+    def _remove(self, node: Node) -&gt; None:
+        &quot;&quot;&quot;
+        Remove a node from the doubly linked list.
         
-#         Time Complexity: O(1)
+        Time Complexity: O(1)
         
-#         Args:
-#             node: Node to remove from the list
-#         &quot;&quot;&quot;
-#         node.prev.next = node.next
-#         node.next.prev = node.prev
+        Args:
+            node: Node to remove from the list
+        &quot;&quot;&quot;
+        node.prev.next = node.next
+        node.next.prev = node.prev
     
-#     def _add_to_tail(self, node: Node) -&gt; None:
-#         &quot;&quot;&quot;
-#         Add a node right BEFORE the tail (most recently used position).
+    def _add_to_tail(self, node: Node) -&gt; None:
+        &quot;&quot;&quot;
+        Add a node right BEFORE the tail (most recently used position).
         
-#         Time Complexity: O(1)
+        Time Complexity: O(1)
         
-#         Args:
-#             node: Node to add before tail (MRU position)
-#         &quot;&quot;&quot;
-#         node.next = self.tail
-#         node.prev = self.tail.prev
-#         self.tail.prev.next = node
-#         self.tail.prev = node
+        Args:
+            node: Node to add before tail (MRU position)
+        &quot;&quot;&quot;
+        node.next = self.tail
+        node.prev = self.tail.prev
+        self.tail.prev.next = node
+        self.tail.prev = node
     
-#     def _move_to_tail(self, node: Node) -&gt; None:
-#         &quot;&quot;&quot;
-#         Move an existing node to the tail (mark as most recently used).
+    def _move_to_tail(self, node: Node) -&gt; None:
+        &quot;&quot;&quot;
+        Move an existing node to the tail (mark as most recently used).
         
-#         Time Complexity: O(1)
+        Time Complexity: O(1)
         
-#         Args:
-#             node: Node to move to the back (MRU position)
-#         &quot;&quot;&quot;
-#         self._remove(node)
-#         self._add_to_tail(node)
+        Args:
+            node: Node to move to the back (MRU position)
+        &quot;&quot;&quot;
+        self._remove(node)
+        self._add_to_tail(node)
     
-#     def get_user(self, user_id: int) -&gt; Node:
-#         &quot;&quot;&quot;
-#         Get a user by ID and mark as most recently used.
+    def get_user(self, user_id: int) -&gt; Node:
+        &quot;&quot;&quot;
+        Get a user by ID and mark as most recently used.
         
-#         Time Complexity: O(1)
+        Time Complexity: O(1)
         
-#         Args:
-#             user_id: The user ID to look up
+        Args:
+            user_id: The user ID to look up
             
-#         Returns:
-#             Node object containing user data if found, None otherwise
-#         &quot;&quot;&quot;
+        Returns:
+            Node object containing user data if found, None otherwise
+        &quot;&quot;&quot;
 
-#         if user_id is None:
-#             raise ValueError(&quot;user_id cannot be None&quot;)
+        if user_id is None:
+            raise ValueError(&quot;user_id cannot be None&quot;)
 
-#         if user_id not in self.cache:
-#             return None
+        if user_id not in self.cache:
+            return None
         
-#         node = self.cache[user_id]
-#         self._move_to_tail(node)  # Mark as most recently used
-#         return node
+        node = self.cache[user_id]
+        self._move_to_tail(node)  # Mark as most recently used
+        return node
     
-#     def add_user(self, user_id: int, name: str, email: str, age: int) -&gt; None:
-#         &quot;&quot;&quot;
-#         Add a new user to the cache or update existing user.
-#         If at capacity, evict the least recently used user.
+    def add_user(self, user_id: int, name: str, email: str, age: int) -&gt; None:
+        &quot;&quot;&quot;
+        Add a new user to the cache or update existing user.
+        If at capacity, evict the least recently used user.
         
-#         Time Complexity: O(1)
+        Time Complexity: O(1)
         
-#         Args:
-#             user_id: Unique user identifier
-#             name: User&#x27;s name
-#             email: User&#x27;s email address
-#             age: User&#x27;s age
-#         &quot;&quot;&quot;
+        Args:
+            user_id: Unique user identifier
+            name: User&#x27;s name
+            email: User&#x27;s email address
+            age: User&#x27;s age
+        &quot;&quot;&quot;
 
-#         if user_id is None:
-#             raise ValueError(&quot;user_id cannot be None&quot;)
-#         if not name or not email:
-#             raise ValueError(&quot;name and email cannot be empty&quot;)
-#         if age &lt; 0:
-#             raise ValueError(&quot;age cannot be negative&quot;)
+        if user_id is None:
+            raise ValueError(&quot;user_id cannot be None&quot;)
+        if not name or not email:
+            raise ValueError(&quot;name and email cannot be empty&quot;)
+        if age &lt; 0:
+            raise ValueError(&quot;age cannot be negative&quot;)
 
-#         if user_id in self.cache:
-#             # Update existing user - use direct update instead of calling update_user()
-#             # Reason: add_user() requires ALL fields (name, email, age are mandatory)
-#             #         update_user() allows partial updates (fields are optional with None checks)
-#             # Example: add_user(101, &quot;Alice&quot;, &quot;alice@email.com&quot;, 30) - full update
-#             #          update_user(101, age=31) - partial update (only age)
-#             # Direct assignment is more efficient - avoids 3 unnecessary None checks
-#             node = self.cache[user_id]
-#             node.name = name
-#             node.email = email
-#             node.age = age
-#             self._move_to_tail(node)
-#         else:
-#             # Add new user
-#             new_node = Node(user_id, name, email, age)
-#             self.cache[user_id] = new_node
-#             self._add_to_tail(new_node)
+        if user_id in self.cache:
+            # Update existing user - use direct update instead of calling update_user()
+            # Reason: add_user() requires ALL fields (name, email, age are mandatory)
+            #         update_user() allows partial updates (fields are optional with None checks)
+            # Example: add_user(101, &quot;Alice&quot;, &quot;alice@email.com&quot;, 30) - full update
+            #          update_user(101, age=31) - partial update (only age)
+            # Direct assignment is more efficient - avoids 3 unnecessary None checks
+            node = self.cache[user_id]
+            node.name = name
+            node.email = email
+            node.age = age
+            self._move_to_tail(node)
+        else:
+            # Add new user
+            new_node = Node(user_id, name, email, age)
+            self.cache[user_id] = new_node
+            self._add_to_tail(new_node)
             
-#             # Check if we&#x27;ve exceeded capacity
-#             if len(self.cache) &gt; self.capacity:
-#             # Evict the least recently used user
-#             # Must capture reference BEFORE _remove(): that call rewires head.next to the
-#             # next node, so accessing self.head.next afterwards returns the wrong node.
-#             #
-#             # Without storing lru_node first:
-#             #   BEFORE: head &lt;-&gt; [Alice/LRU] &lt;-&gt; [Bob] &lt;-&gt; [Charlie/MRU] &lt;-&gt; tail
-#             #                         ↑
-#             #                    head.next = Alice
-#             #
-#             #   self._remove(self.head.next)  → removes Alice
-#             #
-#             #   AFTER:  head &lt;-&gt; [Bob] &lt;-&gt; [Charlie/MRU] &lt;-&gt; tail
-#             #                       ↑
-#             #                  head.next = Bob now!
-#             #
-#             #   del self.cache[self.head.next.user_id]  → deletes Bob, not Alice! ❌
-#             #   print(self.head.next)                   → prints Bob, not Alice!  ❌
-#             #
-#             #   RESULT: Alice removed from list but still in cache (memory leak!)
-#             #           Bob deleted from cache but still in list (dangling reference!)
-#             lru_node = self.head.next         # Store reference BEFORE any modifications
-#             self._remove(lru_node)            # Remove from list
-#             del self.cache[lru_node.user_id]  # Remove from HashMap
-#             print(f&quot;Evicted user: {lru_node}&quot;)  # __repr__ on Node formats the output
+            # Check if we&#x27;ve exceeded capacity
+            if len(self.cache) &gt; self.capacity:
+            # Evict the least recently used user
+            # Must capture reference BEFORE _remove(): that call rewires head.next to the
+            # next node, so accessing self.head.next afterwards returns the wrong node.
+            #
+            # Without storing lru_node first:
+            #   BEFORE: head &lt;-&gt; [Alice/LRU] &lt;-&gt; [Bob] &lt;-&gt; [Charlie/MRU] &lt;-&gt; tail
+            #                         ↑
+            #                    head.next = Alice
+            #
+            #   self._remove(self.head.next)  → removes Alice
+            #
+            #   AFTER:  head &lt;-&gt; [Bob] &lt;-&gt; [Charlie/MRU] &lt;-&gt; tail
+            #                       ↑
+            #                  head.next = Bob now!
+            #
+            #   del self.cache[self.head.next.user_id]  → deletes Bob, not Alice! ❌
+            #   print(self.head.next)                   → prints Bob, not Alice!  ❌
+            #
+            #   RESULT: Alice removed from list but still in cache (memory leak!)
+            #           Bob deleted from cache but still in list (dangling reference!)
+            lru_node = self.head.next         # Store reference BEFORE any modifications
+            self._remove(lru_node)            # Remove from list
+            del self.cache[lru_node.user_id]  # Remove from HashMap
+            print(f&quot;Evicted user: {lru_node}&quot;)  # __repr__ on Node formats the output
 
-#     def update_user(self, user_id: int, name: str = None, email: str = None, age: int = None) -&gt; bool:
-#         &quot;&quot;&quot;
-#         Update specific fields of a user and mark as most recently used.
+    def update_user(self, user_id: int, name: str = None, email: str = None, age: int = None) -&gt; bool:
+        &quot;&quot;&quot;
+        Update specific fields of a user and mark as most recently used.
         
-#         Time Complexity: O(1)
+        Time Complexity: O(1)
         
-#         Args:
-#             user_id: The user ID to update
-#             name: New name (optional)
-#             email: New email (optional)
-#             age: New age (optional)
+        Args:
+            user_id: The user ID to update
+            name: New name (optional)
+            email: New email (optional)
+            age: New age (optional)
             
-#         Returns:
-#             True if user was found and updated, False otherwise
-#         &quot;&quot;&quot;
+        Returns:
+            True if user was found and updated, False otherwise
+        &quot;&quot;&quot;
 
-#         if user_id is None:
-#             raise ValueError(&quot;user_id cannot be None&quot;)
-#         if age is not None and age &lt; 0:
-#             raise ValueError(&quot;age cannot be negative&quot;)
-#         if name is not None and not name:
-#             raise ValueError(&quot;name cannot be empty string&quot;)
-#         if email is not None and not email:
-#             raise ValueError(&quot;email cannot be empty string&quot;)
+        if user_id is None:
+            raise ValueError(&quot;user_id cannot be None&quot;)
+        if age is not None and age &lt; 0:
+            raise ValueError(&quot;age cannot be negative&quot;)
+        if name is not None and not name:
+            raise ValueError(&quot;name cannot be empty string&quot;)
+        if email is not None and not email:
+            raise ValueError(&quot;email cannot be empty string&quot;)
 
-#         if user_id not in self.cache:
-#             return False
+        if user_id not in self.cache:
+            return False
         
-#         node = self.cache[user_id]
+        node = self.cache[user_id]
         
-#         # Update only the specified fields
-#         if name is not None:
-#             node.name = name
-#         if email is not None:
-#             node.email = email
-#         if age is not None:
-#             node.age = age
+        # Update only the specified fields
+        if name is not None:
+            node.name = name
+        if email is not None:
+            node.email = email
+        if age is not None:
+            node.age = age
         
-#         self._move_to_tail(node)  # Mark as most recently used
-#         return True
+        self._move_to_tail(node)  # Mark as most recently used
+        return True
     
-#     def delete_user(self, user_id: int) -&gt; bool:
-#         &quot;&quot;&quot;
-#         Delete a user from the cache.
+    def delete_user(self, user_id: int) -&gt; bool:
+        &quot;&quot;&quot;
+        Delete a user from the cache.
         
-#         Time Complexity: O(1)
+        Time Complexity: O(1)
         
-#         Args:
-#             user_id: The user ID to delete
+        Args:
+            user_id: The user ID to delete
             
-#         Returns:
-#             True if user was found and deleted, False otherwise
-#         &quot;&quot;&quot;
+        Returns:
+            True if user was found and deleted, False otherwise
+        &quot;&quot;&quot;
 
-#         if user_id is None:
-#             raise ValueError(&quot;user_id cannot be None&quot;)
+        if user_id is None:
+            raise ValueError(&quot;user_id cannot be None&quot;)
 
-#         if user_id not in self.cache:
-#             return False
+        if user_id not in self.cache:
+            return False
         
-#         node = self.cache[user_id]
-#         self._remove(node)
-#         del self.cache[user_id]
-#         return True
+        node = self.cache[user_id]
+        self._remove(node)
+        del self.cache[user_id]
+        return True
     
-#     def get_most_recent_user(self) -&gt; Node:
-#         &quot;&quot;&quot;
-#         Get the most recently accessed user without updating access time.
+    def get_most_recent_user(self) -&gt; Node:
+        &quot;&quot;&quot;
+        Get the most recently accessed user without updating access time.
         
-#         Time Complexity: O(1)
+        Time Complexity: O(1)
         
-#         Returns:
-#             Node object if cache is non-empty, None otherwise
-#         &quot;&quot;&quot;
-#         if self.head.next == self.tail:
-#             return None
+        Returns:
+            Node object if cache is non-empty, None otherwise
+        &quot;&quot;&quot;
+        if self.head.next == self.tail:
+            return None
         
-#         return self.tail.prev
+        return self.tail.prev
     
-#     def get_least_recent_user(self) -&gt; Node:
-#         &quot;&quot;&quot;
-#         Get the least recently accessed user without updating access time.
+    def get_least_recent_user(self) -&gt; Node:
+        &quot;&quot;&quot;
+        Get the least recently accessed user without updating access time.
         
-#         Time Complexity: O(1)
+        Time Complexity: O(1)
         
-#         Returns:
-#             Node object if cache is non-empty, None otherwise
-#         &quot;&quot;&quot;
-#         if self.head.next == self.tail:
-#             return None
+        Returns:
+            Node object if cache is non-empty, None otherwise
+        &quot;&quot;&quot;
+        if self.head.next == self.tail:
+            return None
         
-#         return self.head.next
+        return self.head.next
     
-#     def get_all_users(self) -&gt; list:
-#         &quot;&quot;&quot;
-#         Get all users in order from least to most recently used.
+    def get_all_users(self) -&gt; list:
+        &quot;&quot;&quot;
+        Get all users in order from least to most recently used.
         
-#         Time Complexity: O(n)
+        Time Complexity: O(n)
         
-#         Returns:
-#             List of Node objects ordered from LRU to MRU
-#         &quot;&quot;&quot;
-#         users = []
-#         current = self.head.next
+        Returns:
+            List of Node objects ordered from LRU to MRU
+        &quot;&quot;&quot;
+        users = []
+        current = self.head.next
         
-#         while current != self.tail:
-#             users.append(current)
-#             current = current.next
+        while current != self.tail:
+            users.append(current)
+            current = current.next
         
-#         return users
+        return users
     
-#     def size(self) -&gt; int:
-#         &quot;&quot;&quot;Return the number of users in the cache.&quot;&quot;&quot;
-#         return len(self.cache)
+    def size(self) -&gt; int:
+        &quot;&quot;&quot;Return the number of users in the cache.&quot;&quot;&quot;
+        return len(self.cache)
     
-#     def is_empty(self) -&gt; bool:
-#         &quot;&quot;&quot;Check if the cache is empty.&quot;&quot;&quot;
-#         return len(self.cache) == 0
+    def is_empty(self) -&gt; bool:
+        &quot;&quot;&quot;Check if the cache is empty.&quot;&quot;&quot;
+        return len(self.cache) == 0
     
-#     def clear(self) -&gt; None:
-#         &quot;&quot;&quot;Remove all users from the cache.&quot;&quot;&quot;
-#         self.cache.clear()
-#         self.head.next = self.tail
-#         self.tail.prev = self.head
+    def clear(self) -&gt; None:
+        &quot;&quot;&quot;Remove all users from the cache.&quot;&quot;&quot;
+        self.cache.clear()
+        self.head.next = self.tail
+        self.tail.prev = self.head
 
 
-# # Initialize cache with capacity 3
-# cache = UserLRUCache(3)
-# # head &lt;-&gt; tail
+# Initialize cache with capacity 3
+cache = UserLRUCache(3)
+# head &lt;-&gt; tail
 
 # cache.add_user(101, &quot;Alice&quot;, &quot;alice@email.com&quot;, 25)
 # cache.add_user(102, &quot;Bob&quot;, &quot;bob@email.com&quot;, 30)
 # cache.add_user(103, &quot;Charlie&quot;, &quot;charlie@email.com&quot;, 35)
-# # head &lt;-&gt; [Alice] &lt;-&gt; [Bob] &lt;-&gt; [Charlie] &lt;-&gt; tail
-# #            ↑ LRU                               ↑ MRU
+# head &lt;-&gt; [Alice] &lt;-&gt; [Bob] &lt;-&gt; [Charlie] &lt;-&gt; tail
+#            ↑ LRU                               ↑ MRU
 
 # cache.get_least_recent_user()  # → Alice (no order change)
 # cache.get_most_recent_user()   # → Charlie (no order change)
 # cache.get_all_users()          # → [Alice, Bob, Charlie]
 
 # cache.get_user(101)            # Alice accessed → moves to tail
-# # head &lt;-&gt; [Bob] &lt;-&gt; [Charlie] &lt;-&gt; [Alice] &lt;-&gt; tail
+# head &lt;-&gt; [Bob] &lt;-&gt; [Charlie] &lt;-&gt; [Alice] &lt;-&gt; tail
 
 # cache.add_user(104, &quot;Diana&quot;, &quot;diana@email.com&quot;, 28)  # over capacity → evict Bob
-# # head &lt;-&gt; [Charlie] &lt;-&gt; [Alice] &lt;-&gt; [Diana] &lt;-&gt; tail
+# head &lt;-&gt; [Charlie] &lt;-&gt; [Alice] &lt;-&gt; [Diana] &lt;-&gt; tail
 
 # cache.update_user(103, age=36) # Charlie accessed → moves to tail
-# # head &lt;-&gt; [Alice] &lt;-&gt; [Diana] &lt;-&gt; [Charlie] &lt;-&gt; tail
+# head &lt;-&gt; [Alice] &lt;-&gt; [Diana] &lt;-&gt; [Charlie] &lt;-&gt; tail
 
 # cache.add_user(101, &quot;Alice&quot;, &quot;alice@gmail.com&quot;, 26)  # existing key → update + move to tail
-# # head &lt;-&gt; [Diana] &lt;-&gt; [Charlie] &lt;-&gt; [Alice] &lt;-&gt; tail
+# head &lt;-&gt; [Diana] &lt;-&gt; [Charlie] &lt;-&gt; [Alice] &lt;-&gt; tail
 
 # cache.delete_user(104)         # explicit delete, no eviction logic
-# # head &lt;-&gt; [Charlie] &lt;-&gt; [Alice] &lt;-&gt; tail
+# head &lt;-&gt; [Charlie] &lt;-&gt; [Alice] &lt;-&gt; tail
 
 # cache.add_user(105, &quot;Eve&quot;, &quot;eve@email.com&quot;, 22)  # under capacity → no eviction
-# # head &lt;-&gt; [Charlie] &lt;-&gt; [Alice] &lt;-&gt; [Eve] &lt;-&gt; tail
+# head &lt;-&gt; [Charlie] &lt;-&gt; [Alice] &lt;-&gt; [Eve] &lt;-&gt; tail
 
 # cache.get_all_users()          # → [Charlie, Alice, Eve]
 # cache.get_least_recent_user()  # → Charlie
 # cache.get_most_recent_user()   # → Eve
 
-# # Final: cache = {103: Charlie, 101: Alice, 105: Eve}</code></pre>
+# Final: cache = {103: Charlie, 101: Alice, 105: Eve}</code></pre>
       </div>
     </div>
 
