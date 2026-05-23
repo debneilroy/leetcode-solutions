@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1209. Remove All Adjacent Duplicates in String II - LeetCode Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+
+:root {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --radius:    6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #e6db74; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy   { color: var(--easy);   background: rgba(44,187,93,0.15); }
+.badge-Medium { color: var(--medium); background: rgba(255,161,22,0.15); }
+.badge-Hard   { color: var(--hard);   background: rgba(239,71,67,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--surface2); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: #1e1e1e !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">1209. Remove All Adjacent Duplicates in String II</span>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (2)</div>
+        <div class="tab" data-tab="similar">Similar (3)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">1209. Remove All Adjacent Duplicates in String II</div>
+        <div class="prob-meta">
+          <span class="badge badge-Medium">Medium</span>
+          <span class="tag">String</span><span class="tag">Stack</span>
+        </div>
+        <div class="prob-stats">426K / 695.1K (61.3%)</div>
+        <div class="prob-desc"><p>You are given a string <code>s</code> and an integer <code>k</code>, a <code>k</code> <strong>duplicate removal</strong> consists of choosing <code>k</code> adjacent and equal letters from <code>s</code> and removing them, causing the left and the right side of the deleted substring to concatenate together.</p>
+<p>We repeatedly make <code>k</code> <strong>duplicate removals</strong> on <code>s</code> until we no longer can.</p>
+<p>Return <em>the final string after all such duplicate removals have been made</em>. It is guaranteed that the answer is <strong>unique</strong>.</p>
+<p>Example 1:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> s = &quot;abcd&quot;, k = 2
+<strong>Output:</strong> &quot;abcd&quot;
+<strong>Explanation: </strong>There&#x27;s nothing to delete.</code></pre>
+<p>Example 2:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> s = &quot;deeedbbcccbdaa&quot;, k = 3
+<strong>Output:</strong> &quot;aa&quot;
+**Explanation: 
+**First delete &quot;eee&quot; and &quot;ccc&quot;, get &quot;ddbbbdaa&quot;
+Then delete &quot;bbb&quot;, get &quot;dddaa&quot;
+Finally delete &quot;ddd&quot;, get &quot;aa&quot;</code></pre>
+<p>Example 3:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> s = &quot;pbbcggttciiippooaais&quot;, k = 2
+<strong>Output:</strong> &quot;ps&quot;
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= s.length &lt;= 105</code></li>
+</ul>
+	
+<ul>
+<li><code>2 &lt;= k &lt;= 104</code></li>
+</ul>
+	
+<ul>
+<li><code>s</code> only contains lowercase English letters.</li>
+</ul></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        
+<details class="hint-block">
+  <summary>Hint 1</summary>
+  <div class="hint-body"><p>Use a stack to store the characters, when there are k same characters, delete them.</p></div>
+</details>
+<details class="hint-block">
+  <summary>Hint 2</summary>
+  <div class="hint-body"><p>To make it more efficient, use a pair to store the value and the count of each character.</p></div>
+</details>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/" target="_blank">Remove All Adjacent Duplicates In String</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/replace-non-coprime-numbers-in-array/" target="_blank">Replace Non-Coprime Numbers in Array</a>
+  <span style="color:#ef4743; font-size:12px;">Hard</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/minimize-string-length/" target="_blank">Minimize String Length</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 1209. Remove All Adjacent Duplicates in String II
+Difficulty: Medium
+URL: https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/
+&quot;&quot;&quot;
+
+# Approach : Stack
+
+class Solution:
+    def removeDuplicates(self, s: str, k: int) -&gt; str:
+        &quot;&quot;&quot;
+        Remove k consecutive duplicate characters using a stack.
+        
+        Approach:
+        - Use stack to store [character, count] pairs
+        - When we see same char, increment count
+        - When count reaches k, pop (remove all k chars)
+        - When we see different char, start new entry
+        
+        Time Complexity: O(n)
+        - Single pass through string: O(n)
+        - Each character pushed once: O(n)
+        - Each character popped once: O(n)
+        - Building result: O(n)
+        - Total: O(n)
+        
+        Space Complexity: O(n)
+        - Stack can hold up to n entries in worst case
+        - Example: &quot;abcdef&quot; with k=2 → stack has 6 entries
+        &quot;&quot;&quot;
+        # Stack stores [character, count] pairs
+        stack = []
+        
+        for char in s:
+            # If stack not empty and top character matches current
+            if stack and stack[-1][0] == char:
+                # Increment count for this character
+                stack[-1][1] += 1
+                
+                # If count reaches k, remove all k occurrences
+                if stack[-1][1] == k:
+                    stack.pop()
+            else:
+                # New character, push with count 1
+                stack.append([char, 1])
+        
+        # Build result string from stack
+        result = []
+        for char, count in stack:
+            result.append(char * count)  # Repeat char &#x27;count&#x27; times
+        
+        return &#x27;&#x27;.join(result)
+
+# Approach : Two pointer
+
+# class Solution:
+#     def removeDuplicates(self, s: str, k: int) -&gt; str:
+#         &quot;&quot;&quot;
+#         Two-pointer in-place approach (simulating stack).
+        
+#         Key Idea:
+#         - &#x27;write&#x27; pointer indicates where to write next character (stack top + 1)
+#         - When we see k consecutive chars, move write pointer back by k
+#         - This simulates popping k elements from stack
+        
+#         Time Complexity: O(n)
+#         Space Complexity: O(n) for chars array + counts array
+#         &quot;&quot;&quot;
+#         # Convert to list for in-place modification
+#         chars = list(s)
+        
+#         # counts[i] = number of consecutive identical chars ending at position i
+#         counts = [0] * len(s)
+        
+#         # Write pointer (stack top position)
+#         write = 0
+        
+#         for read in range(len(s)):
+#             # Place current character at write position
+#             chars[write] = chars[read]
+            
+#             # Calculate count for this position
+#             if write == 0:
+#                 # First position
+#                 counts[write] = 1
+#             elif chars[write] == chars[write - 1]:
+#                 # Same as previous character
+#                 counts[write] = counts[write - 1] + 1
+#             else:
+#                 # Different from previous character
+#                 counts[write] = 1
+            
+#             # If we&#x27;ve accumulated k consecutive chars, remove them
+#             if counts[write] == k:
+#                 write -= k  # Move write pointer back (simulate k pops)
+            
+#             # Move write pointer forward for next character
+#             write += 1
+        
+#         # Return valid portion of the array
+#         return &#x27;&#x27;.join(chars[:write])
+
+        
+        </code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Medium/1091-Shortest-Path-in-Binary-Matrix/">&#8592; 1091. Shortest Path in Binary Matrix</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Hard/1216-Valid-Palindrome-III/">1216. Valid Palindrome III &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+</body>
+</html>
