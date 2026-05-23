@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>133. Clone Graph - LeetCode Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+
+:root {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --radius:    6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #e6db74; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy   { color: var(--easy);   background: rgba(44,187,93,0.15); }
+.badge-Medium { color: var(--medium); background: rgba(255,161,22,0.15); }
+.badge-Hard   { color: var(--hard);   background: rgba(239,71,67,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--surface2); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: #1e1e1e !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">133. Clone Graph</span>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (0)</div>
+        <div class="tab" data-tab="similar">Similar (3)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">133. Clone Graph</div>
+        <div class="prob-meta">
+          <span class="badge badge-Medium">Medium</span>
+          <span class="tag">Hash Table</span><span class="tag">Depth-First Search</span><span class="tag">Breadth-First Search</span><span class="tag">Graph Theory</span>
+        </div>
+        <div class="prob-stats">1.9M / 2.9M (65.3%)</div>
+        <div class="prob-desc"><p>Given a reference of a node in a <strong>connected</strong> undirected graph.</p>
+<p>Return a <strong>deep copy</strong> (clone) of the graph.</p>
+<p>Each node in the graph contains a value (<code>int</code>) and a list (<code>List[Node]</code>) of its neighbors.</p>
+<pre class="example-block"><code>
+class Node {
+    public int val;
+    public List&lt;Node&gt; neighbors;
+}
+</code></pre>
+<p><strong>Test case format:</strong></p>
+<p>For simplicity, each node's value is the same as the node's index (1-indexed). For example, the first node with <code>val == 1</code>, the second node with <code>val == 2</code>, and so on. The graph is represented in the test case using an adjacency list.</p>
+<p>An adjacency list is a collection of unordered lists used to represent a finite graph. Each list describes the set of neighbors of a node in the graph.</p>
+<p>The given node will always be the first node with <code>val = 1</code>. You must return the <strong>copy of the given node</strong> as a reference to the cloned graph.</p>
+<p>Example 1:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> adjList = [[2,4],[1,3],[2,4],[1,3]]
+<strong>Output:</strong> [[2,4],[1,3],[2,4],[1,3]]
+<strong>Explanation:</strong> There are 4 nodes in the graph.
+1st node (val = 1)&#x27;s neighbors are 2nd node (val = 2) and 4th node (val = 4).
+2nd node (val = 2)&#x27;s neighbors are 1st node (val = 1) and 3rd node (val = 3).
+3rd node (val = 3)&#x27;s neighbors are 2nd node (val = 2) and 4th node (val = 4).
+4th node (val = 4)&#x27;s neighbors are 1st node (val = 1) and 3rd node (val = 3).
+</code></pre>
+<p>Example 2:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> adjList = [[]]
+<strong>Output:</strong> [[]]
+<strong>Explanation:</strong> Note that the input contains one empty list. The graph consists of only one node with val = 1 and it does not have any neighbors.
+</code></pre>
+<p>Example 3:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> adjList = []
+<strong>Output:</strong> []
+<strong>Explanation:</strong> This an empty graph, it does not have any nodes.
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li>The number of nodes in the graph is in the range <code>[0, 100]</code>.</li>
+</ul>
+	
+<ul>
+<li><code>1 &lt;= Node.val &lt;= 100</code></li>
+</ul>
+	
+<ul>
+<li><code>Node.val</code> is unique for each node.</li>
+</ul>
+	
+<ul>
+<li>There are no repeated edges and no self-loops in the graph.</li>
+</ul>
+	
+<ul>
+<li>The Graph is connected and all nodes can be visited starting from the given node.</li>
+</ul></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        <p class="empty-msg">No hints for this problem.</p>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/copy-list-with-random-pointer/" target="_blank">Copy List with Random Pointer</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/clone-binary-tree-with-random-pointer/" target="_blank">Clone Binary Tree With Random Pointer</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/clone-n-ary-tree/" target="_blank">Clone N-ary Tree</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 133. Clone Graph
+Difficulty: Medium
+URL: https://leetcode.com/problems/clone-graph/
+&quot;&quot;&quot;
+
+class Node:
+    def __init__(self, val=0, neighbors=None):
+        self.val = val
+        self.neighbors = neighbors if neighbors is not None else []
+
+
+# Approach : DFS
+
+class Solution:
+    def cloneGraph(self, node: Optional[&#x27;Node&#x27;]) -&gt; Optional[&#x27;Node&#x27;]:  # Optional[&#x27;Node&#x27;] is just shorthand for Union[&#x27;Node&#x27;, None], meaning the value can be either a Node object or None
+        &quot;&quot;&quot;
+        Clone a connected undirected graph using recursive DFS.
+
+        Input is given as an adjacency list which LeetCode internally converts
+        into linked Node objects before calling this function:
+            adjList = [[2,4],[1,3],[2,4],[1,3]] becomes
+            Node(1, neighbors=[Node(2), Node(4)]),
+            Node(2, neighbors=[Node(1), Node(3)]), and so on.
+        This function receives the Node object for node 1 as the entry point.
+
+        For each unvisited node, create a clone and recursively clone all
+        its neighbors. A visited map prevents re-cloning and handles cycles
+        by returning the already-created clone on revisit.
+
+        Args:
+            node: Entry point into the original graph, or None if empty.
+
+        Returns:
+            Clone of the input node (entry point into the cloned graph),
+            or None if the input is None.
+
+        TC: O(V + E)  — each node and edge visited exactly once
+        SC: O(V)      — visited map + recursion stack, both O(V)
+        &quot;&quot;&quot;
+        # Maps each original node to its corresponding clone.
+        # Serves two purposes:
+        #   1. Deduplication — avoids re-cloning already-visited nodes
+        #   2. Cycle handling — returns the in-progress clone on back-edges
+        #
+        # For a graph 1 &lt;-&gt; 2 &lt;-&gt; 3, it ends up as:
+        #   { Node(1): Node(1)&#x27;, Node(2): Node(2)&#x27;, Node(3): Node(3)&#x27; }
+        #   where Node(x)&#x27; denotes the cloned counterpart of Node(x)
+        # Initialised as empty — unlike BFS, we never look up original_to_clone[curr]
+        # for the current node being processed. clone is always a local variable
+        # created at the top of _dfs and in hand before any wiring happens.
+        original_to_clone: dict[&#x27;Node&#x27;, &#x27;Node&#x27;] = {}
+
+        def _dfs(original: &#x27;Node&#x27;) -&gt; &#x27;Node&#x27;:
+            # Base case: node already cloned — return its clone directly.
+            # This is what breaks cycles (e.g. A→B→A hits A again here).
+            if original in original_to_clone:
+                return original_to_clone[original]
+
+            # We pass original.val (an int) because Node.__init__ expects val=int.
+            # Node(original) would pass the entire Node object as val — wrong type.
+            # We omit neighbors entirely (defaults to []) and populate them in the
+            # for-loop below with proper clones, not references to original nodes.
+            #
+            # e.g. if original = Node(1, neighbors=[Node(2), Node(3)])
+            #      then clone   = Node(1, neighbors=[])   ← neighbors filled in later
+            clone = Node(original.val)
+
+            # Register BEFORE recursing into neighbors.
+            #
+            # Example — simple cycle: A &lt;-&gt; B
+            #
+            #   _dfs(A) called:
+            #     clone_A created, original_to_clone[A] = clone_A   ← registered here
+            #     iterate A.neighbors → calls _dfs(B)
+            #       clone_B created, original_to_clone[B] = clone_B
+            #       iterate B.neighbors → calls _dfs(A)
+            #         A is in original_to_clone → returns clone_A   ← cycle broken
+            #       clone_B.neighbors = [clone_A]
+            #       returns clone_B
+            #     clone_A.neighbors = [clone_B]
+            #     returns clone_A
+            #
+            # If the registration line were AFTER the for-loop instead:
+            #   _dfs(A) → _dfs(B) → _dfs(A) → _dfs(B) → ... → RecursionError
+            #   because A is never in original_to_clone when the back-edge is hit.
+            original_to_clone[original] = clone
+
+            for neighbor in original.neighbors:
+                # _dfs returns the clone of `neighbor` (creating it if needed),
+                # which we wire directly into this node&#x27;s cloned neighbor list.
+                clone.neighbors.append(_dfs(neighbor))
+
+            return clone
+
+        # Base check: empty graph — nothing to clone
+        if node is None:
+            return None
+
+        # node is the entry point Node object, e.g. for adjList = [[2,3],[1],[1]]:
+        #   node = Node(1, neighbors=[Node(2), Node(3)])
+        #   where Node(2).neighbors = [Node(1)], Node(3).neighbors = [Node(1)]
+        # The full graph is reachable by traversing .neighbors from this node.
+        return _dfs(node)
+
+
+# # Build graph for adjList = [[2,3],[1],[1]]
+# #   1 -- 2
+# #   |
+# #   3
+
+# node1 = Node(1)
+# node2 = Node(2)
+# node3 = Node(3)
+
+# node1.neighbors = [node2, node3]
+# node2.neighbors = [node1]
+# node3.neighbors = [node1]
+
+# # Run solution
+# cloned_node1 = Solution().cloneGraph(node1)
+
+# # `is` checks identity (same object in memory) — should be False for all clones
+# # `==` on .val checks value equality — should be True for all clones
+# print(cloned_node1.val)                                        # 1
+# print(cloned_node1 is node1)                                   # False — different object ✓
+# print(cloned_node1.val == node1.val)                           # True  — same value ✓
+
+# print(cloned_node1.neighbors[0] is node2)                      # False — different object ✓
+# print(cloned_node1.neighbors[0].val == node2.val)              # True  — same value ✓
+
+# print(cloned_node1.neighbors[1] is node3)                      # False — different object ✓
+# print(cloned_node1.neighbors[1].val == node3.val)              # True  — same value ✓
+
+# # Verify back-edges point to clones, not originals
+# print(cloned_node1.neighbors[0].neighbors[0] is cloned_node1)  # True — clone, not node1 ✓
+# print(cloned_node1.neighbors[0].neighbors[0] is node1)         # False — not the original ✓
+
+
+# Approach : BFS
+
+class Solution:
+    def cloneGraph(self, node: Optional[&#x27;Node&#x27;]) -&gt; Optional[&#x27;Node&#x27;]:
+        &quot;&quot;&quot;
+        Clone a connected undirected graph using iterative BFS.
+
+        Input is given as an adjacency list which LeetCode internally converts
+        into linked Node objects before calling this function:
+            adjList = [[2,4],[1,3],[2,4],[1,3]] becomes
+            Node(1, neighbors=[Node(2), Node(4)]),
+            Node(2, neighbors=[Node(1), Node(3)]), and so on.
+        This function receives the Node object for node 1 as the entry point.
+
+        For each unvisited neighbor, create a clone and enqueue it for
+        processing. A visited map prevents re-cloning and handles cycles
+        by skipping already-registered neighbors during neighbor wiring.
+
+        Args:
+            node: Entry point into the original graph, or None if empty.
+
+        Returns:
+            Clone of the input node (entry point into the cloned graph),
+            or None if the input is None.
+
+        TC: O(V + E)  — each node and edge visited exactly once
+        SC: O(V)      — visited map + BFS queue, both O(V)
+        &quot;&quot;&quot;
+        # Base check: empty graph — nothing to clone
+        if node is None:
+            return None
+
+        # Maps each original node to its corresponding clone.
+        # Serves two purposes:
+        #   1. Deduplication — avoids re-cloning already-visited nodes
+        #   2. Cycle handling — skips already-registered nodes during
+        #      neighbor wiring instead of creating duplicates
+        #
+        # Initialised with the entry node so the queue has a starting point.
+        # For a graph 1 &lt;-&gt; 2 &lt;-&gt; 3, it ends up as:
+        #   { Node(1): Node(1)&#x27;, Node(2): Node(2)&#x27;, Node(3): Node(3)&#x27; }
+        #   where Node(x)&#x27; denotes the cloned counterpart of Node(x)
+        original_to_clone: dict[&#x27;Node&#x27;, &#x27;Node&#x27;] = {node: Node(node.val)}
+
+        # BFS queue holds original nodes whose neighbors still need wiring.
+        # We enqueue a node the moment we clone it (at discovery time),
+        # not when we finish processing it.
+        queue: deque[&#x27;Node&#x27;] = deque([node])
+
+        while queue:
+            curr = queue.popleft()
+
+            for neighbor in curr.neighbors:
+                if neighbor not in original_to_clone:
+                    # Discover neighbor for the first time — clone and enqueue.
+                    # We register here (at discovery) rather than at processing
+                    # time so that if another node points to this same neighbor,
+                    # it finds it in original_to_clone and skips re-cloning.
+                    original_to_clone[neighbor] = Node(neighbor.val)
+                    queue.append(neighbor)
+
+                # Wire the cloned neighbor into the cloned current node.
+                # Whether neighbor was just discovered or already existed,
+                # its clone is guaranteed to be in original_to_clone by now.
+                original_to_clone[curr].neighbors.append(original_to_clone[neighbor])
+
+        # Return the clone of the entry node — the full cloned graph is
+        # reachable from here via .neighbors, mirroring the original structure.
+        return original_to_clone[node]
+
+
+# Variant : Clone a disconnected graph
+
+# Given a reference to a disconnected undirected graph input, return a deep copy (clone) of the graph.The graph contains a list (List[Node]) of root nodes, where each root is the entry point to one connected component.
+
+# Each node in the graph contains a value (int) and a list (List[Node]) of its neighbors.
+
+# class Graph:
+#     roots: List[Node]
+
+# class Node:
+#     val: int
+#     neighbors: List[Node]
+
+# Example 1:
+# Input:  graph.roots = [[1,2,3],[4,5]]
+# Output: [[1,2],[2,1],[1,3],[3,1],[4,5],[5,4]]
+
+# Explanation: There are 5 nodes across 2 disconnected components.
+# Component 1: Node(1) &lt;-&gt; Node(2) &lt;-&gt; Node(3), fully connected among themselves.
+# Component 2: Node(4) &lt;-&gt; Node(5).
+# Example 2:
+# Input:  graph.roots = [[]]
+# Output: [[]]
+
+# Explanation: A single node with no neighbors.
+# Example 3:
+# Input:  graph.roots = []
+# Output: []
+
+# Explanation: Empty graph, no components.
+
+# Constraints:
+
+# 1. The number of nodes across all components is in the range [0, 100]
+# 2. 1 &lt;= Node.val &lt;= 100
+# 3. Node.val is unique across all nodes
+# 4. Each component is a connected undirected graph
+# 5. Components are guaranteed to share no nodes
+# 6. There are no self-loops or repeated edges within a component
+
+# class Node:
+#     def __init__(self, val=0, neighbors=None):
+#         self.val = val
+#         self.neighbors = neighbors if neighbors is not None else []
+
+
+# class Graph:
+#     def __init__(self, roots=None):
+#         # roots: one entry point per connected component
+#         self.roots = roots if roots is not None else []
+
+
+# class Solution:
+#     def cloneGraph(self, graph: Optional[&#x27;Graph&#x27;]) -&gt; Optional[&#x27;Graph&#x27;]:
+#         &quot;&quot;&quot;
+#         Clone a disconnected undirected graph using recursive DFS.
+
+#         Input is a Graph object containing a list of root nodes, one per
+#         connected component:
+#             graph.roots = [Node(1, neighbors=[Node(2), Node(3)]), Node(4, neighbors=[Node(5)])]
+#             represents two components:
+#                 component 1: Node(1) &lt;-&gt; Node(2) &lt;-&gt; Node(3)
+#                 component 2: Node(4) &lt;-&gt; Node(5)
+
+#         Args:
+#             graph: Graph object containing root nodes, one per connected
+#                    component. May be None for an empty graph.
+
+#         Returns:
+#             A new Graph object whose roots list mirrors the original,
+#             with all nodes deeply cloned. Returns None if input is None.
+
+#         TC: O(V + E)  — each node and edge visited exactly once across all components
+#         SC: O(V)      — visited map + recursion stack, both O(V)
+#         &quot;&quot;&quot;
+#         # Base check: empty graph — nothing to clone
+#         if graph is None:
+#             return None
+
+#         # Shared across all components — correct regardless of whether components
+#         # share nodes. Lives in outer scope so _dfs captures it via closure —
+#         # no parameter passing needed.
+#         #
+#         # For graph.roots = [Node(1), Node(4)] it ends up as:
+#         #   { Node(1): Node(1)&#x27;, Node(2): Node(2)&#x27;, Node(3): Node(3)&#x27;,
+#         #     Node(4): Node(4)&#x27;, Node(5): Node(5)&#x27; }
+#         #   where Node(x)&#x27; denotes the cloned counterpart of Node(x)
+#         original_to_clone: dict[&#x27;Node&#x27;, &#x27;Node&#x27;] = {}
+
+#         def _dfs(original: &#x27;Node&#x27;) -&gt; &#x27;Node&#x27;:
+#             if original in original_to_clone:
+#                 return original_to_clone[original]
+
+#             clone = Node(original.val)
+
+#             original_to_clone[original] = clone
+
+#             for neighbor in original.neighbors:
+#                 clone.neighbors.append(_dfs(neighbor))
+
+#             return clone
+
+#         # graph.roots is a list of Node objects, one per connected component.
+#         # e.g. for adjList = [[1,2,3],[4,5]]:
+#         #   graph.roots = [Node(1, neighbors=[Node(2), Node(3)]),
+#         #                  Node(4, neighbors=[Node(5)])]
+#         # Iterating gives one entry point at a time; the full component
+#         # is reachable from each root via .neighbors.
+#         cloned_roots = []
+
+#         for root in graph.roots:
+#             # self.roots itself is never None (Graph.__init__ normalizes it to at least []),
+#             # but individual entries may still be None, e.g. Graph([None]).
+            
+#             # Skip such invalid component entry points. This is safe because the problem
+#             # does not require preserving positional/index correspondence between
+#             # input.roots and output.roots.
+            
+#             # (If index alignment were required, preserve the placeholder instead:
+#             #     if root is None:
+#             #         output.roots.append(None)
+#             #         continue
+#             #     output.roots.append(_dfs(root))
+
+#             # so output.roots[i] still corresponds to input.roots[i].)
+
+#             if root is None:
+#                 continue
+
+#             # Each _dfs call fully clones one component. The shared map
+#             # ensures no node is visited twice even across multiple roots.
+#             cloned_roots.append(_dfs(root))
+
+#         # Wrap cloned roots in a new Graph object mirroring the original structure.
+#         # e.g. for adjList = [[1,2,3],[4,5]]:
+#         #   cloned_roots = [Node(1)&#x27;, Node(4)&#x27;]  — plain list
+#         #   Graph(cloned_roots).roots = [Node(1)&#x27;, Node(4)&#x27;]  — wrapped in Graph
+#         #
+#         # Returning cloned_roots directly would fail since a list has no .roots
+#         # attribute — caller expects a Graph object back, same type as input.
+#         return Graph(cloned_roots)
+
+
+# # ---------------------------------------------------------------------------
+# # Build graph for adjList = [[1,2,3],[4,5]]
+# #
+# #   Component 1:          Component 2:
+# #   Node(1) -- Node(2)    Node(4) -- Node(5)
+# #      \      /
+# #       Node(3)
+# # ---------------------------------------------------------------------------
+# node1 = Node(1)
+# node2 = Node(2)
+# node3 = Node(3)
+# node4 = Node(4)
+# node5 = Node(5)
+
+# # Wire up component 1 — fully connected triangle
+# node1.neighbors = [node2, node3]
+# node2.neighbors = [node1, node3]
+# node3.neighbors = [node1, node2]
+
+# # Wire up component 2 — single edge
+# node4.neighbors = [node5]
+# node5.neighbors = [node4]
+
+# # Build input graph with one root per component
+# input_graph = Graph(roots=[node1, node4])
+
+# # Run solution
+# output_graph = Solution().cloneGraph(input_graph)
+
+# # ---------------------------------------------------------------------------
+# # Verify — `is` checks identity (different object), `==` checks value equality
+# # ---------------------------------------------------------------------------
+
+# # Component 1 root
+# cloned_node1 = output_graph.roots[0]
+# print(cloned_node1.val)                                          # 1
+# print(cloned_node1 is node1)                                     # False — different object ✓
+# print(cloned_node1.val == node1.val)                             # True  — same value ✓
+
+# # Component 1 neighbors
+# cloned_node2 = cloned_node1.neighbors[0]
+# cloned_node3 = cloned_node1.neighbors[1]
+# print(cloned_node2 is node2)                                     # False ✓
+# print(cloned_node2.val == node2.val)                             # True  ✓
+# print(cloned_node3 is node3)                                     # False ✓
+# print(cloned_node3.val == node3.val)                             # True  ✓
+
+# # Back-edges within component 1 point to clones, not originals
+# print(cloned_node2.neighbors[0] is cloned_node1)                 # True  — clone ✓
+# print(cloned_node2.neighbors[0] is node1)                        # False — not original ✓
+
+# # Component 2 root
+# cloned_node4 = output_graph.roots[1]
+# print(cloned_node4.val)                                          # 4
+# print(cloned_node4 is node4)                                     # False ✓
+# print(cloned_node4.val == node4.val)                             # True  ✓
+
+# # Component 2 neighbor
+# cloned_node5 = cloned_node4.neighbors[0]
+# print(cloned_node5 is node5)                                     # False ✓
+# print(cloned_node5.val == node5.val)                             # True  ✓
+
+# # Back-edge within component 2
+# print(cloned_node5.neighbors[0] is cloned_node4)                 # True  — clone ✓
+# print(cloned_node5.neighbors[0] is node4)                        # False — not original ✓
+
+# Another solution : Use cloneGraph as a separate function 
+
+# class Solution:
+#     def _dfs(self, original: &#x27;Node&#x27;, original_to_clone: dict) -&gt; &#x27;Node&#x27;:
+#         &quot;&quot;&quot;
+#         Recursively clone a node and all nodes reachable from it.
+
+#         Args:
+#             original:           The node to clone.
+#             original_to_clone:  Shared map of original → clone, passed in
+#                                 explicitly since this is a class method and
+#                                 cannot capture it via closure.
+
+#         Returns:
+#             The clone of the input node.
+
+#         TC: O(V + E)  — each node and edge visited exactly once
+
+#         SC: O(V)          
+#             - recursion stack depth is O(V) in the worst case
+#             - additionally uses a shared O(V) hashmap (original_to_clone) allocated by the caller
+#         &quot;&quot;&quot;
+
+#         if original in original_to_clone:
+#             return original_to_clone[original]
+
+#         clone = Node(original.val)
+#         original_to_clone[original] = clone
+
+#         for neighbor in original.neighbors:
+#             clone.neighbors.append(self._dfs(neighbor, original_to_clone))
+
+#         return clone
+
+#     def cloneGraph(self, graph: Optional[&#x27;Graph&#x27;]) -&gt; Optional[&#x27;Graph&#x27;]:
+#         &quot;&quot;&quot;
+#         Clone a disconnected undirected graph using recursive DFS.
+
+#         Input is a Graph object containing a list of root nodes, one per
+#         connected component:
+#             graph.roots = [Node(1, neighbors=[Node(2), Node(3)]), Node(4, neighbors=[Node(5)])]
+#             represents two components:
+#                 component 1: Node(1) &lt;-&gt; Node(2) &lt;-&gt; Node(3)
+#                 component 2: Node(4) &lt;-&gt; Node(5)
+
+#         Difference from previous version:
+#             Instead of building an intermediate cloned_roots list and wrapping
+#             it in Graph() at the end, we initialize output = Graph() upfront
+#             and append directly to output.roots — removing the need for a
+#             separate list entirely.
+
+#             Previous:                           Current:
+#               cloned_roots = []                   output = Graph()
+#               for root in graph.roots:            for root in graph.roots:
+#                   cloned_roots.append(...)            output.roots.append(...)
+#               return Graph(cloned_roots)          return output
+
+#         Args:
+#             graph: Graph object containing root nodes, one per connected
+#                    component. May be None for an empty graph.
+
+#         Returns:
+#             A new Graph object whose roots list mirrors the original,
+#             with all nodes deeply cloned. Returns None if input is None.
+
+#         TC: O(V + E)  — each node and edge visited exactly once across all components
+#         SC: O(V)      — visited map + recursion stack, both O(V)
+#         &quot;&quot;&quot;
+#         # Base check: empty graph — nothing to clone
+#         if graph is None:
+#             return None
+
+#         # Passed explicitly to self._dfs on every call because self._dfs is a
+#         # class method — it has no enclosing scope to capture variables from
+#         # via closure, unlike a nested _dfs function.
+#         #
+#         # A fresh map per root would also work here since the problem guarantees
+#         # components share no nodes — each component is fully isolated.
+#         #
+#         # Fresh map per root (works given guarantee):
+#         #   for root in graph.roots:
+#         #       original_to_clone = {}               ← reset each iteration
+#         #       output.roots.append(self._dfs(root, original_to_clone))
+#         #
+#         # Shared map (preferred — no assumption needed):
+#         #   original_to_clone = {}                   ← created once outside loop
+#         #   for root in graph.roots:
+#         #       output.roots.append(self._dfs(root, original_to_clone))
+
+#         original_to_clone: dict[&#x27;Node&#x27;, &#x27;Node&#x27;] = {}
+
+#         # Initialize output Graph upfront and append cloned roots directly —
+#         # no intermediate list needed.
+#         # e.g. for adjList = [[1,2,3],[4,5]]:
+#         #   after loop: output.roots = [Node(1)&#x27;, Node(4)&#x27;]
+#         output = Graph()
+
+#         for root in graph.roots:
+#             if root is None:
+#                 continue
+#             # Each _dfs call fully clones one component. The shared map
+#             # ensures no node is visited twice even across multiple roots.
+#             output.roots.append(self._dfs(root, original_to_clone))
+
+#         return output
+
+
+
+</code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Easy/0121-Best-Time-to-Buy-and-Sell-Stock/">&#8592; 121. Best Time to Buy and Sell Stock</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Medium/0146-LRU-Cache/">146. LRU Cache &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+</body>
+</html>
