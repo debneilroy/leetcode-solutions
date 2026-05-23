@@ -228,12 +228,12 @@ URL: https://leetcode.com/problems/find-peak-element/
 
 # Linear Scan (TC : O(n) SC : O(1))
 
-# class Solution:
-#     def findPeakElement(self, nums: List[int]) -&gt; int:
-#         for i in range(len(nums)-1):
-#             if nums[i] &gt; nums[i+1]:
-#                 return i
-#         return len(nums)-1
+class Solution:
+    def findPeakElement(self, nums: List[int]) -&gt; int:
+        for i in range(len(nums)-1):
+            if nums[i] &gt; nums[i+1]:
+                return i
+        return len(nums)-1
 
 # Variant:
 # Here are the other variants they might ask:
@@ -270,7 +270,7 @@ URL: https://leetcode.com/problems/find-peak-element/
 
 # LC162 guarantees:
 
-# nums[i] != nums[i+1]
+nums[i] != nums[i+1]
 
 # So:
 
@@ -417,7 +417,7 @@ class Solution:
 
 # Peak is still:
 
-# nums[i] &gt; nums[i-1] and nums[i] &gt; nums[i+1]
+nums[i] &gt; nums[i-1] and nums[i] &gt; nums[i+1]
 
 # ⚠️ Strictly greater — equality NOT allowed.
 
@@ -447,35 +447,35 @@ class Solution:
 
 # Binary search relies on comparing:
 
-# nums[mid] vs nums[mid+1]
+nums[mid] vs nums[mid+1]
 
 # With duplicates, they may be equal:
 
-# nums[mid] == nums[mid+1]
+nums[mid] == nums[mid+1]
 
 # Then there is no clear direction to discard half the array safely.
 
 # So we switch to linear scan.
 
-# class Solution:
-#     def findPeakElement(self, nums: list[int]) -&gt; int:
-#         &quot;&quot;&quot;
-#         Strict peak (&gt; neighbors), duplicates allowed.
-#         Linear Scan Solution
+class Solution:
+    def findPeakElement(self, nums: list[int]) -&gt; int:
+        &quot;&quot;&quot;
+        Strict peak (&gt; neighbors), duplicates allowed.
+        Linear Scan Solution
 
-#         Time: O(n)
-#         Space: O(1)
-#         &quot;&quot;&quot;
-#         n = len(nums)
+        Time: O(n)
+        Space: O(1)
+        &quot;&quot;&quot;
+        n = len(nums)
 
-#         for i in range(n):
-#             left = nums[i - 1] if i &gt; 0 else float(&quot;-inf&quot;)
-#             right = nums[i + 1] if i &lt; n - 1 else float(&quot;-inf&quot;)
+        for i in range(n):
+            left = nums[i - 1] if i &gt; 0 else float(&quot;-inf&quot;)
+            right = nums[i + 1] if i &lt; n - 1 else float(&quot;-inf&quot;)
 
-#             if nums[i] &gt; left and nums[i] &gt; right:
-#                 return i
+            if nums[i] &gt; left and nums[i] &gt; right:
+                return i
 
-#         return -1   # no strict peak
+        return -1   # no strict peak
 
 # Variant B — NON-STRICT Peak (&gt;=) + Duplicates
 
@@ -483,7 +483,7 @@ class Solution:
 
 # Peak means:
 
-# nums[i] &gt;= nums[i-1] and nums[i] &gt;= nums[i+1]
+nums[i] &gt;= nums[i-1] and nums[i] &gt;= nums[i+1]
 
 # Equality is allowed.
 
@@ -499,64 +499,64 @@ class Solution:
 
 # Because equality is allowed:
 
-# nums[mid] == nums[mid+1] is NOT a problem anymore — either side can still contain a valid peak.
+nums[mid] == nums[mid+1] is NOT a problem anymore — either side can still contain a valid peak.
 
 # ➡️ Binary search works again.
 
-# class Solution:
-#     def findPeakElement(self, nums: list[int]) -&gt; int:
-#         &quot;&quot;&quot;
-#         Variant: Non-strict peak (&gt;= neighbors) with duplicates
-#         Peak = &gt;= neighbors, duplicates allowed
+class Solution:
+    def findPeakElement(self, nums: list[int]) -&gt; int:
+        &quot;&quot;&quot;
+        Variant: Non-strict peak (&gt;= neighbors) with duplicates
+        Peak = &gt;= neighbors, duplicates allowed
 
-#         Time: O(log n)
-#         Space: O(1)
-#         &quot;&quot;&quot;
-#         left, right = 0, len(nums) - 1
+        Time: O(log n)
+        Space: O(1)
+        &quot;&quot;&quot;
+        left, right = 0, len(nums) - 1
 
-#         while left &lt; right:
-#             mid = (left + right) // 2
+        while left &lt; right:
+            mid = (left + right) // 2
 
-#             # Same condition as original, but else now handles equality too
-#             if nums[mid] &lt; nums[mid + 1]:
-#                 left = mid + 1
-#             else:  # nums[mid] &gt;= nums[mid + 1]
-#                 right = mid
+            # Same condition as original, but else now handles equality too
+            if nums[mid] &lt; nums[mid + 1]:
+                left = mid + 1
+            else:  # nums[mid] &gt;= nums[mid + 1]
+                right = mid
 
-#         return left
+        return left
 
-# class Solution:
-#     def findPeakElement(self, nums: list[int]) -&gt; int:
-#         &quot;&quot;&quot;
-#         Variant 3:
-#         Peak = &gt;= neighbors
-#         Explicit mid-check version
-#         &quot;&quot;&quot;
+class Solution:
+    def findPeakElement(self, nums: list[int]) -&gt; int:
+        &quot;&quot;&quot;
+        Variant 3:
+        Peak = &gt;= neighbors
+        Explicit mid-check version
+        &quot;&quot;&quot;
 
-#         left, right = 0, len(nums) - 1
+        left, right = 0, len(nums) - 1
 
-#         while left &lt;= right:
-#             mid = (left + right) // 2
+        while left &lt;= right:
+            mid = (left + right) // 2
 
-#             # explicit peak check (NON-STRICT)
-#             if (mid == 0 or nums[mid] &gt;= nums[mid - 1]) and \
-#                (mid == len(nums) - 1 or nums[mid] &gt;= nums[mid + 1]):
-#                 return mid
+            # explicit peak check (NON-STRICT)
+            if (mid == 0 or nums[mid] &gt;= nums[mid - 1]) and \
+               (mid == len(nums) - 1 or nums[mid] &gt;= nums[mid + 1]):
+                return mid
 
-#             # move toward higher side
-#             if nums[mid] &lt; nums[mid + 1]:
-#                 left = mid + 1
-#             else:
-#                 right = mid - 1
+            # move toward higher side
+            if nums[mid] &lt; nums[mid + 1]:
+                left = mid + 1
+            else:
+                right = mid - 1
 
-#         return -1
+        return -1
 
 # Variant C — NON-STRICT Peak (&gt;=) with No Duplicates
 # Definition
 
 # Peak means:
 
-# nums[i] &gt;= nums[i-1] and nums[i] &gt;= nums[i+1]
+nums[i] &gt;= nums[i-1] and nums[i] &gt;= nums[i+1]
 
 # But the array has no duplicates.
 
@@ -574,31 +574,31 @@ class Solution:
 
 # Find all peaks 
 
-# class Solution:
-#     def findAllPeaks(self, nums: List[int]) -&gt; List[int]:
-#         &quot;&quot;&quot;
-#         Find all peak indices.
-#         A peak is an index i such that nums[i] &gt; nums[i-1] and nums[i] &gt; nums[i+1].
-#         Endpoints are compared against -inf, so index 0 is a peak if nums[0] &gt; nums[1],
-#         and index n-1 is a peak if nums[n-1] &gt; nums[n-2].
-#         (Original LC162 also assumes nums[i] != nums[i+1], but this works regardless.)
+class Solution:
+    def findAllPeaks(self, nums: List[int]) -&gt; List[int]:
+        &quot;&quot;&quot;
+        Find all peak indices.
+        A peak is an index i such that nums[i] &gt; nums[i-1] and nums[i] &gt; nums[i+1].
+        Endpoints are compared against -inf, so index 0 is a peak if nums[0] &gt; nums[1],
+        and index n-1 is a peak if nums[n-1] &gt; nums[n-2].
+        (Original LC162 also assumes nums[i] != nums[i+1], but this works regardless.)
 
-#         Time Complexity: O(n)  — you must inspect each element at least once to list all peaks.
-#         Space Complexity: O(1) extra (excluding the output list).
-#         &quot;&quot;&quot;
-#         n = len(nums)
-#         if n == 0:
-#             return []
-#         if n == 1:
-#             return [0]
+        Time Complexity: O(n)  — you must inspect each element at least once to list all peaks.
+        Space Complexity: O(1) extra (excluding the output list).
+        &quot;&quot;&quot;
+        n = len(nums)
+        if n == 0:
+            return []
+        if n == 1:
+            return [0]
 
-#         peaks = []
-#         for i in range(n):
-#             left  = nums[i - 1] if i &gt; 0 else float(&quot;-inf&quot;)
-#             right = nums[i + 1] if i &lt; n - 1 else float(&quot;-inf&quot;)
-#             if nums[i] &gt; left and nums[i] &gt; right:
-#                 peaks.append(i)
-#         return peaks
+        peaks = []
+        for i in range(n):
+            left  = nums[i - 1] if i &gt; 0 else float(&quot;-inf&quot;)
+            right = nums[i + 1] if i &lt; n - 1 else float(&quot;-inf&quot;)
+            if nums[i] &gt; left and nums[i] &gt; right:
+                peaks.append(i)
+        return peaks
 
 
 # Another Variant : Find Valley Element
@@ -624,226 +624,226 @@ class Solution:
 
 # -2^31 &lt;= nums[i] &lt;= 2^31 - 1
 
-# nums[i] != nums[i + 1] for all valid i
+nums[i] != nums[i + 1] for all valid i
 
 # Original LC162 - Valley Version (Strict valley, no duplicates)
 
-# class Solution:
-#     def findValleyElement(self, nums: list[int]) -&gt; int:
-#         &quot;&quot;&quot;
-#         Version 1: Simpler approach (left &lt; right)
-#         Find a valley element where valley &lt; both neighbors
+class Solution:
+    def findValleyElement(self, nums: list[int]) -&gt; int:
+        &quot;&quot;&quot;
+        Version 1: Simpler approach (left &lt; right)
+        Find a valley element where valley &lt; both neighbors
         
-#         Time Complexity: O(log n)
-#         Space Complexity: O(1)
-#         &quot;&quot;&quot;
-#         # Edge case: empty array
-#         if not nums:
-#             return -1
+        Time Complexity: O(log n)
+        Space Complexity: O(1)
+        &quot;&quot;&quot;
+        # Edge case: empty array
+        if not nums:
+            return -1
         
-#         # Base case: single element is always a valley
-#         if len(nums) == 1:
-#             return 0
+        # Base case: single element is always a valley
+        if len(nums) == 1:
+            return 0
         
-#         # Base case: two elements - return index of smaller one
-#         if len(nums) == 2:
-#             return 0 if nums[0] &lt; nums[1] else 1
+        # Base case: two elements - return index of smaller one
+        if len(nums) == 2:
+            return 0 if nums[0] &lt; nums[1] else 1
         
-#         # Edge case: first element is valley
-#         if nums[0] &lt; nums[1]:
-#             return 0
+        # Edge case: first element is valley
+        if nums[0] &lt; nums[1]:
+            return 0
         
-#         # Edge case: last element is valley
-#         if nums[-1] &lt; nums[-2]:
-#             return len(nums) - 1
+        # Edge case: last element is valley
+        if nums[-1] &lt; nums[-2]:
+            return len(nums) - 1
 
-#         left, right = 0, len(nums) - 1
+        left, right = 0, len(nums) - 1
         
-#         while left &lt; right:
-#             mid = (left + right) // 2
+        while left &lt; right:
+            mid = (left + right) // 2
             
-#             if nums[mid] &gt; nums[mid + 1]:
-#                 # Valley must be on the right side (mid+1 or beyond)
-#                 left = mid + 1
-#             else:
-#                 # nums[mid] &lt; nums[mid+1], so valley could be at mid or to the left
-#                 right = mid
+            if nums[mid] &gt; nums[mid + 1]:
+                # Valley must be on the right side (mid+1 or beyond)
+                left = mid + 1
+            else:
+                # nums[mid] &lt; nums[mid+1], so valley could be at mid or to the left
+                right = mid
         
-#         # Loop exits when left == right (single element remaining)
-#         # This element is guaranteed to be a valley
-#         return left
+        # Loop exits when left == right (single element remaining)
+        # This element is guaranteed to be a valley
+        return left
 
 
-# class Solution:
-#     def findValleyElement(self, nums: list[int]) -&gt; int:
-#         &quot;&quot;&quot;
-#         Version 2: Explicit valley checking (left &lt;= right)
-#         Find a valley element where valley &lt; both neighbors
+class Solution:
+    def findValleyElement(self, nums: list[int]) -&gt; int:
+        &quot;&quot;&quot;
+        Version 2: Explicit valley checking (left &lt;= right)
+        Find a valley element where valley &lt; both neighbors
         
-#         Examples:
-#         - [3, 2, 1, 3]: Returns 2 (value 1 is valley)
-#         - [3, 1, 2]: Returns 1 (value 1 is valley at middle)
-#         - [1, 5]: Returns 0 (boundary valley)
+        Examples:
+        - [3, 2, 1, 3]: Returns 2 (value 1 is valley)
+        - [3, 1, 2]: Returns 1 (value 1 is valley at middle)
+        - [1, 5]: Returns 0 (boundary valley)
         
-#         Time Complexity: O(log n)
-#         Space Complexity: O(1)
-#         &quot;&quot;&quot;
-#         left = 0
-#         right = len(nums) - 1
+        Time Complexity: O(log n)
+        Space Complexity: O(1)
+        &quot;&quot;&quot;
+        left = 0
+        right = len(nums) - 1
         
-#         # Use left &lt;= right because we check for valley inside loop
-#         while left &lt;= right:
-#             mid = (left + right) // 2
+        # Use left &lt;= right because we check for valley inside loop
+        while left &lt;= right:
+            mid = (left + right) // 2
             
-#             # Check if mid is a valley (less than both neighbors)
-#             # Valley check: (left OK) AND (right OK)
-#             # - OR within condition: skip comparison at boundary OR beat neighbor
-#             # - AND between conditions: must satisfy both sides
-#             if (mid == 0 or nums[mid] &lt; nums[mid - 1]) and \
-#                (mid == len(nums) - 1 or nums[mid] &lt; nums[mid + 1]):
-#                 return mid
+            # Check if mid is a valley (less than both neighbors)
+            # Valley check: (left OK) AND (right OK)
+            # - OR within condition: skip comparison at boundary OR beat neighbor
+            # - AND between conditions: must satisfy both sides
+            if (mid == 0 or nums[mid] &lt; nums[mid - 1]) and \
+               (mid == len(nums) - 1 or nums[mid] &lt; nums[mid + 1]):
+                return mid
             
-#             # Move towards lower neighbor
-#             if nums[mid] &gt; nums[mid + 1]:
-#                 left = mid + 1
-#             else:
-#                 right = mid - 1
+            # Move towards lower neighbor
+            if nums[mid] &gt; nums[mid + 1]:
+                left = mid + 1
+            else:
+                right = mid - 1
         
-#         return -1  # Unreachable
+        return -1  # Unreachable
 
 
-# # Variant A — STRICT Valley + Duplicates
+# Variant A — STRICT Valley + Duplicates
 
-# # Definition:
-# # Valley is: nums[i] &lt; nums[i-1] and nums[i] &lt; nums[i+1]
-# # Strictly less — equality NOT allowed
+# Definition:
+# Valley is: nums[i] &lt; nums[i-1] and nums[i] &lt; nums[i+1]
+# Strictly less — equality NOT allowed
 
-# # With duplicates allowed, a strict valley may NOT exist.
-# # Example: [3, 2, 2, 2, 3] - no strict valley exists (2 is not &lt; 2)
+# With duplicates allowed, a strict valley may NOT exist.
+# Example: [3, 2, 2, 2, 3] - no strict valley exists (2 is not &lt; 2)
 
-# # Why linear search?
-# # When nums[mid] == nums[mid+1], no clear direction to eliminate half safely.
+# Why linear search?
+# When nums[mid] == nums[mid+1], no clear direction to eliminate half safely.
 
-# class Solution:
-#     def findValleyElement(self, nums: list[int]) -&gt; int:
-#         &quot;&quot;&quot;
-#         Strict valley (&lt; neighbors), duplicates allowed.
-#         Linear Scan Solution
+class Solution:
+    def findValleyElement(self, nums: list[int]) -&gt; int:
+        &quot;&quot;&quot;
+        Strict valley (&lt; neighbors), duplicates allowed.
+        Linear Scan Solution
 
-#         Time: O(n)
-#         Space: O(1)
-#         &quot;&quot;&quot;
-#         n = len(nums)
+        Time: O(n)
+        Space: O(1)
+        &quot;&quot;&quot;
+        n = len(nums)
 
-#         for i in range(n):
-#             left = nums[i - 1] if i &gt; 0 else float(&quot;inf&quot;)
-#             right = nums[i + 1] if i &lt; n - 1 else float(&quot;inf&quot;)
+        for i in range(n):
+            left = nums[i - 1] if i &gt; 0 else float(&quot;inf&quot;)
+            right = nums[i + 1] if i &lt; n - 1 else float(&quot;inf&quot;)
 
-#             if nums[i] &lt; left and nums[i] &lt; right:
-#                 return i
+            if nums[i] &lt; left and nums[i] &lt; right:
+                return i
 
-#         return -1  # no strict valley
-
-
-# # Variant B — NON-STRICT Valley (&lt;=) + Duplicates
-
-# # Definition:
-# # Valley means: nums[i] &lt;= nums[i-1] and nums[i] &lt;= nums[i+1]
-# # Equality is allowed, so plateaus are valid valleys
-
-# # Example: [3, 2, 2, 2, 3]
-# # Any 2 is a valley
-
-# # Binary search works because equality is not a problem
-
-# class Solution:
-#     def findValleyElement(self, nums: list[int]) -&gt; int:
-#         &quot;&quot;&quot;
-#         Variant: Non-strict valley (&lt;= neighbors) with duplicates
-#         Valley = &lt;= neighbors, duplicates allowed
-
-#         Time: O(log n)
-#         Space: O(1)
-#         &quot;&quot;&quot;
-#         left, right = 0, len(nums) - 1
-
-#         while left &lt; right:
-#             mid = (left + right) // 2
-
-#             # Same condition as original, but else now handles equality too
-#             if nums[mid] &gt; nums[mid + 1]:
-#                 left = mid + 1
-#             else:  # nums[mid] &lt;= nums[mid + 1]
-#                 right = mid
-
-#         return left
+        return -1  # no strict valley
 
 
-# class Solution:
-#     def findValleyElement(self, nums: list[int]) -&gt; int:
-#         &quot;&quot;&quot;
-#         Variant: Non-strict valley (&lt;= neighbors) with duplicates
-#         Explicit mid-check version
+# Variant B — NON-STRICT Valley (&lt;=) + Duplicates
 
-#         Time: O(log n)
-#         Space: O(1)
-#         &quot;&quot;&quot;
-#         left, right = 0, len(nums) - 1
+# Definition:
+# Valley means: nums[i] &lt;= nums[i-1] and nums[i] &lt;= nums[i+1]
+# Equality is allowed, so plateaus are valid valleys
 
-#         while left &lt;= right:
-#             mid = (left + right) // 2
+# Example: [3, 2, 2, 2, 3]
+# Any 2 is a valley
 
-#             # Explicit valley check (NON-STRICT)
-#             if (mid == 0 or nums[mid] &lt;= nums[mid - 1]) and \
-#                (mid == len(nums) - 1 or nums[mid] &lt;= nums[mid + 1]):
-#                 return mid
+# Binary search works because equality is not a problem
 
-#             # Move toward lower side
-#             if nums[mid] &gt; nums[mid + 1]:
-#                 left = mid + 1
-#             else:
-#                 right = mid - 1
+class Solution:
+    def findValleyElement(self, nums: list[int]) -&gt; int:
+        &quot;&quot;&quot;
+        Variant: Non-strict valley (&lt;= neighbors) with duplicates
+        Valley = &lt;= neighbors, duplicates allowed
 
-#         return -1
+        Time: O(log n)
+        Space: O(1)
+        &quot;&quot;&quot;
+        left, right = 0, len(nums) - 1
 
+        while left &lt; right:
+            mid = (left + right) // 2
 
-# # Variant C — NON-STRICT Valley (&lt;=) with No Duplicates
+            # Same condition as original, but else now handles equality too
+            if nums[mid] &gt; nums[mid + 1]:
+                left = mid + 1
+            else:  # nums[mid] &lt;= nums[mid + 1]
+                right = mid
 
-# # Definition:
-# # Valley means: nums[i] &lt;= nums[i-1] and nums[i] &lt;= nums[i+1]
-# # But no duplicates allowed
-
-# # Key observation:
-# # If no duplicates, &lt;= is effectively the same as 
-# # Behaves exactly like the original problem
+        return left
 
 
-# # Find All Valleys
+class Solution:
+    def findValleyElement(self, nums: list[int]) -&gt; int:
+        &quot;&quot;&quot;
+        Variant: Non-strict valley (&lt;= neighbors) with duplicates
+        Explicit mid-check version
 
-# class Solution:
-#     def findAllValleys(self, nums: List[int]) -&gt; List[int]:
-#         &quot;&quot;&quot;
-#         Find all valley indices.
-#         A valley is an index i such that nums[i] &lt; nums[i-1] and nums[i] &lt; nums[i+1].
-#         Endpoints are compared against +inf, so index 0 is a valley if nums[0] &lt; nums[1],
-#         and index n-1 is a valley if nums[n-1] &lt; nums[n-2].
+        Time: O(log n)
+        Space: O(1)
+        &quot;&quot;&quot;
+        left, right = 0, len(nums) - 1
 
-#         Time Complexity: O(n) — must inspect each element to list all valleys
-#         Space Complexity: O(1) extra (excluding output list)
-#         &quot;&quot;&quot;
-#         n = len(nums)
-#         if n == 0:
-#             return []
-#         if n == 1:
-#             return [0]
+        while left &lt;= right:
+            mid = (left + right) // 2
 
-#         valleys = []
-#         for i in range(n):
-#             left  = nums[i - 1] if i &gt; 0 else float(&quot;inf&quot;)
-#             right = nums[i + 1] if i &lt; n - 1 else float(&quot;inf&quot;)
-#             if nums[i] &lt; left and nums[i] &lt; right:
-#                 valleys.append(i)
-#         return valleys
+            # Explicit valley check (NON-STRICT)
+            if (mid == 0 or nums[mid] &lt;= nums[mid - 1]) and \
+               (mid == len(nums) - 1 or nums[mid] &lt;= nums[mid + 1]):
+                return mid
+
+            # Move toward lower side
+            if nums[mid] &gt; nums[mid + 1]:
+                left = mid + 1
+            else:
+                right = mid - 1
+
+        return -1
+
+
+# Variant C — NON-STRICT Valley (&lt;=) with No Duplicates
+
+# Definition:
+# Valley means: nums[i] &lt;= nums[i-1] and nums[i] &lt;= nums[i+1]
+# But no duplicates allowed
+
+# Key observation:
+# If no duplicates, &lt;= is effectively the same as 
+# Behaves exactly like the original problem
+
+
+# Find All Valleys
+
+class Solution:
+    def findAllValleys(self, nums: List[int]) -&gt; List[int]:
+        &quot;&quot;&quot;
+        Find all valley indices.
+        A valley is an index i such that nums[i] &lt; nums[i-1] and nums[i] &lt; nums[i+1].
+        Endpoints are compared against +inf, so index 0 is a valley if nums[0] &lt; nums[1],
+        and index n-1 is a valley if nums[n-1] &lt; nums[n-2].
+
+        Time Complexity: O(n) — must inspect each element to list all valleys
+        Space Complexity: O(1) extra (excluding output list)
+        &quot;&quot;&quot;
+        n = len(nums)
+        if n == 0:
+            return []
+        if n == 1:
+            return [0]
+
+        valleys = []
+        for i in range(n):
+            left  = nums[i - 1] if i &gt; 0 else float(&quot;inf&quot;)
+            right = nums[i + 1] if i &lt; n - 1 else float(&quot;inf&quot;)
+            if nums[i] &lt; left and nums[i] &lt; right:
+                valleys.append(i)
+        return valleys
 
 
 
