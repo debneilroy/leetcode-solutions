@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1570. Dot Product of Two Sparse Vectors - LeetCode Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+
+:root {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --radius:    6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #e6db74; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy   { color: var(--easy);   background: rgba(44,187,93,0.15); }
+.badge-Medium { color: var(--medium); background: rgba(255,161,22,0.15); }
+.badge-Hard   { color: var(--hard);   background: rgba(239,71,67,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--surface2); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: #1e1e1e !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">1570. Dot Product of Two Sparse Vectors</span>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (1)</div>
+        <div class="tab" data-tab="similar">Similar (0)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">1570. Dot Product of Two Sparse Vectors</div>
+        <div class="prob-meta">
+          <span class="badge badge-Medium">Medium</span>
+          <span class="tag">Array</span><span class="tag">Hash Table</span><span class="tag">Two Pointers</span><span class="tag">Design</span>
+        </div>
+        <div class="prob-stats">406.7K / 452.4K (89.9%)</div>
+        <div class="prob-desc"><p>Given two sparse vectors, compute their dot product.</p>
+<p>Implement class <code>SparseVector</code>:</p>
+<ul>
+<li><code>SparseVector(nums)</code> Initializes the object with the vector <code>nums</code></li>
+</ul>
+	
+<ul>
+<li><code>dotProduct(vec)</code> Compute the dot product between the instance of <em>SparseVector</em> and <code>vec</code></li>
+</ul>
+<p>A <strong>sparse vector</strong> is a vector that has mostly zero values, you should store the sparse vector <strong>efficiently </strong>and compute the dot product between two <em>SparseVector</em>.</p>
+<p><strong>Follow up: </strong>What if only one of the vectors is sparse?</p>
+<p>Example 1:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> nums1 = [1,0,0,2,3], nums2 = [0,3,0,4,0]
+<strong>Output:</strong> 8
+<strong>Explanation:</strong> v1 = SparseVector(nums1) , v2 = SparseVector(nums2)
+v1.dotProduct(v2) = 1<em>0 + 0</em>3 + 0<em>0 + 2</em>4 + 3*0 = 8
+</code></pre>
+<p>Example 2:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> nums1 = [0,1,0,0,0], nums2 = [0,0,0,0,2]
+<strong>Output:</strong> 0
+<strong>Explanation:</strong> v1 = SparseVector(nums1) , v2 = SparseVector(nums2)
+v1.dotProduct(v2) = 0<em>0 + 1</em>0 + 0<em>0 + 0</em>0 + 0*2 = 0
+</code></pre>
+<p>Example 3:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> nums1 = [0,1,0,0,2,0,0], nums2 = [1,0,0,0,3,0,4]
+<strong>Output:</strong> 6
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li><code>n == nums1.length == nums2.length</code></li>
+</ul>
+	
+<ul>
+<li><code>1 &lt;= n &lt;= 10<sup>5</sup></code></li>
+</ul>
+	
+<ul>
+<li><code>0 &lt;= nums1[i], nums2[i] &lt;= 100</code></li>
+</ul></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        
+<details class="hint-block">
+  <summary>Hint 1</summary>
+  <div class="hint-body"><p>Because the vector is sparse, use a data structure that stores the index and value where the element is nonzero.</p></div>
+</details>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        <p class="empty-msg">No similar problems listed.</p>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 1570. Dot Product of Two Sparse Vectors
+Difficulty: Medium
+URL: https://leetcode.com/problems/dot-product-of-two-sparse-vectors/
+&quot;&quot;&quot;
+
+# Approach : Hashmap
+
+class SparseVector:
+    &quot;&quot;&quot;
+    A space-efficient representation of sparse vectors (vectors with mostly zeros).
+    Only stores non-zero elements to optimize memory usage and computation.
+    &quot;&quot;&quot;
+    
+    def __init__(self, nums):
+        &quot;&quot;&quot;
+        Initialize the sparse vector by storing only non-zero elements.
+        
+        Args:
+            nums: List[int] - Input vector that may contain many zeros
+        
+        Time Complexity: O(n) where n is the length of nums
+            - We iterate through all elements once to identify non-zeros
+        
+        Space Complexity: O(L) where L is the number of non-zero elements
+            - We only store non-zero values in the hashmap
+            - Best case: O(1) if all elements are zero
+            - Worst case: O(n) if all elements are non-zero
+        &quot;&quot;&quot;
+        # Store original length for validation in dotProduct
+        # if lengths always equal, remove this
+        self.length = len(nums)
+        
+        # Dictionary to store only non-zero elements
+        # Key: index in original array
+        # Value: the non-zero value at that index
+        self.nonzeros = {}
+        
+        # Iterate through input array and store non-zero elements
+        for i, num in enumerate(nums):
+            if num != 0:
+                self.nonzeros[i] = num
+    
+    def dotProduct(self, vec):
+        &quot;&quot;&quot;
+        Compute the dot product between this vector and another sparse vector.
+        
+        Args:
+            vec: SparseVector - Another sparse vector to compute dot product with
+        
+        Returns:
+            int - The dot product result (sum of products of corresponding elements)
+        
+        Time Complexity: O(min(L1, L2)) where L1 and L2 are the numbers of
+                        non-zero elements in each vector
+            - We iterate through the smaller set of non-zero elements
+            - Hashmap lookup is O(1) on average
+            - Best case: O(1) if one vector has no non-zero elements
+            - Worst case: O(n) if both vectors are fully dense (L1 = L2 = n)
+        
+        Space Complexity: O(1)
+            - Only using a constant amount of extra space for the result
+            - No additional data structures created
+
+        Edge Cases:
+            - Both vectors all zeros: nonzeros dicts are empty, loop never runs, returns 0
+            - One vector all zeros: smaller set is empty, loop never runs, returns 0
+            - Both vectors fully dense: degrades to O(n), iterates all n elements
+            - Single element vectors: handles correctly, returns 0 or v1[0]*v2[0]
+        &quot;&quot;&quot;
+        # Base checks
+        if not isinstance(vec, SparseVector):
+            raise TypeError(&quot;Expected a SparseVector instance&quot;)
+
+        # Length check before zero exit: zero vectors of different lengths should raise,
+        # not silently return 0 — correctness before optimization.
+        # If reversed, dotProduct([0,0], [0,0,0]) would silently return 0 instead of raising
+        # if lengths always equal: remove this check — guaranteed by problem constraints
+        if self.length != vec.length:
+            raise ValueError(f&quot;Vector length mismatch: {self.length} vs {vec.length}&quot;)
+
+        # Early exit: if either vector is all zeros, dot product is 0
+        if not self.nonzeros or not vec.nonzeros:
+            return 0
+
+        result = 0
+
+        if len(self.nonzeros) &lt;= len(vec.nonzeros):
+            smaller, larger = self.nonzeros, vec.nonzeros
+        else:
+            smaller, larger = vec.nonzeros, self.nonzeros
+
+        # Iterate through the smaller one
+        for i, val in smaller.items():  # O(min(L1, L2))
+            if i in larger:              # O(1)
+                result += val * larger[i]
+
+        return result
+
+# Example 
+
+# Say we have:
+
+# v1 = SparseVector([1, 0, 0, 2, 0])
+# v2 = SparseVector([0, 0, 3, 2, 0])
+
+# After __init__:
+# v1.length   = 5
+# v1.nonzeros = {0: 1, 3: 2}      # only indices with non-zero values
+
+# v2.length   = 5
+# v2.nonzeros = {2: 3, 3: 2}      # only indices with non-zero values
+
+# During dotProduct:
+# isinstance check  → pass
+# length check      → 5 == 5, pass
+# zero check        → both have nonzeros, pass
+
+# len(v1.nonzeros) = 2
+# len(v2.nonzeros) = 2
+# 2 &lt;= 2 → smaller = v1.nonzeros, larger = v2.nonzeros
+
+# Iterate smaller:
+#   i=0, val=1 → 0 not in larger → skip
+#   i=3, val=2 → 3 in larger    → result += 2 * 2 = 4
+
+# return 4
+# Verify manually:
+# [1, 0, 0, 2, 0]
+# [0, 0, 3, 2, 0]
+# = (1*0) + (0*0) + (0*3) + (2*2) + (0*0) = 4 
+
+
+# Approach : Index-Value Pairs (Preferred approach for Meta)
+
+class SparseVector:
+    &quot;&quot;&quot;
+    A space-efficient representation of sparse vectors using sorted list of tuples.
+    Stores only non-zero elements as (index, value) pairs in sorted order by index.
+    &quot;&quot;&quot;
+    
+    def __init__(self, nums):
+        &quot;&quot;&quot;
+        Initialize the sparse vector by storing non-zero elements as sorted tuples.
+        
+        Args:
+            nums: List[int] - Input vector that may contain many zeros
+        
+        Time Complexity: O(n) where n is the length of nums
+            - We iterate through all elements once to identify non-zeros
+            - Pairs are naturally sorted since we iterate indices in order (0 to n-1)
+        
+        Space Complexity: O(L) where L is the number of non-zero elements
+            - We store L tuples, each containing (index, value)
+            - Best case: O(1) if all elements are zero (empty list)
+            - Worst case: O(n) if all elements are non-zero
+        &quot;&quot;&quot;
+        # Store original length for validation in dotProduct
+         # if lengths always equal, remove this
+        self.length = len(nums)
+
+        # Store non-zero elements as list of (index, value) tuples
+        # Tuples over lists: immutable (pairs should never change after creation),
+        # slightly less memory, and signals fixed records rather than mutable sequences
+        self.pairs = []
+        for i, num in enumerate(nums):
+            if num != 0:
+                self.pairs.append((i, num))  # tuple: index and value are a fixed record
+        
+    def dotProduct(self, vec):
+        &quot;&quot;&quot;
+        Compute dot product using two-pointer technique on sorted lists.
+        
+        Args:
+            vec: SparseVector - Another sparse vector to compute dot product with
+        
+        Returns:
+            int - The dot product result (sum of products of corresponding elements)
+        
+        Time Complexity: O(L1 + L2) where L1 and L2 are the numbers of
+                        non-zero elements in each vector
+            - We traverse both lists simultaneously using two pointers
+            - Each element in both lists is visited at most once
+            - Worst case: O(L1 + L2) when lists have no overlapping indices (all skips)
+            - Best case: O(min(L1, L2)) when one list is exhausted early
+        
+        Space Complexity: O(1)
+            - Only using constant extra space (result, i, j variables)
+            - No additional data structures created
+        &quot;&quot;&quot;
+        # Base checks
+        if not isinstance(vec, SparseVector):
+            raise TypeError(&quot;Expected a SparseVector instance&quot;)
+
+        # Length check before zero exit: zero vectors of different lengths should raise,
+        # not silently return 0 — correctness before optimization.
+        # If reversed, dotProduct([0,0], [0,0,0]) would silently return 0 instead of raising
+        # if lengths always equal: remove this check — guaranteed by problem constraints
+        if self.length != vec.length:
+            raise ValueError(f&quot;Vector length mismatch: {self.length} vs {vec.length}&quot;)
+
+        # Early exit: if either vector is all zeros, dot product is 0
+        if not self.pairs or not vec.pairs:
+            return 0
+
+        result = 0
+        
+        # Two pointers starting at the beginning of each pairs list
+        i = 0  # pointer for self.pairs
+        j = 0  # pointer for vec.pairs
+        
+        # Advance both pointers until one list is exhausted
+        while i &lt; len(self.pairs) and j &lt; len(vec.pairs):
+            idx1, val1 = self.pairs[i]
+            idx2, val2 = vec.pairs[j]
+            
+            if idx1 == idx2:
+                # Matching indices: contribute to dot product, advance both
+                result += val1 * val2
+                i += 1 # advance pointer, not idx1 — idx1 is a read-only local, i controls position in list
+                j += 1
+            
+            elif idx1 &lt; idx2:
+                # self is behind: advance i to catch up to vec&#x27;s index
+                i += 1  
+            
+            else:
+                # vec is behind: advance j to catch up to self&#x27;s index
+                j += 1  
+        
+        return result
+
+# Example: 
+
+# Say we have:
+# v1 = SparseVector([1, 0, 0, 2, 0])
+# v2 = SparseVector([0, 0, 3, 2, 0])
+
+# After __init__:
+# v1.length = 5
+# v1.pairs  = [(0, 1), (3, 2)]     # only non-zero elements as (index, value) tuples
+
+# v2.length = 5
+# v2.pairs  = [(2, 3), (3, 2)]     # only non-zero elements as (index, value) tuples
+
+# During dotProduct:
+# isinstance check  → pass
+# length check      → 5 == 5, pass
+# zero check        → both have pairs, pass
+
+# i=0, j=0  → idx1=0, idx2=2  → 0 &lt; 2 → self is behind, advance i
+# i=1, j=0  → idx1=3, idx2=2  → 3 &gt; 2 → vec is behind,  advance j
+# i=1, j=1  → idx1=3, idx2=3  → match → result += 2 * 2 = 4, advance both
+# i=2 → i exhausted, exit loop
+
+# return 4
+
+# When Index-Value pairs is better
+
+# 1. When both vectors have similar sparsity (L₁ ≈ L₂)
+
+# O(L₁ + L₂) ≈ O(2L₁) vs O(L₁) - not much difference
+
+
+# 2. Memory-constrained environments
+
+# List of tuples has less overhead than hash map
+
+
+# 3. Cache-friendly performance needed
+
+# Sequential access is more cache-friendly than hash lookups
+
+
+# 4. Guaranteed worst-case performance
+
+# O(L₁ + L₂) guaranteed vs O(L₁ × L₂) with hash collisions (theoretical)
+
+
+# Variant : What if one vector is sparse and the other one is dense (or length of both vectors differ)?
+# Use binary search on the dense vector (or longer vector)
+
+class SparseVector:
+    def __init__(self, nums):
+        &quot;&quot;&quot;
+        Store non-zero elements as sorted list of (index, value) tuples.
+
+        Time Complexity: O(n) where n is the length of nums
+            - We iterate through all elements once to identify non-zeros
+            - Pairs are naturally sorted since we iterate indices in order (0 to n-1)
+        
+        Space Complexity: O(L) where L is the number of non-zero elements
+            - We store L tuples, each containing (index, value)
+            - Best case: O(1) if all elements are zero (empty list)
+            - Worst case: O(n) if all elements are non-zero
+        &quot;&quot;&quot;
+
+        self.length = len(nums)
+
+        self.pairs = []
+        for i, num in enumerate(nums):
+            if num != 0:
+                self.pairs.append((i, num))  
+
+    def dotProduct(self, vec):
+        &quot;&quot;&quot;
+        Compute dot product using binary search.
+
+        Strategy: iterate through the smaller vector and binary search
+        for matching indices in the larger vector.
+
+        Time Complexity: O(min(L1, L2) * log(max(L1, L2)))
+            - Iterate through smaller vector: O(min(L1, L2))
+            - Binary search in larger vector: O(log(max(L1, L2)))
+            - Best case: O(log n) when smaller vector has only one non-zero element
+            - Worst case: O(n log n) when both vectors are fully dense (L1 = L2 = n),
+            worse than two-pointer&#x27;s O(n) — prefer two-pointer when L1 ≈ L2
+            - Useful when one vector is much sparser than the other:
+              e.g. k non-zeros vs n non-zeros gives O(k log n),
+              faster than two-pointer&#x27;s O(n) in this case
+
+        Space Complexity: O(1)
+            - Only constant extra space (result, pointers)
+            - No additional data structures created
+
+        When to Use:
+            - One vector is much sparser than the other (k &lt;&lt; n):
+              binary search gives O(k log n) vs two-pointer&#x27;s O(n)
+            - Vectors are pre-sorted and stored as pairs (no extra preprocessing)
+            - Prefer over hashmap when memory is tight (no dict overhead)
+            - Prefer over two-pointer when L1 and L2 are highly unbalanced
+
+            Avoid when:
+            - Both vectors have similar sparsity: two-pointer&#x27;s O(L1 + L2)
+              beats O(min * log(max)) when L1 ≈ L2
+            - Vectors are not sorted: sorting costs O(n log n) upfront
+        &quot;&quot;&quot;
+
+        # Base checks
+        if not isinstance(vec, SparseVector):
+            raise TypeError(&quot;Expected a SparseVector instance&quot;)
+
+        if self.length != vec.length:
+            raise ValueError(f&quot;Vector length mismatch: {self.length} vs {vec.length}&quot;)
+
+        if not self.pairs or not vec.pairs:
+            return 0
+
+        result = 0
+
+        # Iterate smaller vector, binary search in larger — minimizes total searches
+        if len(self.pairs) &lt;= len(vec.pairs):
+            smaller, larger = self.pairs, vec.pairs
+        else:
+            smaller, larger = vec.pairs, self.pairs
+
+        # For each non-zero in smaller, search for matching index in larger
+        for idx, val in smaller:
+            pos = self._binary_search(larger, idx)
+            if pos != -1:  # matching index found, contribute to dot product
+                result += val * larger[pos][1]
+
+        return result
+
+    def _binary_search(self, pairs, target_idx):
+        &quot;&quot;&quot;
+        Binary search for target_idx in sorted pairs list.
+
+        Args:
+            pairs: list of (index, value) tuples sorted by index
+            target_idx: the index we&#x27;re searching for
+
+        Returns:
+            position in pairs if found, -1 otherwise
+
+        Time Complexity: O(log L) where L is len(pairs)
+        Space Complexity: O(1)
+        &quot;&quot;&quot;
+        left, right = 0, len(pairs) - 1
+
+        while left &lt;= right: # not left &lt; right: would miss target when left == right (single element)
+            mid = (left + right) // 2
+            mid_idx = pairs[mid][0]  # extract index from (index, value) tuple
+
+            if mid_idx == target_idx:
+                return mid          # found matching index
+            elif mid_idx &lt; target_idx:
+                left = mid + 1      # target is in right half
+            else:
+                right = mid - 1     # target is in left half
+
+        return -1  # index not present in larger vector
+
+
+# Example :
+
+# v1 = SparseVector([1, 0, 0, 0, 0])       # sparse: only 1 non-zero
+# v2 = SparseVector([1, 2, 3, 4, 5])       # dense: all non-zero
+
+# After __init__:
+# v1.length = 5
+# v1.pairs  = [(0, 1)]                      # L1 = 1
+
+# v2.length = 5
+# v2.pairs  = [(0,1),(1,2),(2,3),(3,4),(4,5)]  # L2 = 5
+
+# During dotProduct:
+# isinstance check  → pass
+# length check      → 5 == 5, pass
+# zero check        → both have pairs, pass
+
+# len(v1.pairs) = 1
+# len(v2.pairs) = 5
+# 1 &lt;= 5 → smaller = v1.pairs, larger = v2.pairs
+
+# Iteration 1: idx=0, val=1
+#   binary search for 0 in [(0,1),(1,2),(2,3),(3,4),(4,5)]
+#   mid=2 → 2 &gt; 0 → go left
+#   mid=0 → 0 == 0 → found at pos=0
+#   result += 1 * 1 = 1
+
+# no more elements in smaller, exit loop
+# return 1
+
+# TC breakdown:
+# 1 iteration × log(5) ≈ 1 × 2 = 2 operations    → O(k log n) = O(1 * log 5)
+# two-pointer would take 1 + 5 = 6 steps          → O(n)
+
+# Binary search wins significantly when k &lt;&lt; n
+
+
+# Variant : (precursor to LC 1868)
+
+# Given two sorted integer arrays nums1 and nums2 of the same length that may contain many duplicate values, design a data structure that compresses them efficiently and supports computing their dot product.
+# Implement class CompressedVector:
+
+# CompressedVector(nums) — initializes the object with the sorted array nums
+# dotProduct(vec) — returns the dot product of this vector and vec
+
+# Example:
+
+# Input:
+# nums1 = [1, 1, 1, 1, 3, 3, 5, 5, 5, 5, 5, 8]
+# nums2 = [1, 1, 3, 3, 3, 5, 7, 7, 7, 8, 8, 8]
+
+# Output: 281
+
+# Explanation:
+# Dot product multiplies corresponding elements and sums them up:
+
+# pos:   0  1  2  3  4  5  6  7  8  9  10  11
+# nums1: 1  1  1  1  3  3  5  5  5  5   5   8
+# nums2: 1  1  3  3  3  5  7  7  7  8   8   8
+#        ↓  ↓  ↓  ↓  ↓  ↓  ↓  ↓  ↓  ↓   ↓   ↓
+# prod:  1  1  3  3  9 15 35 35 35 40  40  64
+
+# (1×1) + (1×1) + (1×3) + (1×3) + (3×3) + (3×5) +
+# (5×7) + (5×7) + (5×7) + (5×8) + (5×8) + (8×8)
+# = 1 + 1 + 3 + 3 + 9 + 15 + 35 + 35 + 35 + 40 + 40 + 64
+# = 281
+
+# Constraints:
+
+# 1. 1 &lt;= nums.length &lt;= 10^5
+# 2. nums1.length == nums2.length
+# 3. -100 &lt;= nums[i] &lt;= 100
+# 4. nums is sorted in non-decreasing order
+# 5. At most 10^4 calls to dotProduct
+
+
+class CompressedVector:
+    &quot;&quot;&quot;
+    Efficient representation of sorted vectors with duplicates using
+    Run-Length Encoding (RLE).
+
+    Stores (value, start, end) tuples where end is exclusive,
+    avoiding recomputation of end positions in dotProduct.
+    Assumes input vector is sorted.
+    &quot;&quot;&quot;
+
+    def __init__(self, nums):
+        &quot;&quot;&quot;
+        Compress sorted vector with duplicates using run-length encoding.
+
+        Args:
+            nums: List[int] - Sorted vector (may contain duplicates)
+
+        Time Complexity: O(n) where n is the length of nums
+            - Single pass through the array to identify runs
+
+        Space Complexity: O(R) where R is the number of distinct runs
+            - Best case: O(1) if all elements are the same
+            - Worst case: O(n) if all elements are unique
+            - Typical case: O(R) where R &lt;&lt; n with many duplicates
+
+        Example:
+            nums = [1, 1, 1, 3, 3, 5, 5, 5, 5]
+            runs = [(1, 0, 3), (3, 3, 5), (5, 5, 9)]
+                    val s  e   val s  e   val s  e
+                    (end is exclusive)
+
+        Why exclusive end:
+            - matches Python conventions (range, slicing)
+            - overlap_count = overlap_end - overlap_start (no +1 needed)
+            - overlap check is simply overlap_start &lt; overlap_end (no +1 needed)
+            - using inclusive end requires +1 in two places, making code harder to read
+        &quot;&quot;&quot;
+        self.length = len(nums)
+        self.runs = []  # list of (value, start, end) tuples, end is exclusive
+
+        if not nums:
+            return
+
+        current_val = nums[0]
+        start_idx = 0
+
+        for i in range(1, self.length):
+            if nums[i] != current_val:
+                # End current run at i (exclusive) and save it
+                # if using inclusive end: append (current_val, start_idx, i - 1)
+                self.runs.append((current_val, start_idx, i)) 
+                current_val = nums[i]
+                start_idx = i
+
+        # Flush last run — end is self.length since end is exclusive
+        # if using inclusive end: append (current_val, start_idx, self.length - 1)
+        self.runs.append((current_val, start_idx, self.length))
+
+    def dotProduct(self, vec):
+        &quot;&quot;&quot;
+        Compute dot product between two compressed vectors.
+
+        Args:
+            vec: CompressedVector - Another compressed vector
+
+        Returns:
+            int - The dot product result
+
+        Time Complexity: O(R1 + R2) where R1 and R2 are the numbers of runs
+            - Two pointers traverse both run lists simultaneously
+            - Each run is processed at most once
+            - Worst case: O(n1 + n2) when all elements are unique (R1=n1, R2=n2),
+              no compression benefit, degrades to element-wise traversal
+            - Much better than O(n1 + n2) for vectors with many duplicates:
+              duplicates collapse into single runs, so R &lt;&lt; n
+              e.g. [1,1,1,1,1] → 1 run instead of 5 elements → O(1) instead of O(5)
+
+        Space Complexity: O(1)
+            - Only constant extra space (result, pointers, overlap vars)
+
+
+        Algorithm:
+            1. Use two pointers on the run lists
+            2. For each pair of runs, find overlapping positions
+            3. Compute contribution: value1 * value2 * overlap_count
+            4. Advance pointer whose run ends first; advance both if tied
+        &quot;&quot;&quot;
+        if not isinstance(vec, CompressedVector):
+            raise TypeError(&quot;Expected a CompressedVector instance&quot;)
+
+        if self.length != vec.length:
+            raise ValueError(f&quot;Vector length mismatch: {self.length} vs {vec.length}&quot;)
+
+        # Early exit: if either vector is empty
+        if not self.runs or not vec.runs:
+            return 0
+
+        result = 0
+        i = 0  # pointer for self.runs
+        j = 0  # pointer for vec.runs
+
+        while i &lt; len(self.runs) and j &lt; len(vec.runs):
+            val1, start1, end1 = self.runs[i]   # end is exclusive, no recomputation needed
+            val2, start2, end2 = vec.runs[j]    # end is exclusive, no recomputation needed
+
+            overlap_start = max(start1, start2)
+            overlap_end   = min(end1, end2)
+
+            # if using inclusive end:
+            #   if overlap_start &lt;= overlap_end:                     # &lt;= instead of &lt;: single
+            #       overlap_count = overlap_end - overlap_start + 1  # element overlap (start==end)
+            #                                                         # is valid, &lt; would miss it
+            if overlap_start &lt; overlap_end:
+                # Each overlapping position contributes val1 * val2
+                overlap_count = overlap_end - overlap_start
+                result += val1 * val2 * overlap_count
+
+            # Advance pointer whose run ends first
+            # If tied (end1 == end2), advancing both is a performance optimization —
+            # skips a redundant iteration since overlap check would yield count=0 anyway
+            if end1 &lt; end2:
+                i += 1      # run1 ends first, move to next run in self
+            elif end2 &lt; end1:
+                j += 1      # run2 ends first, move to next run in vec
+            else:
+                i += 1      # both runs end at same position,
+                j += 1      # advance both to skip redundant iteration
+
+        return result
+
+# Example dry run:
+
+# nums1 = [1, 1, 3, 3, 3]
+# nums2 = [1, 2, 2, 3, 3]
+
+# After __init__:
+# v1.runs = [(1,0,2), (3,2,5)]        # R1 = 2
+# v2.runs = [(1,0,1), (2,1,3), (3,3,5)]  # R2 = 3
+
+# During dotProduct:
+# isinstance check  → pass
+# length check      → 5 == 5, pass
+# zero check        → both have runs, pass
+
+# i=0, j=0 → run1=(1,0,2), run2=(1,0,1)
+#   overlap_start = max(0,0) = 0
+#   overlap_end   = min(2,1) = 1
+#   0 &lt; 1 → count=1 → result += 1*1*1 = 1
+#   end1=2 &gt; end2=1 → advance j
+
+# i=0, j=1 → run1=(1,0,2), run2=(2,1,3)
+#   overlap_start = max(0,1) = 1
+#   overlap_end   = min(2,3) = 2
+#   1 &lt; 2 → count=1 → result += 1*2*1 = 3
+#   end1=2 &lt; end2=3 → advance i
+
+# i=1, j=1 → run1=(3,2,5), run2=(2,1,3)
+#   overlap_start = max(2,1) = 2
+#   overlap_end   = min(5,3) = 3
+#   2 &lt; 3 → count=1 → result += 3*2*1 = 9
+#   end1=5 &gt; end2=3 → advance j
+
+# i=1, j=2 → run1=(3,2,5), run2=(3,3,5)
+#   overlap_start = max(2,3) = 3
+#   overlap_end   = min(5,5) = 5
+#   3 &lt; 5 → count=2 → result += 3*3*2 = 27
+#   end1=5 == end2=5 → advance both
+
+# i=2, j=3 → both exhausted, exit loop
+
+# Output : 27
+
+
+# Another approach : Use (value, count, start_index) 
+
+class CompressedVector:
+    &quot;&quot;&quot;
+    Efficient representation of sorted vectors with duplicates using
+    Run-Length Encoding (RLE).
+
+    Stores (value, count, start_index) tuples.
+    Assumes input vector is sorted.
+    &quot;&quot;&quot;
+
+    def __init__(self, nums):
+
+        self.length = len(nums)
+        self.runs = []  # list of (value, count, start_index) tuples
+
+        if not nums:
+            return
+
+        current_val = nums[0]
+        current_count = 1
+        start_idx = 0
+
+        for i in range(1, self.length):
+            if nums[i] != current_val:
+                self.runs.append((current_val, current_count, start_idx))
+                current_val = nums[i]
+                current_count = 1    # reset count for new run
+                start_idx = i
+            else:
+                current_count += 1   # continue current run
+
+        # Flush last run
+        self.runs.append((current_val, current_count, start_idx))
+
+    def dotProduct(self, vec):
+ 
+        if not isinstance(vec, CompressedVector):
+            raise TypeError(&quot;Expected a CompressedVector instance&quot;)
+
+        if self.length != vec.length:
+            raise ValueError(f&quot;Vector length mismatch: {self.length} vs {vec.length}&quot;)
+
+        if not self.runs or not vec.runs:
+            return 0
+
+        result = 0
+        i = 0  
+        j = 0  
+
+        while i &lt; len(self.runs) and j &lt; len(vec.runs):
+            val1, count1, start1 = self.runs[i]
+            val2, count2, start2 = vec.runs[j]
+
+            end1 = start1 + count1
+            end2 = start2 + count2
+
+            overlap_start = max(start1, start2)
+            overlap_end   = min(end1, end2)
+
+            if overlap_start &lt; overlap_end:
+                overlap_count = overlap_end - overlap_start
+                result += val1 * val2 * overlap_count
+
+            if end1 &lt; end2:
+                i += 1      
+            elif end2 &lt; end1:
+                j += 1      
+            else:
+                i += 1      
+                j += 1      
+
+        return result
+
+
+# Follow up : Arrays are of unequal length
+
+class CompressedVector:
+    def __init__(self, nums):
+
+        self.length = len(nums)
+        self.runs = []  # list of (value, start, end) tuples, end is exclusive
+
+        if not nums:
+            return
+
+        current_val = nums[0]
+        start_idx = 0
+
+        for i in range(1, self.length):
+            if nums[i] != current_val:
+                self.runs.append((current_val, start_idx, i))  
+                current_val = nums[i]
+                start_idx = i
+
+        self.runs.append((current_val, start_idx, self.length))
+
+    def dotProduct(self, vec):
+
+        if not isinstance(vec, CompressedVector):
+            raise TypeError(&quot;Expected a CompressedVector instance&quot;)
+
+        if not self.runs or not vec.runs:
+            return 0
+
+        # Compute up to shorter vector&#x27;s length — extra elements treated as 0
+        effective_length = min(self.length, vec.length)
+
+        result = 0
+        i = 0  # pointer for self.runs
+        j = 0  # pointer for vec.runs
+
+        while i &lt; len(self.runs) and j &lt; len(vec.runs):
+            val1, start1, end1 = self.runs[i]
+            val2, start2, end2 = vec.runs[j]
+
+            # Clip runs to effective length — ignore positions beyond shorter vector
+            end1 = min(end1, effective_length)
+            end2 = min(end2, effective_length)
+
+            # If run starts at or beyond effective length, no more valid positions
+            if start1 &gt;= effective_length or start2 &gt;= effective_length:
+                break
+
+            overlap_start = max(start1, start2)
+            overlap_end   = min(end1, end2)
+
+            if overlap_start &lt; overlap_end:
+                overlap_count = overlap_end - overlap_start
+                result += val1 * val2 * overlap_count
+
+            if end1 &lt; end2:
+                i += 1     
+            elif end2 &lt; end1:
+                j += 1      
+            else:
+                i += 1      
+                j += 1      
+
+        return result
+</code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Easy/1539-Kth-Missing-Positive-Number/">&#8592; 1539. Kth Missing Positive Number</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Medium/1650-Lowest-Common-Ancestor-of-a-Binary-Tree-III/">1650. Lowest Common Ancestor of a Binary Tree III &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+</body>
+</html>
