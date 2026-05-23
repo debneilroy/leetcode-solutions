@@ -224,36 +224,36 @@ URL: https://leetcode.com/problems/find-first-and-last-position-of-element-in-so
 
 # Brute Force Approach : Linear Scan
 
-# class Solution:
-#     def searchRange(nums, target):
-#         &quot;&quot;&quot;
-#         Brute Force: Single pass to find both positions.
+class Solution:
+    def searchRange(nums, target):
+        &quot;&quot;&quot;
+        Brute Force: Single pass to find both positions.
         
-#         Time Complexity: O(n) - scan entire array once
-#         Space Complexity: O(1)
+        Time Complexity: O(n) - scan entire array once
+        Space Complexity: O(1)
 
-#         This violates the problem&#x27;s requirement of O(log n) time.
-#         &quot;&quot;&quot;
-#         if not nums:
-#             return [-1, -1]
+        This violates the problem&#x27;s requirement of O(log n) time.
+        &quot;&quot;&quot;
+        if not nums:
+            return [-1, -1]
 
-#         if target &lt; nums[0] or target &gt; nums[-1]:
-#             return [-1, -1]
+        if target &lt; nums[0] or target &gt; nums[-1]:
+            return [-1, -1]
         
-#         left_pos = -1
-#         right_pos = -1
+        left_pos = -1
+        right_pos = -1
         
-#         # Single pass: Update positions as we find target
-#         for i in range(len(nums)):
-#             if nums[i] == target:
-#                 if left_pos == -1:
-#                     # First occurrence found
-#                     left_pos = i
-#                 # Always update right position when we find target
-#                 right_pos = i
+        # Single pass: Update positions as we find target
+        for i in range(len(nums)):
+            if nums[i] == target:
+                if left_pos == -1:
+                    # First occurrence found
+                    left_pos = i
+                # Always update right position when we find target
+                right_pos = i
         
-#         # If target never found, both will be -1
-#         return [left_pos, right_pos]
+        # If target never found, both will be -1
+        return [left_pos, right_pos]
 
 class Solution:
     def searchRange(self, nums: List[int], target: int) -&gt; List[int]:
@@ -477,71 +477,71 @@ class Solution:
 # Output: 2
 # Explanation: 8 appears twice in the array
 
-# def countTarget(nums, target):
-#     &quot;&quot;&quot;
-#     Count the number of occurrences of target in a sorted array.
+def countTarget(nums, target):
+    &quot;&quot;&quot;
+    Count the number of occurrences of target in a sorted array.
     
-#     Args:
-#         nums: List[int] - sorted array in non-decreasing order
-#         target: int - target value to count
+    Args:
+        nums: List[int] - sorted array in non-decreasing order
+        target: int - target value to count
     
-#     Returns:
-#         int - count of target occurrences
+    Returns:
+        int - count of target occurrences
     
-#     Time Complexity: O(log n)
-#     Space Complexity: O(1)
-#     &quot;&quot;&quot;
-#     def findLeft(nums, target):
-#         &quot;&quot;&quot;Find the leftmost occurrence of target&quot;&quot;&quot;
-#         left, right = 0, len(nums) - 1
-#         result = -1
+    Time Complexity: O(log n)
+    Space Complexity: O(1)
+    &quot;&quot;&quot;
+    def findLeft(nums, target):
+        &quot;&quot;&quot;Find the leftmost occurrence of target&quot;&quot;&quot;
+        left, right = 0, len(nums) - 1
+        result = -1
         
-#         while left &lt;= right:
-#             mid = (left + right) // 2
+        while left &lt;= right:
+            mid = (left + right) // 2
             
-#             if nums[mid] == target:
-#                 result = mid
-#                 right = mid - 1  # Continue searching left
-#             elif nums[mid] &lt; target:
-#                 left = mid + 1
-#             else:
-#                 right = mid - 1
+            if nums[mid] == target:
+                result = mid
+                right = mid - 1  # Continue searching left
+            elif nums[mid] &lt; target:
+                left = mid + 1
+            else:
+                right = mid - 1
                 
-#         return result
+        return result
     
-#     def findRight(nums, target):
-#         &quot;&quot;&quot;Find the rightmost occurrence of target&quot;&quot;&quot;
-#         left, right = 0, len(nums) - 1
-#         result = -1
+    def findRight(nums, target):
+        &quot;&quot;&quot;Find the rightmost occurrence of target&quot;&quot;&quot;
+        left, right = 0, len(nums) - 1
+        result = -1
         
-#         while left &lt;= right:
-#             mid = (left + right) // 2
+        while left &lt;= right:
+            mid = (left + right) // 2
             
-#             if nums[mid] == target:
-#                 result = mid
-#                 left = mid + 1   # Continue searching right
-#             elif nums[mid] &lt; target:
-#                 left = mid + 1
-#             else:
-#                 right = mid - 1
+            if nums[mid] == target:
+                result = mid
+                left = mid + 1   # Continue searching right
+            elif nums[mid] &lt; target:
+                left = mid + 1
+            else:
+                right = mid - 1
                 
-#         return result
+        return result
     
-#     if not nums:
-#         return 0
+    if not nums:
+        return 0
 
-#     if target &lt; nums[0] or target &gt; nums[-1]:
-#         return 0
+    if target &lt; nums[0] or target &gt; nums[-1]:
+        return 0
 
-#     left_pos = findLeft(nums, target)
+    left_pos = findLeft(nums, target)
 
-#     if left_pos == -1:
-#         return 0  # Target not found
+    if left_pos == -1:
+        return 0  # Target not found
     
-#     right_pos = findRight(nums, target)
+    right_pos = findRight(nums, target)
     
-#     # Count = right_pos - left_pos + 1
-#     return right_pos - left_pos + 1
+    # Count = right_pos - left_pos + 1
+    return right_pos - left_pos + 1
 
 
 # Variant 2 : Count Unique Elements in Sorted Array
@@ -549,152 +549,152 @@ class Solution:
 # Given an array of integers nums sorted in non-decreasing order, count the number of unique (distinct) elements in the array.
 
 # Examples:
-#     Input: nums = [1, 1, 2, 2, 2, 3]
-#     Output: 3
-#     Explanation: The unique elements are 1, 2, and 3
+    Input: nums = [1, 1, 2, 2, 2, 3]
+    Output: 3
+    Explanation: The unique elements are 1, 2, and 3
     
-#     Input: nums = [1, 2, 3, 4, 5]
-#     Output: 5
-#     Explanation: All elements are unique
+    Input: nums = [1, 2, 3, 4, 5]
+    Output: 5
+    Explanation: All elements are unique
     
-#     Input: nums = [7, 7, 7, 7]
-#     Output: 1
-#     Explanation: Only one unique element (7)
+    Input: nums = [7, 7, 7, 7]
+    Output: 1
+    Explanation: Only one unique element (7)
     
-#     Input: nums = []
-#     Output: 0
-#     Explanation: Empty array has no elements
+    Input: nums = []
+    Output: 0
+    Explanation: Empty array has no elements
 
 # Note: Linear scan is more optimal O(n) vs O(k*log n).
 # This binary search approach only wins when k &lt;&lt; n (very few unique elements).
 
-# def countUniqueElementsBinarySearch(nums):
-#     &quot;&quot;&quot;
-#     Count unique elements using binary search.
+def countUniqueElementsBinarySearch(nums):
+    &quot;&quot;&quot;
+    Count unique elements using binary search.
     
-#     Time: O(k * log n) where k = unique elements
-#     Space: O(1)
+    Time: O(k * log n) where k = unique elements
+    Space: O(1)
     
-#     Approach:
-#         1. Start at first element
-#         2. Binary search to find where it ends
-#         3. Jump to next unique element
-#         4. Repeat
+    Approach:
+        1. Start at first element
+        2. Binary search to find where it ends
+        3. Jump to next unique element
+        4. Repeat
     
-#     Example: nums = [1, 1, 2, 2, 2, 3]
-#                      ↑     ↑        ↑
-#                      i=0   i=2      i=5
-#         Step 1: i=0, find end of 1 at index 1, jump to i=2
-#         Step 2: i=2, find end of 2 at index 4, jump to i=5
-#         Step 3: i=5, find end of 3 at index 5, jump to i=6 (done)
-#         Result: 3 unique
+    Example: nums = [1, 1, 2, 2, 2, 3]
+                     ↑     ↑        ↑
+                     i=0   i=2      i=5
+        Step 1: i=0, find end of 1 at index 1, jump to i=2
+        Step 2: i=2, find end of 2 at index 4, jump to i=5
+        Step 3: i=5, find end of 3 at index 5, jump to i=6 (done)
+        Result: 3 unique
     
-#     Why not findLeft()?
-#         - We scan left-to-right, so &#x27;i&#x27; is always the leftmost position
-#         - We jump past complete groups: i = right_pos + 1
-#         - Calling findLeft would just return &#x27;i&#x27; (redundant)
+    Why not findLeft()?
+        - We scan left-to-right, so &#x27;i&#x27; is always the leftmost position
+        - We jump past complete groups: i = right_pos + 1
+        - Calling findLeft would just return &#x27;i&#x27; (redundant)
     
-#     When Binary Search WINS:
-#         nums = [1]*500,000 + [2]*500,000  (n=1M, k=2)
-#         Linear:  1,000,000 operations
-#         Binary:  2 * log(1M) ≈ 40 operations  ✅ Binary wins!
+    When Binary Search WINS:
+        nums = [1]*500,000 + [2]*500,000  (n=1M, k=2)
+        Linear:  1,000,000 operations
+        Binary:  2 * log(1M) ≈ 40 operations  ✅ Binary wins!
     
-#     When Linear WINS (most common):
-#         nums = [1, 2, 3, ..., 1000]  (n=1000, k=1000, all unique)
-#         Linear:  1,000 operations  ✅ Linear wins!
-#         Binary:  1000 * log(1000) ≈ 10,000 operations
-#     &quot;&quot;&quot;
+    When Linear WINS (most common):
+        nums = [1, 2, 3, ..., 1000]  (n=1000, k=1000, all unique)
+        Linear:  1,000 operations  ✅ Linear wins!
+        Binary:  1000 * log(1000) ≈ 10,000 operations
+    &quot;&quot;&quot;
     
-#     if not nums:
-#         return 0
+    if not nums:
+        return 0
     
-#     def findRight(nums, target):
-#         &quot;&quot;&quot;Find rightmost occurrence of target.&quot;&quot;&quot;
-#         left, right = 0, len(nums) - 1
-#         result = -1
+    def findRight(nums, target):
+        &quot;&quot;&quot;Find rightmost occurrence of target.&quot;&quot;&quot;
+        left, right = 0, len(nums) - 1
+        result = -1
         
-#         while left &lt;= right:  # Use &lt;= to check when left == right
-#             mid = (left + right) // 2
+        while left &lt;= right:  # Use &lt;= to check when left == right
+            mid = (left + right) // 2
             
-#             if nums[mid] == target:
-#                 result = mid
-#                 left = mid + 1  # Continue searching right
-#             elif nums[mid] &lt; target:
-#                 left = mid + 1
-#             else:
-#                 right = mid - 1
+            if nums[mid] == target:
+                result = mid
+                left = mid + 1  # Continue searching right
+            elif nums[mid] &lt; target:
+                left = mid + 1
+            else:
+                right = mid - 1
                 
-#         return result
+        return result
     
-#     unique_count = 0
-#     i = 0  # i is always the leftmost position of current element
+    unique_count = 0
+    i = 0  # i is always the leftmost position of current element
     
-#     # Process array by jumping from one unique element to the next
-#     # ⚠️  Note: Even though we &quot;jump&quot;, we still examine O(n) positions
-#     # in total across all jumps, then add O(k * log n) for binary searches.
-#     # This is why the total complexity is O(k * log n), not better.
+    # Process array by jumping from one unique element to the next
+    # ⚠️  Note: Even though we &quot;jump&quot;, we still examine O(n) positions
+    # in total across all jumps, then add O(k * log n) for binary searches.
+    # This is why the total complexity is O(k * log n), not better.
 
-#     while i &lt; len(nums):
-#         current = nums[i]
+    while i &lt; len(nums):
+        current = nums[i]
         
-#         # Use binary search to find where this element ends
-#         # (rightmost occurrence of current element)
-#         # 
-#         # Why binary search instead of linear scan from i?
-#         # If current element appears many times (e.g., 1000 times),
-#         # binary search finds the end in ~log(n) steps,
-#         # while linear scan would take 1000 steps.
-#         # 
-#         # However, this is the ONLY benefit, and it only helps when
-#         # individual groups are large AND there are few unique elements.
-#         right_pos = findRight(nums, current)
+        # Use binary search to find where this element ends
+        # (rightmost occurrence of current element)
+        # 
+        # Why binary search instead of linear scan from i?
+        # If current element appears many times (e.g., 1000 times),
+        # binary search finds the end in ~log(n) steps,
+        # while linear scan would take 1000 steps.
+        # 
+        # However, this is the ONLY benefit, and it only helps when
+        # individual groups are large AND there are few unique elements.
+        right_pos = findRight(nums, current)
         
-#         unique_count += 1
+        unique_count += 1
         
-#         # Skip to next unique element
-#         i = right_pos + 1
+        # Skip to next unique element
+        i = right_pos + 1
     
-#     return unique_count
+    return unique_count
 
-# def countUniqueElementsLinear(nums):
-#     &quot;&quot;&quot;
-#     ✅ OPTIMAL SOLUTION - Linear scan
+def countUniqueElementsLinear(nums):
+    &quot;&quot;&quot;
+    ✅ OPTIMAL SOLUTION - Linear scan
     
-#     Time: O(n) - always optimal, matches lower bound
-#     Space: O(1)
+    Time: O(n) - always optimal, matches lower bound
+    Space: O(1)
     
-#     Why better than binary search:
-#         - Must examine every element anyway (lower bound is Ω(n))
-#         - Binary search is O(k*log n), worst case O(n*log n) when k=n
-#         - Simpler code, better cache locality
+    Why better than binary search:
+        - Must examine every element anyway (lower bound is Ω(n))
+        - Binary search is O(k*log n), worst case O(n*log n) when k=n
+        - Simpler code, better cache locality
     
-#     When Linear WINS (common):
-#         Example 1: nums = [1, 2, 3, 4, 5] (all unique, k=n)
-#             Linear:  5 operations  ✅
-#             Binary:  5 * log(5) ≈ 12 operations
+    When Linear WINS (common):
+        Example 1: nums = [1, 2, 3, 4, 5] (all unique, k=n)
+            Linear:  5 operations  ✅
+            Binary:  5 * log(5) ≈ 12 operations
         
-#         Example 2: nums = [1,1,2,2,3,3,4,4,5,5] (k=n/2)
-#             Linear:  10 operations  ✅
-#             Binary:  5 * log(10) ≈ 17 operations
+        Example 2: nums = [1,1,2,2,3,3,4,4,5,5] (k=n/2)
+            Linear:  10 operations  ✅
+            Binary:  5 * log(10) ≈ 17 operations
     
-#     When Binary WINS (rare):
-#         Example: nums = [1]*1M + [2]*1M (only 2 unique, k=2)
-#             Linear:  2,000,000 operations
-#             Binary:  2 * log(2M) ≈ 42 operations  ✅
-#             BUT: This scenario is uncommon in practice!
+    When Binary WINS (rare):
+        Example: nums = [1]*1M + [2]*1M (only 2 unique, k=2)
+            Linear:  2,000,000 operations
+            Binary:  2 * log(2M) ≈ 42 operations  ✅
+            BUT: This scenario is uncommon in practice!
     
-#     Use this for production code!
-#     &quot;&quot;&quot;
-#     if not nums:
-#         return 0
+    Use this for production code!
+    &quot;&quot;&quot;
+    if not nums:
+        return 0
     
-#     unique_count = 1  # First element always unique
+    unique_count = 1  # First element always unique
     
-#     for i in range(1, len(nums)):
-#         if nums[i] != nums[i-1]:
-#             unique_count += 1
+    for i in range(1, len(nums)):
+        if nums[i] != nums[i-1]:
+            unique_count += 1
     
-#     return unique_count
+    return unique_count
  
         
         </code></pre>
