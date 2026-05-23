@@ -209,11 +209,11 @@ URL: https://leetcode.com/problems/range-sum-of-bst/
 &quot;&quot;&quot;
 
 # Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 
 # Iterative Solution / Preorder traversal with pruning (Preferable)
 
@@ -330,18 +330,18 @@ class Solution:
 
 # You can do a simple traversal:
 
-# class Solution:
-#     def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -&gt; int:
-#         self.ans = 0
-#         def inorder(node):
-#             if not node:
-#                 return
-#             inorder(node.left)
-#             if low &lt;= node.val &lt;= high:
-#                 self.ans += node.val
-#             inorder(node.right)
-#         inorder(root)
-#         return self.ans
+class Solution:
+    def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -&gt; int:
+        self.ans = 0
+        def inorder(node):
+            if not node:
+                return
+            inorder(node.left)
+            if low &lt;= node.val &lt;= high:
+                self.ans += node.val
+            inorder(node.right)
+        inorder(root)
+        return self.ans
 
 
 # ✅ Works
@@ -351,15 +351,15 @@ class Solution:
 
 # You can slightly improve it with pruning:
 
-# def inorder(node):
-#     if not node:
-#         return
-#     if node.val &gt; low:   # left side *might* have valid nodes
-#         inorder(node.left)
-#     if low &lt;= node.val &lt;= high:
-#         self.ans += node.val
-#     if node.val &lt; high:  # right side *might* have valid nodes
-#         inorder(node.right)
+def inorder(node):
+    if not node:
+        return
+    if node.val &gt; low:   # left side *might* have valid nodes
+        inorder(node.left)
+    if low &lt;= node.val &lt;= high:
+        self.ans += node.val
+    if node.val &lt; high:  # right side *might* have valid nodes
+        inorder(node.right)
 
 # Now it prunes some branches — closer to optimal.
 
@@ -370,20 +370,20 @@ class Solution:
 
 # Example:
 
-# class Solution:
-#     def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -&gt; int:
-#         self.ans = 0
-#         def preorder(node):
-#             if not node:
-#                 return
-#             if low &lt;= node.val &lt;= high:
-#                 self.ans += node.val
-#             if node.val &gt; low:   # left may contain valid values
-#                 preorder(node.left)
-#             if node.val &lt; high:  # right may contain valid values
-#                 preorder(node.right)
-#         preorder(root)
-#         return self.ans
+class Solution:
+    def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -&gt; int:
+        self.ans = 0
+        def preorder(node):
+            if not node:
+                return
+            if low &lt;= node.val &lt;= high:
+                self.ans += node.val
+            if node.val &gt; low:   # left may contain valid values
+                preorder(node.left)
+            if node.val &lt; high:  # right may contain valid values
+                preorder(node.right)
+        preorder(root)
+        return self.ans
 
 
 # ✅ Correct
@@ -398,15 +398,15 @@ class Solution:
 
 # Also possible, but unnecessary:
 
-# def postorder(node):
-#     if not node:
-#         return
-#     if node.val &gt; low:
-#         postorder(node.left)
-#     if node.val &lt; high:
-#         postorder(node.right)
-#     if low &lt;= node.val &lt;= high:
-#         self.ans += node.val
+def postorder(node):
+    if not node:
+        return
+    if node.val &gt; low:
+        postorder(node.left)
+    if node.val &lt; high:
+        postorder(node.right)
+    if low &lt;= node.val &lt;= high:
+        self.ans += node.val
 
 # Order doesn’t matter for sum, so no advantage.
 
@@ -414,418 +414,418 @@ class Solution:
 
 # Recursive DFS with pruning
 
-# class Solution:
-#     def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -&gt; int:
-#         def dfs(node):
-#             if node:
-#                 if low &lt;= node.val &lt;= high:
-#                     self.total += node.val
-#                 if low &lt; node.val:
-#                     dfs(node.left)
-#                 if node.val &lt; high:
-#                     dfs(node.right)
+class Solution:
+    def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -&gt; int:
+        def dfs(node):
+            if node:
+                if low &lt;= node.val &lt;= high:
+                    self.total += node.val
+                if low &lt; node.val:
+                    dfs(node.left)
+                if node.val &lt; high:
+                    dfs(node.right)
 
-#         self.total = 0
-#         dfs(root)
-#         return self.total
+        self.total = 0
+        dfs(root)
+        return self.total
 
 # Variant 1 : Return the average
 
-# def rangeAverageBST_iterative(self, root, low, high):
-#     # Edge case: empty tree
-#     if not root:
-#         return 0
+def rangeAverageBST_iterative(self, root, low, high):
+    # Edge case: empty tree
+    if not root:
+        return 0
 
-#     if low &gt; high:
-#         return 0
+    if low &gt; high:
+        return 0
         
-#     total_sum = 0
-#     count = 0
+    total_sum = 0
+    count = 0
         
-#     # Initialize stack with root node
-#     stack = [root]
+    # Initialize stack with root node
+    stack = [root]
         
-#     while stack:
-#         # Pop the most recently added node (DFS/Preorder behavior)
-#         node = stack.pop()
+    while stack:
+        # Pop the most recently added node (DFS/Preorder behavior)
+        node = stack.pop()
             
-#         if node:
-#             # STEP 1: Process current node (PREORDER)
-#             # Check if current node&#x27;s value is in range [low, high]
-#             if low &lt;= node.val &lt;= high:
-#                 total_sum += node.val
-#                 count += 1
+        if node:
+            # STEP 1: Process current node (PREORDER)
+            # Check if current node&#x27;s value is in range [low, high]
+            if low &lt;= node.val &lt;= high:
+                total_sum += node.val
+                count += 1
                 
-#             # STEP 2: Add LEFT child with pruning
-#             # Only explore left subtree if current value &gt; low
-#             if node.val &gt; low:
-#                 stack.append(node.left)
+            # STEP 2: Add LEFT child with pruning
+            # Only explore left subtree if current value &gt; low
+            if node.val &gt; low:
+                stack.append(node.left)
                 
-#             # STEP 3: Add RIGHT child with pruning
-#             # Only explore right subtree if current value &lt; high
-#             if node.val &lt; high:
-#                 stack.append(node.right)
+            # STEP 3: Add RIGHT child with pruning
+            # Only explore right subtree if current value &lt; high
+            if node.val &lt; high:
+                stack.append(node.right)
         
-#     # Handle edge case: no nodes in range
-#     if count == 0:
-#         return 0
+    # Handle edge case: no nodes in range
+    if count == 0:
+        return 0
         
-#     return total_sum / count
+    return total_sum / count
 
 
 # Variant 2 : Given the root node of a binary search tree and two integers low and high, return the sum of values of all nodes with a value in the inclusive range [low, high]. Note: At most 10^4 calls will be made to rangeSumBST.
 
-# class Solution:
-#     &quot;&quot;&quot;
-#     OPTIMAL SOLUTION for calculating range sums in a BST with multiple queries.
+class Solution:
+    &quot;&quot;&quot;
+    OPTIMAL SOLUTION for calculating range sums in a BST with multiple queries.
     
-#     Key Idea:
-#     - Preprocess the tree ONCE in __init__ to build sorted array + prefix sums
-#     - Answer each query in O(log n) time using binary search
+    Key Idea:
+    - Preprocess the tree ONCE in __init__ to build sorted array + prefix sums
+    - Answer each query in O(log n) time using binary search
     
-#     Perfect for when calculate() is called many times (up to 10,000 times).
+    Perfect for when calculate() is called many times (up to 10,000 times).
     
-#     Example Usage:
-#         root = TreeNode(10)
-#         root.left = TreeNode(5)
-#         root.right = TreeNode(15)
+    Example Usage:
+        root = TreeNode(10)
+        root.left = TreeNode(5)
+        root.right = TreeNode(15)
         
-#         sol = Solution(root)  # Preprocessing happens here (O(n))
-#         result1 = sol.calculate(7, 15)  # Fast query (O(log n))
-#         result2 = sol.calculate(3, 10)  # Fast query (O(log n))
-#         # ... can call calculate() 10,000 more times efficiently
-#     &quot;&quot;&quot;
+        sol = Solution(root)  # Preprocessing happens here (O(n))
+        result1 = sol.calculate(7, 15)  # Fast query (O(log n))
+        result2 = sol.calculate(3, 10)  # Fast query (O(log n))
+        # ... can call calculate() 10,000 more times efficiently
+    &quot;&quot;&quot;
     
-#     def __init__(self, root):
-#         &quot;&quot;&quot;
-#         Constructor: Preprocess the BST to enable fast range queries.
+    def __init__(self, root):
+        &quot;&quot;&quot;
+        Constructor: Preprocess the BST to enable fast range queries.
         
-#         This is called ONCE when the Solution object is created.
-#         We build two arrays that will be used for ALL future queries:
+        This is called ONCE when the Solution object is created.
+        We build two arrays that will be used for ALL future queries:
         
-#         1. vals: Sorted array of all node values (via inorder traversal)
-#         2. prefix_sums: Cumulative sums for O(1) range sum calculation
+        1. vals: Sorted array of all node values (via inorder traversal)
+        2. prefix_sums: Cumulative sums for O(1) range sum calculation
         
-#         Time Complexity: O(n) where n = number of nodes
-#         Space Complexity: O(n) to store the arrays
+        Time Complexity: O(n) where n = number of nodes
+        Space Complexity: O(n) to store the arrays
         
-#         Args:
-#             root: The root node of the BST
-#         &quot;&quot;&quot;
-#         # Initialize empty arrays that will store preprocessed data
-#         self.vals = []         # Will contain: [val1, val2, val3, ...] in sorted order
-#         self.prefix_sums = []  # Will contain: [sum1, sum1+sum2, sum1+sum2+sum3, ...]
+        Args:
+            root: The root node of the BST
+        &quot;&quot;&quot;
+        # Initialize empty arrays that will store preprocessed data
+        self.vals = []         # Will contain: [val1, val2, val3, ...] in sorted order
+        self.prefix_sums = []  # Will contain: [sum1, sum1+sum2, sum1+sum2+sum3, ...]
 
-#         # EDGE CASE: Empty tree (root is None)
-#         # If root is None, vals and prefix_sums remain empty []
-#         # This is handled gracefully - calculate() will return 0 for empty arrays
-#         # We don&#x27;t need explicit check here, but could add:
-#         if not root:
-#             return  # Early exit, arrays stay empty
+        # EDGE CASE: Empty tree (root is None)
+        # If root is None, vals and prefix_sums remain empty []
+        # This is handled gracefully - calculate() will return 0 for empty arrays
+        # We don&#x27;t need explicit check here, but could add:
+        if not root:
+            return  # Early exit, arrays stay empty
         
-#         # Perform inorder traversal to populate both arrays
-#         # After this call, vals and prefix_sums will be fully built
-#         self.inorder(root)
+        # Perform inorder traversal to populate both arrays
+        # After this call, vals and prefix_sums will be fully built
+        self.inorder(root)
     
-#     def inorder(self, root):
-#         &quot;&quot;&quot;
-#         Perform inorder traversal to build sorted values array and prefix sums.
+    def inorder(self, root):
+        &quot;&quot;&quot;
+        Perform inorder traversal to build sorted values array and prefix sums.
         
-#         Inorder traversal of BST visits nodes in SORTED order:
-#         LEFT → ROOT → RIGHT
+        Inorder traversal of BST visits nodes in SORTED order:
+        LEFT → ROOT → RIGHT
         
-#         This gives us values in ascending order, which is perfect for binary search.
+        This gives us values in ascending order, which is perfect for binary search.
         
-#         Example:
-#             Tree:    5
-#                     / \
-#                    3   7
-#                   /
-#                  1
+        Example:
+            Tree:    5
+                    / \
+                   3   7
+                  /
+                 1
             
-#             Traversal order: 1 → 3 → 5 → 7
-#             Result: vals = [1, 3, 5, 7]
-#                     prefix_sums = [1, 4, 9, 16]
+            Traversal order: 1 → 3 → 5 → 7
+            Result: vals = [1, 3, 5, 7]
+                    prefix_sums = [1, 4, 9, 16]
         
-#         Time: O(n) - visit each node once
-#         Space: O(h) for recursion stack where h = height
+        Time: O(n) - visit each node once
+        Space: O(h) for recursion stack where h = height
         
-#         Args:
-#             root: Current node being processed
-#         &quot;&quot;&quot;
-#         # BASE CASE: If node is None, nothing to process
-#         if root is None:
-#             return
+        Args:
+            root: Current node being processed
+        &quot;&quot;&quot;
+        # BASE CASE: If node is None, nothing to process
+        if root is None:
+            return
         
-#         # STEP 1: Process LEFT subtree first
-#         # This ensures we visit smaller values before larger ones
-#         # Recursively traverse left, building up our sorted array
-#         self.inorder(root.left)
+        # STEP 1: Process LEFT subtree first
+        # This ensures we visit smaller values before larger ones
+        # Recursively traverse left, building up our sorted array
+        self.inorder(root.left)
         
-#         # STEP 2: Process CURRENT node (happens AFTER left subtree)
-#         # At this point, all nodes smaller than current have been added to vals
-#         self.vals.append(root.val)
+        # STEP 2: Process CURRENT node (happens AFTER left subtree)
+        # At this point, all nodes smaller than current have been added to vals
+        self.vals.append(root.val)
         
-#         # STEP 3: Build prefix sum array incrementally
-#         # prefix_sums[i] = sum of all values from index 0 to i (inclusive)
+        # STEP 3: Build prefix sum array incrementally
+        # prefix_sums[i] = sum of all values from index 0 to i (inclusive)
         
-#         if not self.prefix_sums:
-#             # First element: prefix sum equals the value itself
-#             # Example: If first node is 1, then prefix_sums = [1]
-#             self.prefix_sums.append(root.val)
-#         else:
-#             # Subsequent elements: add current value to the last prefix sum
-#             # This creates cumulative sum
-#             self.prefix_sums.append(self.prefix_sums[-1] + root.val)
+        if not self.prefix_sums:
+            # First element: prefix sum equals the value itself
+            # Example: If first node is 1, then prefix_sums = [1]
+            self.prefix_sums.append(root.val)
+        else:
+            # Subsequent elements: add current value to the last prefix sum
+            # This creates cumulative sum
+            self.prefix_sums.append(self.prefix_sums[-1] + root.val)
         
-#         # STEP 4: Process RIGHT subtree last
-#         # This ensures larger values come after smaller ones in our array
-#         self.inorder(root.right)
+        # STEP 4: Process RIGHT subtree last
+        # This ensures larger values come after smaller ones in our array
+        self.inorder(root.right)
     
-#     def find_right_boundary(self, left, right, upper):
-#         &quot;&quot;&quot;
-#         Binary search to find the RIGHTMOST index where vals[i] &lt;= upper.
+    def find_right_boundary(self, left, right, upper):
+        &quot;&quot;&quot;
+        Binary search to find the RIGHTMOST index where vals[i] &lt;= upper.
         
-#         Goal: Find the LAST (rightmost) position in our sorted array that
-#               contains a value &lt;= upper. This marks the END of our range.
+        Goal: Find the LAST (rightmost) position in our sorted array that
+              contains a value &lt;= upper. This marks the END of our range.
         
-#         Why rightmost? We want to include ALL values &lt;= upper in our sum.
+        Why rightmost? We want to include ALL values &lt;= upper in our sum.
         
-#         Example:
-#             vals = [1, 3, 5, 7, 9]
-#             upper = 7
+        Example:
+            vals = [1, 3, 5, 7, 9]
+            upper = 7
             
-#             Values &lt;= 7: [1, 3, 5, 7] at indices [0, 1, 2, 3]
-#             We want index 3 (the rightmost one)
+            Values &lt;= 7: [1, 3, 5, 7] at indices [0, 1, 2, 3]
+            We want index 3 (the rightmost one)
         
-#         Algorithm:
-#             - If vals[mid] &lt;= upper: This could be our answer, but check RIGHT 
-#               for potentially larger valid values
-#             - If vals[mid] &gt; upper: This is too large, search LEFT
+        Algorithm:
+            - If vals[mid] &lt;= upper: This could be our answer, but check RIGHT 
+              for potentially larger valid values
+            - If vals[mid] &gt; upper: This is too large, search LEFT
         
-#         Time: O(log n)
+        Time: O(log n)
         
-#         &quot;&quot;&quot;
-#         # Standard binary search loop
-#         # IMPORTANT: We use &quot;left &lt;= right&quot; (not &quot;left &lt; right&quot;)
-#         # This ensures we check the FINAL element when left == right
-#         # Example: If left=2, right=2, we still need to check vals[2]
-#         # With &quot;left &lt; right&quot;, the loop would exit without checking it!
-#         while left &lt;= right:
-#             mid = (right - left) // 2 + left 
-#             # Check if middle element is within our upper bound
-#             if self.vals[mid] &lt;= upper:
-#                 left = mid + 1
-#             else:
-#                 right = mid - 1
+        &quot;&quot;&quot;
+        # Standard binary search loop
+        # IMPORTANT: We use &quot;left &lt;= right&quot; (not &quot;left &lt; right&quot;)
+        # This ensures we check the FINAL element when left == right
+        # Example: If left=2, right=2, we still need to check vals[2]
+        # With &quot;left &lt; right&quot;, the loop would exit without checking it!
+        while left &lt;= right:
+            mid = (right - left) // 2 + left 
+            # Check if middle element is within our upper bound
+            if self.vals[mid] &lt;= upper:
+                left = mid + 1
+            else:
+                right = mid - 1
 
-#         return right
+        return right
     
-#     def find_left_boundary(self, left, right, lower):
-#         &quot;&quot;&quot;
-#         Binary search to find the LEFTMOST index where vals[i] &gt;= lower.
+    def find_left_boundary(self, left, right, lower):
+        &quot;&quot;&quot;
+        Binary search to find the LEFTMOST index where vals[i] &gt;= lower.
         
-#         Goal: Find the FIRST (leftmost) position in our sorted array that
-#               contains a value &gt;= lower. This marks the START of our range.
+        Goal: Find the FIRST (leftmost) position in our sorted array that
+              contains a value &gt;= lower. This marks the START of our range.
         
-#         Why leftmost? We want to include ALL values &gt;= lower in our sum.
+        Why leftmost? We want to include ALL values &gt;= lower in our sum.
         
-#         Example:
-#             vals = [1, 3, 5, 7, 9]
-#             lower = 3
+        Example:
+            vals = [1, 3, 5, 7, 9]
+            lower = 3
             
-#             Values &gt;= 3: [3, 5, 7, 9] at indices [1, 2, 3, 4]
-#             We want index 1 (the leftmost one)
+            Values &gt;= 3: [3, 5, 7, 9] at indices [1, 2, 3, 4]
+            We want index 1 (the leftmost one)
         
-#         Algorithm:
-#             - If vals[mid] &gt;= lower: This could be our answer, but check LEFT
-#               for potentially smaller valid values
-#             - If vals[mid] &lt; lower: This is too small, search RIGHT
+        Algorithm:
+            - If vals[mid] &gt;= lower: This could be our answer, but check LEFT
+              for potentially smaller valid values
+            - If vals[mid] &lt; lower: This is too small, search RIGHT
         
-#         Time: O(log n)
-#         &quot;&quot;&quot;
-#         # Standard binary search loop
-#         while left &lt;= right:
-#             mid = (right - left) // 2 + left
+        Time: O(log n)
+        &quot;&quot;&quot;
+        # Standard binary search loop
+        while left &lt;= right:
+            mid = (right - left) // 2 + left
 
-#             if self.vals[mid] &gt;= lower:
-#                 right = mid - 1
-#             else:
-#                 left = mid + 1
+            if self.vals[mid] &gt;= lower:
+                right = mid - 1
+            else:
+                left = mid + 1
 
-#         return left
+        return left
     
-#     def calculate(self, lower, upper):
-#         &quot;&quot;&quot;
-#         Calculate the sum of all node values in the range [lower, upper].
+    def calculate(self, lower, upper):
+        &quot;&quot;&quot;
+        Calculate the sum of all node values in the range [lower, upper].
         
-#         This is the main query function that gets called multiple times.
-#         It uses the preprocessed data (vals and prefix_sums) to answer
-#         queries very quickly.
+        This is the main query function that gets called multiple times.
+        It uses the preprocessed data (vals and prefix_sums) to answer
+        queries very quickly.
         
-#         Process:
-#         1. Use binary search to find range boundaries in the sorted array
-#         2. Use prefix sums to calculate the range sum in O(1)
+        Process:
+        1. Use binary search to find range boundaries in the sorted array
+        2. Use prefix sums to calculate the range sum in O(1)
         
-#         Example:
-#             vals = [1, 3, 5, 7]
-#             prefix_sums = [1, 4, 9, 16]
+        Example:
+            vals = [1, 3, 5, 7]
+            prefix_sums = [1, 4, 9, 16]
             
-#             Query: lower=3, upper=7
+            Query: lower=3, upper=7
             
-#             Step 1: Find boundaries
-#                 left_boundary = 1 (first index where vals[i] &gt;= 3)
-#                 right_boundary = 3 (last index where vals[i] &lt;= 7)
+            Step 1: Find boundaries
+                left_boundary = 1 (first index where vals[i] &gt;= 3)
+                right_boundary = 3 (last index where vals[i] &lt;= 7)
             
-#             Step 2: Calculate sum
-#                 We want: vals[1] + vals[2] + vals[3] = 3 + 5 + 7 = 15
-#                 Using prefix sums: prefix_sums[3] - prefix_sums[0] = 16 - 1 = 15
+            Step 2: Calculate sum
+                We want: vals[1] + vals[2] + vals[3] = 3 + 5 + 7 = 15
+                Using prefix sums: prefix_sums[3] - prefix_sums[0] = 16 - 1 = 15
         
-#         Time: O(log n) for binary searches + O(1) for sum calculation = O(log n)
-#         Space: O(1)
+        Time: O(log n) for binary searches + O(1) for sum calculation = O(log n)
+        Space: O(1)
         
-#         &quot;&quot;&quot;
-#         # =================================================================
-#         # EDGE CASE 1: Empty tree (vals is empty)
-#         # =================================================================
-#         # If tree was empty, vals = [] and prefix_sums = []
-#         # No nodes to sum, return 0
-#         # Example: Solution(None) then calculate(5, 10) → 0
-#         if not self.vals:
-#             return 0
+        &quot;&quot;&quot;
+        # =================================================================
+        # EDGE CASE 1: Empty tree (vals is empty)
+        # =================================================================
+        # If tree was empty, vals = [] and prefix_sums = []
+        # No nodes to sum, return 0
+        # Example: Solution(None) then calculate(5, 10) → 0
+        if not self.vals:
+            return 0
         
-#         # =================================================================
-#         # EDGE CASE 2: Invalid range (lower &gt; upper)
-#         # =================================================================
-#         # Although problem guarantees lower &lt;= upper, we add safety check
-#         # Example: calculate(10, 5) → 0 (invalid range)
-#         if lower &gt; upper:
-#             return 0
+        # =================================================================
+        # EDGE CASE 2: Invalid range (lower &gt; upper)
+        # =================================================================
+        # Although problem guarantees lower &lt;= upper, we add safety check
+        # Example: calculate(10, 5) → 0 (invalid range)
+        if lower &gt; upper:
+            return 0
         
-#         # STEP 1: Find the rightmost index where value &lt;= upper
-#         # This gives us the END of our range
-#         # Time: O(log n)
-#         right_boundary = self.find_right_boundary(0, len(self.vals) - 1, upper)
+        # STEP 1: Find the rightmost index where value &lt;= upper
+        # This gives us the END of our range
+        # Time: O(log n)
+        right_boundary = self.find_right_boundary(0, len(self.vals) - 1, upper)
         
-#         # STEP 2: Find the leftmost index where value &gt;= lower
-#         # This gives us the START of our range
-#         # Time: O(log n)
-#         left_boundary = self.find_left_boundary(0, len(self.vals) - 1, lower)
+        # STEP 2: Find the leftmost index where value &gt;= lower
+        # This gives us the START of our range
+        # Time: O(log n)
+        left_boundary = self.find_left_boundary(0, len(self.vals) - 1, lower)
 
-#         # =================================================================
-#         # EDGE CASE 3: No values in range (right_boundary &lt; left_boundary)
-#         # =================================================================
-#         # This can happen in several scenarios:
-#         # 
-#         # Scenario A: All values are below lower
-#         # Example: vals=[1,2,3], lower=10, upper=20
-#         # left_boundary will be len(vals)=3, right_boundary will be 2
-#         # Result: 3 &gt; 2, so no values in range
-#         # 
-#         # Scenario B: All values are above upper
-#         # Example: vals=[10,20,30], lower=1, upper=5
-#         # left_boundary will be 0, right_boundary will be -1
-#         # Result: 0 &gt; -1, so no values in range
-#         # 
-#         # Scenario C: Range falls in gap between values
-#         # Example: vals=[1,2,10,20], lower=5, upper=8
-#         # left_boundary = 2 (first value &gt;= 5 is 10)
-#         # right_boundary = 1 (last value &lt;= 8 is 2)
-#         # Result: 2 &gt; 1, so no values in range
-#         if right_boundary &lt; left_boundary:
-#             return 0
+        # =================================================================
+        # EDGE CASE 3: No values in range (right_boundary &lt; left_boundary)
+        # =================================================================
+        # This can happen in several scenarios:
+        # 
+        # Scenario A: All values are below lower
+        # Example: vals=[1,2,3], lower=10, upper=20
+        # left_boundary will be len(vals)=3, right_boundary will be 2
+        # Result: 3 &gt; 2, so no values in range
+        # 
+        # Scenario B: All values are above upper
+        # Example: vals=[10,20,30], lower=1, upper=5
+        # left_boundary will be 0, right_boundary will be -1
+        # Result: 0 &gt; -1, so no values in range
+        # 
+        # Scenario C: Range falls in gap between values
+        # Example: vals=[1,2,10,20], lower=5, upper=8
+        # left_boundary = 2 (first value &gt;= 5 is 10)
+        # right_boundary = 1 (last value &lt;= 8 is 2)
+        # Result: 2 &gt; 1, so no values in range
+        if right_boundary &lt; left_boundary:
+            return 0
         
-#         # =================================================================
-#         # EDGE CASE 4: right_boundary is out of bounds (&lt; 0)
-#         # =================================================================
-#         # This happens when all values &gt; upper
-#         # Example: vals=[10,20,30], upper=5
-#         # right_boundary will be -1
-#         # Already handled by the check above (since left_boundary &gt;= 0)
-#         if right_boundary &lt; 0:
-#             return 0
+        # =================================================================
+        # EDGE CASE 4: right_boundary is out of bounds (&lt; 0)
+        # =================================================================
+        # This happens when all values &gt; upper
+        # Example: vals=[10,20,30], upper=5
+        # right_boundary will be -1
+        # Already handled by the check above (since left_boundary &gt;= 0)
+        if right_boundary &lt; 0:
+            return 0
         
-#         # =================================================================
-#         # EDGE CASE 5: left_boundary is out of bounds (&gt;= len(vals))
-#         # =================================================================
-#         # This happens when all values &lt; lower
-#         # Example: vals=[1,2,3], lower=10
-#         # left_boundary will be 3 (len(vals))
-#         # Already handled by the check above (since right_boundary &lt; len(vals))
-#         if left_boundary &gt;= len(self.vals):
-#             return 0
+        # =================================================================
+        # EDGE CASE 5: left_boundary is out of bounds (&gt;= len(vals))
+        # =================================================================
+        # This happens when all values &lt; lower
+        # Example: vals=[1,2,3], lower=10
+        # left_boundary will be 3 (len(vals))
+        # Already handled by the check above (since right_boundary &lt; len(vals))
+        if left_boundary &gt;= len(self.vals):
+            return 0
         
-#         # STEP 3: Calculate range sum using prefix sums
-#         # 
-#         # Prefix Sum Formula:
-#         # sum(vals[i] to vals[j]) = prefix_sums[j] - prefix_sums[i-1]
-#         # 
-#         # Why this works:
-#         # prefix_sums[j] = vals[0] + vals[1] + ... + vals[j]
-#         # prefix_sums[i-1] = vals[0] + vals[1] + ... + vals[i-1]
-#         # Difference = vals[i] + vals[i+1] + ... + vals[j] ✓
+        # STEP 3: Calculate range sum using prefix sums
+        # 
+        # Prefix Sum Formula:
+        # sum(vals[i] to vals[j]) = prefix_sums[j] - prefix_sums[i-1]
+        # 
+        # Why this works:
+        # prefix_sums[j] = vals[0] + vals[1] + ... + vals[j]
+        # prefix_sums[i-1] = vals[0] + vals[1] + ... + vals[i-1]
+        # Difference = vals[i] + vals[i+1] + ... + vals[j] ✓
         
-#         # SPECIAL CASE: Starting from the beginning of the array
-#         if left_boundary == 0:
-#             # We want sum from index 0 to right_boundary
-#             # prefix_sums[right_boundary] ALREADY contains this sum
-#             # 
-#             # Example: vals=[1,3,5,7], prefix_sums=[1,4,9,16]
-#             # If we want sum from index 0 to 2 (1+3+5):
-#             #   Just return prefix_sums[2] = 9 ✓
-#             # 
-#             # We can&#x27;t use the formula because prefix_sums[-1] would give
-#             # the LAST element (Python&#x27;s negative indexing), not what we want
-#             return self.prefix_sums[right_boundary]
+        # SPECIAL CASE: Starting from the beginning of the array
+        if left_boundary == 0:
+            # We want sum from index 0 to right_boundary
+            # prefix_sums[right_boundary] ALREADY contains this sum
+            # 
+            # Example: vals=[1,3,5,7], prefix_sums=[1,4,9,16]
+            # If we want sum from index 0 to 2 (1+3+5):
+            #   Just return prefix_sums[2] = 9 ✓
+            # 
+            # We can&#x27;t use the formula because prefix_sums[-1] would give
+            # the LAST element (Python&#x27;s negative indexing), not what we want
+            return self.prefix_sums[right_boundary]
         
-#         # GENERAL CASE: Starting from somewhere in the middle
-#         # Use the standard prefix sum formula
-#         # 
-#         # Example: vals=[1,3,5,7], prefix_sums=[1,4,9,16]
-#         # If we want sum from index 1 to 3 (3+5+7):
-#         #   prefix_sums[3] - prefix_sums[0] = 16 - 1 = 15 ✓
-#         # 
-#         # Breakdown:
-#         #   prefix_sums[3] = 1+3+5+7 = 16 (sum including unwanted 1)
-#         #   prefix_sums[0] = 1          (the part we DON&#x27;T want)
-#         #   Difference = 3+5+7 = 15     (exactly what we want!)
-#         return self.prefix_sums[right_boundary] - self.prefix_sums[left_boundary - 1]
+        # GENERAL CASE: Starting from somewhere in the middle
+        # Use the standard prefix sum formula
+        # 
+        # Example: vals=[1,3,5,7], prefix_sums=[1,4,9,16]
+        # If we want sum from index 1 to 3 (3+5+7):
+        #   prefix_sums[3] - prefix_sums[0] = 16 - 1 = 15 ✓
+        # 
+        # Breakdown:
+        #   prefix_sums[3] = 1+3+5+7 = 16 (sum including unwanted 1)
+        #   prefix_sums[0] = 1          (the part we DON&#x27;T want)
+        #   Difference = 3+5+7 = 15     (exactly what we want!)
+        return self.prefix_sums[right_boundary] - self.prefix_sums[left_boundary - 1]
 
 
-#         # # If we have to return average instead of sum, make the following changes
+        # # If we have to return average instead of sum, make the following changes
 
-#         # # Calculate range SUM (same formula as before)
-#         # if left_boundary == 0:
-#         #     range_sum = self.prefix_sums[right_boundary]
-#         # else:
-#         #     range_sum = self.prefix_sums[right_boundary] - self.prefix_sums[left_boundary - 1]
+        # # Calculate range SUM (same formula as before)
+        # if left_boundary == 0:
+        #     range_sum = self.prefix_sums[right_boundary]
+        # else:
+        #     range_sum = self.prefix_sums[right_boundary] - self.prefix_sums[left_boundary - 1]
 
-#         # # =================================================================
-#         # # KEY INSIGHT: Calculate COUNT directly from indices!
-#         # # =================================================================
-#         # # No need for prefix_counts array
-#         # # The indices tell us how many elements are in the range
-#         # # 
-#         # # Formula: count = right_boundary - left_boundary + 1
-#         # # 
-#         # # Why the +1?
-#         # # - If left_boundary = right_boundary (single element)
-#         # #   count = 0 - 0 + 1 = 1 ✓
-#         # # - If left_boundary = 0, right_boundary = 2 (three elements)
-#         # #   count = 2 - 0 + 1 = 3 ✓
-#         # # 
-#         # # Example: vals=[3,5,7,10,15,18], range [7,15]
-#         # # left_boundary = 2 (index of 7)
-#         # # right_boundary = 4 (index of 15)
-#         # # count = 4 - 2 + 1 = 3 (elements: 7, 10, 15) ✓
-#         # range_count = right_boundary - left_boundary + 1
+        # # =================================================================
+        # # KEY INSIGHT: Calculate COUNT directly from indices!
+        # # =================================================================
+        # # No need for prefix_counts array
+        # # The indices tell us how many elements are in the range
+        # # 
+        # # Formula: count = right_boundary - left_boundary + 1
+        # # 
+        # # Why the +1?
+        # # - If left_boundary = right_boundary (single element)
+        # #   count = 0 - 0 + 1 = 1 ✓
+        # # - If left_boundary = 0, right_boundary = 2 (three elements)
+        # #   count = 2 - 0 + 1 = 3 ✓
+        # # 
+        # # Example: vals=[3,5,7,10,15,18], range [7,15]
+        # # left_boundary = 2 (index of 7)
+        # # right_boundary = 4 (index of 15)
+        # # count = 4 - 2 + 1 = 3 (elements: 7, 10, 15) ✓
+        # range_count = right_boundary - left_boundary + 1
 
-#         # # Division by zero check (should never happen after edge cases above)
-#         # if range_count == 0:
-#         #     return 0
+        # # Division by zero check (should never happen after edge cases above)
+        # if range_count == 0:
+        #     return 0
         
-#         # # Return AVERAGE instead of SUM
-#         # return range_sum / range_count
+        # # Return AVERAGE instead of SUM
+        # return range_sum / range_count
         </code></pre>
       </div>
     </div>
