@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1216. Valid Palindrome III - LeetCode Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+
+:root {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --radius:    6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #e6db74; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy   { color: var(--easy);   background: rgba(44,187,93,0.15); }
+.badge-Medium { color: var(--medium); background: rgba(255,161,22,0.15); }
+.badge-Hard   { color: var(--hard);   background: rgba(239,71,67,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--surface2); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: #1e1e1e !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">1216. Valid Palindrome III</span>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (4)</div>
+        <div class="tab" data-tab="similar">Similar (2)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">1216. Valid Palindrome III</div>
+        <div class="prob-meta">
+          <span class="badge badge-Hard">Hard</span>
+          <span class="tag">String</span><span class="tag">Dynamic Programming</span>
+        </div>
+        <div class="prob-stats">109.2K / 222K (49.2%)</div>
+        <div class="prob-desc"><p>Given a string <code>s</code> and an integer <code>k</code>, return <code>true</code> if <code>s</code> is a <code>k</code><strong>-palindrome</strong>.</p>
+<p>A string is <code>k</code><strong>-palindrome</strong> if it can be transformed into a palindrome by removing at most <code>k</code> characters from it.</p>
+<p>Example 1:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> s = &quot;abcdeca&quot;, k = 2
+<strong>Output:</strong> true
+<strong>Explanation:</strong> Remove &#x27;b&#x27; and &#x27;e&#x27; characters.
+</code></pre>
+<p>Example 2:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> s = &quot;abbababa&quot;, k = 1
+<strong>Output:</strong> true
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= s.length &lt;= 1000</code></li>
+</ul>
+	
+<ul>
+<li><code>s</code> consists of only lowercase English letters.</li>
+</ul>
+	
+<ul>
+<li><code>1 &lt;= k &lt;= s.length</code></li>
+</ul></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        
+<details class="hint-block">
+  <summary>Hint 1</summary>
+  <div class="hint-body"><p>Can you reduce this problem to a classic problem?</p></div>
+</details>
+<details class="hint-block">
+  <summary>Hint 2</summary>
+  <div class="hint-body"><p>The problem is equivalent to finding any palindromic subsequence of length at least N-K where N is the length of the string.</p></div>
+</details>
+<details class="hint-block">
+  <summary>Hint 3</summary>
+  <div class="hint-body"><p>Try to find the longest palindromic subsequence.</p></div>
+</details>
+<details class="hint-block">
+  <summary>Hint 4</summary>
+  <div class="hint-body"><p>Use DP to do that.</p></div>
+</details>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/valid-palindrome-ii/" target="_blank">Valid Palindrome II</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/valid-palindrome-iv/" target="_blank">Valid Palindrome IV</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 1216. Valid Palindrome III
+Difficulty: Hard
+URL: https://leetcode.com/problems/valid-palindrome-iii/
+&quot;&quot;&quot;
+
+# Approach : Recursion
+
+class Solution:
+    def isValidPalindrome(self, s: str, k: int) -&gt; bool:
+        &quot;&quot;&quot;
+        Determines if string s can become a palindrome by removing at most k characters.
+        Uses naive recursion (no memoization) — add @lru_cache on (left, right, k) for O(n^2 * k).
+
+        TC: O(2^min(k,n)), Work per node → O(1)
+            At each mismatch, two branches are explored (delete left or delete right),
+            and branching depth is bounded by k (each branch decrements k by 1).
+            Worst case when k &gt;= n: every step mismatches and k never runs out,
+            producing a full binary tree of depth n.
+
+            Example — s = &quot;abcde&quot;, k = 5 (all chars distinct, k &gt;= n):
+                (0,4,5): &#x27;a&#x27;≠&#x27;e&#x27; → branches into (1,4,4) and (0,3,4)
+                (1,4,4): &#x27;b&#x27;≠&#x27;e&#x27; → branches into (2,4,3) and (1,3,3)
+                (0,3,4): &#x27;a&#x27;≠&#x27;d&#x27; → branches into (1,3,3) and (0,2,3)  ← (1,3,3) recomputed
+                ...
+            Total calls ≈ 2^5 = 32.
+
+        SC: O(n)
+            Each recursive call advances left or right by at least 1, so
+            max recursion depth is n regardless of k.
+        &quot;&quot;&quot;
+
+        # empty or single char is always a palindrome
+        if len(s) &lt;= 1:
+            return True
+
+        # k covers entire string, always possible
+        if k &gt;= len(s) - 1:
+            return True
+
+        def check_palindrome(s, left, right, k):
+            # base case: left crossed right, valid palindrome
+            if left &gt;= right:
+                return True
+
+            # match: move inward without consuming k
+            if s[left] == s[right]:
+                return check_palindrome(s, left + 1, right - 1, k)
+
+            # mismatch: k==0 check is here (not as standalone early return) because
+            # matching chars must still proceed inward even when k==0.
+            # e.g. s=&quot;aba&quot;, k=0 → &#x27;a&#x27;==&#x27;a&#x27; → check(1,1,0) → True (correct)
+            #      s=&quot;abc&quot;, k=0 → &#x27;a&#x27;!=&#x27;c&#x27;, k==0 → False (correct)
+            if k == 0:
+                return False
+
+            # try deleting left or right character
+            return check_palindrome(s, left + 1, right, k - 1) or check_palindrome(s, left, right - 1, k - 1)
+
+        return check_palindrome(s, 0, len(s) - 1, k)
+
+
+# Approach : Top down recursion with memoization (preferred approach)
+
+class Solution:
+    def isValidPalindrome(self, s: str, k: int) -&gt; bool:
+        &quot;&quot;&quot;
+        Return True if s can be made a palindrome by deleting at most k chars.
+        
+        Time Complexity: O(n²) where n = len(s)
+            WHY IT&#x27;S O(n²):
+            
+            1. Number of Unique States:
+               - Each state is defined by (i, j) where i &lt;= j
+               - For string of length n:
+                 * i can be [0, n-1]
+                 * j can be [i, n-1]
+               - Total states = sum of (n-i) for i in [0, n-1]
+                              = n + (n-1) + (n-2) + ... + 1
+                              = n(n+1)/2
+                              = O(n²)
+            
+            2. Work Per State:
+               - Each state does O(1) work:
+                 * Compare s[i] and s[j]: O(1)
+                 * Make recursive calls: O(1) (already cached)
+                 * Store in memo: O(1)
+            
+            3. Total Time = States × Work = O(n²) × O(1) = O(n²)
+            
+            WHY k DOESN&#x27;T MATTER:
+            - k is only used in the final check: min_del &lt;= k
+            - The recursion explores ALL (i,j) pairs regardless of k
+            - Even if k=0, we still compute min_deletions for all substrings
+            - Even if k=1000, we still compute the same substrings
+            
+            Example: s = &quot;abcd&quot;, k = 1 vs k = 100
+            Both cases compute the SAME states:
+            (0,0) (0,1) (0,2) (0,3)
+                  (1,1) (1,2) (1,3)
+                        (2,2) (2,3)
+                              (3,3)
+            k only affects the return value, not the computation!
+        
+        Space Complexity: O(n²)
+            WHY IT&#x27;S O(n²):
+            
+            1. Memoization Dictionary:
+               - Stores up to n(n+1)/2 = O(n²) entries
+               - Each entry: ((i,j), min_deletions_value)
+               - Dictionary overhead: O(n²)
+            
+            2. Recursion Call Stack:
+               - Maximum depth occurs in worst case
+               - Worst case: all characters different, always recurse deeper
+               - Stack frames: (0,n-1) → (1,n-1) → (2,n-1) → ... → (n-1,n-1)
+               - Or: (0,n-1) → (0,n-2) → (0,n-3) → ... → (0,0)
+               - Maximum depth: O(n)
+            
+            3. Total Space = Memo + Stack = O(n²) + O(n) = O(n²)
+            
+            WHY k DOESN&#x27;T MATTER:
+            - k doesn&#x27;t affect how many states we store
+            - k doesn&#x27;t affect recursion depth
+            - Memo size depends only on (i,j) pairs, not on k
+        
+        Memoization Cache Hits Example:
+            Input: s = &quot;abcabc&quot;, k = 2,  Output : False
+            
+            When we compute min_deletions(1, 4) for substring &quot;bcab&quot; in one branch,
+            and later need the same substring in another branch, we get a cache hit
+            and return the stored result immediately instead of recomputing.
+            
+            Note: States where i &gt;= j (single character or empty) never cause cache
+            hits because they return immediately via the base case before checking memo.
+        
+        Args:
+            s: Input string to check
+            k: Maximum number of deletions allowed
+            
+        Returns:
+            True if s can become a palindrome with at most k deletions
+        &quot;&quot;&quot;
+        
+        def min_deletions(i: int, j: int) -&gt; int:
+            &quot;&quot;&quot;
+            Calculate minimum deletions needed to make s[i..j] a palindrome.
+            
+            Args:
+                i: Left boundary index (inclusive)
+                j: Right boundary index (inclusive)
+                
+            Returns:
+                Minimum number of character deletions needed
+            &quot;&quot;&quot;
+            # Base case 1: Empty string or single character is already a palindrome
+            # 
+            # i == j: Single character remains (ODD-length substring)
+            #   Example: s = &quot;aba&quot;, after matching outer &#x27;a&#x27;s, we reach middle &#x27;b&#x27;
+            #   min_deletions(1, 1) → single char &#x27;b&#x27; → return 0
+            #
+            # i &gt; j: Pointers have crossed (EVEN-length substring fully processed)
+            #   Example: s = &quot;abba&quot;, after matching &#x27;a&#x27;s and &#x27;b&#x27;s, pointers cross
+            #   min_deletions(2, 1) → empty substring → return 0
+            #
+            # Both cases mean no more characters to check → 0 deletions needed
+            if i &gt;= j:
+                return 0
+            
+            # Base case 2: Already computed this subproblem
+            # Check if we&#x27;ve solved this (i, j) pair before
+            if (i, j) in memo:
+                return memo[(i, j)]  # Return cached result (avoids recomputation)
+            
+            # Case 1: Characters at boundaries match
+            if s[i] == s[j]:
+                # No deletion needed for these characters
+                # Just solve for the inner substring s[i+1..j-1]
+                res = min_deletions(i + 1, j - 1)
+            else:
+                # Case 2: Characters at boundaries don&#x27;t match
+                # We must delete one of them - try both options and take minimum
+                
+                # Option 1: Delete left character s[i]
+                # Then solve for s[i+1..j]
+                left = min_deletions(i + 1, j)
+                
+                # Option 2: Delete right character s[j]
+                # Then solve for s[i..j-1]
+                right = min_deletions(i, j - 1)
+                
+                # Add 1 for the deletion we just made, take minimum of both options
+                res = 1 + min(left, right)
+            
+            # Cache the result for this subproblem before returning
+            # This ensures if we encounter (i, j) again, we return immediately
+            memo[(i, j)] = res
+            return res
+
+
+        # OPTIMIZATION: Early return when k is large enough
+        # If we can delete n-1 characters, we&#x27;re left with ≤1 character
+        # Any string with ≤1 character is always a palindrome
+        #
+        # This check covers:
+        # ✅ Empty strings (len=0): k &gt;= -1 (always true)
+        # ✅ Single characters (len=1): k &gt;= 0 (true for valid k)
+        # ✅ Large k cases: k &gt;= n-1 guarantees palindrome possible
+        #
+        # Main code EXECUTES when: k &lt; len(s) - 1
+        # - Most common test cases: k=0,1,2,... with reasonable string lengths
+        # - When we need to actually compute minimum deletions
+        #
+        # Main code NEVER EXECUTES when: k &gt;= len(s) - 1
+        # - Single characters with any valid k
+        # - Empty strings
+        # - Cases where k is large enough to delete almost everything
+        if k &gt;= len(s) - 1:
+            return True
+
+        n = len(s)
+        
+        # Memoization dictionary (cache) to avoid recomputing subproblems
+        # Key: (i, j) tuple representing substring boundaries
+        # Value: minimum deletions needed to make s[i..j] a palindrome
+        memo = {}
+        
+        # Compute minimum deletions for entire string
+        min_del = min_deletions(0, n - 1)
+        
+        # Check if we can achieve palindrome within k deletions
+        return min_del &lt;= k
+
+
+# Without class
+
+# def is_valid_palindrome(s: str, k: int) -&gt; bool:
+#     # Optimization: can always reduce to ≤1 char
+#     if k &gt;= len(s) - 1:
+#         return True
+
+#     memo = {}
+
+#     def min_deletions(i: int, j: int) -&gt; int:
+#         if i &gt;= j:
+#             return 0
+        
+#         if (i, j) in memo:
+#             return memo[(i, j)]
+        
+#         if s[i] == s[j]:
+#             res = min_deletions(i + 1, j - 1)
+#         else:
+#             res = 1 + min(
+#                 min_deletions(i + 1, j),
+#                 min_deletions(i, j - 1)
+#             )
+        
+#         memo[(i, j)] = res
+#         return res
+
+#     return min_deletions(0, len(s) - 1) &lt;= k
+
+# Using lru_cache
+
+from functools import lru_cache
+
+class Solution:
+    def isValidPalindrome(self, s: str, k: int) -&gt; bool:
+        &quot;&quot;&quot;
+        Return True if s can be made a palindrome by deleting at most k chars.
+
+        TC: O(n²)
+            - Unique states: (i, j) pairs where i &lt;= j → n(n+1)/2 = O(n²)
+            - Work per state: O(1) — compare chars, recursive calls hit cache
+            - Total: O(n²) × O(1) = O(n²)
+            - k doesn&#x27;t affect state space — recursion explores all (i,j) pairs
+              regardless of k; k only affects the final comparison min_del &lt;= k
+
+        SC: O(n²)
+            - lru_cache stores up to O(n²) (i,j) entries
+            - Recursion stack depth: O(n)
+            - Total: O(n²) + O(n) = O(n²)
+
+        lru_cache (Least Recently Used Cache):
+            - Python decorator from functools that memoizes function results
+            - Stores return value for each unique set of arguments as a key-value pair:
+                key   : function arguments as a tuple, e.g. (i=1, j=3) → (1, 3)
+                value : return value, e.g. min_deletions(1, 3) = 2
+            - On repeated calls with same args, returns cached value in O(1)
+            - maxsize=None: unlimited cache size (no eviction)
+            - Requires arguments to be hashable — tuples/ints work, lists don&#x27;t
+            - Equivalent to manually maintaining a memo dict, but cleaner:
+                manual : if (i,j) in memo: return memo[(i,j)]
+                         memo[(i,j)] = result; return result
+                lru     : @lru_cache(maxsize=None) handles this automatically
+        &quot;&quot;&quot;
+        if k &gt;= len(s) - 1:
+            return True
+
+        @lru_cache(maxsize=None)
+        def min_deletions(i: int, j: int) -&gt; int:
+            # base case: single char or crossed pointers → already a palindrome
+            if i &gt;= j:
+                return 0
+
+            # match: no deletion needed, solve inner substring
+            if s[i] == s[j]:
+                return min_deletions(i + 1, j - 1)
+
+            # mismatch: delete left or right, take minimum
+            return 1 + min(min_deletions(i + 1, j), min_deletions(i, j - 1))
+
+        return min_deletions(0, len(s) - 1) &lt;= k
+
+
+# k aware solution 
+
+class Solution:
+    def isValidPalindrome(self, s: str, k: int) -&gt; bool:
+        &quot;&quot;&quot;
+        Return True if s can be made a palindrome by deleting at most k chars.
+        K-aware approach: threads deletions_left through recursion for early pruning.
+
+        TC: O(n² × k)
+            - Unique states: (i, j, deletions_left) → O(n²) × O(k) = O(n²k)
+            - Work per state: O(1)
+            - Same (i,j) reachable with different deletions_left values via
+              different deletion paths, so k is part of the state space.
+            - Best case O(n²): small k, heavy early pruning via deletions_left == 0
+
+        SC: O(n² × k)
+            - memo stores up to O(n²k) (i, j, deletions_left) entries
+            - Recursion stack depth: O(n)
+            - Total: O(n²k) + O(n) = O(n²k)
+
+        Comparison with k-unaware min_deletions approach:
+            k-unaware : TC O(n²),   SC O(n²)  — better when k ≈ n
+            k-aware   : TC O(n²k),  SC O(n²k) — better when k &lt;&lt; n (early pruning)
+        &quot;&quot;&quot;
+        if k &gt;= len(s) - 1:
+            return True
+
+        memo = {}
+
+        def can_palindrome(i: int, j: int, deletions_left: int) -&gt; bool:
+            # base case: single char or crossed pointers → already a palindrome
+            if i &gt;= j:
+                return True
+
+            if (i, j, deletions_left) in memo:
+                return memo[(i, j, deletions_left)]
+
+            # match: move inward without consuming deletions_left
+            if s[i] == s[j]:
+                result = can_palindrome(i + 1, j - 1, deletions_left)
+
+            else:
+                # mismatch: deletions_left==0 check here (not as standalone early return)
+                # because matching chars must still proceed inward even when deletions_left==0.
+                # e.g. s=&quot;aba&quot;, k=0 → &#x27;a&#x27;==&#x27;a&#x27; → can_palindrome(1,1,0) → True
+                #      s=&quot;ab&quot;,  k=0 → &#x27;a&#x27;!=&#x27;b&#x27;, deletions_left==0 → False
+                if deletions_left == 0:
+                    memo[(i, j, deletions_left)] = False # not required, can skip
+                    return False
+
+                # try deleting left or right character
+                result = can_palindrome(i + 1, j, deletions_left - 1) or \
+                         can_palindrome(i, j - 1, deletions_left - 1)
+
+            memo[(i, j, deletions_left)] = result
+            return result
+
+        return can_palindrome(0, len(s) - 1, k)
+
+
+from functools import lru_cache
+
+class Solution:
+    def isValidPalindrome(self, s: str, k: int) -&gt; bool:
+        &quot;&quot;&quot;
+        Return True if s can be made a palindrome by deleting at most k chars.
+        K-aware approach: threads deletions_left through recursion for early pruning.
+
+        TC: O(n² × k)
+            - Unique states: (i, j, deletions_left) → O(n²) × O(k) = O(n²k)
+            - Work per state: O(1)
+            - Same (i,j) reachable with different deletions_left values via
+              different deletion paths, so k is part of the state space.
+            - Best case O(n²): small k, heavy early pruning via deletions_left == 0
+
+        SC: O(n² × k)
+            - lru_cache stores up to O(n²k) (i, j, deletions_left) entries
+            - Recursion stack depth: O(n)
+            - Total: O(n²k) + O(n) = O(n²k)
+
+        Comparison with k-unaware min_deletions approach:
+            k-unaware : TC O(n²),   SC O(n²)  — better when k ≈ n
+            k-aware   : TC O(n²k),  SC O(n²k) — better when k &lt;&lt; n (early pruning)
+        &quot;&quot;&quot;
+        if k &gt;= len(s) - 1:
+            return True
+
+        @lru_cache(maxsize=None)
+        def can_palindrome(i: int, j: int, deletions_left: int) -&gt; bool:
+            # base case: single char or crossed pointers → already a palindrome
+            if i &gt;= j:
+                return True
+
+            # match: move inward without consuming deletions_left
+            if s[i] == s[j]:
+                return can_palindrome(i + 1, j - 1, deletions_left)
+
+            # mismatch: k==0 check here (not as standalone early return) because
+            # matching chars must still proceed inward even when deletions_left==0.
+            # e.g. s=&quot;aba&quot;, k=0 → &#x27;a&#x27;==&#x27;a&#x27; → can_palindrome(1,1,0) → True
+            #      s=&quot;ab&quot;,  k=0 → &#x27;a&#x27;!=&#x27;b&#x27;, deletions_left==0 → False
+            if deletions_left == 0:
+                return False
+
+            # try deleting left or right character
+            return can_palindrome(i + 1, j, deletions_left - 1) or \
+                   can_palindrome(i, j - 1, deletions_left - 1)
+
+        return can_palindrome(0, len(s) - 1, k)
+
+
+# Approach : Top-Down DP (2D)
+
+class Solution:
+    def isValidPalindrome(self, s: str, k: int) -&gt; bool:
+        &quot;&quot;&quot;
+        Return True if s can be made a palindrome by deleting at most k chars.
+        
+        2D DP bottom-up approach: Build table iteratively from smaller subproblems.
+        
+        Approach:
+            dp[i][j] = minimum deletions needed to make s[i..j] a palindrome
+            Uses CLOSED interval notation [i, j] — both endpoints inclusive.
+            Conversion to Python slice: s[i..j] ←→ s[i : j+1]
+            
+            Base cases:
+            - dp[i][i] = 0: closed interval [i,i] = single char s[i] → already palindrome
+            - i &gt; j    = 0: closed interval crossed → empty substring → already palindrome
+            
+            Recurrence:
+            - If s[i] == s[j]: dp[i][j] = dp[i+1][j-1]
+              Rationale: Matching chars already satisfy palindrome property.
+                         Keep both (no deletion). Problem reduces to inner substring.
+            
+            - If s[i] != s[j]: dp[i][j] = 1 + min(dp[i+1][j], dp[i][j-1])
+              Rationale: Chars don&#x27;t match, must delete one.
+                         Try both options, take minimum, add 1 for deletion.
+            
+            Answer: dp[0][n-1] &lt;= k
+        
+        Time Complexity: O(n²) where n = len(s)
+            - Total cells: n(n+1)/2 = O(n²) — upper triangle where i &lt;= j
+            - Work per cell: O(1) — compare chars, lookup dp values, store result
+            - Total: O(n²) × O(1) = O(n²)
+            - k doesn&#x27;t affect state space — only used in final comparison dp[0][n-1] &lt;= k
+        
+        Space Complexity: O(n²)
+            - DP table: n × n = O(n²)
+            - No recursion stack (iterative)
+        
+        Comparison with Other Approaches:
+            Top-Down (Recursion + Memo): Time O(n²), Space O(n²) + O(n) stack
+            2D DP (This solution):       Time O(n²), Space O(n²)
+            1D DP (Space optimized):     Time O(n²), Space O(n)
+        &quot;&quot;&quot;
+        n = len(s)
+
+        # early return: if k &gt;= n-1, we can delete all but one char
+        # leaving a single char (or empty string) which is always a palindrome
+        # covers:
+        #   n=0: k &gt;= -1 → always True (empty string)
+        #   n=1: k &gt;= 0  → always True (single char)
+        #   large k: k &gt;= n-1 → can reduce to single char
+        if k &gt;= n - 1:
+            return True
+
+        # dp[i][j] = minimum deletions to make s[i..j] a palindrome
+        # closed interval [i,j]: dp[i][j] ←→ s[i : j+1] in Python
+        #   dp[0][0] → s[0..0] = &quot;a&quot;    ←→  s[0:1]  (Python needs j+1)
+        #   dp[0][1] → s[0..1] = &quot;ab&quot;   ←→  s[0:2]
+        #   dp[0][3] → s[0..3] = &quot;abcd&quot; ←→  s[0:4]
+        #
+        # Initialize with 0s — base cases automatically handled:
+        #   diagonal (i==j): single char [i,i] → 0 deletions ✓
+        #   lower triangle (i&gt;j): empty interval → 0 deletions ✓
+        #
+        # Table structure (n=4, s=&quot;abcd&quot;):
+        #       j=0  j=1  j=2  j=3
+        #     ┌─────────────────────
+        # i=0 │  0    ?    ?    ?     ← upper triangle: we compute these
+        # i=1 │  0    0    ?    ?     ← diagonal: [i,i] = single char
+        # i=2 │  0    0    0    ?     ← lower triangle: unused (stays 0)
+        # i=3 │  0    0    0    0
+        dp = [[0] * n for _ in range(n)]
+
+        # Fill by increasing substring length (length = j - i + 1 from closed interval)
+        #
+        # WHY THIS ORDER?
+        # dp[i][j] depends on dp[i+1][j-1], dp[i+1][j], dp[i][j-1] — all shorter.
+        # So we fill from shortest (length 2) to longest (length n).
+        #
+        # Fill order (n=4):
+        #   length 2: [0,1] [1,2] [2,3]   → use length-1 results
+        #   length 3: [0,2] [1,3]         → use length 1 &amp; 2 results
+        #   length 4: [0,3]               → use length 2 &amp; 3 results
+        for length in range(2, n + 1):
+            # i range: 0 to n-length
+            # ensures j = i + length - 1 &lt;= n-1 (derived from closed interval: j = i + length - 1)
+            #
+            # Example: n=4, length=3, s=&quot;abcd&quot;
+            #   i=0 → j = 0+3-1 = 2 → closed interval [0,2] = &quot;abc&quot;  ←→ s[0:3]
+            #   i=1 → j = 1+3-1 = 3 → closed interval [1,3] = &quot;bcd&quot;  ←→ s[1:4]
+            for i in range(n - length + 1):
+                # j derived from closed interval formula: length = j - i + 1 → j = i + length - 1
+                j = i + length - 1
+
+                if s[i] == s[j]:
+                    # match: inner substring [i+1, j-1], no deletion needed
+                    # empty inner (i+1 &gt; j-1): hits lower triangle → 0 ✓
+                    dp[i][j] = dp[i + 1][j - 1]
+                else:
+                    # mismatch: delete s[i] → solve [i+1, j]
+                    #           delete s[j] → solve [i, j-1]
+                    #           add 1 for the deletion made
+                    dp[i][j] = 1 + min(dp[i + 1][j], dp[i][j - 1])
+
+        # dp[0][n-1] = minimum deletions for entire string s[0..n-1]
+        return dp[0][n - 1] &lt;= k
+
+# Dry run Example 
+
+# s = &quot;abca&quot;, k = 1
+
+# indices: 0 1 2 3
+# chars:   a b c a
+
+# n = 4
+
+# Question: Can we make &quot;abca&quot; a palindrome with at most 1 deletion?
+
+# ### DP Table Structure
+
+# dp[i][j] = minimum deletions to make s[i..j] a palindrome
+
+#       j=0  j=1  j=2  j=3
+#        a    b    c    a
+#     ┌────────────────────
+# i=0│a│  ?    ?    ?    ?
+# i=1│b│       ?    ?    ?
+# i=2│c│            ?    ?
+# i=3│a│                 ?
+
+
+# ### Initial State (Base Cases)
+
+# Diagonal = 0 (single characters are palindromes)
+
+#       j=0  j=1  j=2  j=3
+#        a    b    c    a
+#     ┌────────────────────
+# i=0│a│  0    ?    ?    ?    ← s[0..0] = &quot;a&quot;
+# i=1│b│       0    ?    ?    ← s[1..1] = &quot;b&quot;
+# i=2│c│            0    ?    ← s[2..2] = &quot;c&quot;
+# i=3│a│                 0    ← s[3..3] = &quot;a&quot;
+
+# ### Fill Order: Length = 2
+
+# Process all 2-character substrings:
+
+# #### Cell (0,1): s[0..1] = &quot;ab&quot;
+
+# i=0, j=1
+# s[0]=&#x27;a&#x27; vs s[1]=&#x27;b&#x27;
+# &#x27;a&#x27; != &#x27;b&#x27; ✗ Mismatch!
+
+# Options:
+# - Delete &#x27;a&#x27;: dp[1][1] = 0 → need 1 deletion total
+# - Delete &#x27;b&#x27;: dp[0][0] = 0 → need 1 deletion total
+
+# dp[0][1] = 1 + min(0, 0) = 1
+
+# #### Cell (1,2): s[1..2] = &quot;bc&quot;
+# i=1, j=2
+# s[1]=&#x27;b&#x27; vs s[2]=&#x27;c&#x27;
+# &#x27;b&#x27; != &#x27;c&#x27; ✗ Mismatch!
+
+# Options:
+# - Delete &#x27;b&#x27;: dp[2][2] = 0 → need 1 deletion total
+# - Delete &#x27;c&#x27;: dp[1][1] = 0 → need 1 deletion total
+
+# dp[1][2] = 1 + min(0, 0) = 1
+
+# #### Cell (2,3): s[2..3] = &quot;ca&quot;
+
+# i=2, j=3
+# s[2]=&#x27;c&#x27; vs s[3]=&#x27;a&#x27;
+# &#x27;c&#x27; != &#x27;a&#x27; ✗ Mismatch!
+
+# Options:
+# - Delete &#x27;c&#x27;: dp[3][3] = 0 → need 1 deletion total
+# - Delete &#x27;a&#x27;: dp[2][2] = 0 → need 1 deletion total
+
+# dp[2][3] = 1 + min(0, 0) = 1
+
+# **Table after Length 2:**
+#       j=0  j=1  j=2  j=3
+#        a    b    c    a
+#     ┌────────────────────
+# i=0│a│  0    1    ?    ?    ← s[0..1] = &quot;ab&quot; needs 1 deletion
+# i=1│b│       0    1    ?    ← s[1..2] = &quot;bc&quot; needs 1 deletion
+# i=2│c│            0    1    ← s[2..3] = &quot;ca&quot; needs 1 deletion
+# i=3│a│                 0
+
+# ### Fill Order: Length = 3
+
+# Process all 3-character substrings:
+
+# #### Cell (0,2): s[0..2] = &quot;abc&quot;
+# i=0, j=2
+# s[0]=&#x27;a&#x27; vs s[2]=&#x27;c&#x27;
+# &#x27;a&#x27; != &#x27;c&#x27; ✗ Mismatch!
+
+# Options:
+# - Delete &#x27;a&#x27;: dp[1][2] = 1 → need 1+1 = 2 deletions total
+# - Delete &#x27;c&#x27;: dp[0][1] = 1 → need 1+1 = 2 deletions total
+
+# dp[0][2] = 1 + min(1, 1) = 2
+
+# #### Cell (1,3): s[1..3] = &quot;bca&quot;
+
+# i=1, j=3
+# s[1]=&#x27;b&#x27; vs s[3]=&#x27;a&#x27;
+# &#x27;b&#x27; != &#x27;a&#x27; ✗ Mismatch!
+
+# Options:
+# - Delete &#x27;b&#x27;: dp[2][3] = 1 → need 1+1 = 2 deletions total
+# - Delete &#x27;a&#x27;: dp[1][2] = 1 → need 1+1 = 2 deletions total
+
+# dp[1][3] = 1 + min(1, 1) = 2
+
+# **Table after Length 3:**
+#       j=0  j=1  j=2  j=3
+#        a    b    c    a
+#     ┌────────────────────
+# i=0│a│  0    1    2    ?    ← s[0..2] = &quot;abc&quot; needs 2 deletions
+# i=1│b│       0    1    2    ← s[1..3] = &quot;bca&quot; needs 2 deletions
+# i=2│c│            0    1
+# i=3│a│                 0
+
+# ### Fill Order: Length = 4
+
+# Process the full string:
+
+# #### Cell (0,3): s[0..3] = &quot;abca&quot;
+# ```
+# i=0, j=3
+# s[0]=&#x27;a&#x27; vs s[3]=&#x27;a&#x27;
+# &#x27;a&#x27; == &#x27;a&#x27; ✓ MATCH!
+
+# Matching chars satisfy palindrome property!
+# Keep both (no deletion needed)
+# Problem reduces to inner substring s[1..2] = &quot;bc&quot;
+
+# dp[0][3] = dp[1][2] = 1
+
+# **Final Table:**
+
+#       j=0  j=1  j=2  j=3
+#        a    b    c    a
+#     ┌────────────────────────────────
+# i=0│a│  0    1    2    1    ← s[0..3] = &quot;abca&quot; needs 1 deletion ✓
+# i=1│b│       0    1    2
+# i=2│c│            0    1
+# i=3│a│                 0
+
+# ### Answer
+
+# min_deletions_needed = dp[0][3] = 1
+# k = 1
+
+# Check: 1 &lt;= 1 → True ✓
+
+# Result: YES, we can make &quot;abca&quot; a palindrome with 1 deletion!
+
+# How? Delete &#x27;b&#x27; → &quot;aca&quot; (palindrome)
+#   OR Delete &#x27;c&#x27; → &quot;aba&quot; (palindrome)
+
+# Approach : Bottom-Up DP (1D) (complicated)
+
+class Solution:
+    def isValidPalindrome(self, s: str, k: int) -&gt; bool:
+        &quot;&quot;&quot;
+        Determine if a string can become a palindrome by removing at most k characters.
+        
+        Approach:
+        ---------
+        1. Find the Longest Palindromic Subsequence (LPS) of the string
+        2. Calculate how many characters need to be removed: removals = len(s) - LPS
+        3. Check if removals &lt;= k
+        
+        Example:
+        --------
+        s = &quot;abcdeca&quot;, k = 2
+        - LPS = &quot;acdca&quot; (length 5) or &quot;abdba&quot; (length 5)
+        - Removals needed = 7 - 5 = 2
+        - Since 2 &lt;= 2, return True
+        
+        Time Complexity:  O(n²) where n = len(s)
+        -----------------
+        - Outer loop runs n times (i from n-1 to 0)
+        - Inner loop runs on average n/2 times per outer iteration
+        - Total operations: O(n²)
+        
+        Space Complexity: O(n) where n = len(s)
+        ------------------
+        - We use a single dp array of size n
+        - Plus a few constant variables (diagonal, temp)
+        - This is space-optimized from O(n²) 2D table
+        &quot;&quot;&quot;
+        n = len(s)
+
+        # early return: if k &gt;= n-1, we can delete all but one char
+        # leaving a single char (or empty string) which is always a palindrome
+        # covers:
+        #   n=0: k &gt;= -1 → always True (empty string)
+        #   n=1: k &gt;= 0  → always True (single char)
+        #   large k: k &gt;= n-1 → can reduce to single char
+        if k &gt;= n - 1:
+            return True
+        
+        # dp[j] stores the length of longest palindromic subsequence
+        # for substring s[i...j] as we iterate through different values of i
+        dp = [0] * n
+        
+        # Process each starting position from right to left
+        # We go backwards because we need values from positions to the right
+        for i in range(n - 1, -1, -1):
+            
+            # Set the current position to 1 (single character)
+            dp[i] = 1
+            
+            # diagonal represents dp[i+1][j-1] (LPS of middle substring between i and j)
+            #
+            # WHY dp[i+1][j-1] IS THE MIDDLE SUBSTRING:
+            #   dp[i][j] = LPS of closed interval s[i..j]
+            #   when s[i] == s[j], both outer chars match → include both (+2)
+            #   and solve the middle part (everything between i and j):
+            #
+            #   s[i]  s[i+1] ... s[j-1]  s[j]
+            #    ↑                         ↑
+            #   outer                    outer  → matched, contribute +2
+            #          ↑           ↑
+            #          └───middle──┘           → dp[i+1][j-1]
+            #
+            #   dp[i][j]     = s[i..j]       = &quot;abcde&quot;  (full substring)
+            #   dp[i+1][j-1] = s[i+1..j-1]  = &quot;bcd&quot;    (middle, both ends stripped)
+            #   → dp[i][j] = dp[i+1][j-1] + 2
+            #
+            # WHY INITIALIZE TO 0:
+            #   first use of diagonal is when j = i+1 (adjacent chars):
+            #   middle = s[i+1..j-1] = s[i+1..i] → left &gt; right → empty → LPS = 0
+            #
+            #   j = i+1 (adjacent):  s[i]  s[j]        no chars between → empty
+            #   j = i+2 (one apart): s[i]  s[?]  s[j]  one char between → LPS = 1
+            #
+            # WHY NOT diagonal = 1?
+            #   diagonal = 0 → dp[j] = 0 + 2 = 2 ✓  e.g. s=&quot;aa&quot;: LPS = 2
+            #   diagonal = 1 → dp[j] = 1 + 2 = 3 ✗  impossible, string only has 2 chars
+            diagonal = 0
+            
+            # Process all ending positions to the right of i
+            # We&#x27;re computing LPS for substring s[i...j]
+
+            # why process all j to the right of i?
+            #   i starts from n-1 and goes left → when i=n-1, range(i+1, n) = range(n, n)
+            #   is empty (no iterations). as i decreases, j covers all positions to the right.
+            #
+            #   i=n-1: j=[]            → fills nothing, sets dp[n-1]=1
+            #   i=n-2: j=[n-1]         → fills dp[n-2][n-1]
+            #   i=n-3: j=[n-2, n-1]    → fills dp[n-3][n-2], dp[n-3][n-1]
+            #   i=0:   j=[1, ..., n-1] → fills entire top row
+            #
+            # why j starts at i+1 (not i)?
+            #   j=i   → substring s[i..i] = single char → already handled by dp[i]=1 above
+            #   j=i+1 → substring s[i..i+1] = 2 chars  → first case needing recurrence
+            #   starting at j=i would overwrite dp[i] with match/mismatch recurrence
+            #   which is only valid for substrings of length &gt;= 2
+            #
+            # dependency direction ensures correctness:
+            #   to compute dp[i][j], we need:
+            #     dp[i+1][j-1] ← row below, col to left  (diagonal)
+            #     dp[i+1][j]   ← row below, same col     (temp)
+            #     dp[i][j-1]   ← same row, col to left   (dp[j-1])
+            #   all dependencies are in row i+1 or earlier
+            #   → already computed since i goes right to left
+            for j in range(i + 1, n):
+                
+                # Save the current dp[j] value before we overwrite it
+                # We need this value because it becomes the diagonal
+                # for the next iteration (when j moves one step right)
+                temp = dp[j]
+                
+                # Check if characters at positions i and j match
+                if s[i] == s[j]:
+                    # MATCH: Both boundary characters are the SAME
+                    # ============================================
+                    # Example: substring &quot;a...a&quot; (both ends are &#x27;a&#x27;)
+                    #
+                    # We can include BOTH characters in our palindrome!
+                    #
+                    # The LPS of s[i...j] = LPS of middle part + 2
+                    # The middle part s[i+1...j-1] has LPS stored in &#x27;diagonal&#x27;
+                    #
+                    # Visual: &quot;a&quot; + [middle LPS] + &quot;a&quot;
+                    #          ↑                   ↑
+                    #         +1                  +1 = +2 total
+                    #
+                    # Why diagonal? It holds the value from s[i+1...j-1]
+                    # which is one position down and one position left in 2D table
+                    dp[j] = diagonal + 2
+                    
+                else:
+                    # NO MATCH: Boundary characters are DIFFERENT
+                    # ==========================================
+                    # Example: substring &quot;a...b&quot; (different ends)
+                    #
+                    # We CANNOT include both boundaries in same palindrome
+                    # We must choose to exclude one of them:
+                    #
+                    # Option 1: Exclude left character s[i]
+                    #          → Take LPS from s[i+1...j]
+                    #          → This value is stored in &#x27;temp&#x27;
+                    #          Visual: [skip &#x27;a&#x27;] &quot;...b&quot;
+                    #
+                    # Option 2: Exclude right character s[j]
+                    #          → Take LPS from s[i...j-1]
+                    #          → This value is in dp[j-1]
+                    #          Visual: &quot;a...&quot; [skip &#x27;b&#x27;]
+                    #
+                    # We take MAXIMUM because we want the longest palindrome
+                    dp[j] = max(temp, dp[j - 1])
+                
+                # Update diagonal for the next iteration
+                # When we move to j+1, the current dp[j] becomes the diagonal
+                # This is because diagonal represents the value one step back
+                # in both dimensions (one position left and one position down)
+                diagonal = temp
+        
+        # After processing all positions, dp[n-1] contains the answer
+        # This is the length of longest palindromic subsequence
+        # for the entire string s[0...n-1]
+        lps = dp[n - 1]
+        
+        # Calculate how many characters we must remove
+        # Any character NOT part of the LPS must be removed
+        removals = n - lps
+        
+        # Check if we can achieve palindrome with at most k removals
+        return removals &lt;= k
+
+# Dry Run: s = &quot;aba&quot;, k = 1
+
+## Initial Setup
+
+# s = &quot;aba&quot;
+# k = 1
+# n = 3
+
+# Indices:  0   1   2
+# String:   a   b   a
+
+# Initial: dp = [0, 0, 0]
+
+# ## Iteration i = 2 (Last character &#x27;a&#x27;)
+
+# i = 2
+# dp[2] = 1           # Single char &#x27;a&#x27; is palindrome of length 1
+# diagonal = 0        # Empty substring has LPS = 0
+
+# Inner loop: range(3, 3) → No iterations (empty range)
+
+# Result: dp = [0, 0, 1]
+
+# **What dp means now:**
+# - dp[2] = LPS of &quot;a&quot; = 1
+
+# ## Iteration i = 1 (Middle character &#x27;b&#x27;)
+
+# i = 1
+# dp[1] = 1           # Single char &#x27;b&#x27; is palindrome of length 1
+# diagonal = 0        # Empty substring has LPS = 0
+
+# Inner loop: range(2, 3) → j = 2
+
+# ### j = 2: Substring &quot;ba&quot;
+
+# temp = dp[2] = 1    # Save current dp[2]
+
+# Compare: s[1] = &#x27;b&#x27; vs s[2] = &#x27;a&#x27;
+# Match? NO (&#x27;b&#x27; != &#x27;a&#x27;)
+
+# dp[2] = max(temp, dp[1])
+#       = max(1, 1) 
+#       = 1
+
+# diagonal = temp = 1  # Update diagonal for next iteration
+
+# Result: dp = [0, 1, 1]
+
+# What dp means now:
+# - dp[1] = LPS of &quot;b&quot; = 1
+# - dp[2] = LPS of &quot;ba&quot; = 1 (either &#x27;b&#x27; or &#x27;a&#x27;)
+
+# ## Iteration i = 0 (First character &#x27;a&#x27;)
+
+# i = 0
+# dp[0] = 1           # Single char &#x27;a&#x27; is palindrome of length 1
+# diagonal = 0        # Empty substring has LPS = 0
+
+# Inner loop: range(1, 3) → j = 1, 2
+
+# ### j = 1: Substring &quot;ab&quot;
+
+# temp = dp[1] = 1    # Save current dp[1]
+
+# Compare: s[0] = &#x27;a&#x27; vs s[1] = &#x27;b&#x27;
+# Match? NO (&#x27;a&#x27; != &#x27;b&#x27;)
+
+# dp[1] = max(temp, dp[0])
+#       = max(1, 1)
+#       = 1
+
+# diagonal = temp = 1  # Update diagonal for next iteration
+
+# Current: dp = [1, 1, 1]
+
+# What dp means now:
+# - dp[0] = LPS of &quot;a&quot; = 1
+# - dp[1] = LPS of &quot;ab&quot; = 1
+
+# ### j = 2: Substring &quot;aba&quot; (Full string!)
+
+# temp = dp[2] = 1    # Save current dp[2]
+
+# Compare: s[0] = &#x27;a&#x27; vs s[2] = &#x27;a&#x27;
+# Match? YES! ✓
+
+# dp[2] = diagonal + 2
+#       = 1 + 2
+#       = 3
+
+# Explanation:
+#   &quot;aba&quot; → Both ends are &#x27;a&#x27; (match!)
+#   Middle is &quot;b&quot; (from position 1 to 1)
+#   LPS of middle = diagonal = 1 (which came from temp in previous iteration)
+#   So LPS of &quot;aba&quot; = 1 + 2 = 3
+#   The palindrome is &quot;aba&quot; itself!
+
+# diagonal = temp = 1  # Update diagonal (not needed anymore, loop ends)
+
+# Result: dp = [1, 1, 3]
+#                     ↑
+#                  Answer!
+
+# What dp means now:
+# - dp[0] = LPS of &quot;a&quot; = 1
+# - dp[1] = LPS of &quot;ab&quot; = 1  
+# - dp[2] = LPS of &quot;aba&quot; = 3
+
+# ## Final Calculation
+
+# lps = dp[n - 1] = dp[2] = 3
+
+# removals = n - lps 
+#          = 3 - 3 
+#          = 0
+
+# return removals &lt;= k
+# Result: True
+
+
+
+
+        </code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Medium/1209-Remove-All-Adjacent-Duplicates-in-String-II/">&#8592; 1209. Remove All Adjacent Duplicates in String II</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Medium/1249-Minimum-Remove-to-Make-Valid-Parentheses/">1249. Minimum Remove to Make Valid Parentheses &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+</body>
+</html>
