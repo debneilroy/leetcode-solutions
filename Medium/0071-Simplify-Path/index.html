@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>71. Simplify Path - LeetCode Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+
+:root {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --radius:    6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #e6db74; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy   { color: var(--easy);   background: rgba(44,187,93,0.15); }
+.badge-Medium { color: var(--medium); background: rgba(255,161,22,0.15); }
+.badge-Hard   { color: var(--hard);   background: rgba(239,71,67,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--surface2); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: #1e1e1e !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">71. Simplify Path</span>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (0)</div>
+        <div class="tab" data-tab="similar">Similar (0)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">71. Simplify Path</div>
+        <div class="prob-meta">
+          <span class="badge badge-Medium">Medium</span>
+          <span class="tag">String</span><span class="tag">Stack</span>
+        </div>
+        <div class="prob-stats">1.3M / 2.6M (50.6%)</div>
+        <div class="prob-desc"><p>You are given an <em>absolute</em> path for a Unix-style file system, which always begins with a slash <code>&#x27;/&#x27;</code>. Your task is to transform this absolute path into its <strong>simplified canonical path</strong>.</p>
+<p>The <em>rules</em> of a Unix-style file system are as follows:</p>
+<ul>
+<li>A single period <code>&#x27;.&#x27;</code> represents the current directory.</li>
+</ul>
+	
+<ul>
+<li>A double period <code>&#x27;..&#x27;</code> represents the previous/parent directory.</li>
+</ul>
+	
+<ul>
+<li>Multiple consecutive slashes such as <code>&#x27;//&#x27;</code> and <code>&#x27;///&#x27;</code> are treated as a single slash <code>&#x27;/&#x27;</code>.</li>
+</ul>
+	
+<ul>
+<li>Any sequence of periods that does <strong>not match</strong> the rules above should be treated as a <strong>valid directory or</strong> <strong>file </strong><strong>name</strong>. For example, <code>&#x27;...&#x27; </code>and <code>&#x27;....&#x27;</code> are valid directory or file names.</li>
+</ul>
+<p>The simplified canonical path should follow these <em>rules</em>:</p>
+<ul>
+<li>The path must start with a single slash <code>&#x27;/&#x27;</code>.</li>
+</ul>
+	
+<ul>
+<li>Directories within the path must be separated by exactly one slash <code>&#x27;/&#x27;</code>.</li>
+</ul>
+	
+<ul>
+<li>The path must not end with a slash <code>&#x27;/&#x27;</code>, unless it is the root directory.</li>
+</ul>
+	
+<ul>
+<li>The path must not have any single or double periods (<code>&#x27;.&#x27;</code> and <code>&#x27;..&#x27;</code>) used to denote current or parent directories.</li>
+</ul>
+<p>Return the <strong>simplified canonical path</strong>.</p>
+<p>Example 1:</p>
+<p><strong>Input:</strong> path = "/home/"</p>
+<p><strong>Output:</strong> "/home"</p>
+<p><strong>Explanation:</strong></p>
+<p>The trailing slash should be removed.</p>
+<p>Example 2:</p>
+<p><strong>Input:</strong> path = "/home//foo/"</p>
+<p><strong>Output:</strong> "/home/foo"</p>
+<p><strong>Explanation:</strong></p>
+<p>Multiple consecutive slashes are replaced by a single one.</p>
+<p>Example 3:</p>
+<p><strong>Input:</strong> path = "/home/user/Documents/../Pictures"</p>
+<p><strong>Output:</strong> "/home/user/Pictures"</p>
+<p><strong>Explanation:</strong></p>
+<p>A double period <code>&quot;..&quot;</code> refers to the directory up a level (the parent directory).</p>
+<p>Example 4:</p>
+<p><strong>Input:</strong> path = "/../"</p>
+<p><strong>Output:</strong> "/"</p>
+<p><strong>Explanation:</strong></p>
+<p>Going one level up from the root directory is not possible.</p>
+<p>Example 5:</p>
+<p><strong>Input:</strong> path = "/.../a/../b/c/../d/./"</p>
+<p><strong>Output:</strong> "/.../b/d"</p>
+<p><strong>Explanation:</strong></p>
+<p><code>&quot;...&quot;</code> is a valid name for a directory in this problem.</p>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= path.length &lt;= 3000</code></li>
+</ul>
+	
+<ul>
+<li><code>path</code> consists of English letters, digits, period <code>&#x27;.&#x27;</code>, slash <code>&#x27;/&#x27;</code> or <code>&#x27;_&#x27;</code>.</li>
+</ul>
+	
+<ul>
+<li><code>path</code> is a valid absolute Unix path.</li>
+</ul></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        <p class="empty-msg">No hints for this problem.</p>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        <p class="empty-msg">No similar problems listed.</p>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 71. Simplify Path
+Difficulty: Medium
+URL: https://leetcode.com/problems/simplify-path/
+&quot;&quot;&quot;
+
+# Brute Force — O(N²) TC, O(N) SC
+
+# Repeatedly apply string rewrites until the path stops changing
+
+# // → / (collapse duplicate slashes)
+
+# /./ → / (current directory)
+
+# /dir/../ → / (remove parent directory pairs)
+
+# Each rewrite pass scans the string → O(N)
+
+# In worst case only one dir/.. pair is removed per pass
+
+# Up to O(N) passes → O(N²) total
+
+# O(N) SC — each rewrite creates a new string copy
+
+# Hard to implement cleanly due to overlapping patterns
+
+
+
+# Optimal Approach : Using stacks
+
+# Testcase : path = &quot;/a/b/c/.././././//d&quot;   Output : &quot;/a/b/d&quot;
+
+class Solution:
+    def simplifyPath(self, path: str) -&gt; str:
+        &quot;&quot;&quot;
+        Simplify a Unix-style absolute path to its canonical form.
+
+        Approach: Split on &#x27;/&#x27; and use a stack to process components.
+        - Skip &#x27;&#x27; and &#x27;.&#x27; (no-ops)
+        - &#x27;..&#x27; pops the stack (go up one level)
+        - Any other token is a valid directory name → push
+
+        Base cases:
+        - path is None or empty string  → return &quot;/&quot;
+        - path = &quot;/&quot;  → len 1, returned directly
+        - path = &quot;.&quot;  → len 1, not &#x27;/&#x27; → return &quot;/&quot;
+        - path = &quot;/.&quot; → &#x27;.&#x27; skipped → stack = [] → return &quot;/&quot;
+        - path = &quot;/..&quot;→ &#x27;..&#x27; on empty stack → stack = [] → return &quot;/&quot;
+        - path = &quot;/a&quot; → one valid component → stack = [&#x27;a&#x27;] → return &quot;/a&quot;
+
+        TC: O(N), where N = len(path)
+            - .split(&#x27;/&#x27;)      : O(N)
+            - loop over tokens : each token processed once → O(N)
+            - &#x27;/&#x27;.join(stack)  : worst case join all tokens → O(N)
+
+        SC: O(N) → effectively O(2N)
+            - parts (split result) : O(N)
+            - stack                : O(N) in worst case (no &#x27;..&#x27; or &#x27;.&#x27;)
+            - simplifies to O(N) after dropping constant
+        &quot;&quot;&quot;
+        # Guard: None, empty string
+        if not path:
+            return &quot;/&quot;
+
+        # Guard: single character — only &#x27;/&#x27; is valid canonical; anything else (e.g. &#x27;.&#x27;) → root
+        if len(path) == 1:
+            return path if path == &#x27;/&#x27; else &#x27;/&#x27;
+
+        parts = path.split(&#x27;/&#x27;)
+
+        stack = []
+
+        for part in parts:
+            if part == &#x27;&#x27; or part == &#x27;.&#x27;:
+                continue
+            elif part == &#x27;..&#x27;:
+                if stack:
+                    stack.pop()
+            else:
+                stack.append(part)
+
+        return &#x27;/&#x27; + &#x27;/&#x27;.join(stack)
+
+        # Manually build the simplified path string
+        # result = &#x27;/&#x27;
+        # for j in range(len(stack)):
+        #     result += stack[j]
+        #     if j != len(stack) - 1:
+        #         result += &#x27;/&#x27;
+
+        # return result
+
+# Without split function
+
+class Solution:
+    def simplifyPath(self, path: str) -&gt; str:
+        &quot;&quot;&quot;
+        TC: O(N), where N = len(path)
+            - single pass through path with pointer i    : O(N)
+            - token extraction (inner while)             : each char visited once → O(N)
+            - &#x27;/&#x27;.join(stack)                            : worst case join all tokens → O(N)
+
+        SC: O(N)
+            - stack : O(N) in worst case (no &#x27;..&#x27; or &#x27;.&#x27;)
+            - no parts array unlike the split() approach → true O(N), not O(2N)
+        &quot;&quot;&quot;
+        # Guard: None, empty string
+        if not path:
+            return &quot;/&quot;
+
+        # Guard: single character — only &#x27;/&#x27; is valid canonical; anything else (e.g. &#x27;.&#x27;) → root
+        if len(path) == 1:
+            return path if path == &#x27;/&#x27; else &#x27;/&#x27;
+
+        stack = []
+        i = 0
+        n = len(path) # n = 19 for path = &quot;/a/b/c/.././././//d&quot;
+
+        while i &lt; n:
+            # Skip over consecutive &#x27;/&#x27; characters (e.g. &#x27;///a&#x27; → jump to &#x27;a&#x27;)
+            while i &lt; n and path[i] == &#x27;/&#x27;:
+                i += 1
+
+            # Extract the next token character by character until next &#x27;/&#x27; or end
+            # e.g. path = &quot;/abc/../d&quot; → tokens extracted in order: &quot;abc&quot;, &quot;..&quot;, &quot;d&quot;
+            token = &quot;&quot;
+            while i &lt; n and path[i] != &#x27;/&#x27;:
+                token += path[i]
+                i += 1
+
+            if token == &#x27;&#x27; or token == &#x27;.&#x27;:
+                continue
+            elif token == &#x27;..&#x27;:
+                if stack:
+                    stack.pop()
+            else:
+                stack.append(token)
+
+        # Reconstruct canonical path with a leading &#x27;/&#x27;
+        return &quot;/&quot; + &quot;/&quot;.join(stack)
+
+
+# Variant
+
+# Description
+# You are given:
+
+# A string cwd representing the current working directory in a Unix-style file system.
+
+# A string cd representing a relative or absolute path to change into, using Unix shell conventions.
+
+# Write a function changeDirectory(cwd: str, cd: str) -&gt; str that returns the resulting absolute path after applying the cd command to cwd.
+
+# Example 1:
+# Input : cwd = &quot;/a/b/c&quot;, cd = &quot;../d&quot;
+# Output: &quot;/a/b/d&quot;
+# Description: cd is relative, so we resolve from cwd.
+#              &quot;..&quot; moves up one level from &quot;/a/b/c&quot; → &quot;/a/b&quot;,
+#              then &quot;d&quot; moves into &quot;/a/b/d&quot;.
+
+# Example 2:
+# Input : cwd = &quot;/x/y&quot;, cd = &quot;/foo/bar/../baz&quot;
+# Output: &quot;/foo/baz&quot;
+# Description: cd starts with &#x27;/&#x27;, so it is absolute — cwd is ignored entirely.
+#              Simplify &quot;/foo/bar/../baz&quot;: &quot;bar&quot; is pushed then popped by &quot;..&quot;,
+#              leaving &quot;/foo/baz&quot;.
+
+# Example 3:
+# Input : cwd = &quot;/&quot;, cd = &quot;../../../../.&quot;
+# Output: &quot;/&quot;
+# Description: cd is relative, so we resolve from cwd = &quot;/&quot;.
+#              Each &quot;..&quot; attempts to go up from root, but root has no parent —
+#              all four &quot;..&quot; are silently ignored.
+#              Final &quot;.&quot; is a no-op. Result stays &quot;/&quot;.
+
+# Example 4:
+# Input : cwd = &quot;/a/b/c&quot;, cd = &quot;.&quot;
+# Output: &quot;/a/b/c&quot;
+# Description: cd is relative and a single &quot;.&#x27;&quot; — current directory, no-op.
+#              cwd is returned unchanged.
+
+# Example 5:
+# Input : cwd = &quot;/home/user/docs&quot;, cd = &quot;../../music/jazz&quot;
+# Output: &quot;/home/music/jazz&quot;
+# Description: cd is relative, so we resolve from cwd.
+#              First &quot;..&quot;  : &quot;/home/user/docs&quot; → &quot;/home/user&quot;
+#              Second &quot;..&quot;: &quot;/home/user&quot;       → &quot;/home&quot;
+#              Then &quot;music/jazz&quot; is appended   → &quot;/home/music/jazz&quot;
+
+
+# class Solution:
+#     def changeDirectory(self, cwd: str, cd: str) -&gt; str:
+#         &quot;&quot;&quot;
+#         Apply a Unix cd command to a current working directory.
+
+#         Approach:
+#         - If cd is absolute (starts with &#x27;/&#x27;), ignore cwd entirely
+#         - Otherwise, seed the stack with cwd components, then process cd on top
+#         - &#x27;..&#x27; pops the stack (go up), &#x27;.&#x27; and &#x27;&#x27; are no-ops, else push
+
+#         Base / edge cases:
+#         - cd is None or empty          → return cwd if valid, else &#x27;/&#x27;
+#         - cwd is None                  → treat as root &#x27;/&#x27;
+#         - cd = &quot;.&quot;                     → no-op token, cwd processed through stack
+#         - cd = &quot;/&quot;                     → absolute, cwd zeroed, stack stays empty → &quot;/&quot;
+#         - cd = &quot;../../../..&quot; from &quot;/&quot;  → all &quot;..&quot; ignored at root, return &quot;/&quot;
+#         - cd is absolute               → cwd ignored, simplify cd alone
+
+#         TC: O(N + M), where N = len(cwd), M = len(cd)
+#             - split + iterate cwd tokens : O(N)
+#             - split + iterate cd tokens  : O(M)
+#             - &#x27;/&#x27;.join(tokens)           : O(N + M) worst case
+
+#         SC: O(N + M)
+#             - tokens stack holds at most all components of cwd + cd
+#         &quot;&quot;&quot;
+
+#         # Guard: None or empty cd → no directory change
+#         #
+#         # Scenario 1 — cwd is always simplified (e.g. result of a previous
+#         # changeDirectory call): safe to return cwd directly.
+#         # Also guard cwd being None/empty → fallback to root &#x27;/&#x27;
+#         #   if not cd:
+#         #       return cwd if cwd else &#x27;/&#x27;
+#         #
+#         # Scenario 2 — cwd could be unsimplified (e.g. &quot;/a//b/&quot;):
+#         # change cd to &#x27;.&#x27; so cwd still gets processed through the stack
+#         # &#x27;.&#x27; is a no-op token so it won&#x27;t affect the final result
+#         #   if not cd:
+#         #       cd = &#x27;.&#x27;
+
+#         if not cd:
+#             cd = &#x27;.&#x27;  # assuming cwd may be unsimplified
+
+#         # Guard: None cwd → treat as root (empty string is safe, None is not)
+#         # Can&#x27;t early return &#x27;/&#x27; here — cd may have content that still needs
+#         # to be processed e.g. cwd=None, cd=&quot;foo/bar&quot; → should return &quot;/foo/bar&quot;
+#         if cwd is None:
+#             cwd = &#x27;/&#x27;
+
+#         # If cd is absolute, ignore cwd entirely — can&#x27;t return cd as-is since
+#         # it may need simplification e.g. &quot;/foo/bar/../baz&quot; → &quot;/foo/baz&quot;
+#         if cd[0] == &#x27;/&#x27;:
+#             cwd = &#x27;&#x27;
+
+#         tokens = []
+
+#         # Step 1: seed stack with cwd components
+#         for token in cwd.split(&#x27;/&#x27;):
+#             if token:  # skip empty strings from leading/multiple slashes
+#                 tokens.append(token)
+
+#         # Step 2: process cd on top of the seeded stack
+#         for token in cd.split(&#x27;/&#x27;):
+#             if token == &#x27;&#x27; or token == &#x27;.&#x27;:
+#                 # empty string (consecutive slashes) or &#x27;.&#x27; (current dir) → no-op
+#                 continue
+#             elif token == &#x27;..&#x27;:
+#                 # go one level up — silently ignore if already at root
+#                 if tokens:
+#                     tokens.pop()
+#             else:
+#                 # valid directory name → descend into it
+#                 tokens.append(token)
+
+#         # Step 3: reconstruct absolute path; empty stack means we&#x27;re at root
+#         return &#x27;/&#x27; + &#x27;/&#x27;.join(tokens) if tokens else &#x27;/&#x27;
+</code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Hard/0065-Valid-Number/">&#8592; 65. Valid Number</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Medium/0078-Subsets/">78. Subsets &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+</body>
+</html>
