@@ -241,20 +241,20 @@ URL: https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
 
 # Brute Force
 
-# def maxProfit(prices):
-#     &quot;&quot;&quot; 
-#     Time Complexity: O(n²) 
-#     Space Complexity: O(1)
-#     &quot;&quot;&quot;
+def maxProfit(prices):
+    &quot;&quot;&quot; 
+    Time Complexity: O(n²) 
+    Space Complexity: O(1)
+    &quot;&quot;&quot;
 
-#     max_profit = 0
+    max_profit = 0
     
-#     for i in range(len(prices)):           # Try buying on each day
-#         for j in range(i + 1, len(prices)): # Try selling on each future day
-#             profit = prices[j] - prices[i]
-#             max_profit = max(max_profit, profit)
+    for i in range(len(prices)):           # Try buying on each day
+        for j in range(i + 1, len(prices)): # Try selling on each future day
+            profit = prices[j] - prices[i]
+            max_profit = max(max_profit, profit)
     
-#     return max_profit
+    return max_profit
 
 class Solution:
     def maxProfit(self, prices: List[int]) -&gt; int:
@@ -302,87 +302,87 @@ class Solution:
 # Output: 2
 # Explanation: Buy a departure flight on day 0 (price = 1) and buy a return ticket on day 3 (price = 1), cost = 1+1 = 2.
 
-# def minimumFlightCost(departures, returns):
-#     &quot;&quot;&quot;
-#     Find minimum cost for round-trip flight tickets.
+def minimumFlightCost(departures, returns):
+    &quot;&quot;&quot;
+    Find minimum cost for round-trip flight tickets.
     
-#     You need to buy a departure ticket on day i and a return ticket on day j
-#     where j &gt; i (return must be after departure).
+    You need to buy a departure ticket on day i and a return ticket on day j
+    where j &gt; i (return must be after departure).
     
-#     Args:
-#         departures: List[int] - prices for departure flights on each day
-#         returns: List[int] - prices for return flights on each day
+    Args:
+        departures: List[int] - prices for departure flights on each day
+        returns: List[int] - prices for return flights on each day
     
-#     Returns:
-#         int - minimum cost for round-trip
+    Returns:
+        int - minimum cost for round-trip
     
-#     Time Complexity: O(n)
-#     Space Complexity: O(1)
-#     &quot;&quot;&quot;
-#     if not departures or not returns or len(departures) != len(returns):
-#         return 0
+    Time Complexity: O(n)
+    Space Complexity: O(1)
+    &quot;&quot;&quot;
+    if not departures or not returns or len(departures) != len(returns):
+        return 0
     
-#     n = len(departures)
+    n = len(departures)
 
-#     if n &lt; 2:  # Need at least 2 days for round trip
-#         return 0
+    if n &lt; 2:  # Need at least 2 days for round trip
+        return 0
     
-#     # Initialize to infinity so any valid cost will be smaller
-#     # Why infinity? Because we don&#x27;t know the valid cost range beforehand.
-#     # Why not 0? All prices are &gt;= 0, so min(0, any_valid_cost) would always be 0 (wrong!)
-#     # Alternative approaches like min_cost = departures[0] + returns[1] assume 
-#     # arrays have at least 2 elements (already checked above).
-#     # Using float(&#x27;inf&#x27;) is safer and more readable - any real cost replaces it.
-#     min_cost = float(&#x27;inf&#x27;)
-#     min_departure = departures[0]  # Track minimum departure price seen so far
+    # Initialize to infinity so any valid cost will be smaller
+    # Why infinity? Because we don&#x27;t know the valid cost range beforehand.
+    # Why not 0? All prices are &gt;= 0, so min(0, any_valid_cost) would always be 0 (wrong!)
+    # Alternative approaches like min_cost = departures[0] + returns[1] assume 
+    # arrays have at least 2 elements (already checked above).
+    # Using float(&#x27;inf&#x27;) is safer and more readable - any real cost replaces it.
+    min_cost = float(&#x27;inf&#x27;)
+    min_departure = departures[0]  # Track minimum departure price seen so far
     
-#     # Start from day 1 (index 1) since return must be after departure
-#     for j in range(1, n):
-#         # Current cost = cheapest departure so far + current return price
-#         current_cost = min_departure + returns[j]
-#         min_cost = min(min_cost, current_cost)
+    # Start from day 1 (index 1) since return must be after departure
+    for j in range(1, n):
+        # Current cost = cheapest departure so far + current return price
+        current_cost = min_departure + returns[j]
+        min_cost = min(min_cost, current_cost)
         
-#         # Update minimum departure price for future returns
-#         min_departure = min(min_departure, departures[j])
+        # Update minimum departure price for future returns
+        min_departure = min(min_departure, departures[j])
     
-#     return min_cost
+    return min_cost
         
 # Variant : departures and returns have different lengths
 
-# def minimumFlightCostIterateReturns(departures, returns):
-#     &quot;&quot;&quot;
-#     Find minimum cost for round-trip flight tickets when arrays have different lengths.
+def minimumFlightCostIterateReturns(departures, returns):
+    &quot;&quot;&quot;
+    Find minimum cost for round-trip flight tickets when arrays have different lengths.
 
-#     Time Complexity: O(m) - iterate through all m return days
-#     Space Complexity: O(1) - only using constant extra space
-#     &quot;&quot;&quot;
-#     if not departures or not returns:
-#         return 0
+    Time Complexity: O(m) - iterate through all m return days
+    Space Complexity: O(1) - only using constant extra space
+    &quot;&quot;&quot;
+    if not departures or not returns:
+        return 0
     
-#     n = len(departures)
-#     m = len(returns)
+    n = len(departures)
+    m = len(returns)
     
-#     INF = float(&#x27;inf&#x27;)
-#     min_cost = INF
-#     min_departure = departures[0]
+    INF = float(&#x27;inf&#x27;)
+    min_cost = INF
+    min_departure = departures[0]
     
-#     # Start from day 1 (first possible return day)
-#     for j in range(1, m):
-#         # Can only use this return day if we had a valid departure day before it
-#         if j - 1 &lt; n:  # If day j-1 exists in departures
-#             # Use the cheapest departure from days 0 to min(j-1, n-1)
-#             current_cost = min_departure + returns[j]
-#             min_cost = min(min_cost, current_cost)
+    # Start from day 1 (first possible return day)
+    for j in range(1, m):
+        # Can only use this return day if we had a valid departure day before it
+        if j - 1 &lt; n:  # If day j-1 exists in departures
+            # Use the cheapest departure from days 0 to min(j-1, n-1)
+            current_cost = min_departure + returns[j]
+            min_cost = min(min_cost, current_cost)
         
-#         # Update minimum departure for future returns
-#         # Check if j &lt; n: We&#x27;re on return day j, and we want to consider
-#         # departures[j] as a potential departure for FUTURE return days.
-#         # But departures[j] only exists if j &lt; n (departures has indices 0 to n-1).
-#         # Example: n=3, m=5. When j=4, departures[4] doesn&#x27;t exist, so we skip.
-#         if j &lt; n:
-#             min_departure = min(min_departure, departures[j])
+        # Update minimum departure for future returns
+        # Check if j &lt; n: We&#x27;re on return day j, and we want to consider
+        # departures[j] as a potential departure for FUTURE return days.
+        # But departures[j] only exists if j &lt; n (departures has indices 0 to n-1).
+        # Example: n=3, m=5. When j=4, departures[4] doesn&#x27;t exist, so we skip.
+        if j &lt; n:
+            min_departure = min(min_departure, departures[j])
     
-#     return 0 if min_cost == INF else min_cost</code></pre>
+    return 0 if min_cost == INF else min_cost</code></pre>
       </div>
     </div>
 
