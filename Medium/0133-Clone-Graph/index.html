@@ -346,37 +346,37 @@ class Solution:
         return _dfs(node)
 
 
-# # Build graph for adjList = [[2,3],[1],[1]]
-# #   1 -- 2
-# #   |
-# #   3
+# Build graph for adjList = [[2,3],[1],[1]]
+#   1 -- 2
+#   |
+#   3
 
-# node1 = Node(1)
-# node2 = Node(2)
-# node3 = Node(3)
+node1 = Node(1)
+node2 = Node(2)
+node3 = Node(3)
 
 # node1.neighbors = [node2, node3]
 # node2.neighbors = [node1]
 # node3.neighbors = [node1]
 
-# # Run solution
-# cloned_node1 = Solution().cloneGraph(node1)
+# Run solution
+cloned_node1 = Solution().cloneGraph(node1)
 
-# # `is` checks identity (same object in memory) — should be False for all clones
-# # `==` on .val checks value equality — should be True for all clones
-# print(cloned_node1.val)                                        # 1
-# print(cloned_node1 is node1)                                   # False — different object ✓
-# print(cloned_node1.val == node1.val)                           # True  — same value ✓
+# `is` checks identity (same object in memory) — should be False for all clones
+# `==` on .val checks value equality — should be True for all clones
+print(cloned_node1.val)                                        # 1
+print(cloned_node1 is node1)                                   # False — different object ✓
+print(cloned_node1.val == node1.val)                           # True  — same value ✓
 
-# print(cloned_node1.neighbors[0] is node2)                      # False — different object ✓
-# print(cloned_node1.neighbors[0].val == node2.val)              # True  — same value ✓
+print(cloned_node1.neighbors[0] is node2)                      # False — different object ✓
+print(cloned_node1.neighbors[0].val == node2.val)              # True  — same value ✓
 
-# print(cloned_node1.neighbors[1] is node3)                      # False — different object ✓
-# print(cloned_node1.neighbors[1].val == node3.val)              # True  — same value ✓
+print(cloned_node1.neighbors[1] is node3)                      # False — different object ✓
+print(cloned_node1.neighbors[1].val == node3.val)              # True  — same value ✓
 
-# # Verify back-edges point to clones, not originals
-# print(cloned_node1.neighbors[0].neighbors[0] is cloned_node1)  # True — clone, not node1 ✓
-# print(cloned_node1.neighbors[0].neighbors[0] is node1)         # False — not the original ✓
+# Verify back-edges point to clones, not originals
+print(cloned_node1.neighbors[0].neighbors[0] is cloned_node1)  # True — clone, not node1 ✓
+print(cloned_node1.neighbors[0].neighbors[0] is node1)         # False — not the original ✓
 
 
 # Approach : BFS
@@ -456,12 +456,12 @@ class Solution:
 
 # Each node in the graph contains a value (int) and a list (List[Node]) of its neighbors.
 
-# class Graph:
-#     roots: List[Node]
+class Graph:
+    roots: List[Node]
 
-# class Node:
-#     val: int
-#     neighbors: List[Node]
+class Node:
+    val: int
+    neighbors: List[Node]
 
 # Example 1:
 # Input:  graph.roots = [[1,2,3],[4,5]]
@@ -490,280 +490,280 @@ class Solution:
 # 5. Components are guaranteed to share no nodes
 # 6. There are no self-loops or repeated edges within a component
 
-# class Node:
-#     def __init__(self, val=0, neighbors=None):
-#         self.val = val
-#         self.neighbors = neighbors if neighbors is not None else []
+class Node:
+    def __init__(self, val=0, neighbors=None):
+        self.val = val
+        self.neighbors = neighbors if neighbors is not None else []
 
 
-# class Graph:
-#     def __init__(self, roots=None):
-#         # roots: one entry point per connected component
-#         self.roots = roots if roots is not None else []
+class Graph:
+    def __init__(self, roots=None):
+        # roots: one entry point per connected component
+        self.roots = roots if roots is not None else []
 
 
-# class Solution:
-#     def cloneGraph(self, graph: Optional[&#x27;Graph&#x27;]) -&gt; Optional[&#x27;Graph&#x27;]:
-#         &quot;&quot;&quot;
-#         Clone a disconnected undirected graph using recursive DFS.
+class Solution:
+    def cloneGraph(self, graph: Optional[&#x27;Graph&#x27;]) -&gt; Optional[&#x27;Graph&#x27;]:
+        &quot;&quot;&quot;
+        Clone a disconnected undirected graph using recursive DFS.
 
-#         Input is a Graph object containing a list of root nodes, one per
-#         connected component:
-#             graph.roots = [Node(1, neighbors=[Node(2), Node(3)]), Node(4, neighbors=[Node(5)])]
-#             represents two components:
-#                 component 1: Node(1) &lt;-&gt; Node(2) &lt;-&gt; Node(3)
-#                 component 2: Node(4) &lt;-&gt; Node(5)
+        Input is a Graph object containing a list of root nodes, one per
+        connected component:
+            graph.roots = [Node(1, neighbors=[Node(2), Node(3)]), Node(4, neighbors=[Node(5)])]
+            represents two components:
+                component 1: Node(1) &lt;-&gt; Node(2) &lt;-&gt; Node(3)
+                component 2: Node(4) &lt;-&gt; Node(5)
 
-#         Args:
-#             graph: Graph object containing root nodes, one per connected
-#                    component. May be None for an empty graph.
+        Args:
+            graph: Graph object containing root nodes, one per connected
+                   component. May be None for an empty graph.
 
-#         Returns:
-#             A new Graph object whose roots list mirrors the original,
-#             with all nodes deeply cloned. Returns None if input is None.
+        Returns:
+            A new Graph object whose roots list mirrors the original,
+            with all nodes deeply cloned. Returns None if input is None.
 
-#         TC: O(V + E)  — each node and edge visited exactly once across all components
-#         SC: O(V)      — visited map + recursion stack, both O(V)
-#         &quot;&quot;&quot;
-#         # Base check: empty graph — nothing to clone
-#         if graph is None:
-#             return None
+        TC: O(V + E)  — each node and edge visited exactly once across all components
+        SC: O(V)      — visited map + recursion stack, both O(V)
+        &quot;&quot;&quot;
+        # Base check: empty graph — nothing to clone
+        if graph is None:
+            return None
 
-#         # Shared across all components — correct regardless of whether components
-#         # share nodes. Lives in outer scope so _dfs captures it via closure —
-#         # no parameter passing needed.
-#         #
-#         # For graph.roots = [Node(1), Node(4)] it ends up as:
-#         #   { Node(1): Node(1)&#x27;, Node(2): Node(2)&#x27;, Node(3): Node(3)&#x27;,
-#         #     Node(4): Node(4)&#x27;, Node(5): Node(5)&#x27; }
-#         #   where Node(x)&#x27; denotes the cloned counterpart of Node(x)
-#         original_to_clone: dict[&#x27;Node&#x27;, &#x27;Node&#x27;] = {}
+        # Shared across all components — correct regardless of whether components
+        # share nodes. Lives in outer scope so _dfs captures it via closure —
+        # no parameter passing needed.
+        #
+        # For graph.roots = [Node(1), Node(4)] it ends up as:
+        #   { Node(1): Node(1)&#x27;, Node(2): Node(2)&#x27;, Node(3): Node(3)&#x27;,
+        #     Node(4): Node(4)&#x27;, Node(5): Node(5)&#x27; }
+        #   where Node(x)&#x27; denotes the cloned counterpart of Node(x)
+        original_to_clone: dict[&#x27;Node&#x27;, &#x27;Node&#x27;] = {}
 
-#         def _dfs(original: &#x27;Node&#x27;) -&gt; &#x27;Node&#x27;:
-#             if original in original_to_clone:
-#                 return original_to_clone[original]
+        def _dfs(original: &#x27;Node&#x27;) -&gt; &#x27;Node&#x27;:
+            if original in original_to_clone:
+                return original_to_clone[original]
 
-#             clone = Node(original.val)
+            clone = Node(original.val)
 
-#             original_to_clone[original] = clone
+            original_to_clone[original] = clone
 
-#             for neighbor in original.neighbors:
-#                 clone.neighbors.append(_dfs(neighbor))
+            for neighbor in original.neighbors:
+                clone.neighbors.append(_dfs(neighbor))
 
-#             return clone
+            return clone
 
-#         # graph.roots is a list of Node objects, one per connected component.
-#         # e.g. for adjList = [[1,2,3],[4,5]]:
-#         #   graph.roots = [Node(1, neighbors=[Node(2), Node(3)]),
-#         #                  Node(4, neighbors=[Node(5)])]
-#         # Iterating gives one entry point at a time; the full component
-#         # is reachable from each root via .neighbors.
-#         cloned_roots = []
+        # graph.roots is a list of Node objects, one per connected component.
+        # e.g. for adjList = [[1,2,3],[4,5]]:
+        #   graph.roots = [Node(1, neighbors=[Node(2), Node(3)]),
+        #                  Node(4, neighbors=[Node(5)])]
+        # Iterating gives one entry point at a time; the full component
+        # is reachable from each root via .neighbors.
+        cloned_roots = []
 
-#         for root in graph.roots:
-#             # self.roots itself is never None (Graph.__init__ normalizes it to at least []),
-#             # but individual entries may still be None, e.g. Graph([None]).
+        for root in graph.roots:
+            # self.roots itself is never None (Graph.__init__ normalizes it to at least []),
+            # but individual entries may still be None, e.g. Graph([None]).
             
-#             # Skip such invalid component entry points. This is safe because the problem
-#             # does not require preserving positional/index correspondence between
-#             # input.roots and output.roots.
+            # Skip such invalid component entry points. This is safe because the problem
+            # does not require preserving positional/index correspondence between
+            # input.roots and output.roots.
             
-#             # (If index alignment were required, preserve the placeholder instead:
-#             #     if root is None:
-#             #         output.roots.append(None)
-#             #         continue
-#             #     output.roots.append(_dfs(root))
+            # (If index alignment were required, preserve the placeholder instead:
+            #     if root is None:
+            #         output.roots.append(None)
+            #         continue
+            #     output.roots.append(_dfs(root))
 
-#             # so output.roots[i] still corresponds to input.roots[i].)
+            # so output.roots[i] still corresponds to input.roots[i].)
 
-#             if root is None:
-#                 continue
+            if root is None:
+                continue
 
-#             # Each _dfs call fully clones one component. The shared map
-#             # ensures no node is visited twice even across multiple roots.
-#             cloned_roots.append(_dfs(root))
+            # Each _dfs call fully clones one component. The shared map
+            # ensures no node is visited twice even across multiple roots.
+            cloned_roots.append(_dfs(root))
 
-#         # Wrap cloned roots in a new Graph object mirroring the original structure.
-#         # e.g. for adjList = [[1,2,3],[4,5]]:
-#         #   cloned_roots = [Node(1)&#x27;, Node(4)&#x27;]  — plain list
-#         #   Graph(cloned_roots).roots = [Node(1)&#x27;, Node(4)&#x27;]  — wrapped in Graph
-#         #
-#         # Returning cloned_roots directly would fail since a list has no .roots
-#         # attribute — caller expects a Graph object back, same type as input.
-#         return Graph(cloned_roots)
+        # Wrap cloned roots in a new Graph object mirroring the original structure.
+        # e.g. for adjList = [[1,2,3],[4,5]]:
+        #   cloned_roots = [Node(1)&#x27;, Node(4)&#x27;]  — plain list
+        #   Graph(cloned_roots).roots = [Node(1)&#x27;, Node(4)&#x27;]  — wrapped in Graph
+        #
+        # Returning cloned_roots directly would fail since a list has no .roots
+        # attribute — caller expects a Graph object back, same type as input.
+        return Graph(cloned_roots)
 
 
-# # ---------------------------------------------------------------------------
-# # Build graph for adjList = [[1,2,3],[4,5]]
-# #
-# #   Component 1:          Component 2:
-# #   Node(1) -- Node(2)    Node(4) -- Node(5)
-# #      \      /
-# #       Node(3)
-# # ---------------------------------------------------------------------------
-# node1 = Node(1)
-# node2 = Node(2)
-# node3 = Node(3)
-# node4 = Node(4)
-# node5 = Node(5)
+# ---------------------------------------------------------------------------
+# Build graph for adjList = [[1,2,3],[4,5]]
+#
+#   Component 1:          Component 2:
+#   Node(1) -- Node(2)    Node(4) -- Node(5)
+#      \      /
+#       Node(3)
+# ---------------------------------------------------------------------------
+node1 = Node(1)
+node2 = Node(2)
+node3 = Node(3)
+node4 = Node(4)
+node5 = Node(5)
 
-# # Wire up component 1 — fully connected triangle
+# Wire up component 1 — fully connected triangle
 # node1.neighbors = [node2, node3]
 # node2.neighbors = [node1, node3]
 # node3.neighbors = [node1, node2]
 
-# # Wire up component 2 — single edge
+# Wire up component 2 — single edge
 # node4.neighbors = [node5]
 # node5.neighbors = [node4]
 
-# # Build input graph with one root per component
-# input_graph = Graph(roots=[node1, node4])
+# Build input graph with one root per component
+input_graph = Graph(roots=[node1, node4])
 
-# # Run solution
-# output_graph = Solution().cloneGraph(input_graph)
+# Run solution
+output_graph = Solution().cloneGraph(input_graph)
 
-# # ---------------------------------------------------------------------------
-# # Verify — `is` checks identity (different object), `==` checks value equality
-# # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# Verify — `is` checks identity (different object), `==` checks value equality
+# ---------------------------------------------------------------------------
 
-# # Component 1 root
-# cloned_node1 = output_graph.roots[0]
-# print(cloned_node1.val)                                          # 1
-# print(cloned_node1 is node1)                                     # False — different object ✓
-# print(cloned_node1.val == node1.val)                             # True  — same value ✓
+# Component 1 root
+cloned_node1 = output_graph.roots[0]
+print(cloned_node1.val)                                          # 1
+print(cloned_node1 is node1)                                     # False — different object ✓
+print(cloned_node1.val == node1.val)                             # True  — same value ✓
 
-# # Component 1 neighbors
-# cloned_node2 = cloned_node1.neighbors[0]
-# cloned_node3 = cloned_node1.neighbors[1]
-# print(cloned_node2 is node2)                                     # False ✓
-# print(cloned_node2.val == node2.val)                             # True  ✓
-# print(cloned_node3 is node3)                                     # False ✓
-# print(cloned_node3.val == node3.val)                             # True  ✓
+# Component 1 neighbors
+cloned_node2 = cloned_node1.neighbors[0]
+cloned_node3 = cloned_node1.neighbors[1]
+print(cloned_node2 is node2)                                     # False ✓
+print(cloned_node2.val == node2.val)                             # True  ✓
+print(cloned_node3 is node3)                                     # False ✓
+print(cloned_node3.val == node3.val)                             # True  ✓
 
-# # Back-edges within component 1 point to clones, not originals
-# print(cloned_node2.neighbors[0] is cloned_node1)                 # True  — clone ✓
-# print(cloned_node2.neighbors[0] is node1)                        # False — not original ✓
+# Back-edges within component 1 point to clones, not originals
+print(cloned_node2.neighbors[0] is cloned_node1)                 # True  — clone ✓
+print(cloned_node2.neighbors[0] is node1)                        # False — not original ✓
 
-# # Component 2 root
-# cloned_node4 = output_graph.roots[1]
-# print(cloned_node4.val)                                          # 4
-# print(cloned_node4 is node4)                                     # False ✓
-# print(cloned_node4.val == node4.val)                             # True  ✓
+# Component 2 root
+cloned_node4 = output_graph.roots[1]
+print(cloned_node4.val)                                          # 4
+print(cloned_node4 is node4)                                     # False ✓
+print(cloned_node4.val == node4.val)                             # True  ✓
 
-# # Component 2 neighbor
-# cloned_node5 = cloned_node4.neighbors[0]
-# print(cloned_node5 is node5)                                     # False ✓
-# print(cloned_node5.val == node5.val)                             # True  ✓
+# Component 2 neighbor
+cloned_node5 = cloned_node4.neighbors[0]
+print(cloned_node5 is node5)                                     # False ✓
+print(cloned_node5.val == node5.val)                             # True  ✓
 
-# # Back-edge within component 2
-# print(cloned_node5.neighbors[0] is cloned_node4)                 # True  — clone ✓
-# print(cloned_node5.neighbors[0] is node4)                        # False — not original ✓
+# Back-edge within component 2
+print(cloned_node5.neighbors[0] is cloned_node4)                 # True  — clone ✓
+print(cloned_node5.neighbors[0] is node4)                        # False — not original ✓
 
 # Another solution : Use cloneGraph as a separate function 
 
-# class Solution:
-#     def _dfs(self, original: &#x27;Node&#x27;, original_to_clone: dict) -&gt; &#x27;Node&#x27;:
-#         &quot;&quot;&quot;
-#         Recursively clone a node and all nodes reachable from it.
+class Solution:
+    def _dfs(self, original: &#x27;Node&#x27;, original_to_clone: dict) -&gt; &#x27;Node&#x27;:
+        &quot;&quot;&quot;
+        Recursively clone a node and all nodes reachable from it.
 
-#         Args:
-#             original:           The node to clone.
-#             original_to_clone:  Shared map of original → clone, passed in
-#                                 explicitly since this is a class method and
-#                                 cannot capture it via closure.
+        Args:
+            original:           The node to clone.
+            original_to_clone:  Shared map of original → clone, passed in
+                                explicitly since this is a class method and
+                                cannot capture it via closure.
 
-#         Returns:
-#             The clone of the input node.
+        Returns:
+            The clone of the input node.
 
-#         TC: O(V + E)  — each node and edge visited exactly once
+        TC: O(V + E)  — each node and edge visited exactly once
 
-#         SC: O(V)          
-#             - recursion stack depth is O(V) in the worst case
-#             - additionally uses a shared O(V) hashmap (original_to_clone) allocated by the caller
-#         &quot;&quot;&quot;
+        SC: O(V)          
+            - recursion stack depth is O(V) in the worst case
+            - additionally uses a shared O(V) hashmap (original_to_clone) allocated by the caller
+        &quot;&quot;&quot;
 
-#         if original in original_to_clone:
-#             return original_to_clone[original]
+        if original in original_to_clone:
+            return original_to_clone[original]
 
-#         clone = Node(original.val)
-#         original_to_clone[original] = clone
+        clone = Node(original.val)
+        original_to_clone[original] = clone
 
-#         for neighbor in original.neighbors:
-#             clone.neighbors.append(self._dfs(neighbor, original_to_clone))
+        for neighbor in original.neighbors:
+            clone.neighbors.append(self._dfs(neighbor, original_to_clone))
 
-#         return clone
+        return clone
 
-#     def cloneGraph(self, graph: Optional[&#x27;Graph&#x27;]) -&gt; Optional[&#x27;Graph&#x27;]:
-#         &quot;&quot;&quot;
-#         Clone a disconnected undirected graph using recursive DFS.
+    def cloneGraph(self, graph: Optional[&#x27;Graph&#x27;]) -&gt; Optional[&#x27;Graph&#x27;]:
+        &quot;&quot;&quot;
+        Clone a disconnected undirected graph using recursive DFS.
 
-#         Input is a Graph object containing a list of root nodes, one per
-#         connected component:
-#             graph.roots = [Node(1, neighbors=[Node(2), Node(3)]), Node(4, neighbors=[Node(5)])]
-#             represents two components:
-#                 component 1: Node(1) &lt;-&gt; Node(2) &lt;-&gt; Node(3)
-#                 component 2: Node(4) &lt;-&gt; Node(5)
+        Input is a Graph object containing a list of root nodes, one per
+        connected component:
+            graph.roots = [Node(1, neighbors=[Node(2), Node(3)]), Node(4, neighbors=[Node(5)])]
+            represents two components:
+                component 1: Node(1) &lt;-&gt; Node(2) &lt;-&gt; Node(3)
+                component 2: Node(4) &lt;-&gt; Node(5)
 
-#         Difference from previous version:
-#             Instead of building an intermediate cloned_roots list and wrapping
-#             it in Graph() at the end, we initialize output = Graph() upfront
-#             and append directly to output.roots — removing the need for a
-#             separate list entirely.
+        Difference from previous version:
+            Instead of building an intermediate cloned_roots list and wrapping
+            it in Graph() at the end, we initialize output = Graph() upfront
+            and append directly to output.roots — removing the need for a
+            separate list entirely.
 
-#             Previous:                           Current:
-#               cloned_roots = []                   output = Graph()
-#               for root in graph.roots:            for root in graph.roots:
-#                   cloned_roots.append(...)            output.roots.append(...)
-#               return Graph(cloned_roots)          return output
+            Previous:                           Current:
+              cloned_roots = []                   output = Graph()
+              for root in graph.roots:            for root in graph.roots:
+                  cloned_roots.append(...)            output.roots.append(...)
+              return Graph(cloned_roots)          return output
 
-#         Args:
-#             graph: Graph object containing root nodes, one per connected
-#                    component. May be None for an empty graph.
+        Args:
+            graph: Graph object containing root nodes, one per connected
+                   component. May be None for an empty graph.
 
-#         Returns:
-#             A new Graph object whose roots list mirrors the original,
-#             with all nodes deeply cloned. Returns None if input is None.
+        Returns:
+            A new Graph object whose roots list mirrors the original,
+            with all nodes deeply cloned. Returns None if input is None.
 
-#         TC: O(V + E)  — each node and edge visited exactly once across all components
-#         SC: O(V)      — visited map + recursion stack, both O(V)
-#         &quot;&quot;&quot;
-#         # Base check: empty graph — nothing to clone
-#         if graph is None:
-#             return None
+        TC: O(V + E)  — each node and edge visited exactly once across all components
+        SC: O(V)      — visited map + recursion stack, both O(V)
+        &quot;&quot;&quot;
+        # Base check: empty graph — nothing to clone
+        if graph is None:
+            return None
 
-#         # Passed explicitly to self._dfs on every call because self._dfs is a
-#         # class method — it has no enclosing scope to capture variables from
-#         # via closure, unlike a nested _dfs function.
-#         #
-#         # A fresh map per root would also work here since the problem guarantees
-#         # components share no nodes — each component is fully isolated.
-#         #
-#         # Fresh map per root (works given guarantee):
-#         #   for root in graph.roots:
-#         #       original_to_clone = {}               ← reset each iteration
-#         #       output.roots.append(self._dfs(root, original_to_clone))
-#         #
-#         # Shared map (preferred — no assumption needed):
-#         #   original_to_clone = {}                   ← created once outside loop
-#         #   for root in graph.roots:
-#         #       output.roots.append(self._dfs(root, original_to_clone))
+        # Passed explicitly to self._dfs on every call because self._dfs is a
+        # class method — it has no enclosing scope to capture variables from
+        # via closure, unlike a nested _dfs function.
+        #
+        # A fresh map per root would also work here since the problem guarantees
+        # components share no nodes — each component is fully isolated.
+        #
+        # Fresh map per root (works given guarantee):
+        #   for root in graph.roots:
+        #       original_to_clone = {}               ← reset each iteration
+        #       output.roots.append(self._dfs(root, original_to_clone))
+        #
+        # Shared map (preferred — no assumption needed):
+        #   original_to_clone = {}                   ← created once outside loop
+        #   for root in graph.roots:
+        #       output.roots.append(self._dfs(root, original_to_clone))
 
-#         original_to_clone: dict[&#x27;Node&#x27;, &#x27;Node&#x27;] = {}
+        original_to_clone: dict[&#x27;Node&#x27;, &#x27;Node&#x27;] = {}
 
-#         # Initialize output Graph upfront and append cloned roots directly —
-#         # no intermediate list needed.
-#         # e.g. for adjList = [[1,2,3],[4,5]]:
-#         #   after loop: output.roots = [Node(1)&#x27;, Node(4)&#x27;]
-#         output = Graph()
+        # Initialize output Graph upfront and append cloned roots directly —
+        # no intermediate list needed.
+        # e.g. for adjList = [[1,2,3],[4,5]]:
+        #   after loop: output.roots = [Node(1)&#x27;, Node(4)&#x27;]
+        output = Graph()
 
-#         for root in graph.roots:
-#             if root is None:
-#                 continue
-#             # Each _dfs call fully clones one component. The shared map
-#             # ensures no node is visited twice even across multiple roots.
-#             output.roots.append(self._dfs(root, original_to_clone))
+        for root in graph.roots:
+            if root is None:
+                continue
+            # Each _dfs call fully clones one component. The shared map
+            # ensures no node is visited twice even across multiple roots.
+            output.roots.append(self._dfs(root, original_to_clone))
 
-#         return output
+        return output
 
 
 
