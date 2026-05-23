@@ -1,0 +1,1102 @@
+"""
+LeetCode 339. Nested List Weight Sum
+Difficulty: Medium
+URL: https://leetcode.com/problems/nested-list-weight-sum/
+"""
+
+"""
+This is the interface that allows for creating nested lists.
+You should not implement it, or speculate about its implementation
+"""
+class NestedInteger:
+   def __init__(self, value=None):
+       """
+       If value is not specified, initializes an empty list.
+       Otherwise initializes a single integer equal to value.
+       """
+
+   def isInteger(self):
+       """
+       @return True if this NestedInteger holds a single integer, rather than a nested list.
+       :rtype bool
+       """
+
+   def add(self, elem):
+       """
+       Set this NestedInteger to hold a nested list and adds a nested integer elem to it.
+       :rtype void
+       """
+
+   def setInteger(self, value):
+       """
+       Set this NestedInteger to hold a single integer equal to value.
+       :rtype void
+       """
+
+   def getInteger(self):
+       """
+       @return the single integer that this NestedInteger holds, if it holds a single integer
+       Return None if this NestedInteger holds a nested list
+       :rtype int
+       """
+
+   def getList(self):
+       """
+       @return the nested list that this NestedInteger holds, if it holds a nested list
+       Return None if this NestedInteger holds a single integer
+       :rtype List[NestedInteger]
+       """
+
+# Minimal implementation of NestedInteger class
+
+class NestedInteger:
+    def __init__(self, value=None):
+        """
+        If value is None, creates an empty list container.
+        If value is provided, creates an integer container.
+        """
+        if value is None:
+            self._is_integer = False
+            self._list = []
+        else:
+            self._is_integer = True
+            self._integer = value
+    
+    def isInteger(self) -> bool:
+        """Returns True if this holds an integer, False if it holds a list"""
+        return self._is_integer
+    
+    def getInteger(self) -> int:
+        """Returns the integer value (only call when isInteger() is True)"""
+        return self._integer
+    
+    def getList(self) -> List['NestedInteger']:
+        """Returns the nested list (only call when isInteger() is False)"""
+        return self._list
+    
+    def add(self, elem: 'NestedInteger'):
+        """
+        Add a NestedInteger to this list container.
+        Only works if this is a list-type NestedInteger, not integer-type.
+        Example:
+            list_obj = NestedInteger()      # Creates list
+            list_obj.add(NestedInteger(5))  # ✓ Works - adds integer to list
+            
+            int_obj = NestedInteger(5)      # Creates integer
+            int_obj.add(NestedInteger(3))   # ✗ Does nothing - can't add to integer
+        """
+        # Only add to list-type NestedIntegers, not integer-type
+        # Ensures you can't add elements to an integer (doesn't make sense)
+        if not self._is_integer:
+            self._list.append(elem)
+
+
+# Example: Build [[1,1],2,[1,1]]
+
+# Step 1: Build first inner list [1,1]
+list1 = NestedInteger()           # Creates empty list container
+list1.add(NestedInteger(1))       # Creates integer(1) and adds to list
+list1.add(NestedInteger(1))       # Creates integer(1) and adds to list
+# list1 now represents [1,1]
+
+# Step 2: Create standalone integer 2
+int2 = NestedInteger(2)           # Creates integer container holding 2
+
+# Step 3: Build second inner list [1,1]
+list2 = NestedInteger()           # Creates empty list container
+list2.add(NestedInteger(1))       # Creates integer(1) and adds to list
+list2.add(NestedInteger(1))       # Creates integer(1) and adds to list
+# list2 now represents [1,1]
+
+# Step 4: Combine into final structure [[1,1], 2, [1,1]]
+nestedList = [list1, int2, list2]
+
+
+# Build: [1, [2, [3, [4, 5]], 6], 7]
+# Three elements: 1, [2, [3, [4, 5]], 6], 7
+
+# Step 1: Build innermost list [4, 5]
+innermost = NestedInteger()              # Creates empty list
+innermost.add(NestedInteger(4))          # Adds integer 4
+innermost.add(NestedInteger(5))          # Adds integer 5
+# innermost represents [4, 5]
+
+# Step 2: Build [3, [4, 5]]
+level3 = NestedInteger()                 # Creates empty list
+level3.add(NestedInteger(3))             # Adds integer 3
+level3.add(innermost)                    # Adds the list [4, 5]
+# level3 represents [3, [4, 5]]
+
+# Step 3: Build [2, [3, [4, 5]], 6]
+level2 = NestedInteger()                 # Creates empty list
+level2.add(NestedInteger(2))             # Adds integer 2
+level2.add(level3)                       # Adds the list [3, [4, 5]]
+level2.add(NestedInteger(6))             # Adds integer 6
+# level2 represents [2, [3, [4, 5]], 6]
+
+# Step 4: Build outer list [1, [2, [3, [4, 5]], 6], 7]
+nestedList = [
+    NestedInteger(1),                    # Integer 1
+    level2,                              # List [2, [3, [4, 5]], 6]
+    NestedInteger(7)                     # Integer 7
+]
+# nestedList represents [1, [2, [3, [4, 5]], 6], 7]
+
+# Optimal approach (DFS)
+
+# Traverse with depth tracking. At each element:
+# If it’s an integer, add value * depth to total.
+# If it’s a list, recurse with depth + 1.
+
+class Solution:
+    def depthSum(self, nestedList: List[NestedInteger]) -> int:
+        """
+        Calculate weighted sum where each integer is multiplied by its depth.
+
+        Approach:
+        - Use Depth-First Search (DFS) to traverse the nested structure
+        - Track current depth during recursion
+        - If element is an integer → add (value × depth)
+        - If element is a list → recurse with depth + 1
+
+        Time Complexity: O(n) - ALWAYS
+        - n = total number of NestedInteger objects (integers + lists)
+        - Each element is visited exactly once
+        - isInteger(), getInteger(), and getList() are O(1)
+        - Total: O(n)
+
+        Examples with same n=7 but different structures:
+        - Flat: [1,2,3,4,5,6,7] → visits 7 elements → O(7)
+        - Deep: [[[[[[[7]]]]]]] → visits 7 elements → O(7)
+        - Mixed: [1,[2,[3]],4] → visits 7 elements → O(7)
+
+        Space Complexity: O(d)
+        - d = maximum depth of nesting
+        - Recursion stack grows proportional to depth
+        - Each recursive call uses O(1) space
+
+        Worst Case Space: O(n)
+        - Occurs when structure is fully nested (chain-like)
+        Example: [[[[[5]]]]]
+        - Here, depth d = n → O(n) stack space
+
+        Best Case Space: O(1)
+        - Occurs when no nesting (all elements at depth 1)
+        Example: [1, 2, 3, 4]
+        - Depth d = 1 → O(1) stack space (single recursive call)
+
+        Example:
+        Input: [1, [2, [3, [4, 5]], 6], 7]
+        - Integers: 7
+        - Total NestedInteger objects (including lists): 10
+        - Maximum depth: 4
+        - Time: O(10) → O(n)
+        - Space: O(4) → O(d)
+        """
+        def dfs(nested_list, depth):
+            total = 0
+
+            for nested in nested_list:
+                if nested.isInteger():
+                    total += nested.getInteger() * depth
+                else:
+                    total += dfs(nested.getList(), depth + 1)
+            return total
+
+        return dfs(nestedList, 1)
+
+
+# Solution with nonlocal
+
+class Solution:
+    def depthSum(self, nestedList: List[NestedInteger]) -> int:
+        """
+        Calculate weighted sum using nonlocal variable.
+        Time: O(n) where n is total number of nested integers
+        Space: O(d) where d is maximum depth (recursion stack)
+        """
+        total = 0  # Define total in outer scope
+        
+        def dfs(nested_list, depth):
+            nonlocal total  # Access outer scope's total variable
+            
+            for nested in nested_list:
+                if nested.isInteger():
+                    # Add value * depth to outer total
+                    total += nested.getInteger() * depth
+                else:
+                    # Recurse into nested list
+                    dfs(nested.getList(), depth + 1)
+        
+        dfs(nestedList, 1)  # Start DFS
+        return total  # Return accumulated total
+
+
+# Variant: Nested List Weight Sum (Custom Implementation)
+
+# Problem Statement: You are given a nested list of integers nestedList. Each element is either an integer or a list whose elements may also be integers or other lists.
+
+# The depth of an integer is the number of lists that it is inside of. For example, the nested list [1,[2,2],[[3],2],1] has each integer's value set to its depth.
+
+# Return the sum of each integer in nestedList multiplied by its depth.
+
+# Note: Define your own implementation that represents a NestedInteger
+
+# Example 1:
+# Input: [[1,1],2,[1,1]]
+# Structure:
+# - Outer list contains 3 elements at depth 1
+#   - [1,1]: list at depth 1, contains two 1's at depth 2
+#   - 2: integer at depth 1
+#   - [1,1]: list at depth 1, contains two 1's at depth 2
+# Output: 10
+# Explanation: 1*2 + 1*2 + 2*1 + 1*2 + 1*2 = 2 + 2 + 2 + 2 + 2 = 10
+
+# Example 2:
+# Input: [1,[4,[6]]]
+# Structure:
+# - 1 at depth 1
+# - [4,[6]] at depth 1, contains:
+#   - 4 at depth 2
+#   - [6] at depth 2, contains:
+#     - 6 at depth 3
+# Output: 27
+# Explanation: 1*1 + 4*2 + 6*3 = 1 + 8 + 18 = 27
+
+# Example 3:
+# Input: [1, [2, [3, [4, 5]], 6], 7]
+# Structure:
+# - 1 at depth 1
+# - [2, [3, [4, 5]], 6] at depth 1, contains:
+#   - 2 at depth 2
+#   - [3, [4, 5]] at depth 2, contains:
+#     - 3 at depth 3
+#     - [4, 5] at depth 3, contains:
+#       - 4 at depth 4
+#       - 5 at depth 4
+#   - 6 at depth 2
+# - 7 at depth 1
+# Output: 69
+# Explanation: 1*1 + 7*1 + 2*2 + 6*2 + 3*3 + 4*4 + 5*4 = 1 + 7 + 4 + 12 + 9 + 16 + 20 = 69
+
+
+# from typing import List, Union
+
+# # =============================================================================
+# # DEFINITION 1: Union[int, List['Object']]
+# # Matches the original LeetCode 339 NestedInteger interface
+# # =============================================================================
+
+# class Object:
+#     """
+#     Each Object holds EITHER an int OR a list of Objects.
+#     Cannot mix ints and Objects in the same list.
+    
+#     This matches the original LeetCode problem where NestedInteger
+#     is either an integer or a nested list, but not both.
+#     """
+#     def __init__(self, value: Union[int, List['Object']]):
+#         self.value = value
+
+
+# class Solution:
+#     def depthSum(self, nestedList: List[Object]) -> int:
+#         def dfs(nested_list: List[Object], depth: int) -> int:
+#             total = 0
+#             for obj in nested_list:
+#                 if isinstance(obj.value, int):
+#                     # obj.value is an int
+#                     total += obj.value * depth
+#                 else:
+#                     # obj.value is a List[Object]
+#                     total += dfs(obj.value, depth + 1)
+#             return total
+#         return dfs(nestedList, 1)
+
+
+# # Example: [1, [2, [3, [4, 5]], 6], 7]
+
+# innermost = Object([Object(4), Object(5)])
+# levelThree = Object([Object(3), innermost])
+# levelTwo = Object([Object(2), levelThree, Object(6)])
+# nestedList = [Object(1), levelTwo, Object(7)]
+
+# sol = Solution()
+# result = sol.depthSum(nestedList)
+# print(f"Result: {result}\n")  # Expected: 69
+
+
+# # =============================================================================
+# # DEFINITION 2: List['Object' | int]
+# # Alternative definition - more flexible but doesn't match LeetCode
+# # =============================================================================
+
+# class Object:
+#     """
+#     value is ALWAYS a list that can contain BOTH Objects and raw ints.
+#     Can mix ints and Objects in the same list.
+    
+#     This is more flexible but does NOT match the original LeetCode
+#     problem semantics. Use Definition 1 for interview prep.
+#     """
+#     def __init__(self, value: List['Object' | int]):
+#         self.value = value
+
+
+# class Solution:
+#     def depthSum(self, nestedList: List['Object' | int]) -> int:
+#         def dfs(items: List['Object' | int], depth: int) -> int:
+#             total = 0
+#             for item in items:
+#                 if isinstance(item, int):
+#                     # item itself is an int (not item.value)
+#                     total += item * depth
+#                 else:
+#                     # item is an Object
+#                     total += dfs(item.value, depth + 1)
+#             return total
+#         return dfs(nestedList, 1)
+
+
+# Example: [1, [2, [3, [4, 5]], 6], 7]
+
+# innermost = Object([4, 5])
+# levelThree = Object([3, innermost])
+# levelTwo = Object([2, levelThree, 6])
+# nestedList = [1, levelTwo, 7]
+
+# sol = SolutionAlt()
+# result = sol.depthSum(nestedList)
+# print(f"Result: {result}\n")  # Expected: 69
+
+
+# Approach : BFS (Explicit level tracking)
+
+# from typing import List, Union
+# from collections import deque
+
+# class Object:
+#     # Definition 1: Union[int, List['Object']]
+#     def __init__(self, value: Union[int, List['Object']]):
+#         self.value = value
+
+# class SolutionBFS:
+#     def depthSum(self, objs: List[Object]) -> int:
+#         """
+#         Level-by-level BFS approach using explicit level tracking.
+        
+#         BFS vs DFS:
+        
+#         Traversal Order:
+#         - DFS: Goes DEEP first (explores one branch completely before others)
+#         - BFS: Goes WIDE first (explores all nodes at current depth before going deeper)
+        
+#         Example: [1, [2, [3]]]
+#         - DFS order: 1 → [2,[3]] → 2 → [3] → 3 (follows one path down)
+#         - BFS order: 1, [2,[3]] (level 1) → 2, [3] (level 2) → 3 (level 3)
+        
+#         Implementation:
+#         - DFS: Uses recursion stack (implicit) or explicit stack
+#         - BFS: Uses explicit queue
+        
+#         Space Complexity:
+#         - DFS: O(d) where d = maximum depth (recursion stack)
+#         - BFS: O(w) where w = maximum width (queue size)
+        
+#         When DFS is better:
+#         - Structure is deep but narrow → DFS uses less space
+#         - Example: [[[[[5]]]]] - DFS O(5) vs BFS O(1)
+        
+#         When BFS is better:
+#         - Structure is wide but shallow → BFS uses less space
+#         - Example: [1,2,3,4,5,6,7,8,9,10] - DFS O(1) vs BFS O(10)
+#         - Need level-by-level processing
+#         - Avoid stack overflow from very deep recursion
+        
+#         For this problem:
+#         - Both give same result
+#         - DFS is simpler to code (natural recursion)
+#         - BFS is iterative (easier to debug, no stack overflow risk)
+        
+#         Time Complexity: O(n)
+#         - n = total number of Object nodes
+#         - Each node processed exactly once
+#         - Operations per node: popleft() O(1), isinstance() O(1), extend() O(k)
+#           where k is number of children (amortized O(1) per child)
+        
+#         Worst Case Time: O(n)
+#         - Always O(n) regardless of structure
+#         - Must visit every node to calculate sum
+        
+#         Space Complexity: O(w)
+#         - w = maximum width at any level (max nodes at same depth)
+#         - Queue stores nodes level by level
+#         - At any moment, queue contains at most all nodes from one level
+        
+#         Worst Case Space: O(n)
+#         - All nodes at same level: [1, 2, 3, 4, ..., n]
+#         - Width w = n → O(n) queue space
+        
+#         Best Case Space: O(1)
+#         - Single chain: [[[[[n]]]]]
+#         - Width w = 1 at each level → O(1) queue space
+        
+#         How extend() works:
+#         Example with deque:
+#             queue = deque([1, 2])
+#             children = [3, 4, 5]
+            
+#             queue.extend(children)
+#             # Adds each element individually to the back
+#             # Result: deque([1, 2, 3, 4, 5])
+#             #                      ↑ new elements added here
+            
+#             # vs append():
+#             queue.append(children)
+#             # Would add entire list as one element
+#             # Result: deque([1, 2, [3, 4, 5]])
+#             #                      ↑ list as single element
+        
+#         In our code:
+#             queue = deque([Object(7)])
+#             obj.value = [Object(2), Object(3), Object(6)]
+            
+#             queue.extend(obj.value)
+#             # Result: deque([Object(7), Object(2), Object(3), Object(6)])
+#             #                          ↑ each Object added separately
+#         """
+#         # Initialize queue with all top-level objects (depth 1)
+#         queue = deque(objs)
+#         level = 1
+#         total = 0
+        
+#         while queue:
+#             # Capture number of nodes at current level BEFORE processing
+#             # This is critical - queue size will change as we add children
+#             level_size = len(queue)
+            
+#             # Process exactly level_size nodes (all nodes at current level)
+#             for _ in range(level_size):
+#                 # Remove object from front of queue
+#                 obj = queue.popleft()
+                
+#                 # Check if obj.value is an integer or a list
+#                 if isinstance(obj.value, int):
+#                     # It's an integer: add (value * level) to total
+#                     total += obj.value * level
+#                 else:
+#                     # It's a list of Objects: add all children to back of queue
+#                     # Children will be at next level (level + 1)
+#                     # extend() adds each child individually (not as a list)
+#                     queue.extend(obj.value)
+            
+#             # All nodes at current level processed, increment level
+#             level += 1
+        
+#         return total
+
+# Example Walkthrough: [1, [2, [3, [4, 5]], 6], 7]
+
+# Structure:
+# objs = [
+#     Object(1),
+#     Object([Object(2), Object([Object(3), Object([Object(4), Object(5)])]), Object(6)]),
+#     Object(7)
+# ]
+
+# Initial State:
+# queue = [Object(1), Object([2,[3,[4,5]],6]), Object(7)] # same as objs, shortened notation for clarity
+# level = 1
+# total = 0
+
+# ================================================================================
+# Iteration 1 (level = 1):
+# ================================================================================
+# level_size = 3 (three objects at depth 1)
+
+# Queue at start: [Object(1), Object([2,[3,[4,5]],6]), Object(7)]
+#                  ↑ front
+
+#   Step 1: Process Object(1)
+#     obj = queue.popleft() → Object(1)
+#     obj.value = 1 (integer)
+#     total += 1 * 1 = 1
+#     Queue after popleft: [Object([2,[3,[4,5]],6]), Object(7)]
+#                           ↑ front
+  
+#   Step 2: Process Object([2,[3,[4,5]],6])
+#     obj = queue.popleft() → Object([2,[3,[4,5]],6])
+#     obj.value = [Object(2), Object([3,[4,5]]), Object(6)] (list)
+#     queue.extend([Object(2), Object([3,[4,5]]), Object(6)])
+    
+#     Queue before extend: [Object(7)]
+#                           ↑ front
+    
+#     Queue after extend:  [Object(7), Object(2), Object([3,[4,5]]), Object(6)]
+#                           ↑ front              ↑ new elements added to back
+  
+#   Step 3: Process Object(7)
+#     obj = queue.popleft() → Object(7)
+#     obj.value = 7 (integer)
+#     total += 7 * 1 = 8
+#     Queue after popleft: [Object(2), Object([3,[4,5]]), Object(6)]
+#                           ↑ front
+
+# After iteration: queue = [Object(2), Object([3,[4,5]]), Object(6)]
+# level = 2, total = 8
+
+# ================================================================================
+# Iteration 2 (level = 2):
+# ================================================================================
+# level_size = 3 (three objects at depth 2)
+
+# Queue at start: [Object(2), Object([3,[4,5]]), Object(6)]
+#                  ↑ front
+
+#   Step 1: Process Object(2)
+#     obj = queue.popleft() → Object(2)
+#     obj.value = 2 (integer)
+#     total += 2 * 2 = 12
+#     Queue after popleft: [Object([3,[4,5]]), Object(6)]
+#                           ↑ front
+  
+#   Step 2: Process Object([3,[4,5]])
+#     obj = queue.popleft() → Object([3,[4,5]])
+#     obj.value = [Object(3), Object([4,5])] (list)
+#     queue.extend([Object(3), Object([4,5])])
+    
+#     Queue before extend: [Object(6)]
+#                           ↑ front
+    
+#     Queue after extend:  [Object(6), Object(3), Object([4,5])]
+#                           ↑ front    ↑ new elements added to back
+  
+#   Step 3: Process Object(6)
+#     obj = queue.popleft() → Object(6)
+#     obj.value = 6 (integer)
+#     total += 6 * 2 = 24
+#     Queue after popleft: [Object(3), Object([4,5])]
+#                           ↑ front
+
+# After iteration: queue = [Object(3), Object([4,5])]
+# level = 3, total = 24
+
+# ================================================================================
+# Iteration 3 (level = 3):
+# ================================================================================
+# level_size = 2 (two objects at depth 3)
+
+# Queue at start: [Object(3), Object([4,5])]
+#                  ↑ front
+
+#   Step 1: Process Object(3)
+#     obj = queue.popleft() → Object(3)
+#     obj.value = 3 (integer)
+#     total += 3 * 3 = 33
+#     Queue after popleft: [Object([4,5])]
+#                           ↑ front
+  
+#   Step 2: Process Object([4,5])
+#     obj = queue.popleft() → Object([4,5])
+#     obj.value = [Object(4), Object(5)] (list)
+#     queue.extend([Object(4), Object(5)])
+    
+#     Queue before extend: []
+    
+#     Queue after extend:  [Object(4), Object(5)]
+#                           ↑ front
+
+# After iteration: queue = [Object(4), Object(5)]
+# level = 4, total = 33
+
+# ================================================================================
+# Iteration 4 (level = 4):
+# ================================================================================
+# level_size = 2 (two objects at depth 4)
+
+# Queue at start: [Object(4), Object(5)]
+#                  ↑ front
+
+#   Step 1: Process Object(4)
+#     obj = queue.popleft() → Object(4)
+#     obj.value = 4 (integer)
+#     total += 4 * 4 = 49
+#     Queue after popleft: [Object(5)]
+#                           ↑ front
+  
+#   Step 2: Process Object(5)
+#     obj = queue.popleft() → Object(5)
+#     obj.value = 5 (integer)
+#     total += 5 * 4 = 69
+#     Queue after popleft: []
+
+# After iteration: queue = []
+# level = 5, total = 69
+
+# Queue is empty, return total = 69
+
+
+# Definition 2 : List[Union['Object', int]]
+
+# class Object:
+#     """
+#     DEFINITION 2: List[Union['Object', int]]
+
+#     value is ALWAYS a list that can contain BOTH Objects and raw ints.
+#     Can mix ints and Objects in the same list.
+    
+#     This is more flexible but does NOT match the original LeetCode
+#     problem semantics.
+#     """
+#     def __init__(self, value: List[Union['Object', int]]):
+#         # value is a list that can contain Objects and/or raw ints
+#         # Example: [1, 2, Object([3, 4]), 5]
+#         self.value = value
+
+# class Solution:
+#     def depthSum(self, objs: List[Union[Object, int]]) -> int:
+#         """
+#         Level-by-level BFS approach for Definition 2.
+        
+#         KEY DIFFERENCES FROM DEFINITION 1:
+        
+#         1. Type hint change:
+#            - Def 1: objs: List[Object] - only Objects
+#            - Def 2: objs: List[Union[Object, int]] - Objects OR raw ints
+        
+#         2. Type check change:
+#            - Def 1: isinstance(obj.value, int) - check the value inside Object
+#            - Def 2: isinstance(obj, int) - check if item itself is an int
+        
+#         3. Construction change:
+#            - Def 1: Object([Object(4), Object(5)]) - wrap every int in Object
+#            - Def 2: Object([4, 5]) - use raw ints directly
+        
+#         4. Top-level list:
+#            - Def 1: [Object(1), Object([...]), Object(7)] - all Objects
+#            - Def 2: [1, Object([...]), 7] - can mix ints and Objects
+        
+#         Time Complexity: O(n)
+#         Space Complexity: O(w)
+#         """
+#         # Initialize queue with top-level elements (can be ints or Objects)
+#         queue = deque(objs)
+#         level = 1
+#         total = 0
+        
+#         while queue:
+#             # Capture number of elements at current level
+#             level_size = len(queue)
+            
+#             # Process all elements at current level
+#             for _ in range(level_size):
+#                 # Remove element from front
+#                 obj = queue.popleft()
+                
+#                 # KEY CHANGE: Check if obj itself is int (not obj.value)
+#                 # Because with Def 2, raw ints can exist directly in lists
+#                 if isinstance(obj, int):
+#                     # obj is a raw integer
+#                     total += obj * level
+#                 else:
+#                     # obj is an Object
+#                     # obj.value is a list that can contain ints and Objects
+#                     queue.extend(obj.value)
+            
+#             # Move to next level
+#             level += 1
+        
+#         return total
+
+# BFS approach without explicit level tracking
+
+# class Object:
+#     """Definition 1 : Union[int, List['Object']] """
+#     def __init__(self, value: Union[int, List['Object']]):
+#         self.value = value
+
+
+# class SolutionBFS:
+#     def depthSum(self, objs: List[Object]) -> int:
+#         """
+#         BFS approach with (object, depth) tuples - no explicit level tracking.
+        
+#         Key Difference from Level-by-Level BFS:
+#         - Level-by-level: Track level separately, process entire level at once
+#         - This approach: Store depth with each object in queue
+        
+#         Advantages:
+#         - Simpler logic - no need to track level_size
+#         - More flexible - each object independently knows its depth
+#         - Less error-prone - no risk of miscounting levels
+        
+#         Time Complexity: O(n)
+#         - n = total number of Object nodes
+#         - Each node processed exactly once
+        
+#         Space Complexity: O(w)
+#         - w = maximum width at any level
+#         - Queue stores (object, depth) tuples
+        
+#         Worst Case Space: O(n)
+#         - All nodes at same level
+        
+#         Best Case Space: O(1)
+#         - Single chain structure
+#         """
+#         # Initialize queue with (object, depth) tuples
+#         # All top-level objects start at depth 1
+#         queue = deque([(obj, 1) for obj in objs])
+#         total = 0
+        
+#         while queue:
+#             # Remove (object, depth) tuple from front
+#             obj, depth = queue.popleft()
+            
+#             # Check if obj.value is an integer or a list
+#             if isinstance(obj.value, int):
+#                 # It's an integer: add (value * depth) to total
+#                 total += obj.value * depth
+#             else:
+#                 # It's a list of Objects: add all children with depth + 1
+#                 for child in obj.value:
+#                     queue.append((child, depth + 1))
+        
+#         return total
+
+# Dry Run Example: [1, [2, [3, [4, 5]], 6], 7]
+
+# Structure:
+# - Object(1)
+# - Object([Object(2), Object([Object(3), Object([Object(4), Object(5)])]), Object(6)])
+# - Object(7)
+
+# Initial State:
+# queue = [(Object(1), 1), (Object([2,[3,[4,5]],6]), 1), (Object(7), 1)]
+# total = 0
+
+# Step-by-step execution:
+
+# Step 1:
+#   queue.popleft() → (Object(1), 1)
+#   obj.value = 1 (int)
+#   total += 1 * 1 = 1
+#   Queue after: [(Object([2,[3,[4,5]],6]), 1), (Object(7), 1)]
+
+# Step 2:
+#   queue.popleft() → (Object([2,[3,[4,5]],6]), 1)
+#   obj.value = [Object(2), Object([3,[4,5]]), Object(6)] (list)
+#   Add children with depth 2:
+#     queue.append((Object(2), 2))
+#     queue.append((Object([3,[4,5]]), 2))
+#     queue.append((Object(6), 2))
+#   Queue after: [(Object(7), 1), (Object(2), 2), (Object([3,[4,5]]), 2), (Object(6), 2)]
+
+# Step 3:
+#   queue.popleft() → (Object(7), 1)
+#   obj.value = 7 (int)
+#   total += 7 * 1 = 8
+#   Queue after: [(Object(2), 2), (Object([3,[4,5]]), 2), (Object(6), 2)]
+
+# Step 4:
+#   queue.popleft() → (Object(2), 2)
+#   obj.value = 2 (int)
+#   total += 2 * 2 = 12
+#   Queue after: [(Object([3,[4,5]]), 2), (Object(6), 2)]
+
+# Step 5:
+#   queue.popleft() → (Object([3,[4,5]]), 2)
+#   obj.value = [Object(3), Object([4,5])] (list)
+#   Add children with depth 3:
+#     queue.append((Object(3), 3))
+#     queue.append((Object([4,5]), 3))
+#   Queue after: [(Object(6), 2), (Object(3), 3), (Object([4,5]), 3)]
+
+# Step 6:
+#   queue.popleft() → (Object(6), 2)
+#   obj.value = 6 (int)
+#   total += 6 * 2 = 24
+#   Queue after: [(Object(3), 3), (Object([4,5]), 3)]
+
+# Step 7:
+#   queue.popleft() → (Object(3), 3)
+#   obj.value = 3 (int)
+#   total += 3 * 3 = 33
+#   Queue after: [(Object([4,5]), 3)]
+
+# Step 8:
+#   queue.popleft() → (Object([4,5]), 3)
+#   obj.value = [Object(4), Object(5)] (list)
+#   Add children with depth 4:
+#     queue.append((Object(4), 4))
+#     queue.append((Object(5), 4))
+#   Queue after: [(Object(4), 4), (Object(5), 4)]
+
+# Step 9:
+#   queue.popleft() → (Object(4), 4)
+#   obj.value = 4 (int)
+#   total += 4 * 4 = 49
+#   Queue after: [(Object(5), 4)]
+
+# Step 10:
+#   queue.popleft() → (Object(5), 4)
+#   obj.value = 5 (int)
+#   total += 5 * 4 = 69
+#   Queue after: []
+
+# Queue empty, return total = 69
+
+# Approach with Defintion 2 will be the same
+
+# Why we cannot use List[List | int] for this problem?
+
+# With List[List | int]:
+
+# def __init__(self, value: List[List | int]):
+#     self.value = value
+
+# This means value is a list that can contain:
+# - Other lists (but those lists can only contain ints, not more lists!)
+# - Ints
+
+# Example of what you CAN represent:
+# value = [1, 2, [3, 4], 5]  # ✓ Works - one level of nesting
+
+# Example of what you CANNOT represent:
+# value = [1, [2, [3, 4]], 5]  # ✗ Doesn't work - the inner [3, 4] is nested too deep
+#              ^^^^^^^^
+#              This nested list isn't allowed by the type hint
+
+# The problem:
+# List[List | int]
+#    ^^^^^^^^^^
+#    The inner List has no further structure defined
+#    It's just "a list" (of what? unknown!)
+#    Can't recurse deeper
+
+# What you need:
+# For nested structures like [1, [2, [3, [4, 5]], 6], 7], you need recursive type definitions:
+
+# Option 1: Union[int, List['Object']] - Definition 1 (best for LeetCode)
+# class Object:
+#     def __init__(self, value: Union[int, List['Object']]):
+#         #                              ^^^^^^^^^^^^
+#         #                              Can recurse infinitely
+#         self.value = value
+
+
+# Option 2: List[Union['Object', int]] - Definition 2
+# class Object:
+#     def __init__(self, value: List[Union['Object', int]]):
+#         #                              ^^^^^^^^^^^^^^^^^^^
+#         #                              Can recurse infinitely
+#         self.value = value
+
+# DFS vs BFS Tradeoffs for LeetCode 339: Nested List Weight Sum
+
+# ================================================================================
+# TIME COMPLEXITY
+# ================================================================================
+
+# DFS: O(n)
+# BFS: O(n)
+
+# WINNER: TIE
+# - Both must visit every node exactly once to calculate sum
+# - No advantage for either approach
+
+# ================================================================================
+# SPACE COMPLEXITY
+# ================================================================================
+
+# DFS: O(d) where d = maximum depth
+# - Uses recursion stack
+# - Stack depth grows with nesting level
+# - Only stores one path from root to current node
+
+# BFS: O(w) where w = maximum width at any level
+# - Uses explicit queue
+# - Queue stores all nodes at current level
+# - Width = maximum number of nodes at same depth
+
+# WINNER: DEPENDS ON STRUCTURE
+
+# Example 1 - Deep but narrow (linear chain):
+# Structure: [[[[[5]]]]]
+# - Depth d = 5, Width w = 1
+# - DFS: O(5) space
+# - BFS: O(1) space
+# - WINNER: BFS ✓
+
+# Example 2 - Shallow but wide (flat):
+# Structure: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+# - Depth d = 1, Width w = 10
+# - DFS: O(1) space
+# - BFS: O(10) space
+# - WINNER: DFS ✓
+
+# Example 3 - Balanced tree:
+# Structure: [1, [2, [3, 4]], [5, [6, 7]]]
+# - Depth d ≈ log(n), Width w ≈ n/2
+# - DFS: O(log n) space
+# - BFS: O(n) space
+# - WINNER: DFS ✓
+
+# Example 4 - Real-world nested JSON:
+# Structure: [1, [2, [3, [4, 5]], 6], 7]
+# - Depth d = 4, Width w = 3
+# - DFS: O(4) space
+# - BFS: O(3) space
+# - WINNER: BFS ✓
+
+
+# Variant: Nested List Weight Sum (Mathematical/Distributive)
+
+# Problem Statement:
+# Instead of multiplying each integer by its depth, we need to think of the structure
+# as nested parentheses with coefficients.
+
+# Original Problem:
+# [1, [2, [3]]]
+# Depth 1: 1*1 = 1
+# Depth 2: 2*2 = 4
+# Depth 3: 3*3 = 9
+# Total: 1 + 4 + 9 = 14
+
+# Variant (Mathematical):
+# [1, [2, [3]]]
+# Think as: 1 * (1 + 2 * (2 + 3 * (3)))
+#         = 1 * (1 + 2 * (2 + 9))
+#         = 1 * (1 + 2 * 11)
+#         = 1 * (1 + 22)
+#         = 1 * 23
+#         = 23
+
+# Key Insight - Distributive Property:
+# When we have nested structure [a, [b, c]], we can think of it as:
+# 1 * (a + 2 * (b + c))
+
+# Each level MULTIPLIES the result of inner levels, rather than just adding depth weight.
+
+# Example Walkthrough:
+# Input: [8, 4, [5, [9], 3], 6]
+
+# Mathematical expression:
+# 1 * (8 + 4 + 2 * (5 + 3 * (9) + 3) + 6)
+
+# Evaluate inside out:
+# 3 * (9) = 27
+# 2 * (5 + 27 + 3) = 2 * 35 = 70
+# 1 * (8 + 4 + 70 + 6) = 1 * 88 = 88
+
+# Difference from Original:
+# Original: Each integer multiplied by its depth independently
+# Variant: Inner results are multiplied by depth, then added to outer level
+
+# Pattern:
+# - Original: sum += value * depth (independent)
+# - Variant: sum = depth * (sum_of_current_level) (multiplicative)
+
+
+# class Object:
+#     """Union[int, List['Object']] definition"""
+#     def __init__(self, value: Union[int, List['Object']]):
+#         self.value = value
+
+# class Solution:
+#     def depthSum(self, objs: List[Object]) -> int:
+#         """
+#         Variant: Sum entire level, then multiply by depth (distributive property).
+#         Result: depth * (sum of all values at this level)
+        
+#         Mathematical formula:
+#         For level with depth d containing [a, b, [c, d], e]:
+#         result = d * (a + b + (d+1) * (c + d) + e)
+        
+#         Time: O(n), Space: O(d)
+#         """
+#         def dfs(nested_list: List[Object], depth: int) -> int:
+#             # CHANGE 1: Use level_sum instead of total
+#             # We accumulate the sum at THIS level before multiplying
+#             level_sum = 0
+            
+#             for obj in nested_list:
+#                 if isinstance(obj.value, int):
+#                     # CHANGE 2: Add integer value directly (NO multiplication by depth)
+#                     # Original: total += obj.value * depth
+#                     # Variant: level_sum += obj.value
+#                     level_sum += obj.value
+#                 else:
+#                     # CHANGE 3: Recursive result is ALREADY multiplied by its depth
+#                     # So we just add it to current level_sum
+#                     # Original: total += dfs(obj.value, depth + 1)
+#                     # Variant: level_sum += dfs(obj.value, depth + 1)
+#                     level_sum += dfs(obj.value, depth + 1)
+            
+#             # CHANGE 4: Multiply ENTIRE level sum by current depth before returning
+#             # This is the key difference - distributive property
+#             # Original: return total (no multiplication)
+#             # Variant: return depth * level_sum
+#             return depth * level_sum
+        
+#         return dfs(objs, 1)
+
+# Example: [1, [2, [3]]]
+
+# ================================================================================
+# ORIGINAL PROBLEM
+# ================================================================================
+# Each integer multiplied by its depth independently.
+
+# Value 1 at depth 1: 1 × 1 = 1
+# Value 2 at depth 2: 2 × 2 = 4
+# Value 3 at depth 3: 3 × 3 = 9
+
+# Total: 1 + 4 + 9 = 14
+
+# Formula: Each value multiplied by its OWN depth only
+
+
+# ================================================================================
+# VARIANT PROBLEM
+# ================================================================================
+# Nested multiplication - each level's sum multiplied by its depth.
+
+# Mathematical expression: 1 × (1 + 2 × (2 + 3 × (3)))
+
+# Step-by-step evaluation (inside out):
+
+#   Depth 3: 3 × (3) = 9
+#   Depth 2: 2 × (2 + 9) = 2 × 11 = 22
+#   Depth 1: 1 × (1 + 22) = 1 × 23 = 23
+
+# Total: 23
+
+
+# ================================================================================
+# UNDERSTANDING THE DIFFERENCE
+# ================================================================================
+
+# Let's fully expand the variant expression using distributive law:
+
+#   1 × (1 + 2 × (2 + 3 × 3))
+
+# Distribute the 2:
+#   = 1 × (1 + 2×2 + 2×3×3)
+
+# Distribute the 1:
+#   = 1×1 + 1×2×2 + 1×2×3×3
+#   = 1 + 4 + 18
+#   = 23
+
+# Compare to original:
+#   Original: 1×1 + 2×2 + 3×3 = 1 + 4 + 9 = 14
+#   Variant:  1×1 + 1×2×2 + 1×2×3×3 = 1 + 4 + 18 = 23
+#                    ↑         ↑
+#               Same here  Different here!
+
+# Original: value × own_depth
+
+# Variant:  value × own_depth × parent_depth × grandparent_depth × ...
+#           (product of ALL depths from current level to root)
+
