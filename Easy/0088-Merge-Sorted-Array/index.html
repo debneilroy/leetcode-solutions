@@ -251,35 +251,35 @@ URL: https://leetcode.com/problems/merge-sorted-array/
 
 # Brute Force Approach : Concatenate, then sort
 
-# class Solution:
-#     def merge(self, nums1: list[int], m: int, nums2: list[int], n: int) -&gt; None:
-#         &quot;&quot;&quot;
-#         Brute force: Copy nums2 into nums1, then sort the entire array.
+class Solution:
+    def merge(self, nums1: list[int], m: int, nums2: list[int], n: int) -&gt; None:
+        &quot;&quot;&quot;
+        Brute force: Copy nums2 into nums1, then sort the entire array.
         
-#         TC: Best O(m + n) - Timsort detects already sorted runs
-#             Worst O((m + n) log(m + n)) - general sorting case
-#         SC: Best O(log(m + n)) - recursion depth for small merges
-#             Worst O(m + n) - Timsort&#x27;s auxiliary space for merging
+        TC: Best O(m + n) - Timsort detects already sorted runs
+            Worst O((m + n) log(m + n)) - general sorting case
+        SC: Best O(log(m + n)) - recursion depth for small merges
+            Worst O(m + n) - Timsort&#x27;s auxiliary space for merging
         
-#         Args:
-#             nums1: First sorted array with extra space at end
-#             m: Number of valid elements in nums1
-#             nums2: Second sorted array
-#             n: Number of elements in nums2
-#         &quot;&quot;&quot;
-#         # Copy all elements from nums2 into the end of nums1
-#         # nums1[m:m+n] = nums2 is slice assignment (in-place)
-#         for i in range(n):
-#             nums1[m + i] = nums2[i]
+        Args:
+            nums1: First sorted array with extra space at end
+            m: Number of valid elements in nums1
+            nums2: Second sorted array
+            n: Number of elements in nums2
+        &quot;&quot;&quot;
+        # Copy all elements from nums2 into the end of nums1
+        # nums1[m:m+n] = nums2 is slice assignment (in-place)
+        for i in range(n):
+            nums1[m + i] = nums2[i]
         
-#         # Sort the entire array of size m + n in-place
-#         # This destroys the fact that nums1 and nums2 were already sorted
-#         # Timsort can detect the two sorted runs and merge efficiently
-#         # Best case: O(m + n) if runs are already ordered
-#         # Example: nums1=[1,2,3], nums2=[4,5,6] → already sorted after copy
-#         # Worst case: O((m + n) log(m + n)) for general case
-#         # Example: nums1=[4,5,6], nums2=[1,2,3] → needs full sort
-#         nums1.sort()
+        # Sort the entire array of size m + n in-place
+        # This destroys the fact that nums1 and nums2 were already sorted
+        # Timsort can detect the two sorted runs and merge efficiently
+        # Best case: O(m + n) if runs are already ordered
+        # Example: nums1=[1,2,3], nums2=[4,5,6] → already sorted after copy
+        # Worst case: O((m + n) log(m + n)) for general case
+        # Example: nums1=[4,5,6], nums2=[1,2,3] → needs full sort
+        nums1.sort()
 
 # Optimal approach : Three Pointers (Start From the End)
 
@@ -415,43 +415,43 @@ class Solution:
 # Explanation: The arrays we are merging are [1] and [2].
 # The result of the merge is [1, 2].
 
-# class Variant:
-#     def mergeSortedArray(self, list_a: list[int], list_b: list[int]) -&gt; None:
-#         &quot;&quot;&quot;
-#         Merge two sorted arrays list_a and list_b into list_a in-place.
+class Variant:
+    def mergeSortedArray(self, list_a: list[int], list_b: list[int]) -&gt; None:
+        &quot;&quot;&quot;
+        Merge two sorted arrays list_a and list_b into list_a in-place.
         
-#         TC: O(m + n) - single pass, each element processed once
-#             where m = len(list_a) // 2, n = len(list_b)
-#         SC: O(1) - only three pointers used
+        TC: O(m + n) - single pass, each element processed once
+            where m = len(list_a) // 2, n = len(list_b)
+        SC: O(1) - only three pointers used
         
-#         Args:
-#             list_a: First sorted array, length = 2 * len(list_b)
-#                    First half contains valid elements, second half is zeros
-#             list_b: Second sorted array
-#         &quot;&quot;&quot;
-#         # Start from end of valid elements in list_a
-#         # list_a has length 2n where first n elements are valid
-#         p1 = len(list_a) // 2 - 1
+        Args:
+            list_a: First sorted array, length = 2 * len(list_b)
+                   First half contains valid elements, second half is zeros
+            list_b: Second sorted array
+        &quot;&quot;&quot;
+        # Start from end of valid elements in list_a
+        # list_a has length 2n where first n elements are valid
+        p1 = len(list_a) // 2 - 1
         
-#         # Start from end of list_b
-#         p2 = len(list_b) - 1
+        # Start from end of list_b
+        p2 = len(list_b) - 1
         
-#         # Start from end of list_a&#x27;s total capacity
-#         p = len(list_a) - 1
+        # Start from end of list_a&#x27;s total capacity
+        p = len(list_a) - 1
         
-#         # Continue while list_b has elements to merge
-#         while p2 &gt;= 0:
-#             # If list_a still has elements AND list_a&#x27;s element is larger/equal
-#             if p1 &gt;= 0 and list_a[p1] &gt;= list_b[p2]:
-#                 list_a[p] = list_a[p1]
-#                 p1 -= 1
-#             else:
-#                 # Either list_a exhausted OR list_b&#x27;s element is larger
-#                 list_a[p] = list_b[p2]
-#                 p2 -= 1
-#             p -= 1
+        # Continue while list_b has elements to merge
+        while p2 &gt;= 0:
+            # If list_a still has elements AND list_a&#x27;s element is larger/equal
+            if p1 &gt;= 0 and list_a[p1] &gt;= list_b[p2]:
+                list_a[p] = list_a[p1]
+                p1 -= 1
+            else:
+                # Either list_a exhausted OR list_b&#x27;s element is larger
+                list_a[p] = list_b[p2]
+                p2 -= 1
+            p -= 1
         
-#         # No need to copy remaining list_a elements - already in place
+        # No need to copy remaining list_a elements - already in place
 
 
 # Variant : Merge three arrays
@@ -470,68 +470,68 @@ class Solution:
 # Output: [1, 2, 2, 2, 3, 4]
 # Explanation: Merging [1, 2, 2], [2, 3], and [4] with duplicates
 
-# class Variant3Arrays:
-#     def mergeSortedArrays(self, list_a: list[int], list_b: list[int], list_c: list[int]) -&gt; None:
-#         &quot;&quot;&quot;
-#         Merge three sorted arrays list_a, list_b, and list_c into list_a in-place.
+class Variant3Arrays:
+    def mergeSortedArrays(self, list_a: list[int], list_b: list[int], list_c: list[int]) -&gt; None:
+        &quot;&quot;&quot;
+        Merge three sorted arrays list_a, list_b, and list_c into list_a in-place.
         
-#         TC: O(m + n + k) - single pass, each element processed once
-#             where m = len(list_a_valid), n = len(list_b), k = len(list_c)
-#         SC: O(1) - only four pointers used
+        TC: O(m + n + k) - single pass, each element processed once
+            where m = len(list_a_valid), n = len(list_b), k = len(list_c)
+        SC: O(1) - only four pointers used
         
-#         Args:
-#             list_a: First sorted array with extra space at end
-#             list_b: Second sorted array
-#             list_c: Third sorted array
-#         &quot;&quot;&quot;
+        Args:
+            list_a: First sorted array with extra space at end
+            list_b: Second sorted array
+            list_c: Third sorted array
+        &quot;&quot;&quot;
 
-#         # Check if list_a has enough capacity
-#         if len(list_a) &lt; len(list_b) + len(list_c):
-#             raise ValueError(&quot;list_a doesn&#x27;t have enough space to merge all arrays&quot;)
+        # Check if list_a has enough capacity
+        if len(list_a) &lt; len(list_b) + len(list_c):
+            raise ValueError(&quot;list_a doesn&#x27;t have enough space to merge all arrays&quot;)
 
-#         # Calculate number of valid elements in list_a
-#         # list_a total length = m + n + k
-#         n = len(list_b)
-#         k = len(list_c)
-#         m = len(list_a) - n - k
+        # Calculate number of valid elements in list_a
+        # list_a total length = m + n + k
+        n = len(list_b)
+        k = len(list_c)
+        m = len(list_a) - n - k
         
-#         # Edge case: all arrays empty or list_a already contains everything
-#         if n == 0 and k == 0:
-#             return
+        # Edge case: all arrays empty or list_a already contains everything
+        if n == 0 and k == 0:
+            return
         
-#         # Start from end of valid elements in each array
-#         # Example: list_a = [1, 5, 9, 0, 0, 0, 0], list_b = [2, 6], list_c = [3, 7]
-#         # m = 7 - 2 - 2 = 3, valid elements in list_a are [1, 5, 9]
-#         # p1 = 3 - 1 = 2 (points to 9)
-#         p1 = m - 1
-#         p2 = n - 1
-#         p3 = k - 1
+        # Start from end of valid elements in each array
+        # Example: list_a = [1, 5, 9, 0, 0, 0, 0], list_b = [2, 6], list_c = [3, 7]
+        # m = 7 - 2 - 2 = 3, valid elements in list_a are [1, 5, 9]
+        # p1 = 3 - 1 = 2 (points to 9)
+        p1 = m - 1
+        p2 = n - 1
+        p3 = k - 1
         
-#         # Start from end of list_a&#x27;s total capacity
-#         p = len(list_a) - 1
+        # Start from end of list_a&#x27;s total capacity
+        p = len(list_a) - 1
         
-#         # Continue while any array has elements to merge
-#         while p1 &gt;= 0 or p2 &gt;= 0 or p3 &gt;= 0:
-#             # Get current values from each array (use -infinity if exhausted)
-#             val1 = list_a[p1] if p1 &gt;= 0 else float(&#x27;-inf&#x27;)
-#             val2 = list_b[p2] if p2 &gt;= 0 else float(&#x27;-inf&#x27;)
-#             val3 = list_c[p3] if p3 &gt;= 0 else float(&#x27;-inf&#x27;)
+        # Continue while any array has elements to merge
+        while p1 &gt;= 0 or p2 &gt;= 0 or p3 &gt;= 0:
+            # Get current values from each array (use -infinity if exhausted)
+            val1 = list_a[p1] if p1 &gt;= 0 else float(&#x27;-inf&#x27;)
+            val2 = list_b[p2] if p2 &gt;= 0 else float(&#x27;-inf&#x27;)
+            val3 = list_c[p3] if p3 &gt;= 0 else float(&#x27;-inf&#x27;)
             
-#             # Find maximum of the three values
-#             # Place the largest at position p and move corresponding pointer
-#             if val1 &gt;= val2 and val1 &gt;= val3:
-#                 list_a[p] = val1
-#                 p1 -= 1
-#             elif val2 &gt;= val1 and val2 &gt;= val3:
-#                 list_a[p] = val2
-#                 p2 -= 1
-#             else:
-#                 list_a[p] = val3
-#                 p3 -= 1
+            # Find maximum of the three values
+            # Place the largest at position p and move corresponding pointer
+            if val1 &gt;= val2 and val1 &gt;= val3:
+                list_a[p] = val1
+                p1 -= 1
+            elif val2 &gt;= val1 and val2 &gt;= val3:
+                list_a[p] = val2
+                p2 -= 1
+            else:
+                list_a[p] = val3
+                p3 -= 1
             
-#             p -= 1
+            p -= 1
         
-#         # No need to copy remaining list_a elements - already in place
+        # No need to copy remaining list_a elements - already in place
 </code></pre>
       </div>
     </div>
