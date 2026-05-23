@@ -309,180 +309,180 @@ class Solution:
 
 # Check the python code from codingwithminmer.com
 
-# def removeAdjacentDuplicateRuns(s: str) -&gt; str:
-#     &quot;&quot;&quot;
-#     Remove all runs of 2+ consecutive identical characters.
-#     Continue until no more runs can be removed (cascading).
+def removeAdjacentDuplicateRuns(s: str) -&gt; str:
+    &quot;&quot;&quot;
+    Remove all runs of 2+ consecutive identical characters.
+    Continue until no more runs can be removed (cascading).
     
-#     Approach: Use stack to track [character, count]
-#     - When we see same char, increment count
-#     - When we see different char:
-#         - If previous run has count &gt; 1, remove it (pop)
-#         - Check if new char matches the new top (cascading!)
+    Approach: Use stack to track [character, count]
+    - When we see same char, increment count
+    - When we see different char:
+        - If previous run has count &gt; 1, remove it (pop)
+        - Check if new char matches the new top (cascading!)
     
-#     Time Complexity: O(n)
-#     - Each character processed once
-#     - Each push/pop operation is O(1)
+    Time Complexity: O(n)
+    - Each character processed once
+    - Each push/pop operation is O(1)
     
-#     Space Complexity: O(n)
-#     - Stack can hold up to n characters in worst case
+    Space Complexity: O(n)
+    - Stack can hold up to n characters in worst case
     
-#     Examples:
-#     - &quot;abbbacca&quot; → &quot;a&quot; (remove &quot;bbb&quot; → &quot;aacca&quot;, remove &quot;aa&quot; → &quot;cca&quot;, remove &quot;cc&quot; → &quot;a&quot;)
-#     - &quot;abbaca&quot; → &quot;ca&quot; (remove &quot;bb&quot; → &quot;aaca&quot;, remove &quot;aa&quot; → &quot;ca&quot;)
-#     - &quot;abccbd&quot; → &quot;ad&quot; (remove &quot;cc&quot; → &quot;abbd&quot;, remove &quot;bb&quot; → &quot;ad&quot;)
+    Examples:
+    - &quot;abbbacca&quot; → &quot;a&quot; (remove &quot;bbb&quot; → &quot;aacca&quot;, remove &quot;aa&quot; → &quot;cca&quot;, remove &quot;cc&quot; → &quot;a&quot;)
+    - &quot;abbaca&quot; → &quot;ca&quot; (remove &quot;bb&quot; → &quot;aaca&quot;, remove &quot;aa&quot; → &quot;ca&quot;)
+    - &quot;abccbd&quot; → &quot;ad&quot; (remove &quot;cc&quot; → &quot;abbd&quot;, remove &quot;bb&quot; → &quot;ad&quot;)
     
-#     Edge Cases:
-#     - Empty string: &quot;&quot; → &quot;&quot;
-#     - Single character: &quot;a&quot; → &quot;a&quot; (no runs)
-#     - Two same characters: &quot;aa&quot; → &quot;&quot; (run of 2)
-#     - Two different characters: &quot;ab&quot; → &quot;ab&quot; (no runs)
+    Edge Cases:
+    - Empty string: &quot;&quot; → &quot;&quot;
+    - Single character: &quot;a&quot; → &quot;a&quot; (no runs)
+    - Two same characters: &quot;aa&quot; → &quot;&quot; (run of 2)
+    - Two different characters: &quot;ab&quot; → &quot;ab&quot; (no runs)
     
-#     &quot;&quot;&quot;
+    &quot;&quot;&quot;
     
-#     # Base case 1: Empty string has no characters to process
-#     if not s:
-#         return &quot;&quot;
+    # Base case 1: Empty string has no characters to process
+    if not s:
+        return &quot;&quot;
     
-#     # Base case 2: Single character cannot form a run (need 2+)
-#     # Example: &quot;a&quot; → &quot;a&quot; (no run, keep it)
-#     if len(s) == 1:
-#         return s
+    # Base case 2: Single character cannot form a run (need 2+)
+    # Example: &quot;a&quot; → &quot;a&quot; (no run, keep it)
+    if len(s) == 1:
+        return s
     
-#     # Base case 3: Two characters - simple direct check
-#     # If same → it&#x27;s a run of 2, remove both
-#     # If different → no run, keep both
-#     # Examples: &quot;aa&quot; → &quot;&quot;, &quot;ab&quot; → &quot;ab&quot;
-#     if len(s) == 2:
-#         return &quot;&quot; if s[0] == s[1] else s
+    # Base case 3: Two characters - simple direct check
+    # If same → it&#x27;s a run of 2, remove both
+    # If different → no run, keep both
+    # Examples: &quot;aa&quot; → &quot;&quot;, &quot;ab&quot; → &quot;ab&quot;
+    if len(s) == 2:
+        return &quot;&quot; if s[0] == s[1] else s
     
-#     # ============================================================
-#     # MAIN ALGORITHM - Process strings with 3+ characters
-#     # ============================================================
+    # ============================================================
+    # MAIN ALGORITHM - Process strings with 3+ characters
+    # ============================================================
     
-#     # Stack stores [character, count] pairs
-#     # Example: [[&#x27;a&#x27;, 1], [&#x27;b&#x27;, 2]] means &quot;a&quot; appears once, then &quot;b&quot; appears twice
-#     stack = []
+    # Stack stores [character, count] pairs
+    # Example: [[&#x27;a&#x27;, 1], [&#x27;b&#x27;, 2]] means &quot;a&quot; appears once, then &quot;b&quot; appears twice
+    stack = []
     
-#     # Process each character in the string
-#     for char in s:
+    # Process each character in the string
+    for char in s:
         
-#         # CASE 1: Current character continues the existing run
-#         # Example: stack = [[&#x27;a&#x27;, 2]], char = &#x27;a&#x27; → increment to [[&#x27;a&#x27;, 3]]
-#         if stack and stack[-1][0] == char:
-#             stack[-1][1] += 1  # Increment count of current run
+        # CASE 1: Current character continues the existing run
+        # Example: stack = [[&#x27;a&#x27;, 2]], char = &#x27;a&#x27; → increment to [[&#x27;a&#x27;, 3]]
+        if stack and stack[-1][0] == char:
+            stack[-1][1] += 1  # Increment count of current run
             
-#         # CASE 2: Current character is different - potential run removal
-#         else:
-#             # Step 2a: Check if the previous run needs to be removed
-#             # A run has 2+ characters, so if count &gt; 1, it&#x27;s a run
-#             # Example: stack = [[&#x27;a&#x27;, 1], [&#x27;b&#x27;, 3]], &#x27;b&#x27; is a run → remove it
-#             if stack and stack[-1][1] &gt; 1:
-#                 stack.pop()  # Remove the completed run
+        # CASE 2: Current character is different - potential run removal
+        else:
+            # Step 2a: Check if the previous run needs to be removed
+            # A run has 2+ characters, so if count &gt; 1, it&#x27;s a run
+            # Example: stack = [[&#x27;a&#x27;, 1], [&#x27;b&#x27;, 3]], &#x27;b&#x27; is a run → remove it
+            if stack and stack[-1][1] &gt; 1:
+                stack.pop()  # Remove the completed run
             
-#             # Step 2b: CASCADING CHECK - After removing, check if current char
-#             # matches what&#x27;s now at the top of the stack
-#             # This is KEY for handling cascading removals!
-#             # Example: stack was [[&#x27;a&#x27;, 2], [&#x27;b&#x27;, 3]], removed &#x27;bbb&#x27;
-#             #          Now stack = [[&#x27;a&#x27;, 2]], and if current char is &#x27;a&#x27;,
-#             #          they should merge!
-#             if stack and stack[-1][0] == char:
-#                 # Current char matches the newly exposed top!
-#                 # Increment the count of that existing run
-#                 # Example: [[&#x27;a&#x27;, 2]] + char &#x27;a&#x27; → [[&#x27;a&#x27;, 3]]
-#                 stack[-1][1] += 1
-#             else:
-#                 # Current char doesn&#x27;t match top (or stack is empty)
-#                 # Start a brand new run with count 1
-#                 # Example: [[&#x27;a&#x27;, 1]] + char &#x27;b&#x27; → [[&#x27;a&#x27;, 1], [&#x27;b&#x27;, 1]]
-#                 stack.append([char, 1])
+            # Step 2b: CASCADING CHECK - After removing, check if current char
+            # matches what&#x27;s now at the top of the stack
+            # This is KEY for handling cascading removals!
+            # Example: stack was [[&#x27;a&#x27;, 2], [&#x27;b&#x27;, 3]], removed &#x27;bbb&#x27;
+            #          Now stack = [[&#x27;a&#x27;, 2]], and if current char is &#x27;a&#x27;,
+            #          they should merge!
+            if stack and stack[-1][0] == char:
+                # Current char matches the newly exposed top!
+                # Increment the count of that existing run
+                # Example: [[&#x27;a&#x27;, 2]] + char &#x27;a&#x27; → [[&#x27;a&#x27;, 3]]
+                stack[-1][1] += 1
+            else:
+                # Current char doesn&#x27;t match top (or stack is empty)
+                # Start a brand new run with count 1
+                # Example: [[&#x27;a&#x27;, 1]] + char &#x27;b&#x27; → [[&#x27;a&#x27;, 1], [&#x27;b&#x27;, 1]]
+                stack.append([char, 1])
     
-#     # ============================================================
-#     # FINAL CLEANUP - Handle the last run if it exists
-#     # ============================================================
+    # ============================================================
+    # FINAL CLEANUP - Handle the last run if it exists
+    # ============================================================
     
-#     # After processing all characters, check if the last entry is a run
-#     # Example: stack = [[&#x27;a&#x27;, 1], [&#x27;b&#x27;, 3]] → &#x27;bbb&#x27; is a run, remove it
-#     if stack and stack[-1][1] &gt; 1:
-#         stack.pop()
+    # After processing all characters, check if the last entry is a run
+    # Example: stack = [[&#x27;a&#x27;, 1], [&#x27;b&#x27;, 3]] → &#x27;bbb&#x27; is a run, remove it
+    if stack and stack[-1][1] &gt; 1:
+        stack.pop()
     
-#     # ============================================================
-#     # BUILD RESULT - Convert stack back to string
-#     # ============================================================
+    # ============================================================
+    # BUILD RESULT - Convert stack back to string
+    # ============================================================
     
-#     # Reconstruct the final string from remaining characters
-#     # Each stack entry is [char, count], so repeat char &#x27;count&#x27; times
-#     # Example: [[&#x27;a&#x27;, 1], [&#x27;b&#x27;, 2]] → &quot;a&quot; + &quot;bb&quot; = &quot;abb&quot;
-#     result = []
-#     for char, count in stack:
-#         result.append(char * count)  # Repeat character &#x27;count&#x27; times
+    # Reconstruct the final string from remaining characters
+    # Each stack entry is [char, count], so repeat char &#x27;count&#x27; times
+    # Example: [[&#x27;a&#x27;, 1], [&#x27;b&#x27;, 2]] → &quot;a&quot; + &quot;bb&quot; = &quot;abb&quot;
+    result = []
+    for char, count in stack:
+        result.append(char * count)  # Repeat character &#x27;count&#x27; times
     
-#     # Join all parts into final string
-#     return &#x27;&#x27;.join(result)
+    # Join all parts into final string
+    return &#x27;&#x27;.join(result)
 
 # If input is a list instead of a string
 
-# def removeAdjacentDuplicateRuns(arr):
-#     &quot;&quot;&quot;
-#     Remove all runs of 2+ consecutive identical characters.
-#     Continue until no more runs can be removed (cascading).
+def removeAdjacentDuplicateRuns(arr):
+    &quot;&quot;&quot;
+    Remove all runs of 2+ consecutive identical characters.
+    Continue until no more runs can be removed (cascading).
     
-#     Time Complexity: O(n)
-#     Space Complexity: O(n)
+    Time Complexity: O(n)
+    Space Complexity: O(n)
     
-#     Examples:
-#         [&#x27;a&#x27;,&#x27;b&#x27;,&#x27;b&#x27;,&#x27;b&#x27;,&#x27;a&#x27;,&#x27;c&#x27;,&#x27;c&#x27;,&#x27;a&#x27;] → [&#x27;a&#x27;]
-#         [&#x27;a&#x27;,&#x27;b&#x27;,&#x27;b&#x27;,&#x27;a&#x27;,&#x27;c&#x27;,&#x27;a&#x27;] → [&#x27;c&#x27;, &#x27;a&#x27;]
-#         [&#x27;a&#x27;,&#x27;a&#x27;,&#x27;b&#x27;,&#x27;b&#x27;,&#x27;c&#x27;,&#x27;c&#x27;] → []
+    Examples:
+        [&#x27;a&#x27;,&#x27;b&#x27;,&#x27;b&#x27;,&#x27;b&#x27;,&#x27;a&#x27;,&#x27;c&#x27;,&#x27;c&#x27;,&#x27;a&#x27;] → [&#x27;a&#x27;]
+        [&#x27;a&#x27;,&#x27;b&#x27;,&#x27;b&#x27;,&#x27;a&#x27;,&#x27;c&#x27;,&#x27;a&#x27;] → [&#x27;c&#x27;, &#x27;a&#x27;]
+        [&#x27;a&#x27;,&#x27;a&#x27;,&#x27;b&#x27;,&#x27;b&#x27;,&#x27;c&#x27;,&#x27;c&#x27;] → []
     
-#     Args:
-#         arr: List of single characters
+    Args:
+        arr: List of single characters
         
-#     Returns:
-#         List of characters after all run removals
-#     &quot;&quot;&quot;
-#     # Base cases
-#     if not arr:
-#         return []
-#     if len(arr) == 1:
-#         return arr
-#     if len(arr) == 2:
-#         return [] if arr[0] == arr[1] else arr
+    Returns:
+        List of characters after all run removals
+    &quot;&quot;&quot;
+    # Base cases
+    if not arr:
+        return []
+    if len(arr) == 1:
+        return arr
+    if len(arr) == 2:
+        return [] if arr[0] == arr[1] else arr
     
-#     # Stack stores [character, count] pairs
-#     stack = []
+    # Stack stores [character, count] pairs
+    stack = []
     
-#     for ch in arr:
-#         # CASE 1: Current char continues existing run
-#         if stack and stack[-1][0] == ch:
-#             # Increment count of current run
-#             stack[-1][1] += 1
+    for ch in arr:
+        # CASE 1: Current char continues existing run
+        if stack and stack[-1][0] == ch:
+            # Increment count of current run
+            stack[-1][1] += 1
             
-#         # CASE 2: Current char is different
-#         else:
-#             # Step 2a: Check if previous run needs removal (count &gt; 1)
-#             if stack and stack[-1][1] &gt; 1:
-#                 stack.pop()
+        # CASE 2: Current char is different
+        else:
+            # Step 2a: Check if previous run needs removal (count &gt; 1)
+            if stack and stack[-1][1] &gt; 1:
+                stack.pop()
             
-#             # Step 2b: CASCADING - Check if current char matches NEW top
-#             if stack and stack[-1][0] == ch:
-#                 # Matches! Increment existing run
-#                 stack[-1][1] += 1
-#             else:
-#                 # Doesn&#x27;t match (or stack empty) - start new run
-#                 stack.append([ch, 1])
+            # Step 2b: CASCADING - Check if current char matches NEW top
+            if stack and stack[-1][0] == ch:
+                # Matches! Increment existing run
+                stack[-1][1] += 1
+            else:
+                # Doesn&#x27;t match (or stack empty) - start new run
+                stack.append([ch, 1])
     
-#     # Final check: Remove last run if it has 2+ chars
-#     if stack and stack[-1][1] &gt; 1:
-#         stack.pop()
+    # Final check: Remove last run if it has 2+ chars
+    if stack and stack[-1][1] &gt; 1:
+        stack.pop()
     
-#     # Build result - all remaining entries have count = 1
-#     # (since we removed all runs with count &gt; 1)
-#     result = []
-#     for char, count in stack:
-#         result.append(char)  # count is always 1 here
+    # Build result - all remaining entries have count = 1
+    # (since we removed all runs with count &gt; 1)
+    result = []
+    for char, count in stack:
+        result.append(char)  # count is always 1 here
     
-#     return result
+    return result
 
 # Variant 2: Leetcode 1209
 
