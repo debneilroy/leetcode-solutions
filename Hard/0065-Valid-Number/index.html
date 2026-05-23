@@ -375,111 +375,111 @@ class Solution:
 
 # Variant : No exponents e or E
 
-# class Solution:
-#     def isNumber(self, s: str) -&gt; bool:
-#         &quot;&quot;&quot;
-#         Validate if a string represents a valid number (integer or decimal) WITHOUT exponents.
+class Solution:
+    def isNumber(self, s: str) -&gt; bool:
+        &quot;&quot;&quot;
+        Validate if a string represents a valid number (integer or decimal) WITHOUT exponents.
         
-#         Valid number formats:
-#         - Integer: &quot;2&quot;, &quot;-3&quot;, &quot;+1&quot;, &quot;0089&quot;
-#         - Decimal: &quot;0.1&quot;, &quot;-0.5&quot;, &quot;.3&quot;, &quot;3.&quot;
+        Valid number formats:
+        - Integer: &quot;2&quot;, &quot;-3&quot;, &quot;+1&quot;, &quot;0089&quot;
+        - Decimal: &quot;0.1&quot;, &quot;-0.5&quot;, &quot;.3&quot;, &quot;3.&quot;
         
-#         NOT Valid (exponents not allowed):
-#         - Scientific: &quot;1e5&quot;, &quot;1e-5&quot;, &quot;6.02e23&quot;
+        NOT Valid (exponents not allowed):
+        - Scientific: &quot;1e5&quot;, &quot;1e-5&quot;, &quot;6.02e23&quot;
         
-#         Algorithm:
-#         - Use two flags to track: digits seen, decimal point seen
-#         - Parse character by character and validate rules for each character type
-#         - No exponent handling needed
+        Algorithm:
+        - Use two flags to track: digits seen, decimal point seen
+        - Parse character by character and validate rules for each character type
+        - No exponent handling needed
         
-#         Time Complexity: O(n) where n is length of string
-#         - Single pass through all characters
+        Time Complexity: O(n) where n is length of string
+        - Single pass through all characters
         
-#         Space Complexity: O(1)
-#         - Only using two boolean flags regardless of input size
+        Space Complexity: O(1)
+        - Only using two boolean flags regardless of input size
         
-#         Args:
-#             s: Input string to validate
+        Args:
+            s: Input string to validate
             
-#         Returns:
-#             True if s represents a valid number (without exponent), False otherwise
-#         &quot;&quot;&quot;
-#         # ========== STEP 1: Initialize tracking flags ==========
-#         # These flags maintain state as we parse through the string
+        Returns:
+            True if s represents a valid number (without exponent), False otherwise
+        &quot;&quot;&quot;
+        # ========== STEP 1: Initialize tracking flags ==========
+        # These flags maintain state as we parse through the string
         
-#         seen_digit = False      # Tracks if we&#x27;ve encountered at least one digit (0-9)
-#                                 # Must be True by the end for valid number
+        seen_digit = False      # Tracks if we&#x27;ve encountered at least one digit (0-9)
+                                # Must be True by the end for valid number
                                 
-#         seen_dot = False        # Tracks if we&#x27;ve encountered a decimal point (.)
-#                                 # Can only appear once in the entire number
+        seen_dot = False        # Tracks if we&#x27;ve encountered a decimal point (.)
+                                # Can only appear once in the entire number
         
         
-#         # ========== STEP 2: Parse each character ==========
-#         for i in range(len(s)):
+        # ========== STEP 2: Parse each character ==========
+        for i in range(len(s)):
             
-#             # -------------------- Case 1: Digit (0-9) --------------------
-#             # VALID: &quot;123&quot;, &quot;1.5&quot;, &quot;.5&quot;, &quot;5.&quot;
-#             # INVALID: N/A (digits are always valid)
-#             if s[i].isdigit():
-#                 # Mark that we&#x27;ve seen at least one digit
-#                 # This is crucial for final validation
-#                 seen_digit = True
+            # -------------------- Case 1: Digit (0-9) --------------------
+            # VALID: &quot;123&quot;, &quot;1.5&quot;, &quot;.5&quot;, &quot;5.&quot;
+            # INVALID: N/A (digits are always valid)
+            if s[i].isdigit():
+                # Mark that we&#x27;ve seen at least one digit
+                # This is crucial for final validation
+                seen_digit = True
                 
                 
-#             # -------------------- Case 2: Sign (+/-) --------------------
-#             # VALID: &quot;+5&quot; (at start), &quot;-3&quot; (at start), &quot;+3.14&quot; (at start)
-#             # INVALID: &quot;6+1&quot; (middle), &quot;3.+5&quot; (after dot), &quot;+-5&quot; (consecutive)
-#             elif s[i] in {&quot;+&quot;, &quot;-&quot;}:
-#                 # Sign is ONLY valid at position 0 (start of string)
-#                 # Since no exponents allowed, signs can&#x27;t appear after &#x27;e&#x27;
+            # -------------------- Case 2: Sign (+/-) --------------------
+            # VALID: &quot;+5&quot; (at start), &quot;-3&quot; (at start), &quot;+3.14&quot; (at start)
+            # INVALID: &quot;6+1&quot; (middle), &quot;3.+5&quot; (after dot), &quot;+-5&quot; (consecutive)
+            elif s[i] in {&quot;+&quot;, &quot;-&quot;}:
+                # Sign is ONLY valid at position 0 (start of string)
+                # Since no exponents allowed, signs can&#x27;t appear after &#x27;e&#x27;
                 
-#                 if i != 0:
-#                     # Sign is not at start, so it&#x27;s invalid
-#                     # Examples that fail: &quot;6+1&quot;, &quot;3.+5&quot;, &quot;+-5&quot;
-#                     return False
+                if i != 0:
+                    # Sign is not at start, so it&#x27;s invalid
+                    # Examples that fail: &quot;6+1&quot;, &quot;3.+5&quot;, &quot;+-5&quot;
+                    return False
                 
-#                 # If we reach here, sign is at start (valid)
-#                 # Example: &quot;+5&quot;, &quot;-3.14&quot;
-#                 # No need to set any flags - signs don&#x27;t affect validity by themselves
+                # If we reach here, sign is at start (valid)
+                # Example: &quot;+5&quot;, &quot;-3.14&quot;
+                # No need to set any flags - signs don&#x27;t affect validity by themselves
                 
                     
-#             # -------------------- Case 3: Decimal point (.) --------------------
-#             # VALID: &quot;3.14&quot; (standard), &quot;.5&quot; (no integer), &quot;5.&quot; (no fraction), &quot;0.1&quot;
-#             # INVALID: &quot;1.2.3&quot; (multiple dots), &quot;.&quot; (no digits)
-#             elif s[i] == &quot;.&quot;:
-#                 # Check if decimal point is allowed at this position
+            # -------------------- Case 3: Decimal point (.) --------------------
+            # VALID: &quot;3.14&quot; (standard), &quot;.5&quot; (no integer), &quot;5.&quot; (no fraction), &quot;0.1&quot;
+            # INVALID: &quot;1.2.3&quot; (multiple dots), &quot;.&quot; (no digits)
+            elif s[i] == &quot;.&quot;:
+                # Check if decimal point is allowed at this position
                 
-#                 # Restriction: Can&#x27;t have multiple decimal points
-#                 # Example that fails: &quot;1.2.3&quot; (second dot would have seen_dot=True)
+                # Restriction: Can&#x27;t have multiple decimal points
+                # Example that fails: &quot;1.2.3&quot; (second dot would have seen_dot=True)
                 
-#                 if seen_dot:
-#                     # Already have a dot, can&#x27;t have another
-#                     return False
+                if seen_dot:
+                    # Already have a dot, can&#x27;t have another
+                    return False
                 
-#                 # Mark that we&#x27;ve now seen a decimal point
-#                 seen_dot = True
+                # Mark that we&#x27;ve now seen a decimal point
+                seen_dot = True
                 
-#                 # Note: We DON&#x27;T require digits before or after the dot
-#                 # &quot;.5&quot; is valid (no integer part)
-#                 # &quot;5.&quot; is valid (no fractional part)
+                # Note: We DON&#x27;T require digits before or after the dot
+                # &quot;.5&quot; is valid (no integer part)
+                # &quot;5.&quot; is valid (no fractional part)
                 
                 
-#             # -------------------- Case 4: Any other character --------------------
-#             # VALID: N/A (all other characters are invalid)
-#             # INVALID: &quot;abc&quot;, &quot;1a&quot;, &quot;5 5&quot;, &quot;2#3&quot;, &quot;1_000&quot;, &quot;1e5&quot; (exponent not allowed)
-#             else:
-#                 # Invalid characters include:
-#                 # - Letters (including &#x27;e&#x27;/&#x27;E&#x27;): &quot;abc&quot;, &quot;1a&quot;, &quot;1e5&quot;
-#                 # - Whitespace: &quot;5 5&quot;
-#                 # - Special characters: &quot;2#3&quot;, &quot;1_000&quot;
-#                 # - Any other symbol
-#                 return False
+            # -------------------- Case 4: Any other character --------------------
+            # VALID: N/A (all other characters are invalid)
+            # INVALID: &quot;abc&quot;, &quot;1a&quot;, &quot;5 5&quot;, &quot;2#3&quot;, &quot;1_000&quot;, &quot;1e5&quot; (exponent not allowed)
+            else:
+                # Invalid characters include:
+                # - Letters (including &#x27;e&#x27;/&#x27;E&#x27;): &quot;abc&quot;, &quot;1a&quot;, &quot;1e5&quot;
+                # - Whitespace: &quot;5 5&quot;
+                # - Special characters: &quot;2#3&quot;, &quot;1_000&quot;
+                # - Any other symbol
+                return False
         
         
-#         # ========== STEP 3: Final validation ==========
-#         # Return True if we saw at least one digit, False otherwise
-#         # This catches edge cases like: &quot;.&quot;, &quot;+&quot;, &quot;+.&quot;, &quot;-&quot;
-#         return seen_digit</code></pre>
+        # ========== STEP 3: Final validation ==========
+        # Return True if we saw at least one digit, False otherwise
+        # This catches edge cases like: &quot;.&quot;, &quot;+&quot;, &quot;+.&quot;, &quot;-&quot;
+        return seen_digit</code></pre>
       </div>
     </div>
 
