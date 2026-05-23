@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>408. Valid Word Abbreviation - LeetCode Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+
+:root {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --radius:    6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #e6db74; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy   { color: var(--easy);   background: rgba(44,187,93,0.15); }
+.badge-Medium { color: var(--medium); background: rgba(255,161,22,0.15); }
+.badge-Hard   { color: var(--hard);   background: rgba(239,71,67,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--surface2); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: #1e1e1e !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">408. Valid Word Abbreviation</span>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (0)</div>
+        <div class="tab" data-tab="similar">Similar (3)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">408. Valid Word Abbreviation</div>
+        <div class="prob-meta">
+          <span class="badge badge-Easy">Easy</span>
+          <span class="tag">Two Pointers</span><span class="tag">String</span>
+        </div>
+        <div class="prob-stats">363K / 979.9K (37.0%)</div>
+        <div class="prob-desc"><p>A string can be <strong>abbreviated</strong> by replacing any number of <strong>non-adjacent</strong>, <strong>non-empty</strong> substrings with their lengths. The lengths <strong>should not</strong> have leading zeros.</p>
+<p>For example, a string such as <code>&quot;substitution&quot;</code> could be abbreviated as (but not limited to):</p>
+<ul>
+<li><code>&quot;s10n&quot;</code> (<code>&quot;s ubstitutio n&quot;</code>)</li>
+</ul>
+	
+<ul>
+<li><code>&quot;sub4u4&quot;</code> (<code>&quot;sub stit u tion&quot;</code>)</li>
+</ul>
+	
+<ul>
+<li><code>&quot;12&quot;</code> (<code>&quot;substitution&quot;</code>)</li>
+</ul>
+	
+<ul>
+<li><code>&quot;su3i1u2on&quot;</code> (<code>&quot;su bst i t u ti on&quot;</code>)</li>
+</ul>
+	
+<ul>
+<li><code>&quot;substitution&quot;</code> (no substrings replaced)</li>
+</ul>
+<p>The following are <strong>not valid</strong> abbreviations:</p>
+<ul>
+<li><code>&quot;s55n&quot;</code> (<code>&quot;s ubsti tutio n&quot;</code>, the replaced substrings are adjacent)</li>
+</ul>
+	
+<ul>
+<li><code>&quot;s010n&quot;</code> (has leading zeros)</li>
+</ul>
+	
+<ul>
+<li><code>&quot;s0ubstitution&quot;</code> (replaces an empty substring)</li>
+</ul>
+<p>Given a string <code>word</code> and an abbreviation <code>abbr</code>, return <em>whether the string <strong>matches</strong> the given abbreviation</em>.</p>
+<p>A <strong>substring</strong> is a contiguous <strong>non-empty</strong> sequence of characters within a string.</p>
+<p>Example 1:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> word = &quot;internationalization&quot;, abbr = &quot;i12iz4n&quot;
+<strong>Output:</strong> true
+<strong>Explanation:</strong> The word &quot;internationalization&quot; can be abbreviated as &quot;i12iz4n&quot; (&quot;i nternational iz atio n&quot;).
+</code></pre>
+<p>Example 2:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> word = &quot;apple&quot;, abbr = &quot;a2e&quot;
+<strong>Output:</strong> false
+<strong>Explanation:</strong> The word &quot;apple&quot; cannot be abbreviated as &quot;a2e&quot;.
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= word.length &lt;= 20</code></li>
+</ul>
+	
+<ul>
+<li><code>word</code> consists of only lowercase English letters.</li>
+</ul>
+	
+<ul>
+<li><code>1 &lt;= abbr.length &lt;= 10</code></li>
+</ul>
+	
+<ul>
+<li><code>abbr</code> consists of lowercase English letters and digits.</li>
+</ul>
+	
+<ul>
+<li>All the integers in <code>abbr</code> will fit in a 32-bit integer.</li>
+</ul></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        <p class="empty-msg">No hints for this problem.</p>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/minimum-unique-word-abbreviation/" target="_blank">Minimum Unique Word Abbreviation</a>
+  <span style="color:#ef4743; font-size:12px;">Hard</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/word-abbreviation/" target="_blank">Word Abbreviation</a>
+  <span style="color:#ef4743; font-size:12px;">Hard</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/check-if-an-original-string-exists-given-two-encoded-strings/" target="_blank">Check if an Original String Exists Given Two Encoded Strings</a>
+  <span style="color:#ef4743; font-size:12px;">Hard</span>
+</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 408. Valid Word Abbreviation
+Difficulty: Easy
+URL: https://leetcode.com/problems/valid-word-abbreviation/
+&quot;&quot;&quot;
+
+# Brute Force Approach
+
+# Idea:
+# Try all possible abbreviations of the given word and check if any of them equals the given abbr.
+
+# At each character in word, you have two choices:
+
+# 1. Keep the character as it is.
+
+# 2. Replace some substring starting here with its length (i.e., start a number).
+
+# Thus, every character can either be “kept” or “counted” → exponential combinations.
+
+# | Decision Path | Abbreviation                  |
+# |---------------| ------------------------------|
+# | keep all      | &quot;cat&quot;                         |
+# | skip 1 char   | &quot;1at&quot;                         |
+# | skip 2 chars  | &quot;2t&quot;                          |
+# | skip 3 chars  | &quot;3&quot;                           |
+# | mix keep/skip | &quot;c1t&quot;, &quot;ca1&quot;, &quot;1a1&quot;, etc.     |
+
+# Time Complexity: O(2^n)
+
+# Each position in word offers two main choices → roughly 2^n possible abbreviation patterns.
+
+# Space Complexity: O(2^n) or O(n)
+
+# O(2^n) if you store all abbreviations in a list or set before comparing.
+
+# O(n) if you compare on the fly during recursion (just recursion stack and a small temporary buffer).
+
+class Solution:
+    def validWordAbbreviation(self, word: str, abbr: str) -&gt; bool:
+        &quot;&quot;&quot;
+        Validates if an abbreviation matches a given word.
+        
+        Time Complexity: O(n + m) where n = len(word), m = len(abbr)
+        - We traverse each character in word once (pointer i moves forward only)
+        - We traverse each character in abbr once (pointer j moves forward only)
+        
+        Space Complexity: O(1)
+        - Only using constant extra space for pointers and temporary variables
+
+        &quot;&quot;&quot;
+        # i points to the current character in `word`, j points to `abbr`
+        i, j = 0, 0
+        
+        while i &lt; len(word) and j &lt; len(abbr):
+            # Check for alphabetic characters in abbreviation
+            if abbr[j].isalpha():
+                # Letters must match exactly at current positions
+                if word[i] != abbr[j]:
+                    return False
+                i += 1
+                j += 1
+            else:
+                # Handle numeric parts in abbreviation
+                
+                # Check for leading zero (invalid abbreviation)
+                if abbr[j] == &quot;0&quot;:
+                    return False
+                
+                # Compute the number of characters to skip
+                skip_count = 0
+                # Build complete multi-digit number (e.g., &quot;12&quot; not just &quot;1&quot; and &quot;2&quot;)
+                while j &lt; len(abbr) and abbr[j].isdigit():
+                    skip_count = skip_count * 10 + int(abbr[j])
+                    j += 1
+                
+                # Skip &#x27;skip_count&#x27; characters in the original word
+                i += skip_count
+        
+        # Valid only if both strings are completely consumed
+        # i should reach end of word, j should reach end of abbr
+        return i == len(word) and j == len(abbr)
+
+# Another approach
+
+# class Solution:
+#     def validWordAbbreviation(self, word: str, abbr: str) -&gt; bool:
+#         i = 0  # pointer for word
+#         j = 0  # pointer for abbr
+        
+#         while i &lt; len(word) and j &lt; len(abbr):
+#             # If current char in abbr is a digit
+#             if abbr[j].isdigit():
+#                 # Check for leading zero
+#                 if abbr[j] == &#x27;0&#x27;:
+#                     return False
+                
+#                 # Build the complete number
+#                 num = 0
+#                 while j &lt; len(abbr) and abbr[j].isdigit():
+#                     num = num * 10 + int(abbr[j])
+#                     j += 1
+                
+#                 # Skip &#x27;num&#x27; characters in word
+#                 i += num
+#             else:
+#                 # Characters must match
+#                 if word[i] != abbr[j]:
+#                     return False
+#                 i += 1
+#                 j += 1
+        
+#         # Both pointers should reach the end
+#         return i == len(word) and j == len(abbr)
+
+# without using  isalpha() or isdigit()
+
+# class Solution:
+#     def validWordAbbreviation(self, word: str, abbr: str) -&gt; bool:
+#         i, j = 0, 0
+        
+#         while i &lt; len(word) and j &lt; len(abbr):
+#             # Check if current char is a digit (0-9)
+#             if &#x27;0&#x27; &lt;= abbr[j] &lt;= &#x27;9&#x27;:
+#                 if abbr[j] == &#x27;0&#x27;:  # Leading zero check
+#                     return False
+                
+#                 tmp = 0
+#                 while j &lt; len(abbr) and &#x27;0&#x27; &lt;= abbr[j] &lt;= &#x27;9&#x27;:
+#                     tmp = tmp * 10 + (ord(abbr[j]) - ord(&#x27;0&#x27;))
+#                     j += 1
+#                 i += tmp
+#             else:
+#                 # It&#x27;s a letter
+#                 if word[i] != abbr[j]:
+#                     return False
+#                 i += 1
+#                 j += 1
+        
+#         return i == len(word) and j == len(abbr)
+
+# What is ord()?
+# ord() returns the ASCII/Unicode value of a character.
+# ord(&#x27;0&#x27;) = 48
+# ord(&#x27;1&#x27;) = 49
+# ord(&#x27;2&#x27;) = 50
+# ...
+# ord(&#x27;9&#x27;) = 57
+# Why subtract ord(&#x27;0&#x27;)?
+# To convert a digit character to its numeric value:
+# ord(&#x27;5&#x27;) - ord(&#x27;0&#x27;) = 53 - 48 = 5
+# ord(&#x27;7&#x27;) - ord(&#x27;0&#x27;) = 55 - 48 = 7
+# ord(&#x27;0&#x27;) - ord(&#x27;0&#x27;) = 48 - 48 = 0
+
+
+# Variant : Valid Word Abbreviation with Wildcard
+
+# A string can be abbreviated by replacing any number of non-adjacent, non-empty substrings with their lengths.
+# The lengths do not have leading zeros.
+
+# Moreover, wildcard pattern matching should be supported, where * matches any sequence of characters (including the empty sequence).
+
+# Given a string word and an abbreviation abbr, return whether the string matches the given abbreviation.
+
+# A substring is a contiguous non-empty sequence of characters within a string.
+
+# Example 1
+# Input:  word = &quot;abc&quot;, abbr = &quot;*&quot;
+# Output: true
+# Explanation: &#x27;*&#x27; matches any sequence.
+
+# Example 2
+# Input:  word = &quot;tadpoletech&quot;, abbr = &quot;*pole*hie&quot;
+# Output: false
+# Explanation:
+# The first &#x27;*&#x27; matches &quot;tad&quot; and the second &#x27;*&#x27; matches &quot;tec&quot;, but &quot;ie&quot; is not present in the word.
+
+# Example 3
+# Input:  word = &quot;minmerhq&quot;, abbr = &quot;mi*e2q***&quot;
+# Output: true
+
+# Approach : Recursion
+
+# class Solution:
+#     def wordPatternMatch(self, word: str, abbr: str) -&gt; bool:
+#         &quot;&quot;&quot;
+#         Validates if a word matches an abbreviation pattern with wildcards.
+        
+#         Time Complexity: O(2^(n+m)) where n = len(word), m = len(abbr)
+#         - In worst case with wildcards, we explore exponential paths due to branching
+#         - Each wildcard creates 2 choices: skip it or consume a character
+#         - Maximum recursion depth is n+m, and each level can branch into 2
+#         - Without memoization, we revisit the same states multiple times
+        
+#         Space Complexity: O(n + m)
+#         - Recursion stack depth is at most n + m
+#         - We use i from 0 to n and j from 0 to m
+#         - Each recursive call uses constant extra space
+        
+#         Args:
+#             word: The original word to validate against
+#             abbr: The abbreviation pattern with wildcards (*), numbers, and letters
+            
+#         Returns:
+#             True if word matches the abbreviation pattern, False otherwise
+#         &quot;&quot;&quot;
+#         return self.match(word, abbr, 0, 0)
+    
+#     def match(self, word: str, abbr: str, i: int, j: int) -&gt; bool:
+#         &quot;&quot;&quot;
+#         Recursively match word and abbr starting from positions i and j.
+        
+#         Args:
+#             word: The word to match
+#             abbr: The abbreviation pattern
+#             i: Current position in word (0 to len(word))
+#             j: Current position in abbr (0 to len(abbr))
+            
+#         Returns:
+#             True if remaining parts match, False otherwise
+#         &quot;&quot;&quot;
+#         # Base case: both strings fully consumed - valid match
+#         # Example: word=&quot;ab&quot;, abbr=&quot;ab&quot; → both reach end together ✓
+#         if i == len(word) and j == len(abbr):
+#             return True
+        
+#         # Abbr exhausted but word has remaining characters - no match
+#         # Example: word=&quot;abcde&quot;, abbr=&quot;ab&quot; → abbr done but word has &quot;cde&quot; left ✗
+#         if j == len(abbr):
+#             return False
+        
+#         # Word exhausted but abbr has remaining characters
+#         # Example: word=&quot;ab&quot;, abbr=&quot;ab***&quot; or word=&quot;ab&quot;, abbr=&quot;ab**c&quot;
+#         if i == len(word):
+#             # Valid only if all remaining characters in abbr are wildcards
+#             # Wildcards can match empty sequence, so &quot;ab&quot; matches &quot;ab***&quot; ✓
+#             # But &quot;ab&quot; does NOT match &quot;ab**c&quot; because we need &#x27;c&#x27; ✗
+#             while j &lt; len(abbr):
+#                 if abbr[j] != &#x27;*&#x27;:
+#                     # Found a non-wildcard character, but word is exhausted
+#                     # Example: abbr=&quot;ab**c&quot; has &#x27;c&#x27; at the end → cannot match
+#                     return False
+#                 j += 1
+#             # All remaining characters are wildcards → they match empty sequence
+#             # Example: abbr=&quot;ab***&quot; has only wildcards left → valid match ✓
+#             return True
+        
+#         # Case 1: Handle wildcard &#x27;*&#x27; - matches any sequence (0 or more chars)
+#         # Example: word=&quot;helzzp&quot;, abbr=&quot;h2*p&quot; where * needs to match &quot;zz&quot;
+#         if abbr[j] == &#x27;*&#x27;:
+#             # Option A: Match 0 characters (skip the wildcard)
+#             # Try to see if skipping this wildcard works
+#             # Example: word=&quot;abc&quot;, abbr=&quot;*bc&quot; → skip *, try matching &quot;abc&quot; with &quot;bc&quot;
+#             if self.match(word, abbr, i, j + 1):
+#                 return True
+            
+#             # Option B: Match 1+ characters (consume from word, keep wildcard)
+#             # Wildcard stays at j while we advance i (consume characters)
+#             # Example: word=&quot;helzzp&quot;, abbr=&quot;h2*p&quot; → * consumes &#x27;z&#x27;, then another &#x27;z&#x27;
+#             if self.match(word, abbr, i + 1, j):
+#                 return True
+            
+#             # Both options failed - no valid match found
+#             return False
+        
+#         # Case 2: Handle digit - represents number of characters to skip
+#         # Example: word=&quot;hello&quot;, abbr=&quot;h2lo&quot; → &#x27;2&#x27; means skip 2 chars (&#x27;e&#x27; and &#x27;l&#x27;)
+#         if abbr[j].isdigit():
+#             # Leading zeros are invalid
+#             # Example: abbr=&quot;h0llo&quot; is invalid ✗
+#             if abbr[j] == &#x27;0&#x27;:
+#                 return False
+            
+#             # Build the complete multi-digit number
+#             # Example: abbr=&quot;h12o&quot; → skip_count=12 (not just 1 and 2 separately)
+#             skip_count = 0
+#             while j &lt; len(abbr) and abbr[j].isdigit():
+#                 skip_count = skip_count * 10 + int(abbr[j])
+#                 j += 1
+            
+#             # Check if we can skip that many characters without exceeding word length
+#             # Example: word=&quot;hi&quot;, abbr=&quot;h5&quot; → can&#x27;t skip 5 chars from position 1 ✗
+#             if i + skip_count &gt; len(word):
+#                 return False
+            
+#             # Recursively match after skipping skip_count characters
+#             # Example: word=&quot;hello&quot;, abbr=&quot;h2lo&quot; → skip 2 chars, match from &quot;llo&quot; vs &quot;lo&quot;
+#             return self.match(word, abbr, i + skip_count, j)
+        
+#         # Case 3: Handle letter - must match exactly
+#         # Example: word=&quot;abc&quot;, abbr=&quot;abc&quot; → each letter must match exactly
+#         if abbr[j].isalpha():
+#             # Characters must be identical
+#             # Example: word=&quot;abc&quot;, abbr=&quot;axc&quot; → &#x27;b&#x27; != &#x27;x&#x27; ✗
+#             if word[i] != abbr[j]:
+#                 return False
+            
+#             # Move both pointers forward
+#             # Example: word=&quot;abc&quot;, abbr=&quot;abc&quot; → match &#x27;a&#x27;, continue with &quot;bc&quot; vs &quot;bc&quot;
+#             return self.match(word, abbr, i + 1, j + 1)
+        
+#         # Invalid character in abbr (shouldn&#x27;t happen with valid input)
+#         return False
+
+# Time Complexity: O(2^(n+m))
+# For time complexity, in the worst case we have exponential time. Here&#x27;s why:
+# When we hit a wildcard, we branch into 2 recursive calls - one where we skip it, one where we consume a character. If we have multiple wildcards, each one creates this branching behavior.
+# The maximum depth of our recursion is n+m since we can advance through both strings. At each level with a wildcard, we might explore 2 paths, giving us roughly 2^(n+m) in the absolute worst case.
+# Without memoization, we end up revisiting the same (i, j) states multiple times through different paths, which is why it&#x27;s exponential.
+
+# Space Complexity: O(n+m)
+# For space, it&#x27;s O(n+m) because that&#x27;s the maximum depth of our recursion stack.
+# In the worst case, we might go through all n characters in word and all m characters in abbr before hitting the base case. Each recursive call adds a frame to the stack, so the stack depth is at most n+m.
+# We&#x27;re not storing any additional data structures - just the call stack.
+
+# Complete Recursion Trace
+# Example: word = &quot;helzzpme&quot;, abbr = &quot;h2*p*me&quot;
+
+# Call 1: match(word, abbr, i=0, j=0)
+# Current state:
+
+# word[0] = &#x27;h&#x27;
+# abbr[0] = &#x27;h&#x27;
+
+# Processing:
+
+# abbr[0] is a letter
+# Check: word[0] == abbr[0]? → &#x27;h&#x27; == &#x27;h&#x27; ✓
+# Recurse: match(word, abbr, i=1, j=1)
+
+
+# Call 2: match(word, abbr, i=1, j=1)
+# Current state:
+
+# word[1] = &#x27;e&#x27;
+# abbr[1] = &#x27;2&#x27;
+
+# Processing:
+
+# abbr[1] is a digit (&#x27;2&#x27;)
+# Not a leading zero ✓
+# Build number: skip_count = 2
+# Move j forward: j becomes 2 (past the &#x27;2&#x27;)
+# Check: i + skip_count = 1 + 2 = 3 ≤ 8 ✓
+# Recurse: match(word, abbr, i=3, j=2)
+# This skips word[1]=&#x27;e&#x27; and word[2]=&#x27;l&#x27;
+
+
+# Call 3: match(word, abbr, i=3, j=2)
+# Current state:
+
+# word[3] = &#x27;z&#x27;
+# abbr[2] = &#x27;*&#x27;
+
+# Processing:
+
+# abbr[2] is a wildcard *
+# We have 2 options:
+
+# Option A: Skip the wildcard (match 0 characters)
+
+# Try: match(word, abbr, i=3, j=3)
+# word[3]=&#x27;z&#x27;, abbr[3]=&#x27;p&#x27;
+# &#x27;z&#x27; != &#x27;p&#x27; ✗
+# Returns False
+
+# Option B: Consume a character (match 1+ characters)
+
+# Try: match(word, abbr, i=4, j=2)
+# This consumes word[3]=&#x27;z&#x27;, wildcard stays at j=2
+
+
+# Call 4: match(word, abbr, i=4, j=2)
+# Current state:
+
+# word[4] = &#x27;z&#x27;
+# abbr[2] = &#x27;*&#x27; (same wildcard)
+
+# Processing:
+
+# abbr[2] is still the wildcard *
+# We have 2 options again:
+
+# Option A: Skip the wildcard
+
+# Try: match(word, abbr, i=4, j=3)
+# word[4]=&#x27;z&#x27;, abbr[3]=&#x27;p&#x27;
+# &#x27;z&#x27; != &#x27;p&#x27; ✗
+# Returns False
+
+# Option B: Consume another character
+
+# Try: match(word, abbr, i=5, j=2)
+# This consumes word[4]=&#x27;z&#x27;, wildcard stays at j=2
+
+
+# Call 5: match(word, abbr, i=5, j=2)
+# Current state:
+
+# word[5] = &#x27;p&#x27;
+# abbr[2] = &#x27;*&#x27; (same wildcard)
+
+# Processing:
+
+# abbr[2] is still the wildcard *
+# We have 2 options again:
+
+# Option A: Skip the wildcard
+
+# Try: match(word, abbr, i=5, j=3)
+# word[5]=&#x27;p&#x27;, abbr[3]=&#x27;p&#x27;
+# &#x27;p&#x27; == &#x27;p&#x27; ✓
+# Continue...
+
+
+# Call 6: match(word, abbr, i=6, j=4)
+# Current state:
+
+# word[6] = &#x27;m&#x27;
+# abbr[4] = &#x27;*&#x27;
+
+# Processing:
+
+# abbr[4] is a wildcard *
+# We have 2 options:
+
+# Option A: Skip the wildcard
+
+# Try: match(word, abbr, i=6, j=5)
+# word[6]=&#x27;m&#x27;, abbr[5]=&#x27;m&#x27;
+# &#x27;m&#x27; == &#x27;m&#x27; ✓
+# Continue...
+
+
+# Call 7: match(word, abbr, i=7, j=6)
+# Current state:
+
+# word[7] = &#x27;e&#x27;
+# abbr[6] = &#x27;e&#x27;
+
+# Processing:
+
+# abbr[6] is a letter
+# Check: word[7] == abbr[6]? → &#x27;e&#x27; == &#x27;e&#x27; ✓
+# Recurse: match(word, abbr, i=8, j=7)
+
+
+# Call 8: match(word, abbr, i=8, j=7)
+# Current state:
+
+# i = 8 = len(word)
+# j = 7 = len(abbr)
+
+# Processing:
+
+# Base case: Both exhausted! ✓
+# Return True
+
+# Previous Approach with nested function instead of 
+
+# class Solution:
+#     def wordPatternMatch(self, word: str, abbr: str) -&gt; bool:
+        
+#         def match(i: int, j: int) -&gt; bool:
+#             # Base case: both strings fully consumed - valid match
+#             if i == len(word) and j == len(abbr):
+#                 return True
+            
+#             # Abbr exhausted but word has remaining characters - no match
+#             if j == len(abbr):
+#                 return False
+            
+#             # Word exhausted but abbr has remaining characters
+#             if i == len(word):
+#                 # Valid only if all remaining characters in abbr are wildcards
+#                 # (wildcards can match empty sequence)
+#                 j_temp = j
+#                 while j_temp &lt; len(abbr):
+#                     if abbr[j_temp] != &#x27;*&#x27;:
+#                         return False
+#                     j_temp += 1
+#                 return True
+            
+#             # Case 1: Handle wildcard &#x27;*&#x27; - matches any sequence (0 or more chars)
+#             if abbr[j] == &#x27;*&#x27;:
+#                 # Option A: Match 0 characters (skip the wildcard)
+#                 if match(i, j + 1):
+#                     return True
+#                 # Option B: Match 1+ characters (consume from word, keep wildcard)
+#                 if match(i + 1, j):
+#                     return True
+#                 # Both options failed
+#                 return False
+            
+#             # Case 2: Handle digit - represents number of characters to skip
+#             if abbr[j].isdigit():
+#                 # Leading zeros are invalid
+#                 if abbr[j] == &#x27;0&#x27;:
+#                     return False
+                
+#                 # Build the complete multi-digit number
+#                 skip_count = 0
+#                 j_temp = j
+#                 while j_temp &lt; len(abbr) and abbr[j_temp].isdigit():
+#                     skip_count = skip_count * 10 + int(abbr[j_temp])
+#                     j_temp += 1
+                
+#                 # Check if we can skip that many characters without exceeding word length
+#                 if i + skip_count &gt; len(word):
+#                     return False
+                
+#                 # Recursively match after skipping
+#                 return match(i + skip_count, j_temp)
+            
+#             # Case 3: Handle letter - must match exactly
+#             if abbr[j].isalpha():
+#                 # Characters must be identical
+#                 if word[i] != abbr[j]:
+#                     return False
+#                 # Move both pointers forward
+#                 return match(i + 1, j + 1)
+            
+#             # Invalid character in abbr
+#             return False
+        
+#         # Start matching from the beginning
+#         return match(0, 0)
+
+
+# Optimized Approach : Recursion with memoization
+
+# class Solution:
+#     def wordPatternMatch(self, word: str, abbr: str) -&gt; bool:
+#         &quot;&quot;&quot;
+#         Validates if a word matches an abbreviation pattern with wildcards using memoization.
+        
+#         Time Complexity: O(n × m) where n = len(word), m = len(abbr)
+#         - Each unique state (i, j) is computed at most once due to memoization
+#         - Total possible states: (n+1) × (m+1) = O(n × m)
+#         - Each state computation does O(1) work (excluding recursive calls)
+        
+#         Space Complexity: O(n × m)
+#         - Memoization cache stores up to n × m states
+#         - Recursion stack depth is O(n + m)
+#         - Total space: O(n × m) + O(n + m) = O(n × m)
+        
+#         Args:
+#             word: The original word to validate against
+#             abbr: The abbreviation pattern with wildcards (*), numbers, and letters
+            
+#         Returns:
+#             True if word matches the abbreviation pattern, False otherwise
+#         &quot;&quot;&quot;
+#         # Memoization cache: maps (i, j) state to boolean result
+#         memo = {}
+#         return self.match(word, abbr, 0, 0, memo)
+    
+#     def match(self, word: str, abbr: str, i: int, j: int, memo: dict) -&gt; bool:
+#         &quot;&quot;&quot;
+#         Recursively match word and abbr starting from positions i and j with memoization.
+        
+#         Args:
+#             word: The word to match
+#             abbr: The abbreviation pattern
+#             i: Current position in word (0 to len(word))
+#             j: Current position in abbr (0 to len(abbr))
+#             memo: Dictionary to cache results for (i, j) states
+            
+#         Returns:
+#             True if remaining parts match, False otherwise
+#         &quot;&quot;&quot;
+#         # Check if this state has already been computed
+#         if (i, j) in memo:
+#             return memo[(i, j)]
+        
+#         # Base case: both strings fully consumed - valid match
+#         # Example: word=&quot;ab&quot;, abbr=&quot;ab&quot; → both reach end together ✓
+#         if i == len(word) and j == len(abbr):
+#             return True
+        
+#         # Abbr exhausted but word has remaining characters - no match
+#         # Example: word=&quot;abcde&quot;, abbr=&quot;ab&quot; → abbr done but word has &quot;cde&quot; left ✗
+#         if j == len(abbr):
+#             memo[(i, j)] = False
+#             return False
+        
+#         # Word exhausted but abbr has remaining characters
+#         # Example: word=&quot;ab&quot;, abbr=&quot;ab***&quot; or word=&quot;ab&quot;, abbr=&quot;ab**c&quot;
+#         if i == len(word):
+#             # Valid only if all remaining characters in abbr are wildcards
+#             # Wildcards can match empty sequence, so &quot;ab&quot; matches &quot;ab***&quot; ✓
+#             # But &quot;ab&quot; does NOT match &quot;ab**c&quot; because we need &#x27;c&#x27; ✗
+#             j_temp = j
+#             while j_temp &lt; len(abbr):
+#                 if abbr[j_temp] != &#x27;*&#x27;:
+#                     # Found a non-wildcard character, but word is exhausted
+#                     # Example: abbr=&quot;ab**c&quot; has &#x27;c&#x27; at the end → cannot match
+#                     memo[(i, j)] = False
+#                     return False
+#                 j_temp += 1
+#             # All remaining characters are wildcards → they match empty sequence
+#             # Example: abbr=&quot;ab***&quot; has only wildcards left → valid match ✓
+#             memo[(i, j)] = True
+#             return True
+        
+#         # Case 1: Handle wildcard &#x27;*&#x27; - matches any sequence (0 or more chars)
+#         # Example: word=&quot;helzzp&quot;, abbr=&quot;h2*p&quot; where * needs to match &quot;zz&quot;
+#         if abbr[j] == &#x27;*&#x27;:
+#             # Option A: Match 0 characters (skip the wildcard)
+#             # Try to see if skipping this wildcard works
+#             # Example: word=&quot;abc&quot;, abbr=&quot;*bc&quot; → skip *, try matching &quot;abc&quot; with &quot;bc&quot;
+#             if self.match(word, abbr, i, j + 1, memo):
+#                 memo[(i, j)] = True
+#                 return True
+            
+#             # Option B: Match 1+ characters (consume from word, keep wildcard)
+#             # Wildcard stays at j while we advance i (consume characters)
+#             # Example: word=&quot;helzzp&quot;, abbr=&quot;h2*p&quot; → * consumes &#x27;z&#x27;, then another &#x27;z&#x27;
+#             if self.match(word, abbr, i + 1, j, memo):
+#                 memo[(i, j)] = True
+#                 return True
+            
+#             # Both options failed - no valid match found
+#             memo[(i, j)] = False
+#             return False
+        
+#         # Case 2: Handle digit - represents number of characters to skip
+#         # Example: word=&quot;hello&quot;, abbr=&quot;h2lo&quot; → &#x27;2&#x27; means skip 2 chars (&#x27;e&#x27; and &#x27;l&#x27;)
+#         if abbr[j].isdigit():
+#             # Leading zeros are invalid
+#             # Example: abbr=&quot;h0llo&quot; is invalid ✗
+#             if abbr[j] == &#x27;0&#x27;:
+#                 memo[(i, j)] = False
+#                 return False
+            
+#             # Build the complete multi-digit number
+#             # Example: abbr=&quot;h12o&quot; → skip_count=12 (not just 1 and 2 separately)
+#             skip_count = 0
+#             j_temp = j
+#             while j_temp &lt; len(abbr) and abbr[j_temp].isdigit():
+#                 skip_count = skip_count * 10 + int(abbr[j_temp])
+#                 j_temp += 1
+            
+#             # Check if we can skip that many characters without exceeding word length
+#             # Example: word=&quot;hi&quot;, abbr=&quot;h5&quot; → can&#x27;t skip 5 chars from position 1 ✗
+#             if i + skip_count &gt; len(word):
+#                 memo[(i, j)] = False
+#                 return False
+            
+#             # Recursively match after skipping skip_count characters
+#             # Example: word=&quot;hello&quot;, abbr=&quot;h2lo&quot; → skip 2 chars, match from &quot;llo&quot; vs &quot;lo&quot;
+#             result = self.match(word, abbr, i + skip_count, j_temp, memo)
+#             memo[(i, j)] = result
+#             return result
+        
+#         # Case 3: Handle letter - must match exactly
+#         # Example: word=&quot;abc&quot;, abbr=&quot;abc&quot; → each letter must match exactly
+#         if abbr[j].isalpha():
+#             # Characters must be identical
+#             # Example: word=&quot;abc&quot;, abbr=&quot;axc&quot; → &#x27;b&#x27; != &#x27;x&#x27; ✗
+#             if word[i] != abbr[j]:
+#                 memo[(i, j)] = False
+#                 return False
+            
+#             # Move both pointers forward
+#             # Example: word=&quot;abc&quot;, abbr=&quot;abc&quot; → match &#x27;a&#x27;, continue with &quot;bc&quot; vs &quot;bc&quot;
+#             result = self.match(word, abbr, i + 1, j + 1, memo)
+#             memo[(i, j)] = result
+#             return result
+        
+#         # Invalid character in abbr (shouldn&#x27;t happen with valid input)
+#         memo[(i, j)] = False
+#         return False
+
+
+
+        </code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Medium/0348-Design-Tic-Tac-Toe/">&#8592; 348. Design Tic-Tac-Toe</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Hard/0489-Robot-Room-Cleaner/">489. Robot Room Cleaner &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+</body>
+</html>
