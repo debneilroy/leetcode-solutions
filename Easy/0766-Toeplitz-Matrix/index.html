@@ -238,40 +238,40 @@ URL: https://leetcode.com/problems/toeplitz-matrix/
 
 # Tradeoff: Very simple to reason about, but inefficient because it redundantly checks the same diagonals multiple times.
 
-# class Solution:
-#     def isToeplitzMatrix(self, matrix):
-#         &quot;&quot;&quot;
-#         Brute Force: Check every diagonal from every starting position.
+class Solution:
+    def isToeplitzMatrix(self, matrix):
+        &quot;&quot;&quot;
+        Brute Force: Check every diagonal from every starting position.
         
-#         Time Complexity: O(m × n × min(m, n))
-#         - Outer loop: O(m) iterations over all rows
-#         - Inner loop: O(n) iterations over all columns
-#         - While loop: O(min(m, n)) to traverse diagonal from each position
-#           (diagonal length is limited by the smaller dimension - either we run
-#            out of rows or columns, whichever comes first)
-#         - Total: O(m × n × min(m, n))
-#         - Highly inefficient due to redundant diagonal checks:
-#           Each diagonal is checked multiple times from different starting points.
-#           For example, diagonal [matrix[0][0], matrix[1][1], matrix[2][2]] is
-#           checked when starting from (0,0), then partially rechecked when starting
-#           from (1,1), and again from (2,2), leading to massive redundancy.
+        Time Complexity: O(m × n × min(m, n))
+        - Outer loop: O(m) iterations over all rows
+        - Inner loop: O(n) iterations over all columns
+        - While loop: O(min(m, n)) to traverse diagonal from each position
+          (diagonal length is limited by the smaller dimension - either we run
+           out of rows or columns, whichever comes first)
+        - Total: O(m × n × min(m, n))
+        - Highly inefficient due to redundant diagonal checks:
+          Each diagonal is checked multiple times from different starting points.
+          For example, diagonal [matrix[0][0], matrix[1][1], matrix[2][2]] is
+          checked when starting from (0,0), then partially rechecked when starting
+          from (1,1), and again from (2,2), leading to massive redundancy.
         
-#         Space Complexity: O(1)
-#         - Only constant extra space for variables (i, j, r, c)
-#         - No additional data structures
-#         &quot;&quot;&quot;
-#         m, n = len(matrix), len(matrix[0])
+        Space Complexity: O(1)
+        - Only constant extra space for variables (i, j, r, c)
+        - No additional data structures
+        &quot;&quot;&quot;
+        m, n = len(matrix), len(matrix[0])
         
-#         for i in range(m):
-#             for j in range(n):
-#                 # Check all elements on this diagonal
-#                 r, c = i, j
-#                 while r &lt; m and c &lt; n:
-#                     if matrix[r][c] != matrix[i][j]:
-#                         return False
-#                     r += 1
-#                     c += 1
-#         return True
+        for i in range(m):
+            for j in range(n):
+                # Check all elements on this diagonal
+                r, c = i, j
+                while r &lt; m and c &lt; n:
+                    if matrix[r][c] != matrix[i][j]:
+                        return False
+                    r += 1
+                    c += 1
+        return True
 
 # Optimal Approach:
 # Instead of rechecking, we can just ensure each element matches its bottom-right neighbor — if every (i, j) equals (i+1, j+1), all diagonals are constant.
@@ -310,7 +310,7 @@ class Solution:
 # Example 1:
 
 # Input:
-# matrix = [1,2,3,4,5,1,2,3,9,5,1,2], rows = 3, cols = 4
+matrix = [1,2,3,4,5,1,2,3,9,5,1,2], rows = 3, cols = 4
 
 # Output: True
 
@@ -321,47 +321,47 @@ class Solution:
 
 # Constraints:
 
-# m == matrix.length
+m == matrix.length
 
-# n == matrix[i].length
+n == matrix[i].length
 
 # 1 &lt;= m, n &lt;= 20
 
 # 0 &lt;= matrix[i][j] &lt;= 99
 
-# class Solution:
-#     def hasSameDiagonalValues(self, list: List[int], rows: int, cols: int) -&gt; bool:
-#         &quot;&quot;&quot;
-#         Check if a flattened matrix is Toeplitz (all diagonals have same elements).
+class Solution:
+    def hasSameDiagonalValues(self, list: List[int], rows: int, cols: int) -&gt; bool:
+        &quot;&quot;&quot;
+        Check if a flattened matrix is Toeplitz (all diagonals have same elements).
         
-#         Time Complexity: O(rows × cols)
-#         - Iterate through every element in the list once
-#         - Each comparison operation is O(1)
+        Time Complexity: O(rows × cols)
+        - Iterate through every element in the list once
+        - Each comparison operation is O(1)
         
-#         Space Complexity: O(1)
-#         - Only constant extra space for variables (i, cr, cc)
-#         - No additional data structures
-#         &quot;&quot;&quot;
-#         # Iterate through each element in the flattened list
-#         for i in range(len(list)):
-#             # Calculate current row: how many complete rows have we passed?
-#             cr = i // cols
+        Space Complexity: O(1)
+        - Only constant extra space for variables (i, cr, cc)
+        - No additional data structures
+        &quot;&quot;&quot;
+        # Iterate through each element in the flattened list
+        for i in range(len(list)):
+            # Calculate current row: how many complete rows have we passed?
+            cr = i // cols
             
-#             # Calculate current column: position within the current row
-#             cc = i % cols
+            # Calculate current column: position within the current row
+            cc = i % cols
             
-#             # Skip elements in the last row or last column
-#             # (they don&#x27;t have a bottom-right diagonal neighbor to check)
-#             if cr == rows - 1 or cc == cols - 1:
-#                 continue
+            # Skip elements in the last row or last column
+            # (they don&#x27;t have a bottom-right diagonal neighbor to check)
+            if cr == rows - 1 or cc == cols - 1:
+                continue
             
-#             # Check if current element matches its bottom-right diagonal neighbor
-#             # Moving to bottom-right: +cols (down one row) + 1 (right one column)
-#             if list[i] != list[i + (cols + 1)]:
-#                 return False
+            # Check if current element matches its bottom-right diagonal neighbor
+            # Moving to bottom-right: +cols (down one row) + 1 (right one column)
+            if list[i] != list[i + (cols + 1)]:
+                return False
         
-#         # All diagonal checks passed - matrix is Toeplitz
-#         return True
+        # All diagonal checks passed - matrix is Toeplitz
+        return True
 
   
 </code></pre>
