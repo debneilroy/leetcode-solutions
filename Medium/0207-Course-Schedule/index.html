@@ -347,64 +347,64 @@ class Solution:
 
 # Example without a Cycle
 
-# numCourses = 3
-# prerequisites = [[1,0], [2,1]]
+numCourses = 3
+prerequisites = [[1,0], [2,1]]
 
-# # What this means:
-# # Course 1 needs Course 0
-# # Course 2 needs Course 1
-# # No cycle! Linear chain: 0 → 1 → 2
+# What this means:
+# Course 1 needs Course 0
+# Course 2 needs Course 1
+# No cycle! Linear chain: 0 → 1 → 2
 
-# # Step-by-Step Execution
-# # Initial Setup:
+# Step-by-Step Execution
+# Initial Setup:
 
-# # Build the graph
-# graph[0] = [1]  # Course 0 unlocks Course 1
-# graph[1] = [2]  # Course 1 unlocks Course 2
-# graph[2] = []   # Course 2 unlocks nothing
+# Build the graph
+graph[0] = [1]  # Course 0 unlocks Course 1
+graph[1] = [2]  # Course 1 unlocks Course 2
+graph[2] = []   # Course 2 unlocks nothing
 
-# # Calculate in-degrees (how many prerequisites each course has)
-# in_degree[0] = 0  # Course 0 needs nothing! ✓
-# in_degree[1] = 1  # Course 1 needs Course 0
-# in_degree[2] = 1  # Course 2 needs Course 1
+# Calculate in-degrees (how many prerequisites each course has)
+in_degree[0] = 0  # Course 0 needs nothing! ✓
+in_degree[1] = 1  # Course 1 needs Course 0
+in_degree[2] = 1  # Course 2 needs Course 1
 
-# # Initialize queue with courses that have no prerequisites
-# queue = [0]  # Course 0 can start immediately!
+# Initialize queue with courses that have no prerequisites
+queue = [0]  # Course 0 can start immediately!
 
-# # Processing:
-# course_order = []
+# Processing:
+course_order = []
 
-# # Step 1: Process Course 0
-# while queue:  # queue = [0]
-#     course = queue.popleft()  # course = 0
-#     course_order.append(0)     # course_order = [0]
-#     courses_taken = 1
+# Step 1: Process Course 0
+while queue:  # queue = [0]
+    course = queue.popleft()  # course = 0
+    course_order.append(0)     # course_order = [0]
+    courses_taken = 1
     
-#     for neighbor in graph[0]:  # neighbor = 1
-#         in_degree[1] -= 1       # in_degree[1] becomes 0
-#         queue.append(1)         # queue = [1]
+    for neighbor in graph[0]:  # neighbor = 1
+        in_degree[1] -= 1       # in_degree[1] becomes 0
+        queue.append(1)         # queue = [1]
 
-# # Step 2: Process Course 1
-#     course = queue.popleft()  # course = 1
-#     course_order.append(1)     # course_order = [0, 1]
-#     courses_taken = 2
+# Step 2: Process Course 1
+    course = queue.popleft()  # course = 1
+    course_order.append(1)     # course_order = [0, 1]
+    courses_taken = 2
     
-#     for neighbor in graph[1]:  # neighbor = 2
-#         in_degree[2] -= 1       # in_degree[2] becomes 0
-#         queue.append(2)         # queue = [2]
+    for neighbor in graph[1]:  # neighbor = 2
+        in_degree[2] -= 1       # in_degree[2] becomes 0
+        queue.append(2)         # queue = [2]
 
-# # Step 3: Process Course 2
-#     course = queue.popleft()  # course = 2
-#     course_order.append(2)     # course_order = [0, 1, 2]
-#     courses_taken = 3
+# Step 3: Process Course 2
+    course = queue.popleft()  # course = 2
+    course_order.append(2)     # course_order = [0, 1, 2]
+    courses_taken = 3
     
-#     for neighbor in graph[2]:  # No neighbors
-#         pass
-#     # queue is now empty
+    for neighbor in graph[2]:  # No neighbors
+        pass
+    # queue is now empty
 
-# # Final check
-# len(course_order) == 3
-# numCourses == 3
+# Final check
+len(course_order) == 3
+numCourses == 3
 # 3 == 3  → Return True (all courses completed, no cycle!) ✓
 
 # Valid course order: [0, 1, 2]
@@ -412,43 +412,43 @@ class Solution:
 
 
 # Example with a Cycle
-# numCourses = 3
-# prerequisites = [[1,0], [2,1], [0,2]]
+numCourses = 3
+prerequisites = [[1,0], [2,1], [0,2]]
 
 # What this means:
 # Course 1 needs Course 0
 # Course 2 needs Course 1  
 # Course 0 needs Course 2  ← This creates a cycle!
 
-# # The cycle: 0 → 1 → 2 → 0 (back to start)
+# The cycle: 0 → 1 → 2 → 0 (back to start)
 # Step-by-Step Execution
 # Initial Setup:
-# # Build the graph
-# graph[0] = [1]  # Course 0 unlocks Course 1
-# graph[1] = [2]  # Course 1 unlocks Course 2
-# graph[2] = [0]  # Course 2 unlocks Course 0
+# Build the graph
+graph[0] = [1]  # Course 0 unlocks Course 1
+graph[1] = [2]  # Course 1 unlocks Course 2
+graph[2] = [0]  # Course 2 unlocks Course 0
 
-# # Calculate in-degrees (how many prerequisites each course has)
-# in_degree[0] = 1  # Course 0 needs Course 2
-# in_degree[1] = 1  # Course 1 needs Course 0
-# in_degree[2] = 1  # Course 2 needs Course 1
+# Calculate in-degrees (how many prerequisites each course has)
+in_degree[0] = 1  # Course 0 needs Course 2
+in_degree[1] = 1  # Course 1 needs Course 0
+in_degree[2] = 1  # Course 2 needs Course 1
 
-# # Initialize queue with courses that have no prerequisites
-# queue = []  # EMPTY! Every course has in_degree = 1
+# Initialize queue with courses that have no prerequisites
+queue = []  # EMPTY! Every course has in_degree = 1
 # The Problem is Immediately Visible:
-# # Queue is empty because no course has in_degree = 0
-# # This means every course is waiting for another course
+# Queue is empty because no course has in_degree = 0
+# This means every course is waiting for another course
 
-# course_order = []
+course_order = []
 
-# # While loop never executes because queue is empty
-# while queue:  # False, queue is empty
-#     # This code never runs!
-#     pass
+# While loop never executes because queue is empty
+while queue:  # False, queue is empty
+    # This code never runs!
+    pass
 
-# # Final check
-# len(course_order) == 0
-# numCourses == 3
+# Final check
+len(course_order) == 0
+numCourses == 3
 # 0 != 3  → Return False (cycle detected!)
 
 # Approach : DFS
@@ -540,125 +540,125 @@ class Solution:
 
 # Topological sort
 
-# class Solution:
-#     def findOrder(self, numCourses, prerequisites):
-#         &quot;&quot;&quot;
-#         Returns the actual course order if possible, empty list if impossible.
-#         This is LeetCode 210 - Course Schedule II
+class Solution:
+    def findOrder(self, numCourses, prerequisites):
+        &quot;&quot;&quot;
+        Returns the actual course order if possible, empty list if impossible.
+        This is LeetCode 210 - Course Schedule II
         
-#         The key change: instead of just counting, we store the order as we process.
-#         &quot;&quot;&quot;
+        The key change: instead of just counting, we store the order as we process.
+        &quot;&quot;&quot;
         
-#         # Build adjacency list and in-degree array (same as before)
-#         graph = [[] for _ in range(numCourses)]
-#         in_degree = [0] * numCourses
+        # Build adjacency list and in-degree array (same as before)
+        graph = [[] for _ in range(numCourses)]
+        in_degree = [0] * numCourses
         
-#         for course, prereq in prerequisites:
-#             graph[prereq].append(course)
-#             in_degree[course] += 1
+        for course, prereq in prerequisites:
+            graph[prereq].append(course)
+            in_degree[course] += 1
         
-#         # Initialize queue with courses that have no prerequisites
-#         queue = deque()
-#         for course in range(numCourses):
-#             if in_degree[course] == 0:
-#                 queue.append(course)
+        # Initialize queue with courses that have no prerequisites
+        queue = deque()
+        for course in range(numCourses):
+            if in_degree[course] == 0:
+                queue.append(course)
         
-#         # THIS IS THE KEY CHANGE: Store the actual order instead of just counting
-#         course_order = []
+        # THIS IS THE KEY CHANGE: Store the actual order instead of just counting
+        course_order = []
         
-#         while queue:
-#             course = queue.popleft()
-#             # Add this course to our order as we &quot;complete&quot; it
-#             course_order.append(course)
+        while queue:
+            course = queue.popleft()
+            # Add this course to our order as we &quot;complete&quot; it
+            course_order.append(course)
             
-#             # Process neighbors (same as before)
-#             for neighbor in graph[course]:
-#                 in_degree[neighbor] -= 1
-#                 if in_degree[neighbor] == 0:
-#                     queue.append(neighbor)
+            # Process neighbors (same as before)
+            for neighbor in graph[course]:
+                in_degree[neighbor] -= 1
+                if in_degree[neighbor] == 0:
+                    queue.append(neighbor)
         
-#         # If we got all courses, return the order; otherwise return empty list
-#         # len(course_order) == numCourses means no cycle
-#         return course_order if len(course_order) == numCourses else []
+        # If we got all courses, return the order; otherwise return empty list
+        # len(course_order) == numCourses means no cycle
+        return course_order if len(course_order) == numCourses else []
 
-# # Approach : DFS
+# Approach : DFS
 
-# class Solution:
-#     def findOrder(self, numCourses, prerequisites):
-#         &quot;&quot;&quot;
-#         Returns the actual course order if possible, empty list if cycle exists.
-#         Uses DFS with state tracking and builds order in reverse.
+class Solution:
+    def findOrder(self, numCourses, prerequisites):
+        &quot;&quot;&quot;
+        Returns the actual course order if possible, empty list if cycle exists.
+        Uses DFS with state tracking and builds order in reverse.
         
-#         Key insight: In DFS, we add a course to the order AFTER exploring all
-#         its dependencies. This naturally gives us reverse topological order.
+        Key insight: In DFS, we add a course to the order AFTER exploring all
+        its dependencies. This naturally gives us reverse topological order.
         
-#         Time: O(V + E) where V = numCourses, E = len(prerequisites)
-#         Space: O(V + E) for graph + O(V) for recursion stack
-#         &quot;&quot;&quot;
+        Time: O(V + E) where V = numCourses, E = len(prerequisites)
+        Space: O(V + E) for graph + O(V) for recursion stack
+        &quot;&quot;&quot;
         
-#         # Build adjacency list representation of the graph
-#         # graph[prereq] contains all courses that need prereq as a prerequisite
-#         graph = [[] for _ in range(numCourses)]
+        # Build adjacency list representation of the graph
+        # graph[prereq] contains all courses that need prereq as a prerequisite
+        graph = [[] for _ in range(numCourses)]
         
-#         for course, prereq in prerequisites:
-#             graph[prereq].append(course)
+        for course, prereq in prerequisites:
+            graph[prereq].append(course)
         
-#         # State tracking for cycle detection:
-#         # 0 = UNVISITED (haven&#x27;t explored yet)
-#         # 1 = VISITING (currently in DFS path - used to detect cycles)
-#         # 2 = VISITED (fully explored - safe to skip)
-#         state = [0] * numCourses
+        # State tracking for cycle detection:
+        # 0 = UNVISITED (haven&#x27;t explored yet)
+        # 1 = VISITING (currently in DFS path - used to detect cycles)
+        # 2 = VISITED (fully explored - safe to skip)
+        state = [0] * numCourses
         
-#         # Store the course order as we complete DFS on each course
-#         # We&#x27;ll build this in REVERSE topological order
-#         course_order = []
+        # Store the course order as we complete DFS on each course
+        # We&#x27;ll build this in REVERSE topological order
+        course_order = []
         
-#         def hasCycle(course):
-#             &quot;&quot;&quot;
-#             DFS to explore course and all its dependencies.
-#             Returns True if cycle detected, False otherwise.
-#             &quot;&quot;&quot;
+        def hasCycle(course):
+            &quot;&quot;&quot;
+            DFS to explore course and all its dependencies.
+            Returns True if cycle detected, False otherwise.
+            &quot;&quot;&quot;
             
-#             # CYCLE DETECTED: Found a course in our current DFS path
-#             if state[course] == 1:
-#                 return True
+            # CYCLE DETECTED: Found a course in our current DFS path
+            if state[course] == 1:
+                return True
             
-#             # ALREADY PROCESSED: This course and all its dependencies are done
-#             # We&#x27;ve already added it to course_order, so skip it
-#             if state[course] == 2:
-#                 return False
+            # ALREADY PROCESSED: This course and all its dependencies are done
+            # We&#x27;ve already added it to course_order, so skip it
+            if state[course] == 2:
+                return False
             
-#             # Mark as currently visiting (part of current DFS path)
-#             state[course] = 1
+            # Mark as currently visiting (part of current DFS path)
+            state[course] = 1
             
-#             # Explore all courses that depend on this course
-#             # We need to complete all dependencies before we can take this course
-#             for neighbor in graph[course]:
-#                 if hasCycle(neighbor):
-#                     # Cycle detected in neighbor&#x27;s subtree, propagate success
-#                     return True
+            # Explore all courses that depend on this course
+            # We need to complete all dependencies before we can take this course
+            for neighbor in graph[course]:
+                if hasCycle(neighbor):
+                    # Cycle detected in neighbor&#x27;s subtree, propagate success
+                    return True
             
-#             # CRITICAL: Add course to order AFTER exploring all its dependencies
-#             # This is the key difference from the canFinish version!
-#             # We add a course only after all courses that depend on it are added
-#             # This gives us REVERSE topological order (post-order traversal)
-#             course_order.append(course)
+            # CRITICAL: Add course to order AFTER exploring all its dependencies
+            # This is the key difference from the canFinish version!
+            # We add a course only after all courses that depend on it are added
+            # This gives us REVERSE topological order (post-order traversal)
+            course_order.append(course)
             
-#             # Mark as fully visited
-#             state[course] = 2
+            # Mark as fully visited
+            state[course] = 2
             
-#             return False
+            return False
         
-#         # Try DFS from every course (handles disconnected components)
-#         for course in range(numCourses):
-#             # If any DFS finds a cycle, return empty list immediately
-#             if hasCycle(course):
-#                 return []
+        # Try DFS from every course (handles disconnected components)
+        for course in range(numCourses):
+            # If any DFS finds a cycle, return empty list immediately
+            if hasCycle(course):
+                return []
         
-#         # IMPORTANT: Reverse the order!
-#         # We built the list in reverse topological order (post-order DFS)
-#         # Reversing gives us the correct topological order
-#         return course_order[::-1]
+        # IMPORTANT: Reverse the order!
+        # We built the list in reverse topological order (post-order DFS)
+        # Reversing gives us the correct topological order
+        return course_order[::-1]
 
 # Variant : Course Schedule (Adjacency List Form)
 
@@ -671,7 +671,7 @@ class Solution:
 # Example 1
 
 # Input:
-# graph = [[1], []]
+graph = [[1], []]
 # Output: True
 
 # Explanation:
@@ -682,7 +682,7 @@ class Solution:
 # Example 2
 
 # Input:
-# graph = [[1], [0], []]
+graph = [[1], [0], []]
 # Output: False
 
 # Explanation:
@@ -700,119 +700,119 @@ class Solution:
 
 # Approach : Topological Sort
 
-# class Solution:
-#     def canFinish(self, graph):
-#         &quot;&quot;&quot;
-#         Uses Topological Sort (Kahn&#x27;s Algorithm) with BFS to detect cycles.
+class Solution:
+    def canFinish(self, graph):
+        &quot;&quot;&quot;
+        Uses Topological Sort (Kahn&#x27;s Algorithm) with BFS to detect cycles.
         
-#         Time: O(V + E) where V = len(graph), E = total edges
-#         Space: O(V) for in_degree array and queue
-#         &quot;&quot;&quot;
+        Time: O(V + E) where V = len(graph), E = total edges
+        Space: O(V) for in_degree array and queue
+        &quot;&quot;&quot;
         
-#         # Number of courses
-#         numCourses = len(graph)
+        # Number of courses
+        numCourses = len(graph)
         
-#         # Calculate in-degrees: count how many prerequisites each course has
-#         # in_degree[i] = number of courses that must be completed before course i
-#         in_degree = [0] * numCourses
+        # Calculate in-degrees: count how many prerequisites each course has
+        # in_degree[i] = number of courses that must be completed before course i
+        in_degree = [0] * numCourses
         
-#         # For each course i, increment in_degree for all courses that depend on it
-#         for i in range(numCourses):
-#             for neighbor in graph[i]:
-#                 in_degree[neighbor] += 1
+        # For each course i, increment in_degree for all courses that depend on it
+        for i in range(numCourses):
+            for neighbor in graph[i]:
+                in_degree[neighbor] += 1
         
-#         # Initialize queue with all courses that have no prerequisites (in_degree == 0)
-#         # These courses can be taken immediately
-#         queue = deque()
-#         for i in range(numCourses):
-#             if in_degree[i] == 0:
-#                 queue.append(i)
+        # Initialize queue with all courses that have no prerequisites (in_degree == 0)
+        # These courses can be taken immediately
+        queue = deque()
+        for i in range(numCourses):
+            if in_degree[i] == 0:
+                queue.append(i)
         
-#         # Track how many courses we&#x27;ve successfully completed
-#         courses_taken = 0
+        # Track how many courses we&#x27;ve successfully completed
+        courses_taken = 0
         
-#         # Process courses using BFS
-#         while queue:
-#             # Take a course (simulate completing it)
-#             course = queue.popleft()
-#             courses_taken += 1
+        # Process courses using BFS
+        while queue:
+            # Take a course (simulate completing it)
+            course = queue.popleft()
+            courses_taken += 1
             
-#             # For each course that depends on the current course
-#             for neighbor in graph[course]:
-#                 # Remove the dependency (decrease in-degree by 1)
-#                 in_degree[neighbor] -= 1
+            # For each course that depends on the current course
+            for neighbor in graph[course]:
+                # Remove the dependency (decrease in-degree by 1)
+                in_degree[neighbor] -= 1
                 
-#                 # If this course now has no more prerequisites, it can be taken
-#                 if in_degree[neighbor] == 0:
-#                     queue.append(neighbor)
+                # If this course now has no more prerequisites, it can be taken
+                if in_degree[neighbor] == 0:
+                    queue.append(neighbor)
         
-#         # If we processed all courses, there&#x27;s no cycle
-#         # If courses_taken &lt; numCourses, some courses are stuck in a cycle
-#         return courses_taken == numCourses
+        # If we processed all courses, there&#x27;s no cycle
+        # If courses_taken &lt; numCourses, some courses are stuck in a cycle
+        return courses_taken == numCourses
         
 
-# # Approach : DFS
+# Approach : DFS
 
-# class Solution:
-#     def canFinish(self, graph):
-#         &quot;&quot;&quot;
-#         Uses DFS with state tracking to detect cycles.
+class Solution:
+    def canFinish(self, graph):
+        &quot;&quot;&quot;
+        Uses DFS with state tracking to detect cycles.
         
-#         Time: O(V + E) where V = len(graph), E = total edges
-#         Space: O(V) for state array + O(V) for recursion stack = O(V)
-#         &quot;&quot;&quot;
+        Time: O(V + E) where V = len(graph), E = total edges
+        Space: O(V) for state array + O(V) for recursion stack = O(V)
+        &quot;&quot;&quot;
         
-#         # Number of courses
-#         numCourses = len(graph)
+        # Number of courses
+        numCourses = len(graph)
         
-#         # State tracking for cycle detection:
-#         # 0 = UNVISITED (haven&#x27;t explored this course yet)
-#         # 1 = VISITING (currently exploring this course in current DFS path)
-#         # 2 = VISITED (completely finished exploring this course and all dependencies)
-#         state = [0] * numCourses
+        # State tracking for cycle detection:
+        # 0 = UNVISITED (haven&#x27;t explored this course yet)
+        # 1 = VISITING (currently exploring this course in current DFS path)
+        # 2 = VISITED (completely finished exploring this course and all dependencies)
+        state = [0] * numCourses
         
-#         def hasCycle(course):
-#             &quot;&quot;&quot;
-#             DFS helper to detect if there&#x27;s a cycle starting from this course.
-#             Returns True if cycle detected, False otherwise.
-#             &quot;&quot;&quot;
+        def hasCycle(course):
+            &quot;&quot;&quot;
+            DFS helper to detect if there&#x27;s a cycle starting from this course.
+            Returns True if cycle detected, False otherwise.
+            &quot;&quot;&quot;
             
-#             # CYCLE DETECTED: We&#x27;ve encountered a course in our current DFS path
-#             # This means we&#x27;ve looped back to a course we&#x27;re still processing
-#             if state[course] == 1:
-#                 return True
+            # CYCLE DETECTED: We&#x27;ve encountered a course in our current DFS path
+            # This means we&#x27;ve looped back to a course we&#x27;re still processing
+            if state[course] == 1:
+                return True
             
-#             # ALREADY PROCESSED: This course and all its dependencies are fully explored
-#             # No need to explore again - we know it&#x27;s safe (no cycles from here)
-#             if state[course] == 2:
-#                 return False
+            # ALREADY PROCESSED: This course and all its dependencies are fully explored
+            # No need to explore again - we know it&#x27;s safe (no cycles from here)
+            if state[course] == 2:
+                return False
             
-#             # Mark this course as currently being visited (part of current DFS path)
-#             state[course] = 1
+            # Mark this course as currently being visited (part of current DFS path)
+            state[course] = 1
             
-#             # Explore all courses that depend on this course
-#             # graph[course] directly gives us the list of dependent courses
-#             for neighbor in graph[course]:
-#                 # Recursively check if any path from neighbor leads to a cycle
-#                 if hasCycle(neighbor):
-#                     return True  # Propagate cycle detection up the call stack
+            # Explore all courses that depend on this course
+            # graph[course] directly gives us the list of dependent courses
+            for neighbor in graph[course]:
+                # Recursively check if any path from neighbor leads to a cycle
+                if hasCycle(neighbor):
+                    return True  # Propagate cycle detection up the call stack
             
-#             # We&#x27;ve finished exploring all paths from this course without finding cycles
-#             # Mark it as completely visited
-#             state[course] = 2
+            # We&#x27;ve finished exploring all paths from this course without finding cycles
+            # Mark it as completely visited
+            state[course] = 2
             
-#             return False  # No cycle found from this course
+            return False  # No cycle found from this course
         
-#         # Check every course as a potential starting point
-#         # Need to check all courses because graph might be disconnected
-#         for course in range(numCourses):
-#             # If we find a cycle starting from any course, return false immediately
-#             if hasCycle(course):
-#                 return False
+        # Check every course as a potential starting point
+        # Need to check all courses because graph might be disconnected
+        for course in range(numCourses):
+            # If we find a cycle starting from any course, return false immediately
+            if hasCycle(course):
+                return False
         
-#         # We&#x27;ve checked all courses and found no cycles
-#         # Therefore, all courses can be completed
-#         return True</code></pre>
+        # We&#x27;ve checked all courses and found no cycles
+        # Therefore, all courses can be completed
+        return True</code></pre>
       </div>
     </div>
 
