@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>346. Moving Average from Data Stream - LeetCode Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+
+:root {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --radius:    6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #e6db74; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy   { color: var(--easy);   background: rgba(44,187,93,0.15); }
+.badge-Medium { color: var(--medium); background: rgba(255,161,22,0.15); }
+.badge-Hard   { color: var(--hard);   background: rgba(239,71,67,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--surface2); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: #1e1e1e !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">346. Moving Average from Data Stream</span>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (0)</div>
+        <div class="tab" data-tab="similar">Similar (1)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">346. Moving Average from Data Stream</div>
+        <div class="prob-meta">
+          <span class="badge badge-Easy">Easy</span>
+          <span class="tag">Array</span><span class="tag">Design</span><span class="tag">Queue</span><span class="tag">Data Stream</span>
+        </div>
+        <div class="prob-stats">534K / 665.6K (80.2%)</div>
+        <div class="prob-desc"><p>Given a stream of integers and a window size, calculate the moving average of all integers in the sliding window.</p>
+<p>Implement the <code>MovingAverage</code> class:</p>
+<ul>
+<li><code>MovingAverage(int size)</code> Initializes the object with the size of the window <code>size</code>.</li>
+</ul>
+	
+<ul>
+<li><code>double next(int val)</code> Returns the moving average of the last <code>size</code> values of the stream.</li>
+</ul>
+<p>Example 1:</p>
+<pre class="example-block"><code>
+<strong>Input</strong>
+[&quot;MovingAverage&quot;, &quot;next&quot;, &quot;next&quot;, &quot;next&quot;, &quot;next&quot;]
+[[3], [1], [10], [3], [5]]
+<strong>Output</strong>
+[null, 1.0, 5.5, 4.66667, 6.0]
+<p><strong>Explanation</strong><br>MovingAverage movingAverage = new MovingAverage(3);<br>movingAverage.next(1); // return 1.0 = 1 / 1<br>movingAverage.next(10); // return 5.5 = (1 + 10) / 2<br>movingAverage.next(3); // return 4.66667 = (1 + 10 + 3) / 3<br>movingAverage.next(5); // return 6.0 = (10 + 3 + 5) / 3<br></code></pre></p>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= size &lt;= 1000</code></li>
+</ul>
+	
+<ul>
+<li><code>-105 &lt;= val &lt;= 105</code></li>
+</ul>
+	
+<ul>
+<li>At most <code>104</code> calls will be made to <code>next</code>.</li>
+</ul></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        <p class="empty-msg">No hints for this problem.</p>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/k-radius-subarray-averages/" target="_blank">K Radius Subarray Averages</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 346. Moving Average from Data Stream
+Difficulty: Easy
+URL: https://leetcode.com/problems/moving-average-from-data-stream/
+&quot;&quot;&quot;
+
+# Brute Force Approach : Recalculate the entire sum every time instead of reusing the previous sum
+
+# class MovingAverage:
+#     def __init__(self, size: int):
+#         &quot;&quot;&quot;
+#         Time Complexity: O(1)
+#         Space Complexity: O(size) - store up to &#x27;size&#x27; elements
+#         &quot;&quot;&quot;
+#         self.size = size
+#         self.queue = deque()
+    
+#     def next(self, val: int) -&gt; float:
+#         &quot;&quot;&quot;
+#         BRUTE FORCE: Recalculate sum every time
+        
+#         Time Complexity: O(size) - sum() iterates through all window elements
+#         Space Complexity: O(1) - no additional space beyond the queue
+#         &quot;&quot;&quot;
+#         self.queue.append(val)
+        
+#         if len(self.queue) &gt; self.size:
+#             self.queue.popleft()
+        
+#         # Recalculate sum from scratch every time - O(size) operation
+#         # sum() works on deque - iterates through all elements
+#         return sum(self.queue) / len(self.queue)
+
+
+# Optimized approach : Maintain a running sum and update it incrementally (add new element, subtract removed element)
+
+class MovingAverage:
+    def __init__(self, size: int):
+        &quot;&quot;&quot;
+        Initialize the MovingAverage object with a fixed window size.
+        
+        Args:
+            size: The maximum number of elements in the sliding window
+        
+        Time Complexity: O(1)
+        Space Complexity: O(size) - for storing up to &#x27;size&#x27; elements in the queue
+        
+        Edge Cases Handled:
+        - size = 1: Window contains only the most recent element
+        - Empty stream: Queue starts empty, builds up gradually
+        
+        Data Structures:
+        1. self.size: Store the maximum window size
+        2. self.queue: A deque (double-ended queue) to efficiently add/remove elements
+        3. self.window_sum: Running sum of all elements currently in the window
+        
+        Why deque? It provides O(1) operations for both:
+        - append() to add elements to the right
+        - popleft() to remove elements from the left
+        &quot;&quot;&quot;
+        # Base case: size must be at least 1
+        if size &lt; 1:
+            raise ValueError(&quot;Window size must be at least 1&quot;) # raise not return
+        
+        self.size = size
+        self.queue = deque()  # Stores the actual values in our sliding window
+        self.window_sum = 0   # Maintains the sum of all elements in the queue
+    
+    def next(self, val: int) -&gt; float:
+        &quot;&quot;&quot;
+        Add a new value to the stream and return the moving average.
+        
+        Args:
+            val: The new integer value to add to the stream
+            
+        Returns:
+            The average of the last &#x27;size&#x27; values (or fewer if we haven&#x27;t seen &#x27;size&#x27; values yet)
+        
+        Time Complexity: O(1) - all operations (append, popleft, arithmetic) are constant time
+        Space Complexity: O(1) - no additional space used beyond the initialized queue
+        
+        Edge Cases Handled:
+        - First element: Queue has only 1 element, returns that element
+        - Fewer than &#x27;size&#x27; elements: Returns average of all elements seen so far
+        - Negative numbers: Handled correctly in sum calculation
+        - Zero values: Handled correctly
+        - Large numbers: May cause overflow in languages with fixed integer size
+          (Python handles arbitrary precision integers automatically)
+        
+        Algorithm:
+        1. Add the new value to the queue and update the running sum
+        2. If the queue size exceeds our window size, remove the oldest element
+        3. Calculate and return the average using the running sum
+        &quot;&quot;&quot;
+        # Step 1: Add the new value to the right end of the queue
+        self.queue.append(val)
+        
+        # Step 2: Update our running sum by adding the new value
+        # This is more efficient than recalculating sum(self.queue) every time
+        self.window_sum += val
+        
+        # Step 3: Check if our window has exceeded the maximum size
+        if len(self.queue) &gt; self.size:
+            # Remove the oldest element (from the left) to maintain window size
+            oldest_val = self.queue.popleft()
+            
+            # Subtract the removed value from our running sum
+            # This keeps window_sum accurate without recalculating
+            self.window_sum -= oldest_val
+        
+        # Step 4: Calculate the average
+        # Divide the running sum by the current number of elements
+        # Note: We use len(self.queue) not self.size because the queue
+        # might have fewer elements than size (especially at the beginning)
+        # 
+        # IMPORTANT: We use / (single slash) for floating-point division
+        # This returns decimals: 11 / 2 = 5.5 (not 5)
+        # If we used // (double slash), we&#x27;d get integer division: 11 // 2 = 5
+        # 
+        # Edge case: len(self.queue) is guaranteed to be &gt;= 1 since we just appended
+        # so division by zero is not possible
+        return self.window_sum / len(self.queue)
+
+# Your MovingAverage object will be instantiated and called as such:
+# obj = MovingAverage(size)
+# param_1 = obj.next(val)
+
+# Variant: Sliding Window Integer Average 
+
+# Given a list of integers nums and an integer size, compute the integer average of elements in every contiguous subarray (sliding window) of length exactly size. 
+
+# Return a list containing these averages, where each average is computed using integer division (//).
+
+# Example 1:
+# Input: nums = [5, 2, 8, 14, 3], size = 3
+# Output: [5, 8, 8]
+
+# Explanation:
+# Window 1: (5 + 2 + 8) // 3 = 5  
+# Window 2: (2 + 8 + 14) // 3 = 8  
+# Window 3: (8 + 14 + 3) // 3 = 8
+
+# def compute_running_sum_variant(nums: List[int], size: int) -&gt; List[int]:
+#     &quot;&quot;&quot;
+#     Compute the average of elements in a sliding window using integer division.
+    
+#     Args:
+#         nums: List of integers
+#         size: Size of the sliding window
+        
+#     Returns:
+#         List of averages (using integer division) for each window position
+        
+#     Time Complexity: O(n)
+#     Space Complexity: O(n-size+1) for result # remember this!
+    
+#     Algorithm: Window ALWAYS contains EXACTLY &#x27;size&#x27; elements when computing average
+#     - right &gt;= size: Remove oldest element to maintain window size
+#     - right &gt;= size-1: Record average (window has exactly &#x27;size&#x27; elements)
+#     &quot;&quot;&quot;
+#     # Validate inputs
+#     if size &lt;= 0:
+#         raise ValueError(&quot;Window size must be positive.&quot;)
+#     if not nums or len(nums) &lt; size:
+#         return []
+    
+#     n = len(nums)
+#     result = []
+#     window_sum = 0
+
+#     # &#x27;right&#x27; tracks the right boundary of our window (current position)
+#     # As we iterate, we&#x27;ve added elements from index 0 to right
+#     # Total elements added so far = right + 1
+#     for right in range(n):
+#         # STEP 1: Add new element to window
+#         window_sum += nums[right]
+#         # Now we have (right + 1) elements in the window
+        
+#         # STEP 2: Maintain window at EXACTLY &#x27;size&#x27; elements
+#         # ------------------------------------------------
+#         # WHY right &gt;= size?
+#         # We want to check: &quot;Do we have MORE than &#x27;size&#x27; elements?&quot;
+#         # Elements in window = right + 1
+#         # Condition: (right + 1) &gt; size
+#         # Simplify: right &gt;= size
+#         #
+#         # Example with size=3:
+#         #   right=0: 0+1=1 elements, 0&gt;=3? NO, keep all
+#         #   right=1: 1+1=2 elements, 1&gt;=3? NO, keep all
+#         #   right=2: 2+1=3 elements, 2&gt;=3? NO, keep all (exactly size!)
+#         #   right=3: 3+1=4 elements, 3&gt;=3? YES! Too many, remove oldest
+#         #   right=4: 4+1=5 elements, 4&gt;=3? YES! Too many, remove oldest
+#         #
+#         # When right &gt;= size is TRUE:
+#         # - We have (right+1) elements which is &gt; size
+#         # - Remove the oldest element at index (right - size)
+#         # - After removal: window has exactly &#x27;size&#x27; elements
+#         # - Window spans indices [right-size+1, right]
+#         if right &gt;= size:
+#             window_sum -= nums[right - size]
+#             # Example: size=3, right=3
+#             #   Before: elements [0,1,2,3] = 4 elements
+#             #   Remove: nums[3-3] = nums[0]
+#             #   After: elements [1,2,3] = 3 elements ✓
+        
+#         # STEP 3: Record average when window has exactly &#x27;size&#x27; elements
+#         # --------------------------------------------------------------
+#         # WHY right &gt;= size - 1?
+#         # We want to check: &quot;Do we have AT LEAST &#x27;size&#x27; elements?&quot;
+#         # This triggers when we form our FIRST complete window and EVERY subsequent window
+#         #
+#         # Elements in window = right + 1 (after any removal above)
+#         # Condition: (right + 1) &gt;= size
+#         # Simplify: right &gt;= size - 1
+#         #
+#         # Example with size=3:
+#         #   right=0: 0&gt;=2? NO  (only 1 element, incomplete)
+#         #   right=1: 1&gt;=2? NO  (only 2 elements, incomplete)
+#         #   right=2: 2&gt;=2? YES! (3 elements, FIRST complete window) ✓
+#         #   right=3: 3&gt;=2? YES! (3 elements after removal, complete) ✓
+#         #   right=4: 4&gt;=2? YES! (3 elements after removal, complete) ✓
+#         #
+#         # CRITICAL: Why &gt;= and not ==?
+#         # ----------------------------------------
+#         # If we used right == size - 1:
+#         #   right=2: 2==2? YES → Records first window [0,1,2] ✓
+#         #   right=3: 3==2? NO  → SKIPS second window [1,2,3] ❌
+#         #   right=4: 4==2? NO  → SKIPS third window [2,3,4] ❌
+#         #   Result: Only records FIRST window, misses all others!
+#         #
+#         # With right &gt;= size - 1:
+#         #   right=2: 2&gt;=2? YES → Records first window ✓
+#         #   right=3: 3&gt;=2? YES → Records second window ✓
+#         #   right=4: 4&gt;=2? YES → Records third window ✓
+#         #   Result: Records ALL windows as required!
+#         #
+#         # At this point, window ALWAYS has EXACTLY &#x27;size&#x27; elements because:
+#         # - Case 1 (right == size-1): We just reached &#x27;size&#x27; elements
+#         # - Case 2 (right &gt;= size): We removed excess, back to &#x27;size&#x27; elements
+#         if right &gt;= size - 1:
+#             # Use integer division (//) not float division (/)
+#             # Example: 11 // 2 = 5 (not 5.5)
+#             result.append(window_sum // size)
+
+#     return result
+</code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Medium/0339-Nested-List-Weight-Sum/">&#8592; 339. Nested List Weight Sum</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Medium/0347-Top-K-Frequent-Elements/">347. Top K Frequent Elements &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+</body>
+</html>
