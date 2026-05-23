@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1004. Max Consecutive Ones III - LeetCode Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+
+:root {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --radius:    6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #e6db74; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy   { color: var(--easy);   background: rgba(44,187,93,0.15); }
+.badge-Medium { color: var(--medium); background: rgba(255,161,22,0.15); }
+.badge-Hard   { color: var(--hard);   background: rgba(239,71,67,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--surface2); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: #1e1e1e !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">1004. Max Consecutive Ones III</span>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (4)</div>
+        <div class="tab" data-tab="similar">Similar (10)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">1004. Max Consecutive Ones III</div>
+        <div class="prob-meta">
+          <span class="badge badge-Medium">Medium</span>
+          <span class="tag">Array</span><span class="tag">Binary Search</span><span class="tag">Sliding Window</span><span class="tag">Prefix Sum</span>
+        </div>
+        <div class="prob-stats">1.4M / 2.1M (67.7%)</div>
+        <div class="prob-desc"><p>Given a binary array <code>nums</code> and an integer <code>k</code>, return <em>the maximum number of consecutive </em><code>1</code><em>'s in the array if you can flip at most</em> <code>k</code> <code>0</code>'s.</p>
+<p>Example 1:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> nums = [1,1,1,0,0,0,1,1,1,1,0], k = 2
+<strong>Output:</strong> 6
+<strong>Explanation:</strong> [1,1,1,0,0,<strong>1</strong>,1,1,1,1,<strong>1</strong>]
+Bolded numbers were flipped from 0 to 1. The longest subarray is underlined.</code></pre>
+<p>Example 2:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> nums = [0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1], k = 3
+<strong>Output:</strong> 10
+<strong>Explanation:</strong> [0,0,1,1,<strong>1</strong>,<strong>1</strong>,1,1,1,<strong>1</strong>,1,1,0,0,0,1,1,1,1]
+Bolded numbers were flipped from 0 to 1. The longest subarray is underlined.
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= nums.length &lt;= 105</code></li>
+</ul>
+	
+<ul>
+<li><code>nums[i]</code> is either <code>0</code> or <code>1</code>.</li>
+</ul>
+	
+<ul>
+<li><code>0 &lt;= k &lt;= nums.length</code></li>
+</ul></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        
+<details class="hint-block">
+  <summary>Hint 1</summary>
+  <div class="hint-body"><p>One thing's for sure, we will only flip a zero if it extends an existing window of 1s. Otherwise, there's no point in doing it, right? Think Sliding Window!</p></div>
+</details>
+<details class="hint-block">
+  <summary>Hint 2</summary>
+  <div class="hint-body"><p>Since we know this problem can be solved using the sliding window construct, we might as well focus in that direction for hints. Basically, in a given window, we can never have > K zeros, right?</p></div>
+</details>
+<details class="hint-block">
+  <summary>Hint 3</summary>
+  <div class="hint-body"><p>We don't have a fixed size window in this case. The window size can grow and shrink depending upon the number of zeros we have (we don't actually have to flip the zeros here!).</p></div>
+</details>
+<details class="hint-block">
+  <summary>Hint 4</summary>
+  <div class="hint-body"><p>The way to shrink or expand a window would be based on the number of zeros that can still be flipped and so on.</p></div>
+</details>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/" target="_blank">Longest Substring with At Most K Distinct Characters</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/longest-repeating-character-replacement/" target="_blank">Longest Repeating Character Replacement</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/max-consecutive-ones/" target="_blank">Max Consecutive Ones</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/max-consecutive-ones-ii/" target="_blank">Max Consecutive Ones II</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/longest-subarray-of-1s-after-deleting-one-element/" target="_blank">Longest Subarray of 1&#x27;s After Deleting One Element</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/maximize-the-confusion-of-an-exam/" target="_blank">Maximize the Confusion of an Exam</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/minimum-recolors-to-get-k-consecutive-black-blocks/" target="_blank">Minimum Recolors to Get K Consecutive Black Blocks</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/longest-nice-subarray/" target="_blank">Longest Nice Subarray</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/maximum-sum-of-distinct-subarrays-with-length-k/" target="_blank">Maximum Sum of Distinct Subarrays With Length K</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/maximum-enemy-forts-that-can-be-captured/" target="_blank">Maximum Enemy Forts That Can Be Captured</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 1004. Max Consecutive Ones III
+Difficulty: Medium
+URL: https://leetcode.com/problems/max-consecutive-ones-iii/
+&quot;&quot;&quot;
+
+# Approach : Sliding Window
+
+class Solution:
+    def longestOnes(self, nums: List[int], k: int) -&gt; int:
+        &quot;&quot;&quot;
+        Sliding window with an explicit zero counter.
+
+        Expand the window rightward freely. When the number of zeros inside
+        the window exceeds k, shrink from the left until we&#x27;re back within
+        budget. Track the largest valid window seen.
+
+        Example (shrink never triggers — k is never exceeded):
+            nums = [1, 1, 0, 0, 1, 1, 1], k = 2
+            indices: 0  1  2  3  4  5  6
+
+            right=0: nums[0]=1, zeros=0, window=[1],             left=0, size=1, ans=1
+            right=1: nums[1]=1, zeros=0, window=[1,1],           left=0, size=2, ans=2
+            right=2: nums[2]=0, zeros=1, window=[1,1,0],         left=0, size=3, ans=3
+            right=3: nums[3]=0, zeros=2, window=[1,1,0,0],       left=0, size=4, ans=4
+                       zeros==k=2, still valid — no shrink needed
+            right=4: nums[4]=1, zeros=2, window=[1,1,0,0,1],     left=0, size=5, ans=5
+            right=5: nums[5]=1, zeros=2, window=[1,1,0,0,1,1],   left=0, size=6, ans=6
+            right=6: nums[6]=1, zeros=2, window=[1,1,0,0,1,1,1], left=0, size=7, ans=7
+            =&gt; 7
+
+        Example (shrink triggers):
+            nums = [1, 1, 0, 0, 0, 1, 1], k = 1
+            indices: 0  1  2  3  4  5  6
+
+            right=0: nums[0]=1, zeros=0, window=[1],      left=0, size=1, ans=1
+            right=1: nums[1]=1, zeros=0, window=[1,1],    left=0, size=2, ans=2
+            right=2: nums[2]=0, zeros=1, window=[1,1,0],  left=0, size=3, ans=3
+                       zeros==k=1, still valid
+            right=3: nums[3]=0, zeros=2 &gt; k=1 — SHRINK:
+                       nums[left=0]=1, not a zero, left-&gt;1
+                       nums[left=1]=1, not a zero, left-&gt;2
+                       nums[left=2]=0, zero! zeros-&gt;1,  left-&gt;3
+                     window=[0],                         left=3, size=1, ans=3
+            right=4: nums[4]=0, zeros=2 &gt; k=1 — SHRINK:
+                       nums[left=3]=0, zero! zeros-&gt;1,  left-&gt;4
+                     window=[0],                         left=4, size=1, ans=3
+            right=5: nums[5]=1, zeros=1, window=[0,1],   left=4, size=2, ans=3
+            right=6: nums[6]=1, zeros=1, window=[0,1,1], left=4, size=3, ans=3
+            =&gt; 3
+
+        TC: O(n) — each element is added and removed from the window at most once.
+        SC: O(1) — only a handful of integer variables.
+        &quot;&quot;&quot;
+        left = 0   # left boundary of the window; everything to the left has been discarded
+        zeros = 0  # number of zeros currently inside window [left, right]
+        ans = 0    # best window size seen so far
+
+        for right in range(len(nums)):
+            # expand window to include nums[right]
+            if nums[right] == 0:
+                zeros += 1
+
+            # window has too many zeros — shrink from the left until valid again (zeros &lt;= k)
+            # we use while (not if) because we may need to move left
+            # past several 1s before hitting the zero that fixes the count.
+            # in this problem the while body fires at most once per step (O(1)),
+            # but while is correct in general and makes the intent clear.
+            while zeros &gt; k:
+                if nums[left] == 0:
+                    zeros -= 1  # evicting a zero frees up one unit of budget
+                left += 1 # discard nums[left] from the window
+
+            # window [left, right] is valid; record its size
+            ans = max(ans, right - left + 1)
+
+        return ans
+
+# Another version using k itself
+
+class Solution:
+    def longestOnes(self, nums: List[int], k: int) -&gt; int:
+        &quot;&quot;&quot;
+        Sliding window where k itself serves as the remaining zero budget.
+
+        Core idea:
+            - right expands the window by 1 every iteration
+            - when a zero is encountered, k decreases by 1
+            - when k goes negative (budget exceeded), shrink from the left
+              until budget is restored
+            - when a zero is evicted from the left, k is restored by 1
+            - since while shrinks the window fully, we must track ans explicitly
+              to remember the best window seen so far
+
+        Window size behavior with while:
+            k &gt;= 0 (valid):    right+1, left stays  =&gt; size grows by 1
+            k &lt;  0 (exceeded): right+1, left moves until k&gt;=0 =&gt; size may shrink
+
+        Example:
+            nums = [1,1,0,0,0,1,1], k=1
+            indices: 0 1 2 3 4 5 6
+
+            with while:                               with if:
+            right=3: left moves 0-&gt;1-&gt;2-&gt;3, size=1    right=3: left moves 0-&gt;1, size=3
+            right=4: left moves 3-&gt;4,       size=1    right=4: left moves 1-&gt;2, size=3
+            right=5: left moves 4-&gt;4,       size=2    right=5: left moves 2-&gt;3, size=3
+            right=6: left stays,            size=3    right=6: left moves 3-&gt;4, size=3
+            ans tracked explicitly = 3 ✓              len(nums) - left = 7-4 = 3 ✓
+
+        TC: O(n) — right moves n steps, left moves at most n steps.
+        SC: O(1) — only two pointers and k.
+        &quot;&quot;&quot;
+        left = 0
+        ans = 0
+
+        for right in range(len(nums)):
+            # expand window: consume budget if nums[right] is a zero
+            if nums[right] == 0:
+                k -= 1
+
+            # --- WHILE VERSION (used here) ---
+            # shrinks window fully until budget is restored
+            # left moves as many times as needed in a single iteration
+            # window CAN shrink, so ans must be tracked explicitly
+            while k &lt; 0:
+                if nums[left] == 0:
+                    k += 1
+                left += 1
+
+            # --- IF VERSION (alternative) ---
+            # if k &lt; 0:
+            #     if nums[left] == 0:
+            #         k += 1
+            #     left += 1
+            #
+            # difference vs while:
+            #   while: left moves until k &gt;= 0  — window shrinks to smallest valid size
+            #   if:    left moves exactly once  — window stays same size or grows
+            #
+            # consequence:
+            #   while: window can shrink, so ans = max(ans, ...) is required
+            #   if:    window never shrinks, so ans is optional — len(nums)-left works
+
+            # required with while since window can shrink
+            # optional with if — could just return len(nums) - left
+            ans = max(ans, right - left + 1)
+
+        return ans  # if version: can return len(nums) - left instead
+
+
+# Variant 1 : Longest Vacation
+
+# Given an array of characters days where days[i] is either &#x27;W&#x27; (workday) or &#x27;H&#x27; (holiday), return the longest consecutive vacation you can take. You may use at most PTO paid time off days to convert workdays into vacation days.
+
+# Example 1:
+# Input:  days = [&#x27;W&#x27;,&#x27;H&#x27;,&#x27;H&#x27;,&#x27;W&#x27;,&#x27;W&#x27;,&#x27;H&#x27;,&#x27;W&#x27;], PTO = 2
+# Output: 5
+# Explanation: [&#x27;W&#x27;,H,H,W,W,H,&#x27;W&#x27;]
+#              Convert days[3] and days[4] from W to H.
+#              Longest vacation is days[1..5] = [H,H,H,H,H], length 5.
+
+# Example 2:
+# Input:  days = [&#x27;W&#x27;,&#x27;W&#x27;,&#x27;W&#x27;,&#x27;H&#x27;,&#x27;H&#x27;,&#x27;W&#x27;], PTO = 0
+# Output: 2
+# Explanation: No days can be converted.
+#              Longest existing vacation is days[3..4] = [H,H], length 2.
+
+# Constraints:
+# 1. 1 &lt;= days.length &lt;= 10^5
+# 2. days[i] is either &#x27;W&#x27; or &#x27;H&#x27;
+# 3. 0 &lt;= PTO &lt;= days.length
+
+# class Solution:
+#     def longestVacation_v1(self, days: List[str], PTO: int) -&gt; int:
+#         &quot;&quot;&quot;
+#         Approach 1 : Sliding window with explicit workday counter.
+
+#         Direct translation of LC 1004 v1 — only change is:
+#             nums[i] == 0  =&gt;  days[i] == &#x27;W&#x27;  (workday costs PTO)
+#             nums[i] == 1  =&gt;  days[i] == &#x27;H&#x27;  (holiday is free)
+#             k             =&gt;  PTO
+
+#         Example (shrink never triggers):
+#             days = [H,H,W,W,H,H,H], PTO=2
+#             indices: 0 1 2 3 4 5 6
+
+#             right=0: days[0]=H, work=0, window=[H],           left=0, size=1, max_vacation=1
+#             right=1: days[1]=H, work=0, window=[H,H],         left=0, size=2, max_vacation=2
+#             right=2: days[2]=W, work=1, window=[H,H,W],       left=0, size=3, max_vacation=3
+#             right=3: days[3]=W, work=2, window=[H,H,W,W],     left=0, size=4, max_vacation=4
+#                        work==PTO=2, still valid — no shrink needed
+#             right=4: days[4]=H, work=2, window=[H,H,W,W,H],   left=0, size=5, max_vacation=5
+#             right=5: days[5]=H, work=2, window=[H,H,W,W,H,H], left=0, size=6, max_vacation=6
+#             right=6: days[6]=H, work=2, window=[H,H,W,W,H,H,H],left=0,size=7, max_vacation=7
+#             =&gt; 7
+
+#         Example (shrink triggers):
+#             days = [W,H,H,W,W,H,W], PTO=2
+#             indices: 0 1 2 3 4 5 6
+
+#             right=0: days[0]=W, work=1, window=[W],         left=0, size=1, max_vacation=1
+#             right=1: days[1]=H, work=1, window=[W,H],       left=0, size=2, max_vacation=2
+#             right=2: days[2]=H, work=1, window=[W,H,H],     left=0, size=3, max_vacation=3
+#             right=3: days[3]=W, work=2, window=[W,H,H,W],   left=0, size=4, max_vacation=4
+#                        work==PTO=2, still valid — no shrink needed
+#             right=4: days[4]=W, work=3 &gt; PTO=2 — SHRINK:
+#                        days[left=0]=W, work-&gt;2, left-&gt;1
+#                      window=[H,H,W,W],           left=1, size=4, max_vacation=4
+#             right=5: days[5]=H, work=2, window=[H,H,W,W,H], left=1, size=5, max_vacation=5
+#             right=6: days[6]=W, work=3 &gt; PTO=2 — SHRINK:
+#                        days[left=1]=H, not W, left-&gt;2
+#                        days[left=2]=H, not W, left-&gt;3
+#                        days[left=3]=W, work-&gt;2, left-&gt;4
+#                      window=[W,H,W],              left=4, size=3, max_vacation=5
+#             =&gt; 5
+
+#         TC: O(n) — each element is added and removed from the window at most once.
+#         SC: O(1) — only a handful of integer variables.
+#         &quot;&quot;&quot;
+
+#         left = 0          # left boundary of window; moves forward when PTO is exceeded
+#         work = 0          # number of workdays currently inside window [left, right]
+#         max_vacation = 0  # longest consecutive vacation found so far
+
+#         for right in range(len(days)):
+#             # expand window: consume PTO if we just included a workday
+#             # CHANGE from LC 1004: nums[right] == 0  =&gt;  days[right] == &#x27;W&#x27;
+#             if days[right] == &#x27;W&#x27;:
+#                 work += 1
+
+#             # shrink from left until workdays in window &lt;= PTO
+#             # we use while (not if) because we may need to skip past
+#             # several holidays before hitting the workday that fixes the count
+#             # in this problem the while body fires at most once per step,
+#             # but while is correct in general and makes the intent clear
+#             while work &gt; PTO:
+#                 if days[left] == &#x27;W&#x27;:  # CHANGE from LC 1004: nums[left] == 0  =&gt;  days[left] == &#x27;W&#x27;
+#                     work -= 1          # evicting a workday restores one PTO unit
+#                 left += 1              # discard days[left] from the window
+
+#             max_vacation = max(max_vacation, right - left + 1)
+
+#         return max_vacation
+
+# class Solution:
+#     def longestVacation_v2(self, days: List[str], PTO: int) -&gt; int:
+#         &quot;&quot;&quot;
+#         Approach 2 : Sliding window where PTO itself serves as the remaining budget.
+
+#         Direct translation of LC 1004 v2 — only change is:
+#             nums[i] == 0  =&gt;  days[i] == &#x27;W&#x27;  (workday costs PTO)
+#             nums[i] == 1  =&gt;  days[i] == &#x27;H&#x27;  (holiday is free)
+#             k             =&gt;  PTO
+
+#         Window size behavior with while:
+#             PTO &gt;= 0 (valid):    right+1, left stays             =&gt; size grows by 1
+#             PTO &lt;  0 (exceeded): right+1, left moves until PTO&gt;=0 =&gt; size may shrink
+
+#         Example (shrink never triggers):
+#             days = [H,H,W,W,H,H,H], PTO=2
+#             indices: 0 1 2 3 4 5 6
+
+#             right=0: days[0]=H, PTO=2,       left=0, size=1
+#             right=1: days[1]=H, PTO=2,       left=0, size=2
+#             right=2: days[2]=W, PTO=1,       left=0, size=3
+#             right=3: days[3]=W, PTO=0,       left=0, size=4
+#             right=4: days[4]=H, PTO=0,       left=0, size=5
+#             right=5: days[5]=H, PTO=0,       left=0, size=6
+#             right=6: days[6]=H, PTO=0,       left=0, size=7
+#             =&gt; len(days) - left = 7 - 0 = 7
+
+#         Example (shrink triggers):
+#             days = [W,H,H,W,W,H,W], PTO=2
+#             indices: 0 1 2 3 4 5 6
+
+#             with while:                                        with if:
+#             right=4: left moves 0-&gt;1, PTO-&gt;0,    size=4       right=4: left moves 0-&gt;1, PTO-&gt;0,  size=4
+#             right=6: left moves 2-&gt;3-&gt;4, PTO-&gt;0, size=3       right=6: left moves 2-&gt;3, PTO stays-1, size=5
+#             max_vacation tracked explicitly = 5 ✓             len(days) - left = 7-2 = 5 ✓
+
+#         TC: O(n) — right moves n steps, left moves at most n steps.
+#         SC: O(1) — only two pointers and PTO.
+#         &quot;&quot;&quot;
+
+#         left = 0          # left boundary of window; moves forward when PTO is exceeded
+#         max_vacation = 0  # longest consecutive vacation found so far
+#                           # required with while since window can shrink
+#                           # optional with if — len(days)-left works too
+
+#         for right in range(len(days)):
+#             # expand window: consume PTO if we just included a workday
+#             # CHANGE from LC 1004: nums[right] == 0  =&gt;  days[right] == &#x27;W&#x27;
+#             if days[right] == &#x27;W&#x27;:
+#                 PTO -= 1
+
+#             # --- WHILE VERSION (used here) ---
+#             # shrinks window fully until PTO budget is restored
+#             # left moves as many times as needed in a single iteration
+#             # window CAN shrink, so max_vacation must be tracked explicitly
+#             while PTO &lt; 0:
+#                 if days[left] == &#x27;W&#x27;:  # CHANGE from LC 1004: nums[left] == 0  =&gt;  days[left] == &#x27;W&#x27;
+#                     PTO += 1           # evicting a workday restores one PTO unit
+#                 left += 1             # discard days[left] from the window
+
+#             # --- IF VERSION (alternative) ---
+#             # if PTO &lt; 0:
+#             #     if days[left] == &#x27;W&#x27;:
+#             #         PTO += 1
+#             #     left += 1
+#             #
+#             # difference vs while:
+#             #   while: left moves until PTO &gt;= 0  — window shrinks to smallest valid size
+#             #   if:    left moves exactly once    — window stays same size or grows
+#             #
+#             # consequence:
+#             #   while: window can shrink, so max_vacation = max(...) is required
+#             #   if:    window never shrinks, so max_vacation is optional — len(days)-left works
+
+#             # required with while since window can shrink
+#             # optional with if — could just return len(days) - left
+#             max_vacation = max(max_vacation, right - left + 1)
+
+#         return max_vacation  # if version: can return len(days) - left instead
+
+
+# Variant 2 
+
+# Given an array of booleans year where False represents a workday and True represents a paid holiday, return the longest consecutive vacation you can take. You may use at most PTO days off to convert workdays into vacation days.
+
+# Example 1:
+# Input:  year = [F,T,T,F,F,T,F], PTO = 2
+# Output: 5
+# Explanation: [F,T,T,F,F,T,F]
+#              Convert year[3] and year[4] from F to T.
+#              Longest vacation is year[1..5] = [T,T,T,T,T], length 5.
+
+# Example 2:
+# Input:  year = [F,F,F,T,T,F], PTO = 0
+# Output: 2
+# Explanation: No days can be converted.
+#              Longest existing vacation is year[3..4] = [T,T], length 2.
+
+# Constraints:
+# 1. 1 &lt;= year.length &lt;= 10^5
+# 2. year[i] is either False or True
+# 3. 0 &lt;= PTO &lt;= year.length
+
+# class Solution:
+#     def longestVacation_v1(self, year: List[bool], PTO: int) -&gt; int:
+#         &quot;&quot;&quot;
+#         Sliding window with explicit workday counter.
+#         Direct translation of LC 1004 v1 — only change is:
+#             nums[i] == 0  =&gt;  not year[i]  (False = workday, costs PTO)
+#             nums[i] == 1  =&gt;  year[i]      (True  = holiday, free)
+#             k             =&gt;  PTO
+
+#         Example (shrink never triggers):
+#             year = [T,T,F,F,T,T,T], PTO=2
+#             indices: 0 1 2 3 4 5 6
+
+#             right=0: year[0]=T, work=0, window=[T],           left=0, size=1, max_vacation=1
+#             right=1: year[1]=T, work=0, window=[T,T],         left=0, size=2, max_vacation=2
+#             right=2: year[2]=F, work=1, window=[T,T,F],       left=0, size=3, max_vacation=3
+#             right=3: year[3]=F, work=2, window=[T,T,F,F],     left=0, size=4, max_vacation=4
+#                        work==PTO=2, still valid — no shrink needed
+#             right=4: year[4]=T, work=2, window=[T,T,F,F,T],   left=0, size=5, max_vacation=5
+#             right=5: year[5]=T, work=2, window=[T,T,F,F,T,T], left=0, size=6, max_vacation=6
+#             right=6: year[6]=T, work=2, window=[T,T,F,F,T,T,T],left=0,size=7, max_vacation=7
+#             =&gt; 7
+
+#         Example (shrink triggers):
+#             year = [F,T,T,F,F,T,F], PTO=2
+#             indices: 0 1 2 3 4 5 6
+
+#             right=0: year[0]=F, work=1, window=[F],         left=0, size=1, max_vacation=1
+#             right=1: year[1]=T, work=1, window=[F,T],       left=0, size=2, max_vacation=2
+#             right=2: year[2]=T, work=1, window=[F,T,T],     left=0, size=3, max_vacation=3
+#             right=3: year[3]=F, work=2, window=[F,T,T,F],   left=0, size=4, max_vacation=4
+#                        work==PTO=2, still valid — no shrink needed
+#             right=4: year[4]=F, work=3 &gt; PTO=2 — SHRINK:
+#                        not year[left=0]=True, work-&gt;2, left-&gt;1
+#                      window=[T,T,F,F],           left=1, size=4, max_vacation=4
+#             right=5: year[5]=T, work=2, window=[T,T,F,F,T], left=1, size=5, max_vacation=5
+#             right=6: year[6]=F, work=3 &gt; PTO=2 — SHRINK:
+#                        not year[left=1]=False, not a workday, left-&gt;2
+#                        not year[left=2]=False, not a workday, left-&gt;3
+#                        not year[left=3]=True,  work-&gt;2, left-&gt;4
+#                      window=[F,T,F],              left=4, size=3, max_vacation=5
+#             =&gt; 5
+
+#         TC: O(n) — each element is added and removed from the window at most once.
+#         SC: O(1) — only a handful of integer variables.
+#         &quot;&quot;&quot;
+
+#         left = 0          # left boundary of window; moves forward when PTO is exceeded
+#         work = 0          # number of workdays currently inside window [left, right]
+#         max_vacation = 0  # longest consecutive vacation found so far
+
+#         for right in range(len(year)):
+#             # expand window: consume PTO if we just included a workday
+#             # CHANGE from LC 1004: nums[right] == 0  =&gt;  not year[right]
+#             if not year[right]:
+#                 work += 1
+
+#             # shrink from left until workdays in window &lt;= PTO
+#             # we use while (not if) because we may need to skip past
+#             # several holidays before hitting the workday that fixes the count
+#             # in this problem the while body fires at most once per step,
+#             # but while is correct in general and makes the intent clear
+#             while work &gt; PTO:
+#                 if not year[left]:  # CHANGE from LC 1004: nums[left] == 0  =&gt;  not year[left]
+#                     work -= 1       # evicting a workday restores one PTO unit
+#                 left += 1          # discard year[left] from the window
+
+#             max_vacation = max(max_vacation, right - left + 1)
+
+#         return max_vacation
+
+#     def longestVacation_v2(self, year: List[bool], PTO: int) -&gt; int:
+#         &quot;&quot;&quot;
+#         Sliding window where PTO itself serves as the remaining budget.
+#         Direct translation of LC 1004 v2 — only change is:
+#             nums[i] == 0  =&gt;  not year[i]  (False = workday, costs PTO)
+#             nums[i] == 1  =&gt;  year[i]      (True  = holiday, free)
+#             k             =&gt;  PTO
+
+#         Window size behavior with while:
+#             PTO &gt;= 0 (valid):    right+1, left stays             =&gt; size grows by 1
+#             PTO &lt;  0 (exceeded): right+1, left moves until PTO&gt;=0 =&gt; size may shrink
+
+#         Example (shrink never triggers):
+#             year = [T,T,F,F,T,T,T], PTO=2
+#             indices: 0 1 2 3 4 5 6
+
+#             right=0: year[0]=T, PTO=2,       left=0, size=1
+#             right=1: year[1]=T, PTO=2,       left=0, size=2
+#             right=2: year[2]=F, PTO=1,       left=0, size=3
+#             right=3: year[3]=F, PTO=0,       left=0, size=4
+#             right=4: year[4]=T, PTO=0,       left=0, size=5
+#             right=5: year[5]=T, PTO=0,       left=0, size=6
+#             right=6: year[6]=T, PTO=0,       left=0, size=7
+#             =&gt; len(year) - left = 7 - 0 = 7
+
+#         Example (shrink triggers):
+#             year = [F,T,T,F,F,T,F], PTO=2
+#             indices: 0 1 2 3 4 5 6
+
+#             with while:                                          with if:
+#             right=4: left moves 0-&gt;1, PTO-&gt;0,    size=4         right=4: left moves 0-&gt;1, PTO-&gt;0,    size=4
+#             right=6: left moves 2-&gt;3-&gt;4, PTO-&gt;0, size=3         right=6: left moves 2-&gt;3, PTO stays -1, size=5
+#             max_vacation tracked explicitly = 5 ✓               len(year) - left = 7-2 = 5 ✓
+
+#         TC: O(n) — right moves n steps, left moves at most n steps.
+#         SC: O(1) — only two pointers and PTO.
+#         &quot;&quot;&quot;
+
+#         left = 0          # left boundary of window; moves forward when PTO is exceeded
+#         max_vacation = 0  # longest consecutive vacation found so far
+#                           # required with while since window can shrink
+#                           # optional with if — len(year)-left works too
+
+#         for right in range(len(year)):
+#             # expand window: consume PTO if we just included a workday
+#             # CHANGE from LC 1004: nums[right] == 0  =&gt;  not year[right]
+#             if not year[right]:
+#                 PTO -= 1
+
+#             # --- WHILE VERSION (used here) ---
+#             # shrinks window fully until PTO budget is restored
+#             # left moves as many times as needed in a single iteration
+#             # window CAN shrink, so max_vacation must be tracked explicitly
+#             while PTO &lt; 0:
+#                 if not year[left]:  # CHANGE from LC 1004: nums[left] == 0  =&gt;  not year[left]
+#                     PTO += 1        # evicting a workday restores one PTO unit
+#                 left += 1          # discard year[left] from the window
+
+#             # --- IF VERSION (alternative) ---
+#             # if PTO &lt; 0:
+#             #     if not year[left]:
+#             #         PTO += 1
+#             #     left += 1
+#             #
+#             # difference vs while:
+#             #   while: left moves until PTO &gt;= 0  — window shrinks to smallest valid size
+#             #   if:    left moves exactly once    — window stays same size or grows
+#             #
+#             # consequence:
+#             #   while: window can shrink, so max_vacation = max(...) is required
+#             #   if:    window never shrinks, so max_vacation is optional — len(year)-left works
+
+#             # required with while since window can shrink
+#             # optional with if — could just return len(year) - left
+#             max_vacation = max(max_vacation, right - left + 1)
+
+#         return max_vacation  # if version: can return len(year) - left instead
+
+
+
+
+
+
+
+        </code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Hard/0987-Vertical-Order-Traversal-of-a-Binary-Tree/">&#8592; 987. Vertical Order Traversal of a Binary Tree</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Easy/1047-Remove-All-Adjacent-Duplicates-In-String/">1047. Remove All Adjacent Duplicates In String &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+</body>
+</html>
