@@ -234,11 +234,11 @@ URL: https://leetcode.com/problems/count-nodes-equal-to-average-of-subtree/
 &quot;&quot;&quot;
 
 # Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 
 
 # Brute Force Approach (conceptually):
@@ -327,75 +327,75 @@ class Solution:
 
 # Approach : BFS
 
-# from collections import deque
+from collections import deque
 
-# class Solution:
-#     def averageOfSubtree(self, root: TreeNode) -&gt; int:
-#         &quot;&quot;&quot;
-#         Count nodes where value equals the average of its subtree using BFS.
+class Solution:
+    def averageOfSubtree(self, root: TreeNode) -&gt; int:
+        &quot;&quot;&quot;
+        Count nodes where value equals the average of its subtree using BFS.
         
-#         Time Complexity: O(n²) - O(n) for BFS traversal × O(n) for subtree calculation
-#         Space Complexity: O(n) - queue can hold up to n/2 nodes at the last level
+        Time Complexity: O(n²) - O(n) for BFS traversal × O(n) for subtree calculation
+        Space Complexity: O(n) - queue can hold up to n/2 nodes at the last level
         
-#         Note: BFS is less efficient than DFS for this problem because we need
-#         subtree information, which requires additional traversals.
-#         &quot;&quot;&quot;
-#         if not root:
-#             return 0
+        Note: BFS is less efficient than DFS for this problem because we need
+        subtree information, which requires additional traversals.
+        &quot;&quot;&quot;
+        if not root:
+            return 0
         
-#         count = 0
-#         # BFS queue to process nodes level by level
-#         queue = deque([root])
+        count = 0
+        # BFS queue to process nodes level by level
+        queue = deque([root])
         
-#         def calculate_subtree(node):
-#             &quot;&quot;&quot;
-#             Helper function to calculate sum and count of a subtree.
-#             Uses its own BFS traversal starting from the given node.
+        def calculate_subtree(node):
+            &quot;&quot;&quot;
+            Helper function to calculate sum and count of a subtree.
+            Uses its own BFS traversal starting from the given node.
             
-#             Time Complexity: O(k) where k is the size of the subtree
-#             Space Complexity: O(k) for the queue
-#             &quot;&quot;&quot;
-#             if not node:
-#                 return 0, 0
+            Time Complexity: O(k) where k is the size of the subtree
+            Space Complexity: O(k) for the queue
+            &quot;&quot;&quot;
+            if not node:
+                return 0, 0
             
-#             total_sum = 0
-#             total_count = 0
+            total_sum = 0
+            total_count = 0
             
-#             # BFS to traverse entire subtree rooted at &#x27;node&#x27;
-#             sub_queue = deque([node])
+            # BFS to traverse entire subtree rooted at &#x27;node&#x27;
+            sub_queue = deque([node])
             
-#             while sub_queue:
-#                 curr = sub_queue.popleft()
-#                 total_sum += curr.val
-#                 total_count += 1
+            while sub_queue:
+                curr = sub_queue.popleft()
+                total_sum += curr.val
+                total_count += 1
                 
-#                 # Add children to queue
-#                 if curr.left:
-#                     sub_queue.append(curr.left)
-#                 if curr.right:
-#                     sub_queue.append(curr.right)
+                # Add children to queue
+                if curr.left:
+                    sub_queue.append(curr.left)
+                if curr.right:
+                    sub_queue.append(curr.right)
             
-#             return total_sum, total_count
+            return total_sum, total_count
         
-#         # Main BFS traversal - visit each node in the tree
-#         while queue:
-#             node = queue.popleft()
+        # Main BFS traversal - visit each node in the tree
+        while queue:
+            node = queue.popleft()
             
-#             # Calculate subtree sum and count for current node
-#             # This does a separate BFS traversal for each node&#x27;s subtree
-#             subtree_sum, subtree_count = calculate_subtree(node)
+            # Calculate subtree sum and count for current node
+            # This does a separate BFS traversal for each node&#x27;s subtree
+            subtree_sum, subtree_count = calculate_subtree(node)
             
-#             # Check if node value equals average of its subtree
-#             if node.val == subtree_sum // subtree_count:
-#                 count += 1
+            # Check if node value equals average of its subtree
+            if node.val == subtree_sum // subtree_count:
+                count += 1
             
-#             # Add children to main BFS queue
-#             if node.left:
-#                 queue.append(node.left)
-#             if node.right:
-#                 queue.append(node.right)
+            # Add children to main BFS queue
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
         
-#         return count
+        return count
 
 # Variant : Given the root of a binary tree, return a boolean whether the value of every node is equal to the average of the values in its subtree.
 
@@ -406,11 +406,11 @@ class Solution:
 # A subtree of root is a tree consisting of root and all of its descendants.
 
 # Example 1:
-#         4
-#        / \
-#       8   5
-#      / \   \
-#     0   1   6
+        4
+       / \
+      8   5
+     / \   \
+    0   1   6
 
 
 # Input: root = [4,8,5,0,1,null,6]
@@ -422,126 +422,126 @@ class Solution:
 
 # 0 ≤ Node.val ≤ 1000
 
-# class Solution:
-#     def isSubtreeAverage(self, root):
-#         &quot;&quot;&quot;
-#         Check if EVERY node&#x27;s value equals the average of its subtree.
-#         Uses sentinel value (-1, -1) to signal mismatch found in subtree.
+class Solution:
+    def isSubtreeAverage(self, root):
+        &quot;&quot;&quot;
+        Check if EVERY node&#x27;s value equals the average of its subtree.
+        Uses sentinel value (-1, -1) to signal mismatch found in subtree.
         
-#         Args:
-#             root: Root of the binary tree
+        Args:
+            root: Root of the binary tree
         
-#         Returns:
-#             bool: True if all nodes match their subtree averages, False otherwise
+        Returns:
+            bool: True if all nodes match their subtree averages, False otherwise
         
-#         Time Complexity: O(k) where k &lt;= n (stops at first mismatch)
-#         Space Complexity: O(h) where h is tree height (recursion stack)
-#         &quot;&quot;&quot;
+        Time Complexity: O(k) where k &lt;= n (stops at first mismatch)
+        Space Complexity: O(h) where h is tree height (recursion stack)
+        &quot;&quot;&quot;
         
-#         def dfs(node):
-#             &quot;&quot;&quot;
-#             Post-order DFS traversal with immediate early exit.
+        def dfs(node):
+            &quot;&quot;&quot;
+            Post-order DFS traversal with immediate early exit.
             
-#             Args:
-#                 node: Current tree node being processed
+            Args:
+                node: Current tree node being processed
             
-#             Returns:
-#                 tuple: (sum_of_subtree, count_of_nodes)
-#                 - If all nodes match: (actual_sum, actual_count)
-#                 - If any node doesn&#x27;t match: (-1, -1) as sentinel
+            Returns:
+                tuple: (sum_of_subtree, count_of_nodes)
+                - If all nodes match: (actual_sum, actual_count)
+                - If any node doesn&#x27;t match: (-1, -1) as sentinel
             
-#             Time Complexity: O(1) per node
-#             Space Complexity: O(h) for recursion stack
-#             &quot;&quot;&quot;
+            Time Complexity: O(1) per node
+            Space Complexity: O(h) for recursion stack
+            &quot;&quot;&quot;
 
-#             if node is None:
-#                 return 0, 0
+            if node is None:
+                return 0, 0
             
-#             leftSum, leftCount = dfs(node.left)
+            leftSum, leftCount = dfs(node.left)
             
-#             # IMMEDIATE EXIT: If left subtree had a mismatch, propagate failure upward
-#             # No need to process right subtree or current node - answer is already False
-#             if leftCount == -1:
-#                 return -1, -1
+            # IMMEDIATE EXIT: If left subtree had a mismatch, propagate failure upward
+            # No need to process right subtree or current node - answer is already False
+            if leftCount == -1:
+                return -1, -1
             
-#             rightSum, rightCount = dfs(node.right)
+            rightSum, rightCount = dfs(node.right)
             
-#             # IMMEDIATE EXIT: If right subtree had a mismatch, propagate failure upward
-#             # No need to check current node - answer is already False
-#             if rightCount == -1:
-#                 return -1, -1
+            # IMMEDIATE EXIT: If right subtree had a mismatch, propagate failure upward
+            # No need to check current node - answer is already False
+            if rightCount == -1:
+                return -1, -1
 
-#             # Equivalently
-#             # leftSum, leftCount = dfs(node.left)
-#             # rightSum, rightCount = dfs(node.right)
+            # Equivalently
+            # leftSum, leftCount = dfs(node.left)
+            # rightSum, rightCount = dfs(node.right)
 
-#             # if leftCount == -1 or rightCount == -1:
-#             #     return -1, -1
+            # if leftCount == -1 or rightCount == -1:
+            #     return -1, -1
 
-#             currSum = leftSum + rightSum + node.val
-#             currCount = leftCount + rightCount + 1
+            currSum = leftSum + rightSum + node.val
+            currCount = leftCount + rightCount + 1
             
-#             if node.val != currSum // currCount:
-#                 return -1, -1
+            if node.val != currSum // currCount:
+                return -1, -1
             
-#             return currSum, currCount
+            return currSum, currCount
         
-#         # We don&#x27;t need the sum, only need to check if result indicates success or failure
-#         _, result = dfs(root)
+        # We don&#x27;t need the sum, only need to check if result indicates success or failure
+        _, result = dfs(root)
         
-#         # If result is -1, at least one node didn&#x27;t match (return False)
-#         # If result is not -1, all nodes matched their averages (return True)
-#         return result != -1
+        # If result is -1, at least one node didn&#x27;t match (return False)
+        # If result is not -1, all nodes matched their averages (return True)
+        return result != -1
 
 
 # Boolean Flag Approach (Alternative)
 
-# class Solution:
-#     def isSubtreeAverage(self, root):
-#         &quot;&quot;&quot;
-#         Check if EVERY node&#x27;s value equals the average of its subtree.
-#         Uses boolean flag to track match status.
+class Solution:
+    def isSubtreeAverage(self, root):
+        &quot;&quot;&quot;
+        Check if EVERY node&#x27;s value equals the average of its subtree.
+        Uses boolean flag to track match status.
         
-#         Time Complexity: O(k) where k &lt;= n (stops at first mismatch)
-#         Space Complexity: O(h) where h is tree height (recursion stack)
-#         &quot;&quot;&quot;
-#         # Flag to track if all nodes match
-#         self.all_match = True
+        Time Complexity: O(k) where k &lt;= n (stops at first mismatch)
+        Space Complexity: O(h) where h is tree height (recursion stack)
+        &quot;&quot;&quot;
+        # Flag to track if all nodes match
+        self.all_match = True
         
-#         def dfs(node):
-#             &quot;&quot;&quot;
-#             Post-order DFS with immediate early exit using flag.
+        def dfs(node):
+            &quot;&quot;&quot;
+            Post-order DFS with immediate early exit using flag.
             
-#             Returns:
-#                 tuple: (sum, count) - returns (0, 0) when flag is False
-#             &quot;&quot;&quot;
-#             if node is None:
-#                 return 0, 0
+            Returns:
+                tuple: (sum, count) - returns (0, 0) when flag is False
+            &quot;&quot;&quot;
+            if node is None:
+                return 0, 0
 
-#             leftSum, leftCount = dfs(node.left)
+            leftSum, leftCount = dfs(node.left)
             
-#             # Early exit: if left subtree failed, stop processing
-#             if not self.all_match:
-#                 return 0, 0
+            # Early exit: if left subtree failed, stop processing
+            if not self.all_match:
+                return 0, 0
             
-#             rightSum, rightCount = dfs(node.right)
+            rightSum, rightCount = dfs(node.right)
             
-#             # Early exit: if right subtree failed, stop processing
-#             if not self.all_match:
-#                 return 0, 0
+            # Early exit: if right subtree failed, stop processing
+            if not self.all_match:
+                return 0, 0
             
-#             currSum = leftSum + rightSum + node.val
-#             currCount = leftCount + rightCount + 1
+            currSum = leftSum + rightSum + node.val
+            currCount = leftCount + rightCount + 1
 
-#             if node.val != currSum // currCount:
-#                 self.all_match = False
-#                 return 0, 0
+            if node.val != currSum // currCount:
+                self.all_match = False
+                return 0, 0
             
-#             return currSum, currCount
+            return currSum, currCount
         
-#         # Run DFS and return flag
-#         dfs(root)
-#         return self.all_match</code></pre>
+        # Run DFS and return flag
+        dfs(root)
+        return self.all_match</code></pre>
       </div>
     </div>
 
