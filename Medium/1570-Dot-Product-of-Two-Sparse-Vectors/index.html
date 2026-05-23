@@ -322,8 +322,8 @@ class SparseVector:
 
 # Say we have:
 
-# v1 = SparseVector([1, 0, 0, 2, 0])
-# v2 = SparseVector([0, 0, 3, 2, 0])
+v1 = SparseVector([1, 0, 0, 2, 0])
+v2 = SparseVector([0, 0, 3, 2, 0])
 
 # After __init__:
 # v1.length   = 5
@@ -333,19 +333,19 @@ class SparseVector:
 # v2.nonzeros = {2: 3, 3: 2}      # only indices with non-zero values
 
 # During dotProduct:
-# isinstance check  → pass
+isinstance check  → pass
 # length check      → 5 == 5, pass
 # zero check        → both have nonzeros, pass
 
-# len(v1.nonzeros) = 2
-# len(v2.nonzeros) = 2
+len(v1.nonzeros) = 2
+len(v2.nonzeros) = 2
 # 2 &lt;= 2 → smaller = v1.nonzeros, larger = v2.nonzeros
 
 # Iterate smaller:
-#   i=0, val=1 → 0 not in larger → skip
-#   i=3, val=2 → 3 in larger    → result += 2 * 2 = 4
+  i=0, val=1 → 0 not in larger → skip
+  i=3, val=2 → 3 in larger    → result += 2 * 2 = 4
 
-# return 4
+return 4
 # Verify manually:
 # [1, 0, 0, 2, 0]
 # [0, 0, 3, 2, 0]
@@ -454,8 +454,8 @@ class SparseVector:
 # Example: 
 
 # Say we have:
-# v1 = SparseVector([1, 0, 0, 2, 0])
-# v2 = SparseVector([0, 0, 3, 2, 0])
+v1 = SparseVector([1, 0, 0, 2, 0])
+v2 = SparseVector([0, 0, 3, 2, 0])
 
 # After __init__:
 # v1.length = 5
@@ -465,16 +465,16 @@ class SparseVector:
 # v2.pairs  = [(2, 3), (3, 2)]     # only non-zero elements as (index, value) tuples
 
 # During dotProduct:
-# isinstance check  → pass
+isinstance check  → pass
 # length check      → 5 == 5, pass
 # zero check        → both have pairs, pass
 
-# i=0, j=0  → idx1=0, idx2=2  → 0 &lt; 2 → self is behind, advance i
-# i=1, j=0  → idx1=3, idx2=2  → 3 &gt; 2 → vec is behind,  advance j
-# i=1, j=1  → idx1=3, idx2=3  → match → result += 2 * 2 = 4, advance both
-# i=2 → i exhausted, exit loop
+i=0, j=0  → idx1=0, idx2=2  → 0 &lt; 2 → self is behind, advance i
+i=1, j=0  → idx1=3, idx2=2  → 3 &gt; 2 → vec is behind,  advance j
+i=1, j=1  → idx1=3, idx2=3  → match → result += 2 * 2 = 4, advance both
+i=2 → i exhausted, exit loop
 
-# return 4
+return 4
 
 # When Index-Value pairs is better
 
@@ -615,8 +615,8 @@ class SparseVector:
 
 # Example :
 
-# v1 = SparseVector([1, 0, 0, 0, 0])       # sparse: only 1 non-zero
-# v2 = SparseVector([1, 2, 3, 4, 5])       # dense: all non-zero
+v1 = SparseVector([1, 0, 0, 0, 0])       # sparse: only 1 non-zero
+v2 = SparseVector([1, 2, 3, 4, 5])       # dense: all non-zero
 
 # After __init__:
 # v1.length = 5
@@ -626,22 +626,22 @@ class SparseVector:
 # v2.pairs  = [(0,1),(1,2),(2,3),(3,4),(4,5)]  # L2 = 5
 
 # During dotProduct:
-# isinstance check  → pass
+isinstance check  → pass
 # length check      → 5 == 5, pass
 # zero check        → both have pairs, pass
 
-# len(v1.pairs) = 1
-# len(v2.pairs) = 5
+len(v1.pairs) = 1
+len(v2.pairs) = 5
 # 1 &lt;= 5 → smaller = v1.pairs, larger = v2.pairs
 
 # Iteration 1: idx=0, val=1
-#   binary search for 0 in [(0,1),(1,2),(2,3),(3,4),(4,5)]
-#   mid=2 → 2 &gt; 0 → go left
-#   mid=0 → 0 == 0 → found at pos=0
-#   result += 1 * 1 = 1
+  binary search for 0 in [(0,1),(1,2),(2,3),(3,4),(4,5)]
+  mid=2 → 2 &gt; 0 → go left
+  mid=0 → 0 == 0 → found at pos=0
+  result += 1 * 1 = 1
 
 # no more elements in smaller, exit loop
-# return 1
+return 1
 
 # TC breakdown:
 # 1 iteration × log(5) ≈ 1 × 2 = 2 operations    → O(k log n) = O(1 * log 5)
@@ -656,13 +656,13 @@ class SparseVector:
 # Implement class CompressedVector:
 
 # CompressedVector(nums) — initializes the object with the sorted array nums
-# dotProduct(vec) — returns the dot product of this vector and vec
+dotProduct(vec) — returns the dot product of this vector and vec
 
 # Example:
 
 # Input:
-# nums1 = [1, 1, 1, 1, 3, 3, 5, 5, 5, 5, 5, 8]
-# nums2 = [1, 1, 3, 3, 3, 5, 7, 7, 7, 8, 8, 8]
+nums1 = [1, 1, 1, 1, 3, 3, 5, 5, 5, 5, 5, 8]
+nums2 = [1, 1, 3, 3, 3, 5, 7, 7, 7, 8, 8, 8]
 
 # Output: 281
 
@@ -672,7 +672,7 @@ class SparseVector:
 # pos:   0  1  2  3  4  5  6  7  8  9  10  11
 # nums1: 1  1  1  1  3  3  5  5  5  5   5   8
 # nums2: 1  1  3  3  3  5  7  7  7  8   8   8
-#        ↓  ↓  ↓  ↓  ↓  ↓  ↓  ↓  ↓  ↓   ↓   ↓
+       ↓  ↓  ↓  ↓  ↓  ↓  ↓  ↓  ↓  ↓   ↓   ↓
 # prod:  1  1  3  3  9 15 35 35 35 40  40  64
 
 # (1×1) + (1×1) + (1×3) + (1×3) + (3×3) + (3×5) +
@@ -821,43 +821,43 @@ class CompressedVector:
 
 # Example dry run:
 
-# nums1 = [1, 1, 3, 3, 3]
-# nums2 = [1, 2, 2, 3, 3]
+nums1 = [1, 1, 3, 3, 3]
+nums2 = [1, 2, 2, 3, 3]
 
 # After __init__:
 # v1.runs = [(1,0,2), (3,2,5)]        # R1 = 2
 # v2.runs = [(1,0,1), (2,1,3), (3,3,5)]  # R2 = 3
 
 # During dotProduct:
-# isinstance check  → pass
+isinstance check  → pass
 # length check      → 5 == 5, pass
 # zero check        → both have runs, pass
 
-# i=0, j=0 → run1=(1,0,2), run2=(1,0,1)
-#   overlap_start = max(0,0) = 0
-#   overlap_end   = min(2,1) = 1
-#   0 &lt; 1 → count=1 → result += 1*1*1 = 1
-#   end1=2 &gt; end2=1 → advance j
+i=0, j=0 → run1=(1,0,2), run2=(1,0,1)
+  overlap_start = max(0,0) = 0
+  overlap_end   = min(2,1) = 1
+  0 &lt; 1 → count=1 → result += 1*1*1 = 1
+  end1=2 &gt; end2=1 → advance j
 
-# i=0, j=1 → run1=(1,0,2), run2=(2,1,3)
-#   overlap_start = max(0,1) = 1
-#   overlap_end   = min(2,3) = 2
-#   1 &lt; 2 → count=1 → result += 1*2*1 = 3
-#   end1=2 &lt; end2=3 → advance i
+i=0, j=1 → run1=(1,0,2), run2=(2,1,3)
+  overlap_start = max(0,1) = 1
+  overlap_end   = min(2,3) = 2
+  1 &lt; 2 → count=1 → result += 1*2*1 = 3
+  end1=2 &lt; end2=3 → advance i
 
-# i=1, j=1 → run1=(3,2,5), run2=(2,1,3)
-#   overlap_start = max(2,1) = 2
-#   overlap_end   = min(5,3) = 3
-#   2 &lt; 3 → count=1 → result += 3*2*1 = 9
-#   end1=5 &gt; end2=3 → advance j
+i=1, j=1 → run1=(3,2,5), run2=(2,1,3)
+  overlap_start = max(2,1) = 2
+  overlap_end   = min(5,3) = 3
+  2 &lt; 3 → count=1 → result += 3*2*1 = 9
+  end1=5 &gt; end2=3 → advance j
 
-# i=1, j=2 → run1=(3,2,5), run2=(3,3,5)
-#   overlap_start = max(2,3) = 3
-#   overlap_end   = min(5,5) = 5
-#   3 &lt; 5 → count=2 → result += 3*3*2 = 27
-#   end1=5 == end2=5 → advance both
+i=1, j=2 → run1=(3,2,5), run2=(3,3,5)
+  overlap_start = max(2,3) = 3
+  overlap_end   = min(5,5) = 5
+  3 &lt; 5 → count=2 → result += 3*3*2 = 27
+  end1=5 == end2=5 → advance both
 
-# i=2, j=3 → both exhausted, exit loop
+i=2, j=3 → both exhausted, exit loop
 
 # Output : 27
 
