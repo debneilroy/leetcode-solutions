@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>528. Random Pick with Weight - LeetCode Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+
+:root {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --radius:    6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #e6db74; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy   { color: var(--easy);   background: rgba(44,187,93,0.15); }
+.badge-Medium { color: var(--medium); background: rgba(255,161,22,0.15); }
+.badge-Hard   { color: var(--hard);   background: rgba(239,71,67,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--surface2); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: #1e1e1e !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">528. Random Pick with Weight</span>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (0)</div>
+        <div class="tab" data-tab="similar">Similar (3)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">528. Random Pick with Weight</div>
+        <div class="prob-meta">
+          <span class="badge badge-Medium">Medium</span>
+          <span class="tag">Array</span><span class="tag">Math</span><span class="tag">Binary Search</span><span class="tag">Prefix Sum</span><span class="tag">Randomized</span>
+        </div>
+        <div class="prob-stats">700.7K / 1.4M (49.1%)</div>
+        <div class="prob-desc"><p>You are given a <strong>0-indexed</strong> array of positive integers <code>w</code> where <code>w[i]</code> describes the <strong>weight</strong> of the <code>ith</code> index.</p>
+<p>You need to implement the function <code>pickIndex()</code>, which <strong>randomly</strong> picks an index in the range <code>[0, w.length - 1]</code> (<strong>inclusive</strong>) and returns it. The <strong>probability</strong> of picking an index <code>i</code> is <code>w[i] / sum(w)</code>.</p>
+<ul>
+<li>For example, if <code>w = [1, 3]</code>, the probability of picking index <code>0</code> is <code>1 / (1 + 3) = 0.25</code> (i.e., <code>25%</code>), and the probability of picking index <code>1</code> is <code>3 / (1 + 3) = 0.75</code> (i.e., <code>75%</code>).</li>
+</ul>
+<p>Example 1:</p>
+<pre class="example-block"><code>
+<strong>Input</strong>
+[&quot;Solution&quot;,&quot;pickIndex&quot;]
+[[[1]],[]]
+<strong>Output</strong>
+[null,0]
+<p><strong>Explanation</strong><br>Solution solution = new Solution([1]);<br>solution.pickIndex(); // return 0. The only option is to return 0 since there is only one element in w.<br></code></pre></p>
+<p>Example 2:</p>
+<pre class="example-block"><code>
+<strong>Input</strong>
+[&quot;Solution&quot;,&quot;pickIndex&quot;,&quot;pickIndex&quot;,&quot;pickIndex&quot;,&quot;pickIndex&quot;,&quot;pickIndex&quot;]
+[[[1,3]],[],[],[],[],[]]
+<strong>Output</strong>
+[null,1,1,1,1,0]
+<p><strong>Explanation</strong><br>Solution solution = new Solution([1, 3]);<br>solution.pickIndex(); // return 1. It is returning the second element (index = 1) that has a probability of 3/4.<br>solution.pickIndex(); // return 1<br>solution.pickIndex(); // return 1<br>solution.pickIndex(); // return 1<br>solution.pickIndex(); // return 0. It is returning the first element (index = 0) that has a probability of 1/4.</p>
+<p>Since this is a randomization problem, multiple answers are allowed.<br>All of the following outputs can be considered correct:<br>[null,1,1,1,1,0]<br>[null,1,1,1,1,1]<br>[null,1,1,1,0,0]<br>[null,1,1,1,0,1]<br>[null,1,0,1,0,0]<br>......<br>and so on.<br></code></pre></p>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= w.length &lt;= 104</code></li>
+</ul>
+	
+<ul>
+<li><code>1 &lt;= w[i] &lt;= 105</code></li>
+</ul>
+	
+<ul>
+<li><code>pickIndex</code> will be called at most <code>104</code> times.</li>
+</ul></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        <p class="empty-msg">No hints for this problem.</p>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/random-pick-index/" target="_blank">Random Pick Index</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/random-pick-with-blacklist/" target="_blank">Random Pick with Blacklist</a>
+  <span style="color:#ef4743; font-size:12px;">Hard</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/random-point-in-non-overlapping-rectangles/" target="_blank">Random Point in Non-overlapping Rectangles</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 528. Random Pick with Weight
+Difficulty: Medium
+URL: https://leetcode.com/problems/random-pick-with-weight/
+&quot;&quot;&quot;
+
+# Brute Force Approach
+
+# Idea:
+# Expand the array so each index i appears w[i] times, then pick randomly from it.
+# Each position in the expanded list has an equal chance of being chosen, so the probability of picking index i becomes proportional to w[i] / Σw[i].
+
+# Example:
+# For w = [1, 3, 2] → [0, 1, 1, 1, 2, 2],
+# randomly choosing an element gives the correct probabilities:
+# P(0)=1/6, P(1)=3/6, P(2)=2/6.
+
+# Trade-offs:
+# ✅ Very easy to implement
+# ❌ Extremely inefficient when weights are large — uses too much memory and preprocessing time.
+
+
+class Solution:
+    &quot;&quot;&quot;
+    BRUTE FORCE APPROACH - Expand weights into individual slots
+    
+    Approach:
+    Create an expanded array where each index appears exactly weight[i] times.
+    Then randomly pick one element from this expanded array.
+    
+    Example: w = [1, 3, 2]
+    choices = [0, 1, 1, 1, 2, 2]
+              ^  ^  ^  ^  ^  ^
+            idx0  idx1 (3x)  idx2 (2x)
+    
+    Pros:
+    - Simple and intuitive
+    - O(1) pick time
+    
+    Cons:
+    - Huge memory usage if weights are large
+    - Slow initialization for large weights
+    - Fails for w = [1, 1000000] (creates 1,000,001 slots!)
+    &quot;&quot;&quot;
+    
+    def __init__(self, w: List[int]):
+        &quot;&quot;&quot;
+        Expand each index into individual slots based on its weight.
+        
+        Time Complexity: O(sum of weights)
+        - Outer loop: O(n) iterations where n = len(w)
+        - Inner loop for index i: O(w[i]) iterations
+        - Total: O(w[0] + w[1] + ... + w[n-1]) = O(sum of all weights)
+        - Example: w = [1, 3, 2] → O(1+3+2) = O(6)
+        - Worst case: w = [10^5, 10^5, ..., 10^5] → O(n * 10^5)
+        
+        Space Complexity: O(sum of weights)
+        - choices array stores sum of all weights elements
+        - Each element is an integer (index)
+        - Example: w = [1, 3, 2] → choices has 6 elements
+        - Worst case: w = [10^5, 10^5] → 200,000 integers stored
+        &quot;&quot;&quot;
+        self.choices = []  # Expanded array: O(sum) space
+        
+        for i, weight in enumerate(w):  # O(n) outer iterations
+            # Append index i &#x27;weight&#x27; times to create weighted slots
+            for _ in range(weight):  # O(weight[i]) inner iterations
+                self.choices.append(i)  # O(1) amortized per append
+
+    def pickIndex(self) -&gt; int:
+        &quot;&quot;&quot;
+        Pick a random index from the expanded choices array.
+        
+        Time Complexity: O(1)
+        - random.choice() picks one element uniformly in constant time
+        - Internally uses random.randint(0, len-1) which is O(1)
+        
+        Space Complexity: O(1)
+        - No additional space used
+        - Only returns one integer
+
+         # random.choice() - most Pythonic and efficient for random element selection
+        # Alternatives: randint(0, len(self.choices)-1), randrange(len(self.choices)), but choice() is clearest
+        &quot;&quot;&quot;
+        # Pick one random element uniformly from the expanded list
+        # Each index appears proportional to its weight, giving correct probabilities
+        return random.choice(self.choices)  # O(1)
+
+# Approach : Prefix Sums + Binary Search
+
+class Solution:
+    &quot;&quot;&quot;
+    OPTIMIZED APPROACH - Prefix Sums + Binary Search
+    
+    Problem: Given weights, randomly pick indices proportional to their weights.
+    
+    Approach:
+    Instead of creating an array with repeated indices (brute force), we use
+    prefix sums to create cumulative weight ranges, then use binary search
+    to efficiently find which range a random number falls into.
+    
+    Key Insight:
+    - Map each index to a range proportional to its weight
+    - Use prefix sums to define cumulative boundaries
+    - Binary search to find which range contains our random target
+    
+    Example: w = [1, 3, 2]
+    - prefix_sums = [1, 4, 6]
+    - total = 6
+    
+    Number line mapping:
+    0         1         2    3    4         5         6
+    |---------|---------|----|----|---------|---------|
+    [ Index 0 )[      Index 1      )[    Index 2      )
+      [0, 1)          [1, 4)              [4, 6)
+    
+    When target = 2.5:
+    - We find the first prefix_sum where target &lt; prefix_sum
+    - 2.5 &lt; 1? NO
+    - 2.5 &lt; 4? YES → return index 1 ✓
+    
+    Probabilities:
+    - Index 0: range [0, 1) → length 1 → prob 1/6
+    - Index 1: range [1, 4) → length 3 → prob 3/6
+    - Index 2: range [4, 6) → length 2 → prob 2/6
+    
+    Complexity:
+    - Init: O(n) time, O(n) space
+    - Pick: O(log n) time, O(1) space
+    
+    Advantages over Brute Force:
+    ✅ Works with large weights (w = [1, 1000000] uses only 2 elements)
+    ✅ Fast initialization O(n) vs O(sum of weights)
+    ✅ Reasonable space O(n) vs O(sum of weights)
+    ❌ Slightly slower pick O(log n) vs O(1), but negligible
+    &quot;&quot;&quot;
+
+    def __init__(self, w: List[int]):
+        &quot;&quot;&quot;
+        Initialize with weights array and build prefix sums.
+        
+        Args:
+            w: List of positive integers representing weights
+        
+        Raises:
+            ValueError: If w is empty or contains non-positive weights
+        
+        Time Complexity: O(n) where n = len(w)
+        - Single pass through weights array to build prefix sums
+        
+        Space Complexity: O(n)
+        - Store prefix_sums array of size n
+        &quot;&quot;&quot;
+        # Edge case: empty weights array
+        if not w:
+            raise ValueError(&quot;Weights array cannot be empty&quot;)
+        
+        # Edge case: check for non-positive weights
+        if any(weight &lt;= 0 for weight in w):
+            raise ValueError(&quot;All weights must be positive integers&quot;)
+        
+        self.prefix_sums = []  # Stores cumulative sums
+        prefix_sum = 0
+        
+        # Build prefix sum array
+        # Example: w = [1, 3, 2] → prefix_sums = [1, 4, 6]
+        for weight in w:
+            prefix_sum += weight
+            self.prefix_sums.append(prefix_sum)
+        
+        self.total_sum = prefix_sum  # Total sum of all weights
+        
+
+    def pickIndex(self) -&gt; int:
+        &quot;&quot;&quot;
+        Pick a random index based on weights using binary search.
+        
+        Returns:
+            int: Random index in range [0, len(weights)-1]
+        
+        How it works:
+        1. Generate random target in [0, total_sum)
+        2. Binary search to find smallest index i where target &lt; prefix_sums[i]
+        3. This gives us the index whose range contains the target
+        
+        Why &quot;target &lt; prefix_sum&quot; (not &lt;=)?
+        - Each range is [prefix_sums[i-1], prefix_sums[i]) - left-inclusive, right-exclusive
+        - We want the FIRST index where target hasn&#x27;t exceeded the boundary yet
+        - Example: target=1.0 with prefix_sums=[1,4,6]
+          * 1.0 &lt; 1? NO (boundary belongs to next range)
+          * 1.0 &lt; 4? YES → return index 1 ✓
+        
+        Example walkthrough with prefix_sums = [1, 4, 6]:
+        - target = 0.5: First i where 0.5 &lt; prefix_sums[i] → 0.5 &lt; 1 → index 0
+        - target = 1.0: First i where 1.0 &lt; prefix_sums[i] → 1.0 &lt; 4 → index 1
+        - target = 2.5: First i where 2.5 &lt; prefix_sums[i] → 2.5 &lt; 4 → index 1
+        - target = 5.0: First i where 5.0 &lt; prefix_sums[i] → 5.0 &lt; 6 → index 2
+        
+        Time Complexity: O(log n)
+        - Binary search through prefix_sums array
+        
+        Space Complexity: O(1)
+        - Only use constant extra space for variables
+        &quot;&quot;&quot;
+        # Edge case: single element (should never happen if init validated, but defensive)
+        if len(self.prefix_sums) == 1:
+            return 0
+        
+        # Generate random target in range [0, total_sum)
+        # random() * total_sum → continuous floats in [0, total_sum)
+        #   Example: total_sum=6 → can generate 0.0, 0.5, 2.7, 5.999... (use prefix_sum &gt; target)
+        # Alternative 1: random.randint(1, total_sum) → discrete integers [1, total_sum]
+        #   Example: total_sum=6 → can generate 1, 2, 3, 4, 5, 6 (use prefix_sum &gt;= target)
+        # Alternative 2: random.randint(0, total_sum - 1) → discrete integers [0, total_sum-1]
+        #   Example: total_sum=6 → can generate 0, 1, 2, 3, 4, 5 (use prefix_sum &gt; target)
+        target = self.total_sum * random.random()
+        
+        # Alternative: Linear Search - O(n) time, simpler but slower
+        # Find first index where target &lt; prefix_sum
+        # for i, prefix_sum in enumerate(self.prefix_sums):
+        #     if target &lt; prefix_sum:
+        #         return i
+        
+        # Binary search: find smallest index i where target &lt; prefix_sums[i]
+        low, high = 0, len(self.prefix_sums) # Search range [low, high) - low inclusive, high exclusive
+        
+        while low &lt; high:
+            mid = low + (high - low) // 2 # Equivalent to (low + high) // 2, avoids overflow in other languages
+            
+            if target &lt; self.prefix_sums[mid]:
+                # Target is less than this boundary, could be our answer
+                # But search left to find the smallest such index
+                high = mid
+            else:
+                # target &gt;= self.prefix_sums[mid]
+                # Target has exceeded this boundary, search right
+                low = mid + 1
+        
+        # Return low (same as high since low == high when loop exits)
+        # low points to the smallest index where target &lt; prefix_sums[low] (equivalently: target &lt; prefix_sums[high])
+        return low
+
+# Overall Complexity for k calls:
+# Time: O(n + k*log n) - O(n) init + O(k*log n) for k pickIndex calls
+# Space: O(n) - prefix_sums array
+
+# Your Solution object will be instantiated and called as such:
+# obj = Solution(w)
+# param_1 = obj.pickIndex()
+
+
+# Variant : Random Pick with Weight - Return City Name
+
+# You are conducting an A/B test and need to randomly pick a person from a user base spread across multiple cities. Each city has a known population, and you need to ensure that the probability of choosing a user from each city is proportional to the city&#x27;s population. 
+
+# You are given a 0-indexed array of pairs city_populations, where each pair consists of a string representing the name of the i-th city, and an integer representing the population of the i-th city (in millions, but treat these values as if in ones for computation purposes)
+
+# You need to implement the function pickIndex(), which randomly picks a person and returns the name of the city the person is in.
+
+# Example : 
+
+# Input:
+# [&quot;Solution&quot;, &quot;pickIndex&quot;, &quot;pickIndex&quot;]
+# [[[&quot;Seattle&quot;, 500], [&quot;New York&quot;, 900], [&quot;Los Angeles&quot;, 400]], [], []]
+
+# Output:
+# [null, &quot;New York&quot;, &quot;Los Angeles&quot;]
+
+# Explanation:
+# Solution solution = new Solution([[&quot;Seattle&quot;, 500], [&quot;New York&quot;, 900], [&quot;Los Angeles&quot;, 400]]);
+# solution.pickIndex(); // returns &quot;New York&quot; with probability 900/(500+900+400)
+# solution.pickIndex(); // returns &quot;Los Angeles&quot; with probability 400/(500+900+400)
+
+# class Solution:
+#     &quot;&quot;&quot;
+#     Random Pick with Weight - Return City Name Variant
+    
+#     Approach:
+#     - Build prefix sums using populations
+#     - Sample a random target in [0, total)
+#     - Binary search to find the corresponding city
+    
+#     Time Complexity:
+#     - __init__: O(n)
+#     - pickIndex: O(log n)
+    
+#     Space Complexity: O(n)
+#     &quot;&quot;&quot;
+    
+#     def __init__(self, city_populations: List[Tuple[str, int]]):
+#         &quot;&quot;&quot;
+#         Args:
+#             city_populations: List of (city_name, population) tuples
+#             Example: [(&quot;Seattle&quot;, 500), (&quot;New York&quot;, 900), (&quot;Los Angeles&quot;, 400)]
+        
+#         Raises:
+#             ValueError: If input is invalid or contains duplicate city names
+        
+#         Time: O(n), Space: O(n)
+#         &quot;&quot;&quot;
+#         # --- Base Case 1: Empty input ---
+#         if not city_populations:
+#             raise ValueError(&quot;city_populations cannot be empty&quot;)
+        
+#         self.city_names = []
+#         self.prefix_sums = []  # Cumulative populations
+#         total = 0
+#         seen_cities = set()  # Track duplicate city names
+        
+#         # Alternative Option 2: Merge duplicates by combining populations
+#         # Instead of rejecting duplicates, we can merge them:
+#         # city_dict = {}  # city_name → total_population
+#         # for item in city_populations:
+#         #     if not isinstance(item, (list, tuple)) or len(item) != 2:
+#         #         raise ValueError(&quot;Each entry must be (city_name, population)&quot;)
+#         #     city_name, population = item
+#         #     if not isinstance(city_name, str):
+#         #         raise ValueError(&quot;City name must be a string&quot;)
+#         #     if not isinstance(population, int) or population &lt;= 0:
+#         #         raise ValueError(&quot;Population must be a positive integer&quot;)
+#         #     # Merge: if city exists, add to its population
+#         #     if city_name in city_dict:
+#         #         city_dict[city_name] += population
+#         #     else:
+#         #         city_dict[city_name] = population
+#         # 
+#         # # Build prefix sums from merged data
+#         # total = 0
+#         # for city_name, population in city_dict.items():
+#         #     total += population
+#         #     self.city_names.append(city_name)
+#         #     self.prefix_sums.append(total)
+#         # self.total = total
+        
+#         for item in city_populations:
+#             # --- Base Case 2: Validate structure ---
+#             if not isinstance(item, (list, tuple)) or len(item) != 2:
+#                 raise ValueError(&quot;Each entry must be (city_name, population)&quot;)
+            
+#             city_name, population = item
+            
+#             # --- Base Case 3: Validate city name type ---
+#             if not isinstance(city_name, str):
+#                 raise ValueError(&quot;City name must be a string&quot;)
+            
+#             # --- Base Case 4: Validate population ---
+#             if not isinstance(population, int) or population &lt;= 0:
+#                 raise ValueError(&quot;Population must be a positive integer&quot;)
+            
+#             # --- Base Case 5: Check for duplicate city names ---
+#             # Option 1 (Current): Reject duplicates
+#             if city_name in seen_cities:
+#                 raise ValueError(f&quot;Duplicate city name found: &#x27;{city_name}&#x27;&quot;)
+#             seen_cities.add(city_name)
+            
+#             # Build prefix sums
+#             total += population
+#             self.city_names.append(city_name)
+#             self.prefix_sums.append(total)
+        
+#         self.total = total  # Guaranteed &gt; 0 due to validation
+    
+#     def pickIndex(self) -&gt; str:
+#         &quot;&quot;&quot;
+#         Randomly pick a city based on population weights.
+        
+#         Returns:
+#             str: Random city name sampled proportional to population
+        
+#         Steps:
+#         1. Generate target in [0, total)
+#         2. Binary search for first index i where target &lt; prefix_sums[i]
+#         3. Return city_names[i]
+        
+#         Time: O(log n), Space: O(1)
+#         &quot;&quot;&quot;
+#         # Generate random target in [0, total)
+#         # random() * total → continuous floats in [0, total)
+#         # Example: total=1800 → can generate 0.0, 500.5, 1250.3, 1799.9...
+#         target = self.total * random.random()
+        
+#         # Alternative: Linear Search - O(n) time, simpler but slower
+#         # Find first index where target &lt; prefix_sum
+#         # for i, prefix_sum in enumerate(self.prefix_sums):
+#         #     if target &lt; prefix_sum:
+#         #         return self.city_names[i]
+        
+#         # Binary search: find smallest index i where target &lt; prefix_sums[i]
+#         left, right = 0, len(self.prefix_sums)  # Search range [left, right)
+        
+#         while left &lt; right:
+#             mid = left + (right - left) // 2  # Equivalent to (left + right) // 2
+            
+#             if target &lt; self.prefix_sums[mid]:
+#                 # Target is less than this boundary, search left
+#                 right = mid
+#             else:
+#                 # target &gt;= prefix_sums[mid], search right
+#                 left = mid + 1
+        
+#         # Return CITY NAME at found index (instead of index itself)
+#         # left == right at loop exit, both point to the answer
+#         return self.city_names[left]
+</code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Hard/0489-Robot-Room-Cleaner/">&#8592; 489. Robot Room Cleaner</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Easy/0543-Diameter-of-Binary-Tree/">543. Diameter of Binary Tree &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+</body>
+</html>
