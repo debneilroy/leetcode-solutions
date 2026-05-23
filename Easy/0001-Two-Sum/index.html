@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1. Two Sum - LeetCode Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+
+:root {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --radius:    6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #e6db74; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy   { color: var(--easy);   background: rgba(44,187,93,0.15); }
+.badge-Medium { color: var(--medium); background: rgba(255,161,22,0.15); }
+.badge-Hard   { color: var(--hard);   background: rgba(239,71,67,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--surface2); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: #1e1e1e !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">1. Two Sum</span>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (3)</div>
+        <div class="tab" data-tab="similar">Similar (21)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">1. Two Sum</div>
+        <div class="prob-meta">
+          <span class="badge badge-Easy">Easy</span>
+          <span class="tag">Array</span><span class="tag">Hash Table</span>
+        </div>
+        <div class="prob-stats">21.8M / 37.9M (57.5%)</div>
+        <div class="prob-desc"><p>Given an array of integers <code>nums</code> and an integer <code>target</code>, return <em>indices of the two numbers such that they add up to <code>target</code></em>.</p>
+<p>You may assume that each input would have <strong><em>exactly</em> one solution</strong>, and you may not use the <em>same</em> element twice.</p>
+<p>You can return the answer in any order.</p>
+<p>Example 1:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> nums = [2,7,11,15], target = 9
+<strong>Output:</strong> [0,1]
+<strong>Explanation:</strong> Because nums[0] + nums[1] == 9, we return [0, 1].
+</code></pre>
+<p>Example 2:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> nums = [3,2,4], target = 6
+<strong>Output:</strong> [1,2]
+</code></pre>
+<p>Example 3:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> nums = [3,3], target = 6
+<strong>Output:</strong> [0,1]
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li><code>2 &lt;= nums.length &lt;= 104</code></li>
+</ul>
+	
+<ul>
+<li><code>-109 &lt;= nums[i] &lt;= 109</code></li>
+</ul>
+	
+<ul>
+<li><code>-109 &lt;= target &lt;= 109</code></li>
+</ul>
+	
+<ul>
+<li><strong>Only one valid answer exists.</strong></li>
+</ul>
+<p><strong>Follow-up: </strong>Can you come up with an algorithm that is less than <code>O(n2)</code> time complexity?</p></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        
+<details class="hint-block">
+  <summary>Hint 1</summary>
+  <div class="hint-body"><p>A really brute force way would be to search for all possible pairs of numbers but that would be too slow. Again, it's best to try out brute force solutions just for completeness. It is from these brute force solutions that you can come up with optimizations.</p></div>
+</details>
+<details class="hint-block">
+  <summary>Hint 2</summary>
+  <div class="hint-body"><p>So, if we fix one of the numbers, say <code>x</code>, we have to scan the entire array to find the next number <code>y</code> which is <code>value - x</code> where value is the input parameter. Can we change our array somehow so that this search becomes faster?</p></div>
+</details>
+<details class="hint-block">
+  <summary>Hint 3</summary>
+  <div class="hint-body"><p>The second train of thought is, without changing the array, can we use additional space somehow? Like maybe a hash map to speed up the search?</p></div>
+</details>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/3sum/" target="_blank">3Sum</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/4sum/" target="_blank">4Sum</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/" target="_blank">Two Sum II - Input Array Is Sorted</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/two-sum-iii-data-structure-design/" target="_blank">Two Sum III - Data structure design</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/subarray-sum-equals-k/" target="_blank">Subarray Sum Equals K</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/two-sum-iv-input-is-a-bst/" target="_blank">Two Sum IV - Input is a BST</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/two-sum-less-than-k/" target="_blank">Two Sum Less Than K</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/max-number-of-k-sum-pairs/" target="_blank">Max Number of K-Sum Pairs</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/count-good-meals/" target="_blank">Count Good Meals</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/count-number-of-pairs-with-absolute-difference-k/" target="_blank">Count Number of Pairs With Absolute Difference K</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/number-of-pairs-of-strings-with-concatenation-equal-to-target/" target="_blank">Number of Pairs of Strings With Concatenation Equal to Target</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/find-all-k-distant-indices-in-an-array/" target="_blank">Find All K-Distant Indices in an Array</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/first-letter-to-appear-twice/" target="_blank">First Letter to Appear Twice</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/number-of-excellent-pairs/" target="_blank">Number of Excellent Pairs</a>
+  <span style="color:#ef4743; font-size:12px;">Hard</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/number-of-arithmetic-triplets/" target="_blank">Number of Arithmetic Triplets</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/node-with-highest-edge-score/" target="_blank">Node With Highest Edge Score</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/check-distances-between-same-letters/" target="_blank">Check Distances Between Same Letters</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/find-subarrays-with-equal-sum/" target="_blank">Find Subarrays With Equal Sum</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/largest-positive-integer-that-exists-with-its-negative/" target="_blank">Largest Positive Integer That Exists With Its Negative</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/number-of-distinct-averages/" target="_blank">Number of Distinct Averages</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/count-pairs-whose-sum-is-less-than-target/" target="_blank">Count Pairs Whose Sum is Less than Target</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 1. Two Sum
+Difficulty: Easy
+URL: https://leetcode.com/problems/two-sum/
+&quot;&quot;&quot;
+
+# Brute Force : Use two nested loops to check every possible pair. The outer loop iterates through each element, and the inner loop checks all subsequent elements. If any pair sums to the target, return their indices. 
+
+# class Solution:
+#     &quot;&quot;&quot;
+#     Time: O(n²) - checking all pairs
+#     Space: O(1) - no extra data structures
+#     &quot;&quot;&quot;
+#     def twoSum(self, nums, target):
+#         # Check every possible pair of numbers
+#         for i in range(len(nums)):
+#             for j in range(i + 1, len(nums)):
+#                 if nums[i] + nums[j] == target:
+#                     return [i, j]
+        
+#         return []  # No solution found
+
+
+
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -&gt; List[int]:
+        &quot;&quot;&quot;
+        Find two numbers in the array that sum to the target value.
+        
+        Time Complexity: O(n)
+        - Single pass through the array
+        - Hash map lookup and insertion are O(1) operations
+        
+        Space Complexity: O(n)
+        - Hash map stores at most n elements in worst case
+        &quot;&quot;&quot;
+        # Dictionary to store number and its index
+        seen = {}
+        
+        for i, num in enumerate(nums):
+            # Calculate what number we need to reach the target
+            complement = target - num
+            
+            # If we&#x27;ve seen the complement before, we found our answer
+            if complement in seen:
+                return [seen[complement], i]
+            
+            # Store the current number and its index
+            seen[num] = i
+        
+        return []  # No solution found (though problem guarantees one exists)
+
+
+# Variant 1 : Return True if there exists a pair of numbers that add up to target, else return False.
+
+# class Solution:
+#     def twoSum(self, nums, target):
+#         &quot;&quot;&quot;
+#         Check if there exists a pair of numbers that sum to the target.
+        
+#         Time Complexity: O(n)
+#         - Single pass through the array
+#         - Hash set lookup and insertion are O(1) operations
+        
+#         Space Complexity: O(n)
+#         - Hash set stores at most n elements in worst case
+#         &quot;&quot;&quot;
+#         seen = set()
+        
+#         for num in nums:
+#             complement = target - num
+            
+#             # If we&#x27;ve seen the complement, a valid pair exists
+#             if complement in seen:
+#                 return True
+            
+#             # Add current number to the set
+#             seen.add(num)
+        
+#         return False
+
+
+# Variant 2 : Given an array of domino pairs dominoes where each domino is [a, b], and an integer target, return the number of unique domino pairs [a1, a2] and [b1, b2] where:
+
+# a1 + b1 = target (first elements sum to target)
+# a2 + b2 = target (second elements sum to target)
+# You cannot use the same domino with itself
+
+# Note: Numbers are limited to digits 0-9.
+
+# Example 1:
+# Input: dominoes = [[1,2],[9,8],[3,4],[7,6],[1,2]], target = 10
+# Output: 3
+
+# Valid pairs:
+# 1. [1,2] and [9,8]: 1+9=10, 2+8=10 ✓
+# 2. [3,4] and [7,6]: 3+7=10, 4+6=10 ✓
+# 3. [1,2] (index 0) and [9,8]: already counted
+# 4. [1,2] (index 4) and [9,8]: 1+9=10, 2+8=10 ✓
+
+# Total: 3 pairs
+
+# Example 2:
+# Input: dominoes = [[1,2],[3,4],[5,6]], target = 10
+# Output: 0
+
+# Explanation:
+# - [1,2] needs [9,8] (not present)
+# - [3,4] needs [7,6] (not present)
+# - [5,6] needs [5,4] (not present)
+# No valid pairs exist.
+
+# Example 3:
+# Input: dominoes = [[5,5],[5,5],[5,5]], target = 10
+# Output: 3
+
+# Explanation:
+# All dominoes are [5,5], and each needs [5,5] as complement.
+# Pairs: (0,1), (0,2), (1,2)
+# Total: 3 pairs
+
+
+# Approach : Using defaultdict
+
+# def numEquivDominoPairs(dominoes, target):
+#     &quot;&quot;&quot;
+#     Count pairs of dominoes where corresponding elements sum to target.
+#     Uses defaultdict for cleaner frequency tracking without manual checking.
+    
+#     Time Complexity: O(n)
+#     - Single pass through the dominoes array: O(n)
+#     - defaultdict lookup: O(1) average case
+#     - defaultdict insertion/update: O(1) average case
+    
+#     Space Complexity: O(n)
+#     - defaultdict stores at most n unique domino configurations
+#     - Each tuple key takes O(1) space
+    
+#     Args:
+#         dominoes: List of domino pairs [a, b] where 0 &lt;= a, b &lt;= 9
+#         target: Target sum value
+        
+#     Returns:
+#         Integer - count of valid domino pairs
+#     &quot;&quot;&quot;
+#     # defaultdict(int) automatically initializes missing keys to 0
+#     domino_to_freq = defaultdict(int)
+#     result = 0
+    
+#     for a1, a2 in dominoes:
+#         # Calculate the complement domino needed
+#         complement = (target - a1, target - a2)
+        
+#         # Add frequency of complement (0 if not seen before)
+#         # No need to check if key exists - defaultdict handles it
+#         result += domino_to_freq[complement]
+        
+#         # Increment frequency of current domino
+#         # If first occurrence, defaultdict returns 0, then we add 1
+#         domino_to_freq[(a1, a2)] += 1
+    
+#     return result
+
+# Find all domino pair indices
+
+# from collections import defaultdict
+
+# def findAllDominoPairIndices(dominoes, target):
+#     &quot;&quot;&quot;
+#     Find indices of all pairs of dominoes where corresponding elements sum to target.
+    
+#     Time Complexity: O(n + p)
+#         - n = number of dominoes
+#         - p = number of valid pairs found
+#         - Outer loop: O(n) - iterate through all dominoes once
+#         - Inner loop: O(p) total - across all iterations, we create p pairs
+#         - Dictionary operations (lookup, insert): O(1) average case
+#         - Total: O(n) + O(p) = O(n + p)
+        
+#         Best case: O(n) when no pairs exist (p = 0)
+#         Worst case: O(n²) when all dominoes pair with each other (p ≈ n²/2)
+#         Example: [[5,5], [5,5], [5,5], ...] creates C(n,2) = n(n-1)/2 pairs
+    
+#     Space Complexity: O(n + p)
+#         - domino_to_indices dictionary: O(n)
+#           Stores at most n unique domino values, each mapping to indices
+#           Total indices stored = n (each index appears exactly once)
+#         - pairs list: O(p)
+#           Stores p pair results, each pair taking O(1) space
+#         - Total: O(n) + O(p) = O(n + p)
+        
+#         Best case: O(n) when no pairs exist (p = 0)
+#         Worst case: O(n²) when all dominoes pair (p ≈ n²/2)
+    
+#     Args:
+#         dominoes: List of domino pairs [a, b]
+#         target: Target sum value
+        
+#     Returns:
+#         List of lists [[i, j]] where i &lt; j, representing valid pair indices
+        
+#     Examples:
+#         &gt;&gt;&gt; findAllDominoPairIndices([[1,2], [9,8], [1,2]], 10)
+#         [[0, 1], [1, 2]]
+        
+#         &gt;&gt;&gt; findAllDominoPairIndices([[5,5], [5,5], [5,5]], 10)
+#         [[0, 1], [0, 2], [1, 2]]
+#     &quot;&quot;&quot;
+#     # Map: domino value -&gt; list of indices where it appears
+#     domino_to_indices = defaultdict(list)
+
+#     # Store all valid pairs
+#     pairs = []
+    
+#     for i, (a1, a2) in enumerate(dominoes):
+#         # Calculate complement needed
+#         complement = (target - a1, target - a2)
+        
+#         # Check if we&#x27;ve seen the complement before
+#         if complement in domino_to_indices:
+#             # Pair current index with ALL previous indices that have the complement
+#             for j in domino_to_indices[complement]:
+#                 pairs.append([j, i])
+#                 # We can also add pair as [domino_at_j, domino_at_i]
+#                 # pairs.append([dominoes[j], dominoes[i]])
+        
+#         # Add current index to the list for this domino value. No need to check if key exists - defaultdict handles it
+#         domino_to_indices[(a1, a2)].append(i)
+
+#         # If dominoes_to_indices is just a list, must explicitly check if key exists
+#         # if (a1, a2) not in domino_to_indices:
+#         #     domino_to_indices[(a1, a2)] = []
+        
+#         # domino_to_indices[(a1, a2)].append(i)
+    
+#     return pairs
+
+# Approach : Using Integer Key (a1 * 10 + a2)
+
+# Integer encoding (a*10+b) is more memory efficient because:
+# Single object (28 bytes) vs tuple + references (48-104 bytes)
+# Simpler hash (faster lookups)
+# Better cache locality (CPUs love contiguous integers)
+
+# def numEquivDominoPairs(dominoes, target):
+#     &quot;&quot;&quot;
+#     Count pairs of dominoes where corresponding elements sum to target.
+#     Uses integer encoding instead of tuple for keys (works for single digits 0-9).
+    
+#     Time Complexity: O(n)
+#     - Single pass through the dominoes array: O(n)
+#     - Dictionary lookup: O(1) average case
+#     - Dictionary insertion/update: O(1) average case
+    
+#     Space Complexity: O(n)
+#     - Dictionary stores at most n unique domino encodings
+#     - Integer keys are more memory efficient than tuples
+    
+#     Args:
+#         dominoes: List of domino pairs [a, b] where 0 &lt;= a, b &lt;= 9
+#         target: Target sum value
+        
+#     Returns:
+#         Integer - count of valid domino pairs
+    
+#     Note: 
+#     - Encoding: [a, b] becomes a * 10 + b (e.g., [3,7] becomes 37)
+#     - Only works for single-digit numbers (0-9)
+#     - More memory efficient than tuple keys
+#     &quot;&quot;&quot;
+#     domino_to_freq = {}
+#     result = 0
+    
+#     for a1, a2 in dominoes:
+#         # Calculate the complement domino [b1, b2]
+#         b1 = target - a1
+#         b2 = target - a2
+        
+#         # Encode complement as integer: b1 * 10 + b2
+#         # Example: [9, 8] becomes 98
+#         complement_key = b1 * 10 + b2
+        
+#         # If we&#x27;ve seen the complement, add its frequency
+#         if complement_key in domino_to_freq:
+#             result += domino_to_freq[complement_key]
+        
+#         # Encode current domino as integer: a1 * 10 + a2
+#         # Example: [1, 2] becomes 12
+#         current_key = a1 * 10 + a2
+#         domino_to_freq[current_key] = domino_to_freq.get(current_key, 0) + 1
+    
+#     return result
+
+# def findAllDominoPairIndices_IntegerEncoding(dominoes, target):
+#     &quot;&quot;&quot;
+#     Find indices of all pairs of dominoes where corresponding elements sum to target.
+#     Uses integer encoding instead of tuples for keys (works for single digits 0-9).
+    
+#     Time Complexity: O(n + p)
+#     Space Complexity: O(n + p)
+#     &quot;&quot;&quot;
+#     # Map: domino encoding (integer) -&gt; list of indices
+#     domino_to_indices = defaultdict(list)
+    
+#     # Store all valid pairs
+#     pairs = []
+    
+#     for i, (a1, a2) in enumerate(dominoes):
+#         # Calculate complement encoding
+#         complement_key = (target - a1) * 10 + (target - a2)
+        
+#         # Check if complement exists and pair with all previous occurrences
+#         if complement_key in domino_to_indices:
+#             for j in domino_to_indices[complement_key]:
+#                 pairs.append([j, i])
+        
+#         # Encode and store current domino
+#         current_key = a1 * 10 + a2
+#         domino_to_indices[current_key].append(i)
+    
+#     return pairs
+
+
+# Dominoes Variant 1 : Numbers in dominoes can be any integer
+
+# def numEquivDominoPairs(dominoes, target):
+#     &quot;&quot;&quot;
+#     Works for ANY integer values (positive, negative, large).
+    
+#     Time Complexity: O(n)
+#     Space Complexity: O(n)
+#     &quot;&quot;&quot;    
+#     domino_to_freq = defaultdict(int)
+#     result = 0
+    
+#     for a1, a2 in dominoes:
+#         # Tuple handles any values - no collisions possible
+#         complement = (target - a1, target - a2)
+#         result += domino_to_freq[complement]
+#         domino_to_freq[(a1, a2)] += 1
+    
+#     return result
+
+# Dominoes Variant 2 : Given an array of domino pairs, return the number of unique domino value combinations [a1, a2] and [b1, b2] where a1 + b1 = target and a2 + b2 = target.
+
+# Example 1:
+# dominoes = [[1,2], [9,8], [1,2], [9,8]]
+# target = 10
+
+# Unique values: {[1,2], [9,8]}
+# Value combination: [1,2] pairs with [9,8]
+#   1 + 9 = 10 ✓
+#   2 + 8 = 10 ✓
+
+# Answer: 1 unique value combination
+
+# Example 2:
+# dominoes = [[5,5], [5,5]]
+# target = 10
+
+# Unique values: {[5,5]}
+# Can [5,5] pair with [5,5]? 
+#   5 + 5 = 10 ✓
+#   5 + 5 = 10 ✓
+# Yes! This is a valid value combination.
+
+# Answer: 1 unique value combination
+
+# Example 3:
+# dominoes = [[5,5]]
+# target = 10
+
+# Unique values: {[5,5]}
+# Can [5,5] pair with [5,5]?
+# Yes, the VALUE combination is valid.
+# But do we have enough dominoes to form this pair?
+
+# This is the ambiguity: Does the problem require
+# at least 2 physical dominoes to form a pair?
+
+# def numEquivDominoPairs_MathematicalCombos(dominoes, target):
+#     &quot;&quot;&quot;
+#     INTERPRETATION A: Count unique VALUE COMBINATIONS (pure mathematical approach)
+    
+#     A &quot;unique domino value combination&quot; is a pair of VALUES [a1,a2] and [b1,b2]
+#     that mathematically satisfy the constraint, regardless of how many times
+#     they physically appear in the input.
+    
+#     Philosophy: We&#x27;re counting DISTINCT MATHEMATICAL COMBINATIONS, not physical pairs.
+    
+#     Time Complexity: O(n)
+#     Space Complexity: O(n)
+    
+#     Examples:
+#         [[5,5]] → 1
+#             Unique values: {[5,5]}
+#             Combination: [5,5] + [5,5] = target ✓
+#             Count: 1 unique combination exists
+        
+#         [[5,5], [5,5], [5,5]] → 1
+#             Unique values: {[5,5]}
+#             Combination: [5,5] + [5,5] = target ✓
+#             Count: Still 1 unique combination (same as above)
+        
+#         [[1,2], [9,8], [1,2], [9,8]] → 1
+#             Unique values: {[1,2], [9,8]}
+#             Combination: [1,2] + [9,8] = target ✓
+#             Count: 1 unique combination
+        
+#         [[1,2], [3,4], [7,6], [9,8]] → 2
+#             Unique values: {[1,2], [3,4], [7,6], [9,8]}
+#             Combinations: 
+#                 [1,2] + [9,8] = target ✓
+#                 [3,4] + [7,6] = target ✓
+#             Count: 2 unique combinations
+#     &quot;&quot;&quot;
+#     # Step 1: Extract unique domino VALUES from input
+#     # We only care about which distinct values exist, not how many times
+#     # Example: [[5,5], [5,5], [5,5]] → {(5,5)}
+#     unique_dominoes = set(tuple(d) for d in dominoes)
+    
+#     # Step 2: Store unique value combinations we find
+#     # We use a set to automatically handle deduplication
+#     pairs = set()
+    
+#     for domino in unique_dominoes:
+#         a1, a2 = domino
+        
+#         complement = (target - a1, target - a2)
+        
+#         # Check if this complement value exists (anywhere in the input)
+#         if complement in unique_dominoes:
+#             # ================================================================
+#             # CANONICAL REPRESENTATION!
+#             # ================================================================
+#             # Example: dominoes = [[1,2], [9,8]], target = 10
+#             #
+#             # WITHOUT canonical (just storing (domino, complement)):
+#             #   Iteration 1: domino=(1,2), complement=(9,8)
+#             #     → Add ((1,2), (9,8)) to set
+#             #   Iteration 2: domino=(9,8), complement=(1,2)
+#             #     → Add ((9,8), (1,2)) to set
+#             #   Result: {((1,2), (9,8)), ((9,8), (1,2))} 
+#             #   Length: 2 ❌ WRONG! These are the SAME logical pair!
+#             #
+#             # WITH canonical (using min/max):
+#             #   Iteration 1: domino=(1,2), complement=(9,8)
+#             #     → pair = (min((1,2), (9,8)), max((1,2), (9,8)))
+#             #     → pair = ((1,2), (9,8))  [since (1,2) &lt; (9,8)]
+#             #     → Add ((1,2), (9,8)) to set
+#             #   Iteration 2: domino=(9,8), complement=(1,2)
+#             #     → pair = (min((9,8), (1,2)), max((9,8), (1,2)))
+#             #     → pair = ((1,2), (9,8))  [same canonical form!]
+#             #     → Try to add ((1,2), (9,8)) but set already has it
+#             #   Result: {((1,2), (9,8))}
+#             #   Length: 1 ✓ CORRECT!
+#             #
+#             # Why min/max works:
+#             #   Python compares tuples lexicographically (left to right)
+#             #   (1,2) &lt; (9,8) because 1 &lt; 9
+#             #   So regardless of which domino we process first,
+#             #   we ALWAYS get the same canonical form: smaller tuple first
+#             # ================================================================
+#             pair = (min(domino, complement), max(domino, complement))
+#             pairs.add(pair)
+            
+#             # Note: If domino == complement (self-pairing like [5,5] + [5,5]),
+#             # we still add it because it&#x27;s a mathematically valid combination
+
+#     return len(pairs)
+
+# def numEquivDominoPairs_PhysicalPairs(dominoes, target):
+#     &quot;&quot;&quot;
+#     INTERPRETATION B: Count unique VALUE COMBINATIONS (with physical constraint)
+    
+#     A &quot;unique domino value combination&quot; requires that we have enough physical
+#     dominoes to form the pair. For self-pairing combinations, we need at least
+#     2 physical dominoes with that value.
+    
+#     Philosophy: We&#x27;re counting combinations that can be PHYSICALLY FORMED.
+    
+#     Time Complexity: O(n)
+#     Space Complexity: O(n)
+    
+#     Examples:
+#         [[5,5]] → 0
+#             Unique values: {[5,5]: count=1}
+#             Combination: [5,5] + [5,5] is valid mathematically
+#             BUT: We only have 1 physical domino, can&#x27;t form a pair
+#             Count: 0
+        
+#         [[5,5], [5,5]] → 1
+#             Unique values: {[5,5]: count=2}
+#             Combination: [5,5] + [5,5] is valid
+#             AND: We have 2 physical dominoes, CAN form a pair
+#             Count: 1
+        
+#         [[5,5], [5,5], [5,5]] → 1
+#             Unique values: {[5,5]: count=3}
+#             Combination: [5,5] + [5,5] is valid
+#             AND: We have 3 physical dominoes (≥2), CAN form a pair
+#             Count: 1 (still just one unique combination)
+        
+#         [[1,2], [9,8]] → 1
+#             Unique values: {[1,2]: count=1, [9,8]: count=1}
+#             Combination: [1,2] + [9,8] is valid
+#             AND: Different values, so 1 of each is enough
+#             Count: 1
+        
+#         [[5,5], [3,4]] → 0
+#             Unique values: {[5,5]: count=1, [3,4]: count=1}
+#             [5,5] needs [5,5] but count=1 (not enough) ✗
+#             [3,4] needs [7,6] which doesn&#x27;t exist ✗
+#             Count: 0
+#     &quot;&quot;&quot;
+#     from collections import Counter
+    
+#     # Step 1: Count frequency of each unique domino VALUE
+#     # We need to know HOW MANY times each value appears
+#     # Example: [[5,5], [5,5], [3,4]] → {(5,5): 2, (3,4): 1}
+#     domino_counts = Counter(tuple(d) for d in dominoes)
+
+#     # Without Counter
+#     # domino_counts = {}
+#     # for d in dominoes:
+#     #     key = tuple(d)
+#     #     if key in domino_counts:
+#     #         domino_counts[key] += 1
+#     #     else:
+#     #         domino_counts[key] = 1
+    
+#     # Step 2: Store unique value combinations we can physically form
+#     pairs = set()
+    
+#     # Step 3: For each unique value and its count, check constraints
+#     for domino, count in domino_counts.items():
+#         a1, a2 = domino
+        
+#         # Calculate complement value needed
+#         complement = (target - a1, target - a2)
+        
+#         # Check if complement value exists in our input
+#         if complement in domino_counts:
+            
+#             # CRITICAL DISTINCTION: Check if domino pairs with itself
+#             if domino == complement:
+#                 # SELF-PAIRING case (e.g., [5,5] needs [5,5])
+#                 # We need at least 2 physical dominoes to form a pair
+#                 # Example: [[5,5]] has count=1, NOT ENOUGH
+#                 #          [[5,5], [5,5]] has count=2, ENOUGH
+#                 if count &gt;= 2:
+#                     # We have enough physical dominoes!
+#                     pairs.add((domino, complement))
+#                 # else: Not enough physical dominoes, skip this combination
+                
+#             else:
+#                 # DIFFERENT VALUES case (e.g., [1,2] needs [9,8])
+#                 # We only need 1 of each value
+#                 # Since both exist in domino_counts, we can form the pair
+#                 pair = (min(domino, complement), max(domino, complement))
+#                 pairs.add(pair)
+    
+#     # Step 4: Return count of unique combinations we can physically form
+#     return len(pairs)
+
+
+
+
+
+
+
+</code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Medium/0031-Next-Permutation/">31. Next Permutation &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+</body>
+</html>
