@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Hash Table, Linked List, Design, Doubly-Linked List  
-**Accepted:** 2.6M / 5.5M (47.4%)
+**Accepted:** 2.7M / 5.6M (47.6%)
 
 ---
 
