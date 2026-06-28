@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Hash Table, Depth-First Search, Breadth-First Search, Graph Theory  
-**Accepted:** 1.9M / 2.9M (65.3%)
+**Accepted:** 1.9M / 3M (65.6%)
 
 ---
 
