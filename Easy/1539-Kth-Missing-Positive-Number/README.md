@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Array, Binary Search  
-**Accepted:** 847.5K / 1.3M (63.5%)
+**Accepted:** 870.7K / 1.4M (63.6%)
 
 ---
 
