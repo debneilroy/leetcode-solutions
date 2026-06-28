@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Math, Recursion  
-**Accepted:** 2.7M / 7.1M (38.7%)
+**Accepted:** 2.8M / 7.2M (38.9%)
 
 ---
 
