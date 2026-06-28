@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>346. Moving Average from Data Stream - LeetCode Solutions</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" id="prism-theme" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
 <style>
 
 :root {
@@ -19,6 +19,22 @@
   --medium:    #ffa116;
   --hard:      #ef4743;
   --radius:    6px;
+  --code-bg:   #f5f5f5;
+  --code-panel:#f7f8fa;
+  --code-border:#e0e0e0;
+  --code-muted:#6b7280;
+}
+[data-theme="dark"] {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --code-bg:   #1e1e1e;
+  --code-panel:#2d2d2d;
+  --code-border:#3e3e3e;
+  --code-muted:#8d99a6;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; }
@@ -54,6 +70,10 @@ sup { font-size: 10px; }
 .header-nav a { color: var(--muted); }
 .header-nav a:hover { color: var(--text); text-decoration: none; }
 .header-spacer { flex: 1; }
+.theme-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 13px;
+  transition: color .15s, border-color .15s; }
+.theme-btn:hover { color: var(--text); border-color: var(--muted); }
 
 /* difficulty badge */
 .badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
@@ -75,7 +95,7 @@ sup { font-size: 10px; }
 .panel-left { border-right: 1px solid var(--border); }
 
 /* tabs */
-.tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tabs { display: flex; border-bottom: 1px solid var(--code-border); background: var(--code-panel); flex-shrink: 0; }
 .tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
   border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
 .tab:hover { color: var(--text); }
@@ -93,7 +113,7 @@ sup { font-size: 10px; }
 /* hint */
 .hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
 .hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
-  background: var(--surface2); user-select: none; }
+  background: var(--code-panel); user-select: none; }
 .hint-block summary:hover { color: var(--text); }
 .hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
 
@@ -105,20 +125,20 @@ sup { font-size: 10px; }
 
 /* code panel */
 .code-header { display: flex; align-items: center; justify-content: space-between;
-  padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
-.lang-pill { font-size: 12px; background: var(--surface2); color: var(--muted);
+  padding: 8px 14px; background: var(--code-panel); border-bottom: 1px solid var(--code-border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--code-muted);
   padding: 3px 10px; border-radius: 20px; }
-.copy-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+.copy-btn { background: none; border: 1px solid var(--code-border); color: var(--code-muted);
   padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
 .copy-btn:hover { color: var(--text); border-color: var(--muted); }
 .code-scroll { flex: 1; overflow-y: auto; }
 .code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
-  background: #f5f5f5 !important; min-height: 100%; font-size: 13px !important;
+  background: var(--code-bg) !important; min-height: 100%; font-size: 13px !important;
   padding: 20px !important; tab-size: 4; }
 
 /* bottom nav */
 .bottom-nav { display: flex; justify-content: space-between; align-items: center;
-  padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border);
+  padding: 10px 16px; background: var(--code-panel); border-top: 1px solid var(--code-border);
   flex-shrink: 0; font-size: 12px; }
 .nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
   border-radius: var(--radius); white-space: nowrap; overflow: hidden;
@@ -136,6 +156,7 @@ sup { font-size: 10px; }
     </div>
     <div class="header-spacer"></div>
     <span style="font-size:12px;color:var(--muted);">346. Moving Average from Data Stream</span>
+    <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()">🌙</button>
   </header>
 
   <div class="split">
@@ -486,6 +507,23 @@ document.getElementById('copyBtn').addEventListener('click', () => {
     setTimeout(() => btn.textContent = 'Copy', 1500);
   });
 });
+</script>
+<script>
+(function() {
+  var t = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('theme-toggle').textContent = t === 'dark' ? '☀️' : '🌙';
+  if (t === 'dark') document.getElementById('prism-theme').href = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css';
+})();
+function toggleTheme() {
+  var t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('theme', t);
+  document.getElementById('theme-toggle').textContent = t === 'dark' ? '☀️' : '🌙';
+  document.getElementById('prism-theme').href = t === 'dark'
+    ? 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css'
+    : 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css';
+}
 </script>
 </body>
 </html>
