@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Array, Design, Queue, Data Stream  
-**Accepted:** 534K / 665.6K (80.2%)
+**Accepted:** 536.2K / 668.4K (80.2%)
 
 ---
 
