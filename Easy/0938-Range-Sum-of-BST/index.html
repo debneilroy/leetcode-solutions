@@ -154,7 +154,7 @@ sup { font-size: 10px; }
           <span class="badge badge-Easy">Easy</span>
           <span class="tag">Tree</span><span class="tag">Depth-First Search</span><span class="tag">Binary Search Tree</span><span class="tag">Binary Tree</span>
         </div>
-        <div class="prob-stats">1.4M / 1.5M (87.6%)</div>
+        <div class="prob-stats">1.4M / 1.6M (87.6%)</div>
         <div class="prob-desc"><p>Given the <code>root</code> node of a binary search tree and two integers <code>low</code> and <code>high</code>, return <em>the sum of values of all nodes with a value in the <strong>inclusive</strong> range </em><code>[low, high]</code>.</p>
 <p>Example 1:</p>
 <pre class="example-block"><code>
@@ -209,6 +209,7 @@ URL: https://leetcode.com/problems/range-sum-of-bst/
 &quot;&quot;&quot;
 
 # Definition for a binary tree node.
+
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
@@ -278,6 +279,16 @@ class Solution:
                 # Note: We might add None to stack, but we check &quot;if node:&quot; above
         
         return total
+
+# Build the tree: [10,5,15,3,7,null,18]
+
+root = TreeNode(10)
+root.left = TreeNode(5)
+root.right = TreeNode(15)
+root.left.left = TreeNode(3)
+root.left.right = TreeNode(7)
+root.right.left = None
+root.right.right = TreeNode(18)
 
 # Best Case - O(log n)
 
@@ -354,11 +365,11 @@ class Solution:
 def inorder(node):
     if not node:
         return
-    if node.val &gt; low:   # left side *might* have valid nodes
+    if node.val &gt; low:   # left side might have valid nodes
         inorder(node.left)
     if low &lt;= node.val &lt;= high:
         self.ans += node.val
-    if node.val &lt; high:  # right side *might* have valid nodes
+    if node.val &lt; high:  # right side might have valid nodes
         inorder(node.right)
 
 # Now it prunes some branches — closer to optimal.
@@ -420,7 +431,7 @@ class Solution:
             if node:
                 if low &lt;= node.val &lt;= high:
                     self.total += node.val
-                if low &lt; node.val:
+                if node.val &gt; low:
                     dfs(node.left)
                 if node.val &lt; high:
                     dfs(node.right)
@@ -431,49 +442,50 @@ class Solution:
 
 # Variant 1 : Return the average
 
-def rangeAverageBST_iterative(self, root, low, high):
-    # Edge case: empty tree
-    if not root:
-        return 0
+class Solution:
+    def rangeAverageBST_iterative(self, root, low, high):
+        # Edge case: empty tree
+        if not root:
+            return 0
 
-    if low &gt; high:
-        return 0
-        
-    total_sum = 0
-    count = 0
-        
-    # Initialize stack with root node
-    stack = [root]
-        
-    while stack:
-        # Pop the most recently added node (DFS/Preorder behavior)
-        node = stack.pop()
+        if low &gt; high:
+            return 0
             
-        if node:
-            # STEP 1: Process current node (PREORDER)
-            # Check if current node&#x27;s value is in range [low, high]
-            if low &lt;= node.val &lt;= high:
-                total_sum += node.val
-                count += 1
+        total_sum = 0
+        count = 0
+            
+        # Initialize stack with root node
+        stack = [root]
+            
+        while stack:
+            # Pop the most recently added node (DFS/Preorder behavior)
+            node = stack.pop()
                 
-            # STEP 2: Add LEFT child with pruning
-            # Only explore left subtree if current value &gt; low
-            if node.val &gt; low:
-                stack.append(node.left)
-                
-            # STEP 3: Add RIGHT child with pruning
-            # Only explore right subtree if current value &lt; high
-            if node.val &lt; high:
-                stack.append(node.right)
-        
-    # Handle edge case: no nodes in range
-    if count == 0:
-        return 0
-        
-    return total_sum / count
+            if node:
+                # STEP 1: Process current node (PREORDER)
+                # Check if current node&#x27;s value is in range [low, high]
+                if low &lt;= node.val &lt;= high:
+                    total_sum += node.val
+                    count += 1
+                    
+                # STEP 2: Add LEFT child with pruning
+                # Only explore left subtree if current value &gt; low
+                if node.val &gt; low:
+                    stack.append(node.left)
+                    
+                # STEP 3: Add RIGHT child with pruning
+                # Only explore right subtree if current value &lt; high
+                if node.val &lt; high:
+                    stack.append(node.right)
+            
+        # Handle edge case: no nodes in range
+        if count == 0:
+            return 0
+            
+        return total_sum / count
 
 
-# Variant 2 : Given the root node of a binary search tree and two integers low and high, return the sum of values of all nodes with a value in the inclusive range [low, high]. Note: At most 10^4 calls will be made to rangeSumBST.
+# Variant 2 (Hard) : Given the root node of a binary search tree and two integers low and high, return the sum of values of all nodes with a value in the inclusive range [low, high]. Note: At most 10^4 calls will be made to rangeSumBST.
 
 class Solution:
     &quot;&quot;&quot;
@@ -515,6 +527,21 @@ class Solution:
         # Initialize empty arrays that will store preprocessed data
         self.vals = []         # Will contain: [val1, val2, val3, ...] in sorted order
         self.prefix_sums = []  # Will contain: [sum1, sum1+sum2, sum1+sum2+sum3, ...]
+
+        # WHY DO WE NEED prefix_sums (and not just vals)?
+        # Binary search on &#x27;vals&#x27; only finds the BOUNDARIES (indices) of our range,
+        # it doesn&#x27;t give us the SUM of values in that range.
+        # 
+        # Without prefix_sums, we&#x27;d have to loop through vals[left:right+1] and
+        # add them up manually -&gt; O(k) time, where k = number of elements in range.
+        # This defeats the purpose of binary search for large ranges!
+        # 
+        # With prefix_sums, we get the range sum in O(1) via simple subtraction:
+        #   range_sum = prefix_sums[right_boundary] - prefix_sums[left_boundary - 1]
+        # 
+        # This is what makes each query O(log n) instead of O(n):
+        #   - Binary search (find boundaries): O(log n)
+        #   - Prefix sum lookup (calculate sum): O(1)
 
         # EDGE CASE: Empty tree (root is None)
         # If root is None, vals and prefix_sums remain empty []
