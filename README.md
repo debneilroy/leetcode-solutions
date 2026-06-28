@@ -1,6 +1,6 @@
 # 🧠 LeetCode Solutions
 
-> Auto-synced from LeetCode · [View live site](https://debneilroy.github.io/leetcode-solutions/)
+> 🌐 [View Live Site](https://debneilroy.github.io/leetcode-solutions/)
 
 ## Progress
 
