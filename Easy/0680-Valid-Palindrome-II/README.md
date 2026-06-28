@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Two Pointers, String, Greedy  
-**Accepted:** 1.2M / 2.6M (44.3%)
+**Accepted:** 1.2M / 2.6M (44.4%)
 
 ---
 
