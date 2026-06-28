@@ -154,7 +154,7 @@ sup { font-size: 10px; }
           <span class="badge badge-Easy">Easy</span>
           <span class="tag">Array</span><span class="tag">Greedy</span>
         </div>
-        <div class="prob-stats">1.4M / 4.8M (29.1%)</div>
+        <div class="prob-stats">1.4M / 4.9M (29.2%)</div>
         <div class="prob-desc"><p>You have a long flowerbed in which some of the plots are planted, and some are not. However, flowers cannot be planted in <strong>adjacent</strong> plots.</p>
 <p>Given an integer array <code>flowerbed</code> containing <code>0</code>'s and <code>1</code>'s, where <code>0</code> means empty and <code>1</code> means not empty, and an integer <code>n</code>, return <code>true</code> <em>if</em> <code>n</code> <em>new flowers can be planted in the</em> <code>flowerbed</code> <em>without violating the no-adjacent-flowers rule and</em> <code>false</code> <em>otherwise</em>.</p>
 <p>Example 1:</p>
@@ -316,10 +316,21 @@ class Solution:
             - When we plant: skip next position (i += 2)
             - When there&#x27;s a flower: skip next position (i += 2)
             - When blocked by neighbor: skip 3 positions (i += 3)
+
+        Example: flowerbed = [0, 0, 1, 0, 0], n = 2
+            i=0: left=0, right=0, current=0 -&gt; plant, placed=1, i=2  (Case 1)
+            i=2: flowerbed[2]=1              -&gt; skip,          i=4  (Case 2)
+            i=4: left=0, right=0, current=0 -&gt; plant, placed=2, i=6  (Case 1)
+            placed &gt;= n -&gt; return True
+            
+            (Case 3 example: i=1 would have left=1, current=0 -&gt; jump i+=3)
         &quot;&quot;&quot;
         i = 0  # Current position
         placed = 0  # Count of flowers successfully placed
         
+        # While loop is preferred over for loop here because we need custom i increments
+        # (i += 2 or i += 3). A for loop would require a manual skip counter which
+        # obscures the core skipping logic.
         while i &lt; len(flowerbed):
             # Check left neighbor: treat boundary as empty (0)
             empty_left_plot = 0 if i == 0 else flowerbed[i - 1]
@@ -351,8 +362,7 @@ class Solution:
         
         return False
 
-# Variant : Return the most number of flowers that can be planted in the flowerbed without violating the 
-# no-adjacent-flowers rule
+# Variant : Return the most number of flowers that can be planted in the flowerbed without violating the no-adjacent-flowers rule.
 
 class Solution:
     def placeFlowers(self, flowerbed: List[int]) -&gt; int:
