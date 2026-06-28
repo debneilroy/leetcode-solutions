@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Array, Hash Table  
-**Accepted:** 21.8M / 37.9M (57.5%)
+**Accepted:** 22.3M / 38.6M (57.7%)
 
 ---
 
