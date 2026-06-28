@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Tree, Depth-First Search, Binary Search Tree, Binary Tree  
-**Accepted:** 1.4M / 1.5M (87.6%)
+**Accepted:** 1.4M / 1.6M (87.6%)
 
 ---
 
