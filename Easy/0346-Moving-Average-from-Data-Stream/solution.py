@@ -6,30 +6,30 @@ URL: https://leetcode.com/problems/moving-average-from-data-stream/
 
 # Brute Force Approach : Recalculate the entire sum every time instead of reusing the previous sum
 
-# class MovingAverage:
-#     def __init__(self, size: int):
-#         """
-#         Time Complexity: O(1)
-#         Space Complexity: O(size) - store up to 'size' elements
-#         """
-#         self.size = size
-#         self.queue = deque()
+class MovingAverage:
+    def __init__(self, size: int):
+        """
+        Time Complexity: O(1)
+        Space Complexity: O(size) - store up to 'size' elements
+        """
+        self.size = size
+        self.queue = deque()
     
-#     def next(self, val: int) -> float:
-#         """
-#         BRUTE FORCE: Recalculate sum every time
+    def next(self, val: int) -> float:
+        """
+        BRUTE FORCE: Recalculate sum every time
         
-#         Time Complexity: O(size) - sum() iterates through all window elements
-#         Space Complexity: O(1) - no additional space beyond the queue
-#         """
-#         self.queue.append(val)
+        Time Complexity: O(size) - sum() iterates through all window elements
+        Space Complexity: O(1) - no additional space beyond the queue
+        """
+        self.queue.append(val)
         
-#         if len(self.queue) > self.size:
-#             self.queue.popleft()
+        if len(self.queue) > self.size:
+            self.queue.popleft()
         
-#         # Recalculate sum from scratch every time - O(size) operation
-#         # sum() works on deque - iterates through all elements
-#         return sum(self.queue) / len(self.queue)
+        # Recalculate sum from scratch every time - O(size) operation
+        # sum() works on deque - iterates through all elements
+        return sum(self.queue) / len(self.queue)
 
 
 # Optimized approach : Maintain a running sum and update it incrementally (add new element, subtract removed element)
@@ -140,106 +140,106 @@ class MovingAverage:
 # Window 2: (2 + 8 + 14) // 3 = 8  
 # Window 3: (8 + 14 + 3) // 3 = 8
 
-# def compute_running_sum_variant(nums: List[int], size: int) -> List[int]:
-#     """
-#     Compute the average of elements in a sliding window using integer division.
+def compute_running_sum_variant(nums: List[int], size: int) -> List[int]:
+    """
+    Compute the average of elements in a sliding window using integer division.
     
-#     Args:
-#         nums: List of integers
-#         size: Size of the sliding window
+    Args:
+        nums: List of integers
+        size: Size of the sliding window
         
-#     Returns:
-#         List of averages (using integer division) for each window position
+    Returns:
+        List of averages (using integer division) for each window position
         
-#     Time Complexity: O(n)
-#     Space Complexity: O(n-size+1) for result # remember this!
+    Time Complexity: O(n)
+    Space Complexity: O(n-size+1) for result # remember this!
     
-#     Algorithm: Window ALWAYS contains EXACTLY 'size' elements when computing average
-#     - right >= size: Remove oldest element to maintain window size
-#     - right >= size-1: Record average (window has exactly 'size' elements)
-#     """
-#     # Validate inputs
-#     if size <= 0:
-#         raise ValueError("Window size must be positive.")
-#     if not nums or len(nums) < size:
-#         return []
+    Algorithm: Window ALWAYS contains EXACTLY 'size' elements when computing average
+    - right >= size: Remove oldest element to maintain window size
+    - right >= size-1: Record average (window has exactly 'size' elements)
+    """
+    # Validate inputs
+    if size <= 0:
+        raise ValueError("Window size must be positive.")
+    if not nums or len(nums) < size:
+        return []
     
-#     n = len(nums)
-#     result = []
-#     window_sum = 0
+    n = len(nums)
+    result = []
+    window_sum = 0
 
-#     # 'right' tracks the right boundary of our window (current position)
-#     # As we iterate, we've added elements from index 0 to right
-#     # Total elements added so far = right + 1
-#     for right in range(n):
-#         # STEP 1: Add new element to window
-#         window_sum += nums[right]
-#         # Now we have (right + 1) elements in the window
+    # 'right' tracks the right boundary of our window (current position)
+    # As we iterate, we've added elements from index 0 to right
+    # Total elements added so far = right + 1
+    for right in range(n):
+        # STEP 1: Add new element to window
+        window_sum += nums[right]
+        # Now we have (right + 1) elements in the window
         
-#         # STEP 2: Maintain window at EXACTLY 'size' elements
-#         # ------------------------------------------------
-#         # WHY right >= size?
-#         # We want to check: "Do we have MORE than 'size' elements?"
-#         # Elements in window = right + 1
-#         # Condition: (right + 1) > size
-#         # Simplify: right >= size
-#         #
-#         # Example with size=3:
-#         #   right=0: 0+1=1 elements, 0>=3? NO, keep all
-#         #   right=1: 1+1=2 elements, 1>=3? NO, keep all
-#         #   right=2: 2+1=3 elements, 2>=3? NO, keep all (exactly size!)
-#         #   right=3: 3+1=4 elements, 3>=3? YES! Too many, remove oldest
-#         #   right=4: 4+1=5 elements, 4>=3? YES! Too many, remove oldest
-#         #
-#         # When right >= size is TRUE:
-#         # - We have (right+1) elements which is > size
-#         # - Remove the oldest element at index (right - size)
-#         # - After removal: window has exactly 'size' elements
-#         # - Window spans indices [right-size+1, right]
-#         if right >= size:
-#             window_sum -= nums[right - size]
-#             # Example: size=3, right=3
-#             #   Before: elements [0,1,2,3] = 4 elements
-#             #   Remove: nums[3-3] = nums[0]
-#             #   After: elements [1,2,3] = 3 elements ✓
+        # STEP 2: Maintain window at EXACTLY 'size' elements
+        # ------------------------------------------------
+        # WHY right >= size?
+        # We want to check: "Do we have MORE than 'size' elements?"
+        # Elements in window = right + 1
+        # Condition: (right + 1) > size
+        # Simplify: right >= size
+        #
+        # Example with size=3:
+        #   right=0: 0+1=1 elements, 0>=3? NO, keep all
+        #   right=1: 1+1=2 elements, 1>=3? NO, keep all
+        #   right=2: 2+1=3 elements, 2>=3? NO, keep all (exactly size!)
+        #   right=3: 3+1=4 elements, 3>=3? YES! Too many, remove oldest
+        #   right=4: 4+1=5 elements, 4>=3? YES! Too many, remove oldest
+        #
+        # When right >= size is TRUE:
+        # - We have (right+1) elements which is > size
+        # - Remove the oldest element at index (right - size)
+        # - After removal: window has exactly 'size' elements
+        # - Window spans indices [right-size+1, right]
+        if right >= size:
+            window_sum -= nums[right - size]
+            # Example: size=3, right=3
+            #   Before: elements [0,1,2,3] = 4 elements
+            #   Remove: nums[3-3] = nums[0]
+            #   After: elements [1,2,3] = 3 elements ✓
         
-#         # STEP 3: Record average when window has exactly 'size' elements
-#         # --------------------------------------------------------------
-#         # WHY right >= size - 1?
-#         # We want to check: "Do we have AT LEAST 'size' elements?"
-#         # This triggers when we form our FIRST complete window and EVERY subsequent window
-#         #
-#         # Elements in window = right + 1 (after any removal above)
-#         # Condition: (right + 1) >= size
-#         # Simplify: right >= size - 1
-#         #
-#         # Example with size=3:
-#         #   right=0: 0>=2? NO  (only 1 element, incomplete)
-#         #   right=1: 1>=2? NO  (only 2 elements, incomplete)
-#         #   right=2: 2>=2? YES! (3 elements, FIRST complete window) ✓
-#         #   right=3: 3>=2? YES! (3 elements after removal, complete) ✓
-#         #   right=4: 4>=2? YES! (3 elements after removal, complete) ✓
-#         #
-#         # CRITICAL: Why >= and not ==?
-#         # ----------------------------------------
-#         # If we used right == size - 1:
-#         #   right=2: 2==2? YES → Records first window [0,1,2] ✓
-#         #   right=3: 3==2? NO  → SKIPS second window [1,2,3] ❌
-#         #   right=4: 4==2? NO  → SKIPS third window [2,3,4] ❌
-#         #   Result: Only records FIRST window, misses all others!
-#         #
-#         # With right >= size - 1:
-#         #   right=2: 2>=2? YES → Records first window ✓
-#         #   right=3: 3>=2? YES → Records second window ✓
-#         #   right=4: 4>=2? YES → Records third window ✓
-#         #   Result: Records ALL windows as required!
-#         #
-#         # At this point, window ALWAYS has EXACTLY 'size' elements because:
-#         # - Case 1 (right == size-1): We just reached 'size' elements
-#         # - Case 2 (right >= size): We removed excess, back to 'size' elements
-#         if right >= size - 1:
-#             # Use integer division (//) not float division (/)
-#             # Example: 11 // 2 = 5 (not 5.5)
-#             result.append(window_sum // size)
+        # STEP 3: Record average when window has exactly 'size' elements
+        # --------------------------------------------------------------
+        # WHY right >= size - 1?
+        # We want to check: "Do we have AT LEAST 'size' elements?"
+        # This triggers when we form our FIRST complete window and EVERY subsequent window
+        #
+        # Elements in window = right + 1 (after any removal above)
+        # Condition: (right + 1) >= size
+        # Simplify: right >= size - 1
+        #
+        # Example with size=3:
+        #   right=0: 0>=2? NO  (only 1 element, incomplete)
+        #   right=1: 1>=2? NO  (only 2 elements, incomplete)
+        #   right=2: 2>=2? YES! (3 elements, FIRST complete window) ✓
+        #   right=3: 3>=2? YES! (3 elements after removal, complete) ✓
+        #   right=4: 4>=2? YES! (3 elements after removal, complete) ✓
+        #
+        # CRITICAL: Why >= and not ==?
+        # ----------------------------------------
+        # If we used right == size - 1:
+        #   right=2: 2==2? YES → Records first window [0,1,2] ✓
+        #   right=3: 3==2? NO  → SKIPS second window [1,2,3] ❌
+        #   right=4: 4==2? NO  → SKIPS third window [2,3,4] ❌
+        #   Result: Only records FIRST window, misses all others!
+        #
+        # With right >= size - 1:
+        #   right=2: 2>=2? YES → Records first window ✓
+        #   right=3: 3>=2? YES → Records second window ✓
+        #   right=4: 4>=2? YES → Records third window ✓
+        #   Result: Records ALL windows as required!
+        #
+        # At this point, window ALWAYS has EXACTLY 'size' elements because:
+        # - Case 1 (right == size-1): We just reached 'size' elements
+        # - Case 2 (right >= size): We removed excess, back to 'size' elements
+        if right >= size - 1:
+            # Use integer division (//) not float division (/)
+            # Example: 11 // 2 = 5 (not 5.5)
+            result.append(window_sum // size)
 
-#     return result
+    return result
