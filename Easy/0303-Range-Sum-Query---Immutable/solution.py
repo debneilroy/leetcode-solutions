@@ -25,6 +25,8 @@ class NumArray:
             prefix[i] represents sum of first i elements.
         """
         n = len(nums)
+        self.n = n  # Store length for bounds checking in sumRange
+
         # Preallocate array of size n+1, initialized with zeros
         self.prefix = [0] * (n + 1)
         
@@ -44,7 +46,18 @@ class NumArray:
         
         Formula:
             sum(left to right) = prefix[right+1] - prefix[left]
+
+        Defensive check (single combined condition):
+        - left > right: invalid/reversed range
+        - left < 0: out of bounds on the left
+        - right >= self.n: out of bounds on the right (also catches empty array,
+          since n == 0 makes any right >= 0 satisfy this condition)
         """
+
+        # Optional : Handles invalid range, out-of-bounds indices, and empty array all at once
+        if left > right or left < 0 or right >= self.n:
+            return 0
+
         return self.prefix[right + 1] - self.prefix[left]
 
 # prefix[i] = sum of the FIRST i elements (nums[0] to nums[i-1])
@@ -170,6 +183,8 @@ class NumArray:
 #         prefix[i] represents count of 1's in first i elements
 #         """
 #         n = len(arr)
+#         self.n = n
+
 #         # Pre-allocate prefix array of size n+1
 #         self.prefix = [0] * (n + 1)
         
@@ -192,6 +207,11 @@ class NumArray:
         
 #         Time: O(1), Space: O(1)
 #         """
+
+#         # Optional : Handles invalid range, out-of-bounds indices, and empty array all at once
+#         if left > right or left < 0 or right >= self.n:
+#             return 0
+
 #         return self.prefix[right + 1] - self.prefix[left]
 
 
@@ -233,6 +253,16 @@ class NumArray:
 #             # Step 1: Copy ALL previous counts (carry forward the running totals)
 #             # This preserves the cumulative nature - each position knows the
 #             # count of all digits seen so far
+#             #
+#             # Example: arr = [1, 2, 1], at i=1 (about to process arr[1]=2)
+#             #   Before this step: prefix[0..9][1] holds counts after processing arr[0]
+#             #     prefix[1] = [0, 1, 0, 0, ...]   (one '1' seen so far)
+#             #     prefix[2] = [0, 0, 0, 0, ...]   (no '2' seen yet)
+#             #   This step copies column i=1 into column i+1=2 for ALL digits:
+#             #     prefix[1][2] = prefix[1][1] = 1
+#             #     prefix[2][2] = prefix[2][1] = 0
+#             #     ... (same copy happens for digits 0, 3, 4, ..., 9)
+#             #   So before incrementing, every digit's count just "carries over"
 #             for digit in range(10):
 #                 self.prefix[digit][i + 1] = self.prefix[digit][i]
             
@@ -289,6 +319,10 @@ class NumArray:
 #         # Handle out of bounds
 #         if left < 0 or right >= self.n:
 #             return 0
+
+#         # Combined checks: invalid digit, invalid range, or out of bounds
+#         # if digit < 0 or digit > 9 or left > right or left < 0 or right >= self.n:
+#         #     return 0
         
 #         return self.prefix[digit][right + 1] - self.prefix[digit][left]
 
@@ -432,6 +466,17 @@ class NumArray:
 #     """
 #     Count occurrences of any digit in subarrays.
 #     Optimized for large digit ranges with few unique values. Not optimal when there are a large number of unique digits. 
+
+#     Example use case:
+#         arr = [5, 1000000, 5, 42, 1000000]  # digit values can be huge,
+#                                              # but only 3 unique values appear
+#         sol = Solution(arr)
+#         sol.countDigit(0, 4, 5)        # → 2
+#         sol.countDigit(0, 4, 1000000)  # → 2
+    
+#     This avoids the O(range * n) blowup of a fixed-size array approach
+#     (e.g. allocating 1,000,001 prefix arrays just because values go up to 1,000,000),
+#     since only digits that actually appear in arr get a prefix array built.
     
 #     Time Complexity:
 #         - Constructor: O(n * k) where k = unique digits
@@ -449,7 +494,6 @@ class NumArray:
         
 #         Time: O(n * k), Space: O(k * n) where k = unique digits
 #         """
-#         from collections import defaultdict
         
 #         n = len(arr)
 #         self.n = n
@@ -468,6 +512,13 @@ class NumArray:
 #             # Build prefix sum for this digit
 #             for i in range(n):
 #                 self.prefix[digit][i + 1] = self.prefix[digit][i]
+
+#                 # REQUIRED check: only increment if arr[i] actually equals
+#                 # the digit we're currently building a prefix array for.
+#                 # Without this, every prefix[digit] would just become
+#                 # [0, 1, 2, ..., n] (a plain running count of elements seen),
+#                 # identical for every digit and completely wrong.
+
 #                 if arr[i] == digit:
 #                     self.prefix[digit][i + 1] += 1
     
@@ -769,6 +820,19 @@ class NumArray:
             
 #             indices[start:end] = indices[1:4] = [2, 5, 8]
 #             length = 4 - 1 = 3 ✓
+
+#         WHAT IS f?
+#         ==========
+#         f = len(self.pos[digit]) = the number of times 'digit' appears
+#         anywhere in the original arr (its frequency).
+        
+#         It's not a separate stored variable — it's simply the length of
+#         the 'indices' list below, which both lower_bound and upper_bound
+#         binary search over. A rare digit (small f) means a short list and
+#         a fast search; a very common digit (large f) means a longer list
+#         and a slightly slower (but still logarithmic) search.
+        
+#         Example: arr = [1, 2, 1, 3, 2, 1] → pos[1] = [0, 2, 5] → f = 3 for digit 1
         
 #         WHY O(log f) TIME?
 #         ==================
