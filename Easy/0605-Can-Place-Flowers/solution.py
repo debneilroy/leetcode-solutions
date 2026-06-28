@@ -88,62 +88,72 @@ class Solution:
 
 # Approach : Intelligent position skipping (preferred in interview)
 
-# class Solution:
-#     def canPlaceFlowers(self, flowerbed: List[int], n: int) -> bool:
-#         """
-#         Determine if n flowers can be planted using an optimized greedy approach
-#         with intelligent position skipping.
+class Solution:
+    def canPlaceFlowers(self, flowerbed: List[int], n: int) -> bool:
+        """
+        Determine if n flowers can be planted using an optimized greedy approach
+        with intelligent position skipping.
         
-#         Time Complexity: O(n) worst case, but ~O(n/2) average case
-#             - Skips positions aggressively (jumps by 2 or 3)
-#             - Approximately 2x faster than standard approach in practice
+        Time Complexity: O(n) worst case, but ~O(n/2) average case
+            - Skips positions aggressively (jumps by 2 or 3)
+            - Approximately 2x faster than standard approach in practice
         
-#         Space Complexity: O(1)
-#             - Only uses constant extra space
-#             - Does NOT modify the input array
+        Space Complexity: O(1)
+            - Only uses constant extra space
+            - Does NOT modify the input array
         
-#         Approach:
-#             Greedy with optimized skipping:
-#             - When we plant: skip next position (i += 2)
-#             - When there's a flower: skip next position (i += 2)
-#             - When blocked by neighbor: skip 3 positions (i += 3)
-#         """
-#         i = 0  # Current position
-#         placed = 0  # Count of flowers successfully placed
-        
-#         while i < len(flowerbed):
-#             # Check left neighbor: treat boundary as empty (0)
-#             empty_left_plot = 0 if i == 0 else flowerbed[i - 1]
-            
-#             # Check right neighbor: treat boundary as empty (0)
-#             empty_right_plot = 0 if i == len(flowerbed) - 1 else flowerbed[i + 1]
-            
-#             # Case 1: Current position and both neighbors are empty - plant here!
-#             if flowerbed[i] == empty_left_plot == empty_right_plot == 0:
-#                 placed += 1
-#                 i += 2  # Skip next position (can't plant adjacent)
-            
-#             # Case 2: Current position has a flower - skip it
-#             elif flowerbed[i]:
-#                 i += 2  # Skip next position (can't plant adjacent to existing flower)
-            
-#             # Case 3: Current is empty but blocked by a neighbor
-#             else:
-#                 i += 3  # Jump 3 positions (next valid spot is at least 2 away), flowerbed = [0,1,0,0], n = 2
-            
-#             # Early exit optimization: if we've placed enough flowers
-#             if placed >= n:
-#                 return True
+        Approach:
+            Greedy with optimized skipping:
+            - When we plant: skip next position (i += 2)
+            - When there's a flower: skip next position (i += 2)
+            - When blocked by neighbor: skip 3 positions (i += 3)
 
-#         # Return False instead of (placed >= n) because:
-#         # If we had placed >= n flowers, we would have already returned True
-#         # in the early exit check above. Reaching here means placed < n.
-#         # Using False is clearer and avoids redundant comparison.
+        Example: flowerbed = [0, 0, 1, 0, 0], n = 2
+            i=0: left=0, right=0, current=0 -> plant, placed=1, i=2  (Case 1)
+            i=2: flowerbed[2]=1              -> skip,          i=4  (Case 2)
+            i=4: left=0, right=0, current=0 -> plant, placed=2, i=6  (Case 1)
+            placed >= n -> return True
+            
+            (Case 3 example: i=1 would have left=1, current=0 -> jump i+=3)
+        """
+        i = 0  # Current position
+        placed = 0  # Count of flowers successfully placed
         
-#         return False
+        # While loop is preferred over for loop here because we need custom i increments
+        # (i += 2 or i += 3). A for loop would require a manual skip counter which
+        # obscures the core skipping logic.
+        while i < len(flowerbed):
+            # Check left neighbor: treat boundary as empty (0)
+            empty_left_plot = 0 if i == 0 else flowerbed[i - 1]
+            
+            # Check right neighbor: treat boundary as empty (0)
+            empty_right_plot = 0 if i == len(flowerbed) - 1 else flowerbed[i + 1]
+            
+            # Case 1: Current position and both neighbors are empty - plant here!
+            if flowerbed[i] == empty_left_plot == empty_right_plot == 0:
+                placed += 1
+                i += 2  # Skip next position (can't plant adjacent)
+            
+            # Case 2: Current position has a flower - skip it
+            elif flowerbed[i]:
+                i += 2  # Skip next position (can't plant adjacent to existing flower)
+            
+            # Case 3: Current is empty but blocked by a neighbor
+            else:
+                i += 3  # Jump 3 positions (next valid spot is at least 2 away), flowerbed = [0,1,0,0], n = 2
+            
+            # Early exit optimization: if we've placed enough flowers
+            if placed >= n:
+                return True
 
-# Variant : Return the most number of flowers that can be planted in the flowerbed without violating the 
-# no-adjacent-flowers rule
+        # Return False instead of (placed >= n) because:
+        # If we had placed >= n flowers, we would have already returned True
+        # in the early exit check above. Reaching here means placed < n.
+        # Using False is clearer and avoids redundant comparison.
+        
+        return False
+
+# Variant : Return the most number of flowers that can be planted in the flowerbed without violating the no-adjacent-flowers rule.
 
 # class Solution:
 #     def placeFlowers(self, flowerbed: List[int]) -> int:
