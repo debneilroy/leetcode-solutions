@@ -2,7 +2,7 @@
 
 **Difficulty:** 🔴 Hard  
 **Tags:** Backtracking, Interactive  
-**Accepted:** 213.7K / 273.8K (78.0%)
+**Accepted:** 214.3K / 274.5K (78.0%)
 
 ---
 
