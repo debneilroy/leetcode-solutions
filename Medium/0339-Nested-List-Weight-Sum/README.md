@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Depth-First Search, Breadth-First Search  
-**Accepted:** 417.1K / 485.1K (86.0%)
+**Accepted:** 417.8K / 486K (86.0%)
 
 ---
 
