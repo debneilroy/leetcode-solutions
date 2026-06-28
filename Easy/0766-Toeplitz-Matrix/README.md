@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Array, Matrix  
-**Accepted:** 457.4K / 656.2K (69.7%)
+**Accepted:** 463.3K / 664.4K (69.7%)
 
 ---
 
