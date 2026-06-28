@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Array, Hash Table, Design, Matrix, Simulation  
-**Accepted:** 316.8K / 539.2K (58.7%)
+**Accepted:** 318.2K / 541.7K (58.7%)
 
 ---
 
