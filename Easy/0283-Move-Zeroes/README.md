@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Array, Two Pointers  
-**Accepted:** 5.2M / 8.1M (63.8%)
+**Accepted:** 5.3M / 8.3M (64.0%)
 
 ---
 
