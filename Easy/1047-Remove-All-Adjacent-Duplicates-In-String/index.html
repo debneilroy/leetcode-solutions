@@ -154,7 +154,7 @@ sup { font-size: 10px; }
           <span class="badge badge-Easy">Easy</span>
           <span class="tag">String</span><span class="tag">Stack</span>
         </div>
-        <div class="prob-stats">880.9K / 1.2M (73.2%)</div>
+        <div class="prob-stats">900.3K / 1.2M (73.5%)</div>
         <div class="prob-desc"><p>You are given a string <code>s</code> consisting of lowercase English letters. A <strong>duplicate removal</strong> consists of choosing two <strong>adjacent</strong> and <strong>equal</strong> letters and removing them.</p>
 <p>We repeatedly make <strong>duplicate removals</strong> on <code>s</code> until we no longer can.</p>
 <p>Return <em>the final string after all such duplicate removals have been made</em>. It can be proven that the answer is <strong>unique</strong>.</p>
@@ -307,7 +307,7 @@ class Solution:
 # Step 3: Remove run &quot;cc&quot; → string becomes &quot;&quot;
 # Final result: &quot;&quot;
 
-# Check the python code from codingwithminmer.com
+# Check the python code from codingwithminmer.com (the below version is preferred in interview)
 
 def removeAdjacentDuplicateRuns(s: str) -&gt; str:
     &quot;&quot;&quot;
@@ -337,6 +337,15 @@ def removeAdjacentDuplicateRuns(s: str) -&gt; str:
     - Single character: &quot;a&quot; → &quot;a&quot; (no runs)
     - Two same characters: &quot;aa&quot; → &quot;&quot; (run of 2)
     - Two different characters: &quot;ab&quot; → &quot;ab&quot; (no runs)
+
+    Note ON CASCADING (post-pop recheck is required here, unlike LC 1209):
+    1209 pops on count==k -- the matching char itself triggers and is
+    consumed by the pop, so nothing&#x27;s left to recheck. Here, run length
+    is unbounded, so a pop is only triggered by a MISMATCH -- the char
+    that caused it is still unplaced and may equal the new top.
+    Example: &quot;abbbacca&quot; -- popping &quot;bbb&quot; exposes top &#x27;a&#x27;, and current
+    char is also &#x27;a&#x27; -&gt; must merge -&gt; [[&#x27;a&#x27;,2]], not push a duplicate
+    entry. Skip this check and the result corrupts to &quot;aaa&quot; instead of &quot;a&quot;.
     
     &quot;&quot;&quot;
     
@@ -349,7 +358,7 @@ def removeAdjacentDuplicateRuns(s: str) -&gt; str:
     if len(s) == 1:
         return s
     
-    # Base case 3: Two characters - simple direct check
+    # [Optional] Base case 3: Two characters - simple direct check 
     # If same → it&#x27;s a run of 2, remove both
     # If different → no run, keep both
     # Examples: &quot;aa&quot; → &quot;&quot;, &quot;ab&quot; → &quot;ab&quot;
