@@ -154,7 +154,7 @@ sup { font-size: 10px; }
           <span class="badge badge-Medium">Medium</span>
           <span class="tag">String</span><span class="tag">Stack</span>
         </div>
-        <div class="prob-stats">426K / 695.1K (61.3%)</div>
+        <div class="prob-stats">431.5K / 702K (61.5%)</div>
         <div class="prob-desc"><p>You are given a string <code>s</code> and an integer <code>k</code>, a <code>k</code> <strong>duplicate removal</strong> consists of choosing <code>k</code> adjacent and equal letters from <code>s</code> and removing them, causing the left and the right side of the deleted substring to concatenate together.</p>
 <p>We repeatedly make <code>k</code> <strong>duplicate removals</strong> on <code>s</code> until we no longer can.</p>
 <p>Return <em>the final string after all such duplicate removals have been made</em>. It is guaranteed that the answer is <strong>unique</strong>.</p>
@@ -232,6 +232,8 @@ Difficulty: Medium
 URL: https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/
 &quot;&quot;&quot;
 
+# Brute Force : 
+
 # Approach : Stack
 
 class Solution:
@@ -255,6 +257,15 @@ class Solution:
         Space Complexity: O(n)
         - Stack can hold up to n entries in worst case
         - Example: &quot;abcdef&quot; with k=2 → stack has 6 entries
+
+        Note ON CASCADING (no post-pop recheck needed, unlike the
+        &quot;remove all runs&quot; variant): here k is fixed, so a pop is
+        triggered by the MATCHING char itself reaching count==k --
+        it&#x27;s already consumed by the pop, nothing&#x27;s left in hand.
+        Example: &quot;deeedbbcccbdaa&quot;, k=3 -- &#x27;e&#x27; hits count 3 -&gt; pop -&gt;
+        stack top is now &#x27;d&#x27;. The next char in s is &#x27;d&#x27;, handled
+        normally on the next iteration -&gt; merges to [&#x27;d&#x27;,2]. No
+        special recheck logic required.
         &quot;&quot;&quot;
         # Stack stores [character, count] pairs
         stack = []
@@ -271,6 +282,16 @@ class Solution:
             else:
                 # New character, push with count 1
                 stack.append([char, 1])
+
+        # No final-cleanup pop needed here (unlike &quot;remove all runs&quot;,
+        # where a run still in progress at end-of-string never gets
+        # popped inside the loop, since its pop is mismatch-triggered).
+        # Here, count==k is checked the instant count increments, so a
+        # complete run-of-k can never survive to the end of the loop.
+        # Example: &quot;aab&quot;, k=2 -- count hits 2 on the 2nd &#x27;a&#x27; and pops
+        # immediately, mid-loop, regardless of what follows. Anything
+        # still on the stack when the loop ends has count &lt; k by
+        # construction -- a real leftover, not an unfinished run.
         
         # Build result string from stack
         result = []
@@ -279,7 +300,7 @@ class Solution:
         
         return &#x27;&#x27;.join(result)
 
-# Approach : Two pointer
+# Approach : Two pointers
 
 class Solution:
     def removeDuplicates(self, s: str, k: int) -&gt; str:
@@ -327,6 +348,304 @@ class Solution:
         
         # Return valid portion of the array
         return &#x27;&#x27;.join(chars[:write])
+
+
+# Check Leetcode 723 Candy Crush 
+
+
+# Candy Crush (1D Variant) (https://leetcode.com/discuss/post/380650/bloomberg-phone-candy-crush-1d-by-suprit-r11f/)
+
+# You are given a string s consisting of lowercase letters, representing a row of candies on a one-dimensional board, where each letter represents a distinct candy type.
+
+# A crush consists of choosing a maximal sequence of 3 or more adjacent candies of the same type and removing them from the board. When a sequence is removed, the candies on the left and right sides of the removed sequence become adjacent to each other, and may now form a new crushable sequence.
+
+# Repeatedly perform crushes, processing from left to right, until no more crushes are possible. Return the final string.
+
+# It is guaranteed that performing crushes greedily from left to right produces a valid final board (though, as explored in the follow-up, it may not be the only possible final result, nor necessarily the shortest).
+
+# Example 1:
+# Input: s = &quot;aaabbbc&quot;
+# Output: &quot;c&quot;
+
+# Explanation:
+# Remove &quot;aaa&quot; (leftmost run of 3+): &quot;aaabbbc&quot; -&gt; &quot;bbbc&quot;
+# Remove &quot;bbb&quot;: &quot;bbbc&quot; -&gt; &quot;c&quot;
+# No more crushes possible.
+
+# Example 2:
+# Input: s = &quot;aabbbacd&quot;
+# Output: &quot;cd&quot;
+
+# Explanation:
+# Remove &quot;bbb&quot;: &quot;aabbbacd&quot; -&gt; &quot;aaacd&quot;
+# Remove &quot;aaa&quot;: &quot;aaacd&quot; -&gt; &quot;cd&quot;
+# No more crushes possible.
+
+# Example 3:
+# Input: s = &quot;aabbccddeeedcba&quot;
+# Output: &quot;&quot;
+
+# Explanation:
+# Remove &quot;eee&quot;: &quot;aabbccddeeedcba&quot; -&gt; &quot;aabbccdddcba&quot;
+# Remove &quot;ddd&quot;: &quot;aabbccdddcba&quot; -&gt; &quot;aabbcccba&quot;
+# Remove &quot;ccc&quot;: &quot;aabbcccba&quot; -&gt; &quot;aabbba&quot;
+# Remove &quot;bbb&quot;: &quot;aabbba&quot; -&gt; &quot;aaa&quot;
+# Remove &quot;aaa&quot;: &quot;aaa&quot; -&gt; &quot;&quot;
+
+# Approach : Stack
+
+def crush_candy(s: str) -&gt; str:
+    &quot;&quot;&quot;
+    Crush all runs of 3+ identical adjacent candies, greedily left to
+    right, cascading until no more crushes are possible.
+    
+    Stack of [char, count] pairs. A pop is triggered by a MISMATCH (the
+    incoming char differs from the top), so after popping we must recheck
+    the new top against the same pending char -- it may now match and
+    need to merge. Example: &quot;aabbbacd&quot; -- popping &quot;bbb&quot; exposes top &#x27;a&#x27;,
+    and the pending char is also &#x27;a&#x27; -&gt; merge to count 3 -&gt; then THAT
+    becomes poppable too. Skipping this recheck would corrupt the stack.
+    
+    Time: O(n) -- each char pushed/popped/incremented O(1) times
+    Space: O(n) worst case (no removable runs, e.g. &quot;abcdef&quot;)
+    &quot;&quot;&quot;
+    stack = []  # [char, count]
+
+    for char in s:
+        if stack and stack[-1][0] == char:
+            stack[-1][1] += 1
+        else:
+            # Previous run is &quot;closed&quot; by this mismatch -- remove if &gt;= 3
+            if stack and stack[-1][1] &gt;= 3:
+                stack.pop()
+            # Recheck: pending char may now match the newly exposed top
+            if stack and stack[-1][0] == char:
+                stack[-1][1] += 1
+            else:
+                stack.append([char, 1])
+
+    # Trailing run never hit a mismatch to trigger its pop -- catch it here
+    if stack and stack[-1][1] &gt;= 3:
+        stack.pop()
+
+    return &#x27;&#x27;.join(char * count for char, count in stack)
+
+
+
+# Follow-up: (complicated)
+
+# Removal order can affect the final result when multiple crushable runs exist simultaneously — greedy left-to-right is not guaranteed to produce the shortest possible final string. 
+
+# Given the same input, find the length of the shortest string achievable over all valid orders of crushing.
+
+# Input: s = &quot;aaabbbacd&quot;
+# Output: &quot;cd&quot; (length 2)
+# Explanation:
+
+# Removing &quot;bbb&quot; first instead of &quot;aaa&quot;: &quot;aaabbbacd&quot; -&gt; &quot;aaaacd&quot;
+# The &#x27;a&#x27; freed up by removing &quot;bbb&quot; merges with the existing run of 3 &#x27;a&#x27;s,
+# forming a run of 4 -&gt; remove &quot;aaaa&quot;: &quot;aaaacd&quot; -&gt; &quot;cd&quot;
+# This is shorter than the greedy left-to-right result, &quot;acd&quot;.
+
+def shortest_after_crush(s: str) -&gt; str:
+    &quot;&quot;&quot;
+    Follow-up: find the SHORTEST string achievable, over all valid orders
+    of crushing runs of length &gt;= 3 (with cascading).
+    
+    Why greedy left-to-right isn&#x27;t optimal here:
+    Removing a different (non-leftmost) run first can expose a bigger
+    merge later. Example: &quot;aaabbba&quot;
+      - Greedy (remove &quot;aaa&quot; first): &quot;aaabbba&quot; -&gt; &quot;bbba&quot; -&gt; &quot;a&quot;
+        (length 1)
+      - Remove &quot;bbb&quot; first instead: &quot;aaabbba&quot; -&gt; &quot;aaaa&quot;
+        The leftover &#x27;a&#x27;s on either side of the removed &quot;bbb&quot; merge into
+        a run of 4 -&gt; also removable -&gt; &quot;aaaa&quot; -&gt; &quot;&quot; (length 0, shorter!)
+    So the choice of WHICH run to remove first changes the final result.
+    We can&#x27;t just always take the leftmost run -- we must explore all
+    choices and keep the best one.
+    
+    Approach:
+    At each state (current string), find every maximal run of length
+    &gt;= 3. For each one, try removing it and recurse on what&#x27;s left.
+    Take whichever branch yields the shortest final string. Memoize on
+    the string itself, since different removal orders can converge on
+    the same intermediate string -- solving it twice would be wasted work.
+    
+    Time Complexity (per single call to helper(s), excluding recursion):
+    - Scanning phase: O(n). The i/j run-finding loop visits each
+      character exactly once across the whole scan (i always jumps
+      straight to j, never re-examining a character already classified)
+      -- so this part alone is linear, same as in the basic crush problem.
+    - Rebuilding phase: O(n^2). Every time a removable run is found,
+      remainder = s[:i] + s[j:] costs O(n) (slicing copies characters
+      into a new string). In the worst case there can be up to O(n)
+      separate removable runs in one string (e.g. many short runs each
+      of length exactly 3), and EACH one triggers its own O(n) rebuild
+      -&gt; O(n) runs * O(n) per rebuild = O(n^2).
+    - The rebuild cost dominates the scan cost, so total per-call work
+      (excluding recursive calls) is O(n) + O(n^2) = O(n^2).
+    - Memoization guarantees each distinct intermediate string is fully
+      processed only once. 
+      
+      Total time = O(n^2) * (number of distinct
+      reachable states).
+
+    - The number of distinct reachable states does not have a tight
+      known closed-form bound for this problem; it depends on how many
+      genuinely different intermediate strings are produced by different
+      removal orders, which varies with the structure of the input.
+    
+    Space Complexity:
+    - O(n) per memo entry (one string stored per distinct state), so
+      total memo space is O(n * number of distinct reachable states).
+    - Recursion depth is at most O(n), since every removal shrinks the
+      string by at least 3 characters.
+    &quot;&quot;&quot;
+    memo = {}
+
+    def helper(s):
+        # Already solved this exact intermediate string via some other
+        # removal order -- reuse it instead of recomputing
+        if s in memo:
+            return memo[s]
+
+        n = len(s)
+        candidates = []  # results of trying each possible run removal
+
+        # i = start index of the run currently being examined.
+        # j = first index AFTER that run (i.e. where it ends / breaks).
+        # So at any point, s[i:j] is the maximal run starting at i.
+        i = 0
+        while i &lt; n:
+            j = i
+            # Advance j while it&#x27;s still in bounds and still matches
+            # the character that started this run (s[i]). When this
+            # inner loop exits, s[i:j] is exactly one full run.
+            while j &lt; n and s[j] == s[i]:
+                j += 1
+
+            run_length = j - i
+            if run_length &gt;= 3:
+                # This run (s[i:j]) is removable. Try removing IT
+                # specifically (not necessarily the leftmost one we&#x27;d
+                # pick under plain greedy crushing), recurse on what&#x27;s
+                # left, and ONLY THEN move on -- this call fully
+                # completes and returns before we look for the next run.
+                remainder = s[:i] + s[j:]
+                candidates.append(helper(remainder))
+
+            # Jump i to j: the next run starts exactly where this one
+            # ended, so there&#x27;s no need to re-examine any character
+            # between the old i and j -- they&#x27;re already classified.
+            i = j
+
+        # No removable run found -- this string is final, nothing left
+        # to crush
+        if not candidates:
+            result = s
+        else:
+            # Pick whichever removal choice led to the shortest outcome
+            result = min(candidates, key=len)
+
+        memo[s] = result
+        return result
+
+    return helper(s)
+
+# Example : s = &quot;aaabbba&quot; Output = &quot;&quot;
+
+# Dry Run:
+
+# 🔵 CALL A: helper(&quot;aaabbba&quot;), n=7
+candidates = []
+i=0: j=0 → inner: s[0]=&#x27;a&#x27;==s[0]→j=1; s[1]=&#x27;a&#x27;==s[0]→j=2; s[2]=&#x27;a&#x27;==s[0]→j=3; s[3]=&#x27;b&#x27;≠s[0]→stop. Run s[0:3]=&quot;aaa&quot;, length 3 → removable.
+
+remainder = s[:0]+s[3:] = &quot;&quot;+&quot;bbba&quot; = &quot;bbba&quot;
+
+# 📞 call helper(&quot;bbba&quot;) → (Call B, see below) → returns &quot;a&quot;
+
+candidates = [&quot;a&quot;]
+
+i = j = 3
+i=3: j=3 → inner: s[3]=&#x27;b&#x27;==s[3]→j=4; s[4]=&#x27;b&#x27;==s[3]→j=5; s[5]=&#x27;b&#x27;==s[3]→j=6; s[6]=&#x27;a&#x27;≠s[3]→stop. Run s[3:6]=&quot;bbb&quot;, length 3 → removable.
+
+remainder = s[:3]+s[6:] = &quot;aaa&quot;+&quot;a&quot; = &quot;aaaa&quot;
+
+# 📞 call helper(&quot;aaaa&quot;) → (Call C, see below) → returns &quot;&quot;
+
+candidates = [&quot;a&quot;, &quot;&quot;]
+
+i = j = 6
+i=6: j=6 → inner: s[6]=&#x27;a&#x27;==s[6]→j=7; check j&lt;n→7&lt;7→false→stop. Run s[6:7]=&quot;a&quot;, length 1 → not removable. Nothing appended.
+
+i = j = 7
+# Check outer loop: 7 &lt; 7 → false → loop ends.
+candidates = [&quot;a&quot;, &quot;&quot;] → result = min([&quot;a&quot;,&quot;&quot;], key=len) = &quot;&quot;
+
+memo[&quot;aaabbba&quot;] = &quot;&quot;
+
+# 🔙 Call A returns &quot;&quot; ✓ matches before
+
+# 🟢 CALL B: helper(&quot;bbba&quot;), n=4
+candidates = []
+i=0: j=0 → inner: s[0]=&#x27;b&#x27;==s[0]→j=1; s[1]=&#x27;b&#x27;==s[0]→j=2; s[2]=&#x27;b&#x27;==s[0]→j=3; s[3]=&#x27;a&#x27;≠s[0]→stop. Run s[0:3]=&quot;bbb&quot;, length 3 → removable.
+
+remainder = s[:0]+s[3:] = &quot;&quot;+&quot;a&quot; = &quot;a&quot;
+
+# 📞 call helper(&quot;a&quot;) → (Call D, see below) → returns &quot;a&quot;
+
+candidates = [&quot;a&quot;]
+
+i = j = 3
+i=3: j=3 → inner: s[3]=&#x27;a&#x27;==s[3]→j=4; check j&lt;n→4&lt;4→false→stop. Run s[3:4]=&quot;a&quot;, length 1 → not removable. Nothing appended.
+
+i = j = 4
+# Check outer loop: 4 &lt; 4 → false → loop ends.
+candidates = [&quot;a&quot;] → result = &quot;a&quot;
+
+memo[&quot;bbba&quot;] = &quot;a&quot;
+
+# 🔙 Call B returns &quot;a&quot; ✓ matches the corrected version from last message
+
+# 🟡 CALL D: helper(&quot;a&quot;), n=1
+candidates = []
+i=0: j=0 → inner: s[0]=&#x27;a&#x27;==s[0]→j=1; check j&lt;n→1&lt;1→false→stop. Run s[0:1]=&quot;a&quot;, length 1 → not removable. Nothing appended.
+
+i = j = 1
+# Check outer loop: 1 &lt; 1 → false → loop ends.
+candidates = [] → empty → result = s = &quot;a&quot;
+
+memo[&quot;a&quot;] = &quot;a&quot;
+
+# 🔙 Call D returns &quot;a&quot; ✓ matches
+
+# 🟢 CALL C: helper(&quot;aaaa&quot;), n=4
+candidates = []
+i=0: j=0 → inner: s[0]=&#x27;a&#x27;==s[0]→j=1; s[1]=&#x27;a&#x27;==s[0]→j=2; s[2]=&#x27;a&#x27;==s[0]→j=3; s[3]=&#x27;a&#x27;==s[0]→j=4; check j&lt;n→4&lt;4→false→stop. Run s[0:4]=&quot;aaaa&quot;, length 4 → removable.
+
+remainder = s[:0]+s[4:] = &quot;&quot;+&quot;&quot; = &quot;&quot;
+
+# 📞 call helper(&quot;&quot;) → (Call E, see below) → returns &quot;&quot;
+
+candidates = [&quot;&quot;]
+
+i = j = 4
+# Check outer loop: 4 &lt; 4 → false → loop ends.
+candidates = [&quot;&quot;] → result = &quot;&quot;
+
+memo[&quot;aaaa&quot;] = &quot;&quot;
+
+# 🔙 Call C returns &quot;&quot; ✓ matches
+
+# 🟡 CALL E: helper(&quot;&quot;), n=0
+# Check outer loop immediately: 0 &lt; 0 → false → loop body never executes, not even once.
+candidates = [] → empty → result = s = &quot;&quot;
+
+memo[&quot;&quot;] = &quot;&quot;
+
+# 🔙 Call E returns &quot;&quot; ✓ matches
+
+memo = {&quot;a&quot;: &quot;a&quot;, &quot;bbba&quot;: &quot;a&quot;, &quot;&quot;: &quot;&quot;, &quot;aaaa&quot;: &quot;&quot;, &quot;aaabbba&quot;: &quot;&quot;}
 
         
         </code></pre>
