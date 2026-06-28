@@ -2,7 +2,7 @@
 
 **Difficulty:** 🔴 Hard  
 **Tags:** String, Dynamic Programming  
-**Accepted:** 109.2K / 222K (49.2%)
+**Accepted:** 109.3K / 222.4K (49.2%)
 
 ---
 
