@@ -2,19 +2,14 @@
 
 > Auto-synced from LeetCode · [View on GitHub](https://github.com/debneilroy/leetcode-solutions)
 
-## 🌐 Live Site
-**[https://debneilroy.github.io/leetcode-solutions/](https://debneilroy.github.io/leetcode-solutions/)**
-
-Browse all problems in a full LeetCode-style UI with syntax-highlighted solutions.
-
 ## Progress
 
 | Difficulty | Solved |
 |------------|--------|
 | 🟢 Easy    | 16 |
-| 🟡 Medium  | 32 |
+| 🟡 Medium  | 33 |
 | 🔴 Hard    | 5 |
-| **Total**  | **53** |
+| **Total**  | **54** |
 
 ## 🟢 Easy
 
@@ -47,6 +42,7 @@ Browse all problems in a full LeetCode-style UI with syntax-highlighted solution
 | 56 | [Merge Intervals](Medium/0056-Merge-Intervals/README.md) | [Python](Medium/0056-Merge-Intervals/solution.py) |
 | 71 | [Simplify Path](Medium/0071-Simplify-Path/README.md) | [Python](Medium/0071-Simplify-Path/solution.py) |
 | 78 | [Subsets](Medium/0078-Subsets/README.md) | [Python](Medium/0078-Subsets/solution.py) |
+| 117 | [Populating Next Right Pointers in Each Node II](Medium/0117-Populating-Next-Right-Pointers-in-Each-Node-II/README.md) | [Python](Medium/0117-Populating-Next-Right-Pointers-in-Each-Node-II/solution.py) |
 | 133 | [Clone Graph](Medium/0133-Clone-Graph/README.md) | [Python](Medium/0133-Clone-Graph/solution.py) |
 | 146 | [LRU Cache](Medium/0146-LRU-Cache/README.md) | [Python](Medium/0146-LRU-Cache/solution.py) |
 | 162 | [Find Peak Element](Medium/0162-Find-Peak-Element/README.md) | [Python](Medium/0162-Find-Peak-Element/solution.py) |
