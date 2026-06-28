@@ -154,7 +154,7 @@ sup { font-size: 10px; }
           <span class="badge badge-Easy">Easy</span>
           <span class="tag">Binary Search</span><span class="tag">Tree</span><span class="tag">Depth-First Search</span><span class="tag">Binary Search Tree</span><span class="tag">Binary Tree</span>
         </div>
-        <div class="prob-stats">454.1K / 923.1K (49.2%)</div>
+        <div class="prob-stats">455.4K / 926.2K (49.2%)</div>
         <div class="prob-desc"><p>Given the <code>root</code> of a binary search tree and a <code>target</code> value, return <em>the value in the BST that is closest to the</em> <code>target</code>. If there are multiple answers, print the smallest.</p>
 <p>Example 1:</p>
 <pre class="example-block"><code>
@@ -289,6 +289,14 @@ class Solution:
         
         return closest
 
+# Example 1:
+
+# root = TreeNode(4)
+# root.left = TreeNode(2)
+# root.right = TreeNode(5)
+# root.left.left = TreeNode(1)
+# root.left.right = TreeNode(3)
+
 # Approach : Recursive
 
 class Solution:
@@ -345,14 +353,34 @@ class Solution:
                 closest = min(closest, node.val)
             
             # Navigate BST based on target value using BST property
-            # If target is less than current value, search left (smaller values)
+            # MUST capture the recursive call&#x27;s return value and pass it onward.
+            # The recursive call may find a closer value further down the tree
+            # (e.g. node 7&#x27;s subtree finds 7 is closer than this node&#x27;s own value).
+            # If we just call `dfs(node.left, closest)` without capturing the
+            # result, this node would fall through to `return closest` below
+            # using its OWN pre-recursion closest, silently discarding whatever
+            # the deeper call found.
+            #
+            # Note: since nothing happens after this branch besides returning
+            # closest, we could just as well write `return dfs(node.left, closest)`
+            # directly (no separate `return closest` line needed below at all).
+            # Assigning to `closest` first is only necessary if you need to use
+            # or further modify the value AFTER the recursive call returns —
+            # which we don&#x27;t here, so the direct return is equally correct and
+            # slightly more concise.
             if target &lt; node.val:
-                return dfs(node.left, closest)
+                closest = dfs(node.left, closest)
             # Otherwise, search right (larger values)
             else:
-                return dfs(node.right, closest)
+                closest = dfs(node.right, closest)
+
+            return closest
         
         # --- Step 4: Start recursive traversal from root
+        # MUST return here: this sends dfs()&#x27;s final result out of
+        # closestValue() as the actual answer. Without &#x27;return&#x27;,
+        # closestValue() would compute the correct value internally
+        # but still output None.
         return dfs(root, root.val)
 
 # Rare Variant : Leetcode 272</code></pre>
