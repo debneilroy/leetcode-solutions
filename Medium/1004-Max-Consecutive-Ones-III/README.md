@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Array, Binary Search, Sliding Window, Prefix Sum  
-**Accepted:** 1.4M / 2.1M (67.7%)
+**Accepted:** 1.5M / 2.2M (67.9%)
 
 ---
 
