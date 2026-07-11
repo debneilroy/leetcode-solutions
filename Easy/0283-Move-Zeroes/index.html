@@ -175,7 +175,7 @@ sup { font-size: 10px; }
           <span class="badge badge-Easy">Easy</span>
           <span class="tag">Array</span><span class="tag">Two Pointers</span>
         </div>
-        <div class="prob-stats">5.3M / 8.3M (64.0%)</div>
+        <div class="prob-stats">5.4M / 8.4M (64.1%)</div>
         <div class="prob-desc"><p>Given an integer array <code>nums</code>, move all <code>0</code>'s to the end of it while maintaining the relative order of the non-zero elements.</p>
 <p><strong>Note</strong> that you must do this in-place without making a copy of the array.</p>
 <p>Example 1:</p>
@@ -246,6 +246,8 @@ class Solution:
         # OUTER LOOP: Make multiple passes through the array
         # We need len(nums) passes to ensure all zeros reach the end
         for i in range(len(nums)):
+            # INNER LOOP: One full sweep — compare each adjacent pair.
+            # Stop at len(nums)-1 to avoid index out of bounds on j+1.
             for j in range(len(nums) - 1):
                 if nums[j] == 0 and nums[j+1] != 0:
                     # This moves the zero one step closer to the end
