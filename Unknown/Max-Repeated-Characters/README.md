@@ -22,9 +22,10 @@ Example 2:
 
 ```
 Input: text = "hello"
-Output: ['h', 'e', 'l', 'l', 'o']
+Output: ['l']
 Explanation:
-All sequences have length 1: "h", "e", "l", "l", "o"
+Consecutive sequences: "h" (length 1), "e" (length 1), "ll" (length 2), "o" (length 1)
+"ll" is the longest run, so only 'l' is returned.
 ```
 
 **Constraints:**
