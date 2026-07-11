@@ -9,6 +9,7 @@ URL: https://leetcode.com/problems/maximum-swap/
 # The brute force approach would be to try all possible swaps and track the maximum:
 
 # Generate all swap combinations: For a number with n digits, we have n × (n-1) / 2 possible pairs to swap
+
 # For each swap: Create the new number and compare with the current maximum
 # Return the maximum value found
 
@@ -137,171 +138,171 @@ class Solution:
 
 # The first approach without using any built in functions
 
-# class Solution:
-#     def maximumSwap(self, num: int) -> int:
-#         """
-#         PROBLEM: Given a non-negative integer, swap two digits at most once 
-#         to get the maximum valued number.
+class Solution:
+    def maximumSwap(self, num: int) -> int:
+        """
+        PROBLEM: Given a non-negative integer, swap two digits at most once 
+        to get the maximum valued number.
 
-#         THIS VERSION: Uses INTEGER list instead of STRING list
+        THIS VERSION: Uses INTEGER list instead of STRING list
         
-#         Method: Extract digits in reverse, then manually reverse using swaps
+        Method: Extract digits in reverse, then manually reverse using swaps
         
-#         Time Complexity: O(n) where n is the number of digits
-#         Space Complexity: O(n) for storing digits
+        Time Complexity: O(n) where n is the number of digits
+        Space Complexity: O(n) for storing digits
         
-#         Example: 2736 → extract [6,3,7,2] → manual reverse [2,7,3,6] 
-#                  → swap → [7,2,3,6] → 7236
-#         """
+        Example: 2736 → extract [6,3,7,2] → manual reverse [2,7,3,6] 
+                 → swap → [7,2,3,6] → 7236
+        """
         
-#         # BASE CASE: Single digit or zero
-#         # No swap is possible with 0 or 1 digit
-#         if num < 10:
-#             return num
+        # BASE CASE: Single digit or zero
+        # No swap is possible with 0 or 1 digit
+        if num < 10:
+            return num
         
-#         # STEP 1: Extract digits in REVERSE order using modulo and division
-#         # This is the natural order we get when extracting mathematically
-#         # 
-#         # Example for 2736:
-#         # 2736 % 10 = 6, temp = 273
-#         # 273 % 10 = 3, temp = 27
-#         # 27 % 10 = 7, temp = 2
-#         # 2 % 10 = 2, temp = 0
-#         # Result: [6, 3, 7, 2] ← backwards!
+        # STEP 1: Extract digits in REVERSE order using modulo and division
+        # This is the natural order we get when extracting mathematically
+        # 
+        # Example for 2736:
+        # 2736 % 10 = 6, temp = 273
+        # 273 % 10 = 3, temp = 27
+        # 27 % 10 = 7, temp = 2
+        # 2 % 10 = 2, temp = 0
+        # Result: [6, 3, 7, 2] ← backwards!
         
-#         digits = []  # Start with empty list
-#         temp = num
+        digits = []  # Start with empty list
+        temp = num
         
-#         while temp > 0:
-#             digit = temp % 10      # Get rightmost digit
-#             digits.append(digit)   # Add to list
-#             temp = temp // 10      # Remove rightmost digit
+        while temp > 0:
+            digit = temp % 10      # Get rightmost digit
+            digits.append(digit)   # Add to list
+            temp = temp // 10      # Remove rightmost digit
         
-#         # At this point: digits = [6, 3, 7, 2] for input 2736
+        # At this point: digits = [6, 3, 7, 2] for input 2736
         
-#         # STEP 2: Manually REVERSE the list using two-pointer swap
-#         # We swap elements from both ends moving toward the center
-#         # WITHOUT using the built-in reverse() function
-#         #
-#         # Example for [6, 3, 7, 2]:
-#         # left=0, right=3: swap 6 and 2 → [2, 3, 7, 6]
-#         # left=1, right=2: swap 3 and 7 → [2, 7, 3, 6] ✓
+        # STEP 2: Manually REVERSE the list using two-pointer swap
+        # We swap elements from both ends moving toward the center
+        # WITHOUT using the built-in reverse() function
+        #
+        # Example for [6, 3, 7, 2]:
+        # left=0, right=3: swap 6 and 2 → [2, 3, 7, 6]
+        # left=1, right=2: swap 3 and 7 → [2, 7, 3, 6] ✓
         
-#         n = len(digits)
-#         left = 0
-#         right = n - 1
+        n = len(digits)
+        left = 0
+        right = n - 1
         
-#         while left < right:
-#             # Swap elements at positions left and right
-#             digits[left], digits[right] = digits[right], digits[left]
-#             # Move pointers toward center
-#             left = left + 1
-#             right = right - 1
+        while left < right:
+            # Swap elements at positions left and right
+            digits[left], digits[right] = digits[right], digits[left]
+            # Move pointers toward center
+            left = left + 1
+            right = right - 1
         
-#         # At this point: digits = [2, 7, 3, 6] for input 2736
+        # At this point: digits = [2, 7, 3, 6] for input 2736
         
-#         # STEP 3: Build a dictionary to track the LAST occurrence of each digit
-#         # Example for [2,7,3,6]: last = {2: 0, 7: 1, 3: 2, 6: 3}
-#         # Example for [1,9,9,3]: last = {1: 0, 9: 2, 3: 3}
-#         # 
-#         # Why track the LAST occurrence?
-#         # If we have duplicates (like two 9's), we want to swap with the 
-#         # RIGHTMOST one to maximize the result
+        # STEP 3: Build a dictionary to track the LAST occurrence of each digit
+        # Example for [2,7,3,6]: last = {2: 0, 7: 1, 3: 2, 6: 3}
+        # Example for [1,9,9,3]: last = {1: 0, 9: 2, 3: 3}
+        # 
+        # Why track the LAST occurrence?
+        # If we have duplicates (like two 9's), we want to swap with the 
+        # RIGHTMOST one to maximize the result
         
-#         last = {}
-#         for i in range(n):
-#             last[digits[i]] = i
+        last = {}
+        for i in range(n):
+            last[digits[i]] = i
         
-#         # STEP 4: Scan from LEFT to RIGHT to find the first beneficial swap
-#         # For each position, check if there's a larger digit that appears later
-#         # We check from 9 down to current_digit+1 to find the LARGEST available
-#         #
-#         # Example for [2, 7, 3, 6]:
-#         # i=0, digit=2:
-#         #   Check d=9: not in last
-#         #   Check d=8: not in last
-#         #   Check d=7: YES! last[7]=1, and 1 > 0 ✓
-#         #   Swap positions 0 and 1: [2,7,3,6] → [7,2,3,6]
-#         #   Return 7236 immediately
+        # STEP 4: Scan from LEFT to RIGHT to find the first beneficial swap
+        # For each position, check if there's a larger digit that appears later
+        # We check from 9 down to current_digit+1 to find the LARGEST available
+        #
+        # Example for [2, 7, 3, 6]:
+        # i=0, digit=2:
+        #   Check d=9: not in last
+        #   Check d=8: not in last
+        #   Check d=7: YES! last[7]=1, and 1 > 0 ✓
+        #   Swap positions 0 and 1: [2,7,3,6] → [7,2,3,6]
+        #   Return 7236 immediately
         
-#         for i in range(n):
-#             # Check for larger digits from 9 down to current digit + 1
-#             for d in range(9, digits[i], -1):
-#                 # Check two conditions:
-#                 # 1. Does this larger digit exist in our number?
-#                 # 2. Does it appear AFTER the current position?
-#                 if d in last and last[d] > i:
-#                     # FOUND IT! Swap positions
-#                     digits[i], digits[last[d]] = digits[last[d]], digits[i]
+        for i in range(n):
+            # Check for larger digits from 9 down to current digit + 1
+            for d in range(9, digits[i], -1):
+                # Check two conditions:
+                # 1. Does this larger digit exist in our number?
+                # 2. Does it appear AFTER the current position?
+                if d in last and last[d] > i:
+                    # FOUND IT! Swap positions
+                    digits[i], digits[last[d]] = digits[last[d]], digits[i]
                     
-#                     # STEP 5: Reconstruct the number from the digit list
-#                     # Build number mathematically: multiply by 10 and add each digit
-#                     # Example: [7, 2, 3, 6]
-#                     # result = 0
-#                     # result = 0 * 10 + 7 = 7
-#                     # result = 7 * 10 + 2 = 72
-#                     # result = 72 * 10 + 3 = 723
-#                     # result = 723 * 10 + 6 = 7236 ✓
+                    # STEP 5: Reconstruct the number from the digit list
+                    # Build number mathematically: multiply by 10 and add each digit
+                    # Example: [7, 2, 3, 6]
+                    # result = 0
+                    # result = 0 * 10 + 7 = 7
+                    # result = 7 * 10 + 2 = 72
+                    # result = 72 * 10 + 3 = 723
+                    # result = 723 * 10 + 6 = 7236 ✓
                     
-#                     result = 0
-#                     for digit in digits:
-#                         result = result * 10 + digit
-#                     return result
+                    result = 0
+                    for digit in digits:
+                        result = result * 10 + digit
+                    return result
         
-#         # STEP 6: If we reach here, no beneficial swap was found
-#         # The number is already in optimal order
-#         # Base cases that reach here:
-#         # - Already optimal: 9973 → 9973
-#         # - All same digits: 1111 → 1111
-#         return num
+        # STEP 6: If we reach here, no beneficial swap was found
+        # The number is already in optimal order
+        # Base cases that reach here:
+        # - Already optimal: 9973 → 9973
+        # - All same digits: 1111 → 1111
+        return num
 
 # If num is negative
 
-# class Solution:
-#     def maximumSwap(self, num: int) -> int:
-#         """
-#         Maximum Swap for NEGATIVE numbers only
+class Solution:
+    def maximumSwap(self, num: int) -> int:
+        """
+        Maximum Swap for NEGATIVE numbers only
         
-#         Goal: MAXIMIZE negative number (make it less negative, closer to 0)
-#         Strategy: Get SMALLER digits on the left to minimize absolute value
+        Goal: MAXIMIZE negative number (make it less negative, closer to 0)
+        Strategy: Get SMALLER digits on the left to minimize absolute value
         
-#         Example: -2736 → -2376 (swap 7 with 3)
+        Example: -2736 → -2376 (swap 7 with 3)
         
-#         Time Complexity: O(n) where n is the number of digits
-#         Space Complexity: O(n)
-#         """
+        Time Complexity: O(n) where n is the number of digits
+        Space Complexity: O(n)
+        """
         
-#         # Assume num is negative, work with absolute value
-#         num = abs(num)
+        # Assume num is negative, work with absolute value
+        num = abs(num)
         
-#         # BASE CASE: Single digit
-#         if num < 10:
-#             return -num
+        # BASE CASE: Single digit
+        if num < 10:
+            return -num
         
-#         # STEP 1: Convert to list of digits
-#         digits = list(str(num))
-#         n = len(digits)
+        # STEP 1: Convert to list of digits
+        digits = list(str(num))
+        n = len(digits)
         
-#         # STEP 2: Build last occurrence map
-#         # Track RIGHTMOST position of each digit
-#         last = {int(d): i for i, d in enumerate(digits)}
+        # STEP 2: Build last occurrence map
+        # Track RIGHTMOST position of each digit
+        last = {int(d): i for i, d in enumerate(digits)}
         
-#         # STEP 3: Scan left to right, find first beneficial swap
-#         for i in range(n):
-#             current_digit = int(digits[i])
+        # STEP 3: Scan left to right, find first beneficial swap
+        for i in range(n):
+            current_digit = int(digits[i])
             
-#             # Look for SMALLER digits (0 up to current-1)
-#             # We want to swap large digit with smaller digit to minimize
-#             for d in range(current_digit):
-#                 # Check if this smaller digit exists AFTER current position
-#                 if d in last and last[d] > i:
-#                     # Swap with SMALLER digit
-#                     digits[i], digits[last[d]] = digits[last[d]], digits[i]
-#                     # Convert back to negative
-#                     return -int(''.join(digits))
+            # Look for SMALLER digits (0 up to current-1)
+            # We want to swap large digit with smaller digit to minimize
+            for d in range(current_digit):
+                # Check if this smaller digit exists AFTER current position
+                if d in last and last[d] > i:
+                    # Swap with SMALLER digit
+                    digits[i], digits[last[d]] = digits[last[d]], digits[i]
+                    # Convert back to negative
+                    return -int(''.join(digits))
         
-#         # STEP 4: No beneficial swap found
-#         return -num
+        # STEP 4: No beneficial swap found
+        return -num
 
 # Approach : Without hashmap
 
@@ -567,7 +568,9 @@ class Solution:
         
 #         Example: [2,7,3,6]
 #         Largest:  [7,6,3,2]
-#         Swap rightmost different pair (3,2) → [7,6,2,3] 
+#         Swap rightmost different pair (3,2) → [7,6,2,3]
+
+#         Note: This approach uses a frequency map because we're allowed to fully rearrange digits to build the largest number first, then make a minimal change for the second largest. In contrast, LeetCode 670("Maximum Swap") only allows ONE swap of two digits in the original number — so we must track digit positions (not just counts) to choose the optimal swap. A frequency map alone is insufficient there. 
 #         """
 #         # Edge case: empty array or single element
 #         # Can't form a second largest with 0 or 1 digit
@@ -641,7 +644,7 @@ class Solution:
 #         # - Swapping rightmost different pair creates smallest possible decrease
 #         # - This is exactly what "second largest" means!
         
-#         for i in range(len(largest_num) - 1, 0, -1):  # Scan from right to left
+#         for i in range(len(largest_num) - 1, 0, -1):  # Scan from right to left; i starts at len-1 and stops at 1 (inclusive) to avoid invalid index i-1 < 0.
 #             # Check if these two adjacent digits are DIFFERENT
 #             # We're looking at position i-1 and position i
 #             if largest_num[i - 1] != largest_num[i]:
@@ -655,7 +658,7 @@ class Solution:
 #         # No adjacent pair differs, so there's no second largest arrangement
 #         return []
 
-# For negative numbers
+# # For negative numbers
 
 # class Solution:
 #     def buildSecondLargestNumber(self, num: list[int]) -> list[int]:
@@ -731,5 +734,21 @@ class Solution:
 #         # STEP 4: All digits are the same
 #         # Example: [-5, -5, -5, -5] → all arrangements are same
 #         return []
+
+
+# Context:
+# Meta often asks LC670 Maximum Swap and especially its variant to build the second largest number. But there exists another twist...
+
+# Variant:
+# What if you had to swap at most 2 digits to create the smallest number possible?
+
+# Example
+# Input: 7236
+# Output: 2736
+
+# Seems like it's just the opposite of the OG problem, so I consider it a smaller variant than building the second largest number.
+
+# How important is this variant?
+# For reference, this is the first time I've seen it and it was posted in this Reddit Post. It's not too difficult to implement so I'd just learn it when you get to LC670!
 
         
