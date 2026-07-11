@@ -6,20 +6,22 @@ URL: https://leetcode.com/problems/move-zeroes/
 
 # Brute Force : Keep bubbling zeros to the right
 
-# class Solution:
-#     def moveZeroes(self, nums):
-#         """
-#         Time Complexity : O(n^2)
-#         Space Complexity : O(1)
-#         """
-#         # OUTER LOOP: Make multiple passes through the array
-#         # We need len(nums) passes to ensure all zeros reach the end
-#         for i in range(len(nums)):
-#             for j in range(len(nums) - 1):
-#                 if nums[j] == 0 and nums[j+1] != 0:
-#                     # This moves the zero one step closer to the end
-#                     # and moves the non-zero one step closer to the front
-#                     nums[j], nums[j+1] = nums[j+1], nums[j]
+class Solution:
+    def moveZeroes(self, nums):
+        """
+        Time Complexity : O(n^2)
+        Space Complexity : O(1)
+        """
+        # OUTER LOOP: Make multiple passes through the array
+        # We need len(nums) passes to ensure all zeros reach the end
+        for i in range(len(nums)):
+            # INNER LOOP: One full sweep — compare each adjacent pair.
+            # Stop at len(nums)-1 to avoid index out of bounds on j+1.
+            for j in range(len(nums) - 1):
+                if nums[j] == 0 and nums[j+1] != 0:
+                    # This moves the zero one step closer to the end
+                    # and moves the non-zero one step closer to the front
+                    nums[j], nums[j+1] = nums[j+1], nums[j]
 
 class Solution:
     def moveZeroes(self, nums: List[int]) -> None:
