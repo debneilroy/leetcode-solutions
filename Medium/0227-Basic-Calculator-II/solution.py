@@ -53,6 +53,18 @@ class Solution:
             - Division: 2/2
             - Operator precedence: * and / before + and -
             - Left-to-right evaluation: 3*2/2 = (3*2)/2 = 6/2 = 3
+
+            Note on * and / PRECEDENCE (common BODMAS/PEMDAS misconception):
+            * and / are the SAME precedence tier. There is no rule that
+            division always happens before multiplication (or vice versa).
+            When both appear, resolve them LEFT TO RIGHT in the order they
+            appear in the string. Here 3*2/2 reads '*' first, then '/', so:
+                3*2 = 6   (multiply first, since '*' appears first)
+                6/2 = 3   (divide second, since '/' appears second)
+            If the expression were 3/2*2 instead, division would go first
+            (3/2=1.5), then multiplication (1.5*2=3), because '/' appears
+            first when scanning left to right. Same left-to-right rule
+            applies to + and - as a separate, lower-precedence tier.
             
             Step-by-step evaluation:
             10 - 3*2/2 + 5
@@ -161,6 +173,28 @@ class Solution:
                     # - int(/) truncates toward zero: int(7/-2) = int(-3.5) = -3
                     # - // is floor division toward -∞: 7//-2 = -4 (WRONG for LeetCode)
                     # LeetCode expects C/Java behavior (truncate toward zero)
+                    #
+                    # Note: This means we deliberately deviate from "real" math.
+                    # In real math, "10-3/2" = 10 - 1.5 = 8.5.
+                    # But LeetCode's Basic Calculator II defines this problem using
+                    # INTEGER division: every division result is truncated to an
+                    # integer immediately, before it's combined with anything else.
+                    # So under this problem's rules: "10-3/2" = 10 - int(3/2)
+                    #                                         = 10 - 1 = 9
+                    # This int() truncation is what forces that difference from
+                    # real math — it's a rule of the problem (like C/Java integer
+                    # division), not a bug in this implementation.
+                    #
+                    # Example: s = "10-3/2"
+                    #   ...after processing "10-3": prev_num = -3
+                    #   at the '/': divide prev_num=-3 by curr_num=2
+                    #     -3 // 2   = -2   (floor division, rounds toward -inf: WRONG)
+                    #     int(-3/2) = -1   (truncating division, rounds toward 0: CORRECT)
+                    #   result = 10 + (-1) = 9  (matches int(3/2)=1, 10-1=9 above)
+                    #
+                    # Since // and int(/) disagree whenever a negative operand is
+                    # involved, using // here would silently produce a wrong answer
+                    # (10 + (-2) = 8) any time subtraction precedes division.
                     prev_num = int(prev_num / curr_num)
                 
                 # Reset curr_num for the next number we'll parse
@@ -185,6 +219,55 @@ class Solution:
         result += prev_num
         
         return result
+
+
+# Why prev_num instead of curr_num?
+
+# The problem: result is a one-way accumulator. Once a number is added to it, it merges irreversibly with everything before it — you can't isolate it again to multiply or divide it later.
+# But * and / need to grab the single most recent number and modify it in isolation, before it gets folded into the running total.
+
+# The solution: keep a one-number buffer, prev_num, that sits outside result until we're certain no more *// can touch it.
+
+# curr_num : The number just finished parsing — still "unconfirmed," might get hit by a *// on its right
+
+# prev_num : The previous number — already survived any *// that could act on it, but not yet banked into result
+
+# result : Running total of numbers that are fully settled — guaranteed nothing will ever multiply/divide them again
+
+# Example: 3+2*4 (expected: 11)
+
+# See 3, then + → bank nothing yet, prev_num = 3
+# See 2, then * → now 3 is safe (a * didn't follow it), so result += prev_num → result = 3; prev_num = 2
+# See 4, end of string, apply pending * → prev_num = 2 * 4 = 8 (multiply happens inside the buffer, result untouched)
+# Final: result += prev_num → 3 + 8 = 11 ✓
+
+# What breaks if we add curr_num instead
+
+# See 3, then + → result += curr_num → result = 3
+# See 2, then * → result += curr_num → result = 3 + 2 = 5 ← the 2 is now stuck inside result, merged with the 3
+# See 4 → we want to multiply just the 2 by 4, but it's gone — no way to isolate it from result anymore
+
+# Bottom line: prev_num acts as a one-step delay buffer so *// get first crack at a number before it's permanently committed to the total via +/-.
+
+## Why `+`/`-` act as the "commit point"
+
+# Core idea: An expression is a sum of independent terms, where each term is one number possibly chained together with *//. The +/- symbols mark the boundaries between terms — everything else (*//) just continues building the current term.
+
+# | Operator | What it means for `prev_num` |
+
+# | `*` / `/` | "This term isn't finished — keep chaining, stay in prev_num" |
+# | `+` / `-` | "This term is done — nothing will ever touch it again, commit it to `result`" |
+
+# Because *// can repeat indefinitely within a term (2*3*4/2...), the running value has to stay in a mutable staging spot (prev_num) so each new *// can act on it. Only a +/- guarantees the term is truly over.
+
+# Example: "2*4-5*2" (expected: 8 - 10 = -2)
+
+# 1.  2*4: builds up in prev_num → prev_num = 2*4 = 8 (not yet in result — chain could continue)
+# 2.  Hit -: term closes → result += prev_num → result = 8; new term starts, prev_num = -5
+# 3.  5*2: chains again → prev_num = -5*2 = -10
+# 4.  End of string: final commit → result += prev_num → result = 8 + (-10) = -2 ✓
+
+# One-line summary: +/- are term separators, so hitting one is proof that the previous term can never be multiplied/divided again — that's exactly the moment it's safe to fold into result. *// never provide that guarantee, so they only ever update prev_num in place, keeping the term open.
 
 
 # Approach : Using stack
@@ -349,5 +432,31 @@ class Solution:
 #         # - sum(stack) = 3 + 8 = 11
 #         return sum(stack)
 
+
+# Variant : Without subtraction and division
+
+# class Variant:
+#     def calculate(self, s):
+#         curr_num = 0
+#         prev_num = 0
+#         result = 0
+#         op = '+'
+        
+#         for i in range(len(s)):
+#             if s[i].isdigit():
+#                 curr_num = curr_num * 10 + int(s[i])
+            
+#             if (not s[i].isdigit() and s[i] != ' ') or i == len(s) - 1:
+#                 if op == '+':
+#                     result += prev_num
+#                     prev_num = curr_num
+#                 elif op == '*':
+#                     prev_num = prev_num * curr_num
+                
+#                 curr_num = 0
+#                 op = s[i]
+        
+#         result += prev_num
+#         return result
 
         
