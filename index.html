@@ -17,6 +17,7 @@
   --easy:      #2cbb5d;
   --medium:    #ffa116;
   --hard:      #ef4743;
+  --unknown:   #8b5cf6;
   --radius:    6px;
   --code-bg:   #f5f5f5;
   --code-panel:#f7f8fa;
@@ -77,9 +78,10 @@ sup { font-size: 10px; }
 /* difficulty badge */
 .badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
   font-size: 12px; font-weight: 500; }
-.badge-Easy   { color: var(--easy);   background: rgba(44,187,93,0.15); }
-.badge-Medium { color: var(--medium); background: rgba(255,161,22,0.15); }
-.badge-Hard   { color: var(--hard);   background: rgba(239,71,67,0.15); }
+.badge-Easy    { color: var(--easy);    background: rgba(44,187,93,0.15); }
+.badge-Medium  { color: var(--medium);  background: rgba(255,161,22,0.15); }
+.badge-Hard    { color: var(--hard);    background: rgba(239,71,67,0.15); }
+.badge-Unknown { color: var(--unknown); background: rgba(139,92,246,0.15); }
 
 /* tag */
 .tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
@@ -102,10 +104,11 @@ body { padding: 0; }
 .filter-btn { background: var(--surface); border: 1px solid var(--border); color: var(--muted);
   padding: 5px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; }
 .filter-btn:hover, .filter-btn.active { color: var(--text); border-color: var(--muted); background: var(--surface2); }
-.filter-btn.all.active   { color: var(--accent); border-color: var(--accent); }
-.filter-btn.easy.active  { color: var(--easy);   border-color: var(--easy); }
-.filter-btn.medium.active{ color: var(--medium); border-color: var(--medium); }
-.filter-btn.hard.active  { color: var(--hard);   border-color: var(--hard); }
+.filter-btn.all.active     { color: var(--accent);  border-color: var(--accent); }
+.filter-btn.easy.active    { color: var(--easy);    border-color: var(--easy); }
+.filter-btn.medium.active  { color: var(--medium);  border-color: var(--medium); }
+.filter-btn.hard.active    { color: var(--hard);    border-color: var(--hard); }
+.filter-btn.unknown.active { color: var(--unknown); border-color: var(--unknown); }
 
 .table-wrap { padding: 0 24px 40px; overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; }
@@ -131,13 +134,13 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
 <div class="hero">
   <h1>My LeetCode Solutions</h1>
   <p>All problems solved in Python3, organized by difficulty.</p>
-  <p style="color:var(--muted);font-size:12px;margin-top:6px;">Last updated: Jul 12, 2026 at 01:00 AM</p>
+  <p style="color:var(--muted);font-size:12px;margin-top:6px;">Last updated: Jul 12, 2026 at 01:03 AM</p>
 </div>
 
 <div class="stats-bar">
   <div class="stat-card">
     <div class="stat-label">Total solved</div>
-    <div class="stat-val">54</div>
+    <div class="stat-val">55</div>
   </div>
   <div class="stat-card">
     <div class="stat-label" style="color:var(--easy);">Easy</div>
@@ -151,6 +154,10 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <div class="stat-label" style="color:var(--hard);">Hard</div>
     <div class="stat-val" style="color:var(--hard);">5</div>
   </div>
+  <div class="stat-card">
+    <div class="stat-label" style="color:var(--unknown);">Unknown</div>
+    <div class="stat-val" style="color:var(--unknown);">1</div>
+  </div>
 </div>
 
 <div class="filters">
@@ -158,6 +165,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
   <button class="filter-btn easy"   onclick="filter('Easy', this)">Easy</button>
   <button class="filter-btn medium" onclick="filter('Medium', this)">Medium</button>
   <button class="filter-btn hard"   onclick="filter('Hard', this)">Hard</button>
+  <button class="filter-btn unknown" onclick="filter('Unknown', this)">Unknown</button>
 </div>
 
 <div class="table-wrap">
@@ -177,6 +185,15 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
   <td class="hide-sm"><span class="tag">Array</span><span class="tag">Hash Table</span></td>
   <td style="width:80px;text-align:center;">
     <a href="Easy/0001-Two-Sum/index.html" class="sol-link">Python</a>
+  </td>
+</tr>
+<tr class="prob-row" data-diff="Unknown">
+  <td style="color:var(--muted);width:60px;">7</td>
+  <td><a href="Unknown/Max-Repeated-Characters/index.html">Max Repeated Characters</a></td>
+  <td><span class="badge badge-Unknown">Unknown</span></td>
+  <td class="hide-sm"></td>
+  <td style="width:80px;text-align:center;">
+    <a href="Unknown/Max-Repeated-Characters/index.html" class="sol-link">Python</a>
   </td>
 </tr>
 <tr class="prob-row" data-diff="Medium">
