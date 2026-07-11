@@ -9,8 +9,7 @@
 | 🟢 Easy    | 16 |
 | 🟡 Medium  | 33 |
 | 🔴 Hard    | 5 |
-| ❓ Unknown | 1 |
-| **Total**  | **55** |
+| **Total**  | **54** |
 
 ## 🟢 Easy
 
@@ -80,9 +79,3 @@
 | 827 | [Making A Large Island](Hard/0827-Making-A-Large-Island/README.md) | [Python](Hard/0827-Making-A-Large-Island/solution.py) |
 | 987 | [Vertical Order Traversal of a Binary Tree](Hard/0987-Vertical-Order-Traversal-of-a-Binary-Tree/README.md) | [Python](Hard/0987-Vertical-Order-Traversal-of-a-Binary-Tree/solution.py) |
 | 1216 | [Valid Palindrome III](Hard/1216-Valid-Palindrome-III/README.md) | [Python](Hard/1216-Valid-Palindrome-III/solution.py) |
-
-## ❓ Unknown
-
-| # | Title | Solution |
-|---|-------|----------|
-| 7 | [Max Repeated Characters](Unknown/Max-Repeated-Characters/README.md) | [Python](Unknown/Max-Repeated-Characters/solution.py) |
