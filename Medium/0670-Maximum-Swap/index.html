@@ -175,7 +175,7 @@ sup { font-size: 10px; }
           <span class="badge badge-Medium">Medium</span>
           <span class="tag">Math</span><span class="tag">Greedy</span>
         </div>
-        <div class="prob-stats">517.3K / 993.6K (52.1%)</div>
+        <div class="prob-stats">518.5K / 995.7K (52.1%)</div>
         <div class="prob-desc"><p>You are given an integer <code>num</code>. You can swap two digits at most once to get the maximum valued number.</p>
 <p>Return <em>the maximum valued number you can get</em>.</p>
 <p>Example 1:</p>
@@ -227,6 +227,7 @@ URL: https://leetcode.com/problems/maximum-swap/
 # The brute force approach would be to try all possible swaps and track the maximum:
 
 # Generate all swap combinations: For a number with n digits, we have n × (n-1) / 2 possible pairs to swap
+
 # For each swap: Create the new number and compare with the current maximum
 # Return the maximum value found
 
@@ -785,7 +786,9 @@ class Solution:
         
         Example: [2,7,3,6]
         Largest:  [7,6,3,2]
-        Swap rightmost different pair (3,2) → [7,6,2,3] 
+        Swap rightmost different pair (3,2) → [7,6,2,3]
+
+        Note: This approach uses a frequency map because we&#x27;re allowed to fully rearrange digits to build the largest number first, then make a minimal change for the second largest. In contrast, LeetCode 670(&quot;Maximum Swap&quot;) only allows ONE swap of two digits in the original number — so we must track digit positions (not just counts) to choose the optimal swap. A frequency map alone is insufficient there. 
         &quot;&quot;&quot;
         # Edge case: empty array or single element
         # Can&#x27;t form a second largest with 0 or 1 digit
@@ -859,7 +862,7 @@ class Solution:
         # - Swapping rightmost different pair creates smallest possible decrease
         # - This is exactly what &quot;second largest&quot; means!
         
-        for i in range(len(largest_num) - 1, 0, -1):  # Scan from right to left
+        for i in range(len(largest_num) - 1, 0, -1):  # Scan from right to left; i starts at len-1 and stops at 1 (inclusive) to avoid invalid index i-1 &lt; 0.
             # Check if these two adjacent digits are DIFFERENT
             # We&#x27;re looking at position i-1 and position i
             if largest_num[i - 1] != largest_num[i]:
@@ -949,6 +952,22 @@ class Solution:
         # STEP 4: All digits are the same
         # Example: [-5, -5, -5, -5] → all arrangements are same
         return []
+
+
+# Context:
+# Meta often asks LC670 Maximum Swap and especially its variant to build the second largest number. But there exists another twist...
+
+# Variant:
+# What if you had to swap at most 2 digits to create the smallest number possible?
+
+# Example
+# Input: 7236
+# Output: 2736
+
+# Seems like it&#x27;s just the opposite of the OG problem, so I consider it a smaller variant than building the second largest number.
+
+# How important is this variant?
+# For reference, this is the first time I&#x27;ve seen it and it was posted in this Reddit Post. It&#x27;s not too difficult to implement so I&#x27;d just learn it when you get to LC670!
 
         </code></pre>
       </div>
