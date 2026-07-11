@@ -19,6 +19,10 @@ class MaxConsecutiveChars:
         Space Complexity: O(k)
         - k = number of characters tied for the max run length
         - No auxiliary data structures beyond the result list
+
+        Best case: O(1) when a single run is strictly longest (k = 1)
+        Worst case: O(n) when every run has the same length, e.g. "ababab"
+        (every character ties for the max, so k grows to n)
         """
         if not text:
             return []
