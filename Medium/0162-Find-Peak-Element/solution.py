@@ -4,15 +4,14 @@ Difficulty: Medium
 URL: https://leetcode.com/problems/find-peak-element/
 """
 
-
 # Linear Scan (TC : O(n) SC : O(1))
 
-# class Solution:
-#     def findPeakElement(self, nums: List[int]) -> int:
-#         for i in range(len(nums)-1):
-#             if nums[i] > nums[i+1]:
-#                 return i
-#         return len(nums)-1
+class Solution:
+    def findPeakElement(self, nums: List[int]) -> int:
+        for i in range(len(nums)-1):
+            if nums[i] > nums[i+1]:
+                return i
+        return len(nums)-1
 
 # Variant:
 # Here are the other variants they might ask:
@@ -93,6 +92,14 @@ class Solution:
 
         left, right = 0, len(nums) - 1
         
+        # Use 'while left < right' (not '<=') for two key reasons:
+        # 1. It ensures mid + 1 is always a valid index (since mid < right).
+        # 2. The loop converges to a single index (left == right) that is guaranteed to be a peak.
+        #
+        # If we used 'while left <= right':
+        #   - When left == right, mid = left = right (last index).
+        #   - Then nums[mid + 1] would be out of bounds (IndexError).
+        #   - Also, the update logic (right = mid) doesn't require an extra iteration.
         while left < right:
             mid = (left + right) // 2
             
@@ -236,25 +243,25 @@ class Solution:
 
 # So we switch to linear scan.
 
-# class Solution:
-#     def findPeakElement(self, nums: list[int]) -> int:
-#         """
-#         Strict peak (> neighbors), duplicates allowed.
-#         Linear Scan Solution
+class Solution:
+    def findPeakElement(self, nums: list[int]) -> int:
+        """
+        Strict peak (> neighbors), duplicates allowed.
+        Linear Scan Solution
 
-#         Time: O(n)
-#         Space: O(1)
-#         """
-#         n = len(nums)
+        Time: O(n)
+        Space: O(1)
+        """
+        n = len(nums)
 
-#         for i in range(n):
-#             left = nums[i - 1] if i > 0 else float("-inf")
-#             right = nums[i + 1] if i < n - 1 else float("-inf")
+        for i in range(n):
+            left = nums[i - 1] if i > 0 else float("-inf")
+            right = nums[i + 1] if i < n - 1 else float("-inf")
 
-#             if nums[i] > left and nums[i] > right:
-#                 return i
+            if nums[i] > left and nums[i] > right:
+                return i
 
-#         return -1   # no strict peak
+        return -1   # no strict peak
 
 # Variant B — NON-STRICT Peak (>=) + Duplicates
 
