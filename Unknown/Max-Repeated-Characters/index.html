@@ -270,6 +270,66 @@ class MaxConsecutiveChars:
             i += 1
 
         return result
+
+
+# Variant 1 : Repeating Characters — instead of only the longest run(s),
+# it returns every character that occurs as part of ANY consecutive run
+# of length &gt;= 2 (excluding whitespace), in order of appearance.
+
+# Example 1:
+# Input: text = &quot;taadpoole teeechies eek&quot;
+# Output: [&#x27;a&#x27;, &#x27;o&#x27;, &#x27;e&#x27;, &#x27;e&#x27;]
+# Explanation:
+# Consecutive sequences: &quot;aa&quot; (length 2), &quot;oo&quot; (length 2), &quot;eee&quot; (length 3), &quot;ee&quot; (length 2).
+
+# Example 2:
+# Input: text = &quot;hello&quot;
+# Output: [&#x27;l&#x27;]
+# Explanation:
+# Consecutive sequences: &quot;ll&quot; (length 2). No other characters repeat consecutively.
+
+def find_repeating_characters(text):
+    &quot;&quot;&quot;
+    Find all characters that occur as part of a consecutive run of length
+    &gt;= 2 (excluding whitespace), in order of appearance.
+
+    Time Complexity: O(n)
+    - Single pass through the string
+    - The inner while loop only advances i, so total iterations across
+      both loops is bounded by n
+
+    Space Complexity: O(k)
+    - k = number of qualifying runs (length &gt;= 2)
+
+    Best case: O(1) when no character repeats consecutively
+    Worst case: O(n) when the whole string is one repeated character,
+    or alternates between two repeated-pair blocks, e.g. &quot;aabbcc...&quot;
+    &quot;&quot;&quot;
+    result = []
+    i = 0
+    n = len(text)
+    while i &lt; n:
+        char = text[i]
+
+        # Whitespace breaks a run and is never a candidate itself
+        if char.isspace():
+            i += 1
+            continue
+
+        # Extend the run while the next character matches
+        length = 1
+        while i + 1 &lt; n and text[i + 1] == char:
+            length += 1
+            i += 1
+
+        # Any run of 2+ qualifies, unlike the main solution above, which
+        # only keeps the longest run(s)
+        if length &gt; 1:
+            result.append(char)
+
+        i += 1
+
+    return result
 </code></pre>
       </div>
     </div>
