@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>708. Insert into a Sorted Circular Linked List - LeetCode Solutions</title>
+<link rel="stylesheet" id="prism-theme" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+<style>
+
+:root {
+  --bg:        #ffffff;
+  --surface:   #f7f8fa;
+  --surface2:  #eff1f3;
+  --border:    #e0e0e0;
+  --text:      #1a1a1a;
+  --muted:     #6b7280;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --unknown:   #8b5cf6;
+  --radius:    6px;
+  --code-bg:   #f5f5f5;
+  --code-panel:#f7f8fa;
+  --code-border:#e0e0e0;
+  --code-muted:#6b7280;
+}
+[data-theme="dark"] {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --code-bg:   #1e1e1e;
+  --code-panel:#2d2d2d;
+  --code-border:#3e3e3e;
+  --code-muted:#8d99a6;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #d63384; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+.theme-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 13px;
+  transition: color .15s, border-color .15s; }
+.theme-btn:hover { color: var(--text); border-color: var(--muted); }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy    { color: var(--easy);    background: rgba(44,187,93,0.15); }
+.badge-Medium  { color: var(--medium);  background: rgba(255,161,22,0.15); }
+.badge-Hard    { color: var(--hard);    background: rgba(239,71,67,0.15); }
+.badge-Unknown { color: var(--unknown); background: rgba(139,92,246,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--code-border); background: var(--code-panel); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--code-panel); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--code-panel); border-bottom: 1px solid var(--code-border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--code-muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--code-border); color: var(--code-muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: var(--code-bg) !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--code-panel); border-top: 1px solid var(--code-border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">708. Insert into a Sorted Circular Linked List</span>
+    <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()">🌙</button>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (0)</div>
+        <div class="tab" data-tab="similar">Similar (1)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">708. Insert into a Sorted Circular Linked List</div>
+        <div class="prob-meta">
+          <span class="badge badge-Medium">Medium</span>
+          <span class="tag">Linked List</span>
+        </div>
+        <div class="prob-stats">246.5K / 638.9K (38.6%)</div>
+        <div class="prob-desc"><p>Given a Circular Linked List node, which is sorted in non-descending order, write a function to insert a value <code>insertVal</code> into the list such that it remains a sorted circular list. The given node can be a reference to any single node in the list and may not necessarily be the smallest value in the circular list.</p>
+<p>If there are multiple suitable places for insertion, you may choose any place to insert the new value. After the insertion, the circular list should remain sorted.</p>
+<p>If the list is empty (i.e., the given node is <code>null</code>), you should create a new single circular list and return the reference to that single node. Otherwise, you should return the originally given node.</p>
+<p>Example 1:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> head = [3,4,1], insertVal = 2
+<strong>Output:</strong> [3,4,1,2]
+<strong>Explanation:</strong> In the figure above, there is a sorted circular list of three elements. You are given a reference to the node with value 3, and we need to insert 2 into the list. The new node should be inserted between node 1 and node 3. After the insertion, the list should look like this, and we should still return node 3.
+</code></pre>
+<p>Example 2:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> head = [], insertVal = 1
+<strong>Output:</strong> [1]
+<strong>Explanation:</strong> The list is empty (given head is <code>null</code>). We create a new single circular list and return the reference to that single node.
+</code></pre>
+<p>Example 3:</p>
+<pre class="example-block"><code>
+<strong>Input:</strong> head = [1], insertVal = 0
+<strong>Output:</strong> [1,0]
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li>The number of nodes in the list is in the range <code>[0, 5 * 104]</code>.</li>
+</ul>
+	
+<ul>
+<li><code>-106 &lt;= Node.val, insertVal &lt;= 106</code></li>
+</ul></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        <p class="empty-msg">No hints for this problem.</p>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/insertion-sort-list/" target="_blank">Insertion Sort List</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 708. Insert into a Sorted Circular Linked List
+Difficulty: Medium
+URL: https://leetcode.com/problems/insert-into-a-sorted-circular-linked-list/
+&quot;&quot;&quot;
+
+# Definition for a Node
+class Node:
+    def __init__(self, val=None, next=None):
+        self.val = val
+        self.next = next
+
+
+class Solution:
+    def insert(self, head: &#x27;Optional[Node]&#x27;, insertVal: int) -&gt; &#x27;Node&#x27;:
+        &quot;&quot;&quot;
+        Time Complexity:  O(n) - in the worst case we traverse every node
+                           once before finding the insertion point or
+                           completing a full lap back to head.
+        Space Complexity: O(1) - only a constant number of pointers and
+                           one new node are allocated, regardless of n.
+
+        Key idea about the input:
+        The list IS sorted, but only if you read it starting from the
+        node with the MINIMUM value. e.g. ring 3 -&gt; 4 -&gt; 1 -&gt; back to 3
+        reads as ascending (1 -&gt; 3 -&gt; 4) only if you start at node 1.
+        We are NOT guaranteed to be handed the minimum node - here we&#x27;re
+        handed node 3. So walking forward from head, one edge will look
+        &quot;out of order&quot;: the edge where the max wraps back to the min
+        (here, 4 -&gt; 1). That single seam is the thing this algorithm
+        has to detect explicitly (Case 3 below) - everywhere else the
+        list behaves like an ordinary sorted list.
+        &quot;&quot;&quot;
+
+        # ---- Case 1: empty list ----
+        # There&#x27;s nothing to attach to, so the new node becomes a
+        # circular list of one element: it points to itself.
+        # Can&#x27;t do Node(insertVal, node) in one line - node doesn&#x27;t
+        # exist yet while it&#x27;s still being constructed, so we create
+        # it first, then point next at itself.
+        # Example: head=None, insertVal=1
+        #   BEFORE: (empty)
+        #   AFTER:  1 -&gt; (back to 1)
+        if not head:
+            node = Node(insertVal)
+            node.next = node
+            return node
+
+        # We use two pointers, prev and curr, representing a pair of
+        # adjacent nodes. We slide this pair around the ring looking
+        # for the correct gap to insert into.
+        prev, curr = head, head.next
+
+        # Why while True: we don&#x27;t know in advance how many steps it
+        # will take to find the right gap (Case 2), the wrap-around
+        # seam (Case 3), or a full lap back to head (Case 4) - it
+        # depends entirely on where in the ring we started. A
+        # condition-based loop (e.g. &quot;while curr != head&quot;) would exit
+        # too early and skip checking the pair that includes head
+        # itself.
+        # Example: head=[1,3,4], insertVal=5 (should become new max,
+        # sitting right before the wrap back to the min)
+        #   Ring: 1 -&gt; 3 -&gt; 4 -&gt; back to 1. The seam pair we need to
+        #   check is prev=4, curr=1(=head).
+        #   With &quot;while curr != head&quot;: start prev=1,curr=3 -&gt; advance
+        #   -&gt; prev=3,curr=4 -&gt; advance -&gt; now curr becomes 1, which
+        #   IS head, so the loop condition &quot;curr != head&quot; is False and
+        #   we exit BEFORE ever checking the pair prev=4,curr=1 - the
+        #   exact pair where 5 belongs. We&#x27;d fall through the loop
+        #   with no insertion point found and lose the only valid spot.
+        #   &quot;while True&quot; with an internal break avoids this: it always
+        #   evaluates the prev=4,curr=1 pair first, finds 5&gt;=4 is
+        #   True, and breaks correctly.
+        while True:
+            # ---- Case 2: normal ascending gap ----
+            # If insertVal fits between prev and curr in the usual
+            # sorted sense, this is our spot.
+            # Example: prev=1, curr=3, insertVal=2 -&gt; 1&lt;=2&lt;=3 True -&gt; insert here
+            #   BEFORE:  3 -&gt; 4 -&gt; 1 -&gt; (back to 3)
+            #   AFTER:   3 -&gt; 4 -&gt; 1 -&gt; 2 -&gt; (back to 3)
+            #
+            # We break here because prev and curr are now confirmed to
+            # be the exact pair we want to splice between. There&#x27;s no
+            # need to keep searching once a valid gap is found - we
+            # exit the loop with prev/curr pointing at the insertion
+            # spot, and the splice happens right after the loop.
+            if prev.val &lt;= insertVal &lt;= curr.val:
+                break
+
+            # ---- Case 3: wrap-around point (the &quot;seam&quot;) ----
+            # prev.val &gt; curr.val can only happen at ONE place in a
+            # sorted circular list: where the maximum value loops back
+            # to the minimum value (e.g. ...4 -&gt; 1... in ring [3,4,1]).
+            # Anything bigger than the max, or smaller than the min,
+            # belongs right here.
+            # Example: prev=4 (max), curr=1 (min), insertVal=5
+            #   -&gt; is 5 &gt;= 4? Yes -&gt; insert here (new max)
+            #   BEFORE:  3 -&gt; 4 -&gt; 1 -&gt; (back to 3)
+            #   AFTER:   3 -&gt; 4 -&gt; 5 -&gt; 1 -&gt; (back to 3)
+            # Example: prev=4 (max), curr=1 (min), insertVal=0
+            #   -&gt; is 0 &gt;= 4? No.  is 0 &lt;= 1? Yes -&gt; insert here (new min)
+            #   BEFORE:  3 -&gt; 4 -&gt; 1 -&gt; (back to 3)
+            #   AFTER:   3 -&gt; 4 -&gt; 1 -&gt; 0 -&gt; (back to 3)
+            #
+            # We break here for the same reason as Case 2: prev and
+            # curr now mark the correct insertion gap (this time it&#x27;s
+            # the special max-to-min seam, not an ordinary ascending
+            # pair). Once confirmed, there&#x27;s nothing left to search for.
+            if prev.val &gt; curr.val and (insertVal &gt;= prev.val or insertVal &lt;= curr.val):
+                break
+
+            # Neither case matched at this pair - slide the window forward.
+            prev, curr = curr, curr.next
+
+            # ---- Case 4: completed a full lap ----
+            # Guards against an infinite loop. Fires when every node has
+            # the same value (e.g. [3,3,3]), since neither Case 2 nor
+            # Case 3 ever triggers (prev.val is never strictly greater
+            # than curr.val when all values are equal). Once we&#x27;re back
+            # at head, just insert anywhere - still sorted since all
+            # values are equal.
+            # Example: ring 3 -&gt; 3 -&gt; 3 -&gt; back to 3, insertVal=2
+            #   BEFORE:  3 -&gt; 3 -&gt; 3 -&gt; (back to 3)
+            #   AFTER:   3 -&gt; 2 -&gt; 3 -&gt; 3 -&gt; (back to 3)
+            #
+            # We break here to stop the loop from spinning forever.
+            # Without this check, a list where insertVal never satisfies
+            # Case 2 or Case 3 (all-equal values) would cause prev/curr
+            # to circle the ring endlessly. Breaking here forces
+            # termination after exactly one full lap, and it&#x27;s always
+            # safe to insert right after prev at this point.
+            #
+            # Why AFTER the advance, not before: prev starts equal to
+            # head, so checking &quot;prev is head&quot; before advancing would
+            # be True on iteration 1 (before any real search) and
+            # break immediately. Example: head=[3,4,1], insertVal=2 -&gt;
+            # checking before advance breaks instantly at prev=3,
+            # inserting after 3 without ever checking the 1-&gt;3 gap
+            # where 2 actually belongs. Checking after the advance
+            # ensures &quot;prev is head&quot; only means &quot;one full lap done&quot;.
+            if prev is head:
+                break
+
+        # Splice new_node in between prev and curr.
+        prev.next = Node(insertVal, curr)
+        return head # or, return prev.next if we have to return the reference of the newly created node
+
+# ---- Test case: head=[3,4,1], insertVal=2 ----
+
+# Build the ring manually: 3 -&gt; 4 -&gt; 1 -&gt; back to 3
+node3 = Node(3)
+node4 = Node(4)
+node1 = Node(1)
+
+# node3.next = node4
+# node4.next = node1
+# node1.next = node3   # closes the circle back to the starting node
+
+# We hand the solution a reference to node3 (not necessarily the min)
+given_node = node3
+insert_val = 2
+
+solution = Solution()
+result_head = solution.insert(given_node, insert_val)
+
+# ---- Manually walk the result to see the values, starting at result_head ----
+print(result_head.val)              # 3
+print(result_head.next.val)         # 4
+print(result_head.next.next.val)    # 1
+print(result_head.next.next.next.val)          # 2 (the newly inserted node)
+print(result_head.next.next.next.next.val)      # 3 (confirms it wraps back)
+print(result_head.next.next.next.next is result_head)  # True -&gt; confirms circularity
+                 
+# Write as a testcase
+
+def test_given_node_not_minimum(self):
+    # Build the ring inside-out: 3 -&gt; 4 -&gt; 1 -&gt; back to 3.
+    # node3 must exist first since Node(1, node3) references it,
+    # then the whole chain is nested into node3.next in one line.
+    node3 = Node(3)
+    node3.next = Node(4, Node(1, node3))
+
+    s = Solution()
+
+    # Insert 2 into the ring, given a reference to node3 - which is
+    # NOT the minimum value in the list. This exercises the &quot;given
+    # node may not be the smallest&quot; property directly: the algorithm
+    # has to walk 3 -&gt; 4 -&gt; 1 -&gt; 3 and find the wrap-around gap
+    # between 1 and 3 before it can place 2 correctly.
+    assert node3 is s.insert(node3, 2)  # must return the original node
+
+    # Walk the resulting ring node by node and check it now reads
+    # 3 -&gt; 4 -&gt; 1 -&gt; 2 -&gt; back to 3.
+    assert 3 == node3.val
+    assert 4 == node3.next.val
+    assert 1 == node3.next.next.val
+    assert 2 == node3.next.next.next.val          # newly inserted node
+    assert 3 == node3.next.next.next.next.val     # confirms it wraps back to node3
+    </code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Medium/0695-Max-Area-of-Island/">&#8592; 695. Max Area of Island</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Easy/0766-Toeplitz-Matrix/">766. Toeplitz Matrix &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+<script>
+(function() {
+  var t = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('theme-toggle').textContent = t === 'dark' ? '☀️' : '🌙';
+  if (t === 'dark') document.getElementById('prism-theme').href = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css';
+})();
+function toggleTheme() {
+  var t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('theme', t);
+  document.getElementById('theme-toggle').textContent = t === 'dark' ? '☀️' : '🌙';
+  document.getElementById('prism-theme').href = t === 'dark'
+    ? 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css'
+    : 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css';
+}
+</script>
+</body>
+</html>
