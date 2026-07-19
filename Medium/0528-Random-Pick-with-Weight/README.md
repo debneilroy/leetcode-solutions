@@ -2,13 +2,13 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Array, Math, Binary Search, Prefix Sum, Randomized  
-**Accepted:** 705K / 1.4M (49.1%)
+**Accepted:** 707.8K / 1.4M (49.2%)
 
 ---
 
 ## Problem
 
-You are given a **0-indexed** array of positive integers `w` where `w[i]` describes the **weight** of the `ith` index.
+You are given a **0-indexed** array of positive integers `w` where `w[i]` describes the **weight** of the `i^th` index.
 
 You need to implement the function `pickIndex()`, which **randomly** picks an index in the range `[0, w.length - 1]` (**inclusive**) and returns it. The **probability** of picking an index `i` is `w[i] / sum(w)`.
 
@@ -68,11 +68,11 @@ and so on.
 **Constraints:**
 
 	
-- `1 <= w.length <= 104`
+- `1 <= w.length <= 10^4`
 	
-- `1 <= w[i] <= 105`
+- `1 <= w[i] <= 10^5`
 	
-- `pickIndex` will be called at most `104` times.
+- `pickIndex` will be called at most `10^4` times.
 
 ---
 
