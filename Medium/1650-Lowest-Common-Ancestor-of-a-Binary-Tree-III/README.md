@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Hash Table, Two Pointers, Tree, Binary Tree  
-**Accepted:** 408.6K / 492.2K (83.0%)
+**Accepted:** 409K / 492.7K (83.0%)
 
 ---
 
@@ -23,7 +23,7 @@ class Node {
 
 ```
 
-According to the **definition of LCA on Wikipedia**: "The lowest common ancestor of two nodes p and q in a tree T is the lowest node that has both p and q as descendants (where we allow a node to be a descendant of itself)."
+According to the **[definition of LCA on Wikipedia](https://en.wikipedia.org/wiki/Lowest_common_ancestor)**: "The lowest common ancestor of two nodes p and q in a tree T is the lowest node that has both p and q as descendants (where we allow a node to be a descendant of itself)."
 
  
 
@@ -61,9 +61,9 @@ Example 3:
 **Constraints:**
 
 	
-- The number of nodes in the tree is in the range `[2, 105]`.
+- The number of nodes in the tree is in the range `[2, 10^5]`.
 	
-- `-109 <= Node.val <= 109`
+- `-10^9 <= Node.val <= 10^9`
 	
 - All `Node.val` are **unique**.
 	
