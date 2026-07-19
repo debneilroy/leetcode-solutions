@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Array, Hash Table, Divide and Conquer, Sorting, Heap (Priority Queue), Bucket Sort, Counting, Quickselect  
-**Accepted:** 3.7M / 5.5M (66.7%)
+**Accepted:** 3.7M / 5.6M (66.9%)
 
 ---
 
@@ -35,9 +35,9 @@ Example 3:
 **Constraints:**
 
 	
-- `1 <= nums.length <= 105`
+- `1 <= nums.length <= 10^5`
 	
-- `-104 <= nums[i] <= 104`
+- `-10^4 <= nums[i] <= 10^4`
 	
 - `k` is in the range `[1, the number of unique elements in the array]`.
 	
