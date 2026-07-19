@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Math, Greedy  
-**Accepted:** 518.5K / 995.7K (52.1%)
+**Accepted:** 519.2K / 997K (52.1%)
 
 ---
 
@@ -39,7 +39,7 @@ Example 2:
 **Constraints:**
 
 	
-- `0 <= num <= 108`
+- `0 <= num <= 10^8`
 
 ---
 
