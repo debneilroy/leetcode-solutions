@@ -2,15 +2,15 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Hash Table, Depth-First Search, Breadth-First Search, Graph Theory  
-**Accepted:** 1.9M / 3M (65.6%)
+**Accepted:** 2M / 3M (65.8%)
 
 ---
 
 ## Problem
 
-Given a reference of a node in a **connected** undirected graph.
+Given a reference of a node in a **[connected](https://en.wikipedia.org/wiki/Connectivity_(graph_theory)#Connected_graph)** undirected graph.
 
-Return a **deep copy** (clone) of the graph.
+Return a [**deep copy**](https://en.wikipedia.org/wiki/Object_copying#Deep_copy) (clone) of the graph.
 
 Each node in the graph contains a value (`int`) and a list (`List[Node]`) of its neighbors.
 
