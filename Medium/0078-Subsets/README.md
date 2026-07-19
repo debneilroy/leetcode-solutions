@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Array, Backtracking, Bit Manipulation  
-**Accepted:** 3.1M / 3.8M (82.5%)
+**Accepted:** 3.2M / 3.8M (82.6%)
 
 ---
 
