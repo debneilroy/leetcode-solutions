@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Array, Binary Search  
-**Accepted:** 3.4M / 6.9M (49.1%)
+**Accepted:** 3.5M / 7M (49.3%)
 
 ---
 
@@ -45,13 +45,13 @@ Example 3:
 **Constraints:**
 
 	
-- `0 <= nums.length <= 105`
+- `0 <= nums.length <= 10^5`
 	
-- `-109 <= nums[i] <= 109`
+- `-10^9 <= nums[i] <= 10^9`
 	
 - `nums` is a non-decreasing array.
 	
-- `-109 <= target <= 109`
+- `-10^9 <= target <= 10^9`
 
 ---
 
