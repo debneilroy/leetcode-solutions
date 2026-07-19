@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** String, Stack  
-**Accepted:** 431.5K / 702K (61.5%)
+**Accepted:** 435.2K / 706.6K (61.6%)
 
 ---
 
@@ -51,9 +51,9 @@ Example 3:
 **Constraints:**
 
 	
-- `1 <= s.length <= 105`
+- `1 <= s.length <= 10^5`
 	
-- `2 <= k <= 104`
+- `2 <= k <= 10^4`
 	
 - `s` only contains lowercase English letters.
 
