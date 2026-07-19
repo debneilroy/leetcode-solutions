@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Array, Hash Table, Design, Matrix, Simulation  
-**Accepted:** 318.2K / 541.7K (58.7%)
+**Accepted:** 319.2K / 543.3K (58.8%)
 
 ---
 
@@ -98,11 +98,11 @@ ticTacToe.move(2, 1, 1); // return 1 (player 1 wins)
 	
 - `(row, col)` are **unique** for each different call to `move`.
 	
-- At most `n2` calls will be made to `move`.
+- At most `n^2` calls will be made to `move`.
 
  
 
-**Follow-up:** Could you do better than `O(n2)` per `move()` operation?
+**Follow-up:** Could you do better than `O(n^2)` per `move()` operation?
 
 ---
 
