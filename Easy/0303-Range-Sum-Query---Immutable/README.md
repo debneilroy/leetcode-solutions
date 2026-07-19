@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Array, Design, Prefix Sum  
-**Accepted:** 960.2K / 1.3M (72.6%)
+**Accepted:** 978K / 1.3M (72.8%)
 
 ---
 
@@ -45,13 +45,13 @@ numArray.sumRange(0, 5); // return (-2) + 0 + 3 + (-5) + 2 + (-1) = -3
 **Constraints:**
 
 	
-- `1 <= nums.length <= 104`
+- `1 <= nums.length <= 10^4`
 	
-- `-105 <= nums[i] <= 105`
+- `-10^5 <= nums[i] <= 10^5`
 	
 - `0 <= left <= right < nums.length`
 	
-- At most `104` calls will be made to `sumRange`.
+- At most `10^4` calls will be made to `sumRange`.
 
 ---
 
