@@ -177,17 +177,17 @@ sup { font-size: 10px; }
           <span class="badge badge-Medium">Medium</span>
           <span class="tag">Array</span><span class="tag">Stack</span>
         </div>
-        <div class="prob-stats">368.4K / 556.3K (66.2%)</div>
+        <div class="prob-stats">371.9K / 561.3K (66.2%)</div>
         <div class="prob-desc"><p>On a <strong>single-threaded</strong> CPU, we execute a program containing <code>n</code> functions. Each function has a unique ID between 0 and <code>n - 1</code>.</p>
-<p>Function calls are <strong>stored in a call stack</strong>: when a function call starts, its ID is pushed onto the stack, and when a function call ends, its ID is popped off the stack. The function whose ID is at the top of the stack is <strong>the current function being executed</strong>. Each time a function starts or ends, we write a log with the ID, whether it started or ended, and the timestamp.</p>
-<p>You are given a list <code>logs</code>, where <code>logs[i]</code> represents the <code>ith</code> log message formatted as a string <code>&quot;{function_id}:{&quot;start&quot; | &quot;end&quot;}:{timestamp}&quot;</code>. For example, <code>&quot;0:start:3&quot;</code> means a function call with function ID 0 <strong>started at the beginning</strong> of timestamp 3, and <code>&quot;1:end:2&quot;</code> means a function call with function ID 1 <strong>ended at the end</strong> of timestamp 2. Note that a function can be called multiple times, possibly recursively.</p>
+<p>Function calls are <strong>stored in a <a href="https://en.wikipedia.org/wiki/Call_stack" target="_blank">call stack</a></strong>: when a function call starts, its ID is pushed onto the stack, and when a function call ends, its ID is popped off the stack. The function whose ID is at the top of the stack is <strong>the current function being executed</strong>. Each time a function starts or ends, we write a log with the ID, whether it started or ended, and the timestamp.</p>
+<p>You are given a list <code>logs</code>, where <code>logs[i]</code> represents the <code>i^th</code> log message formatted as a string <code>&quot;{function_id}:{&quot;start&quot; | &quot;end&quot;}:{timestamp}&quot;</code>. For example, <code>&quot;0:start:3&quot;</code> means a function call with function ID 0 <strong>started at the beginning</strong> of timestamp 3, and <code>&quot;1:end:2&quot;</code> means a function call with function ID 1 <strong>ended at the end</strong> of timestamp 2. Note that a function can be called multiple times, possibly recursively.</p>
 <p>A function's <strong>exclusive time</strong> is the sum of execution times for all function calls in the program. For example, if a function is called twice, one call executing for 2 time units and another call executing for 1 time unit, the <strong>exclusive time</strong> is <code>2 + 1 = 3</code>.</p>
-<p>Return <em>the <strong>exclusive time</strong> of each function in an array, where the value at the </em><code>ith</code><em> index represents the exclusive time for the function with ID </em><code>i</code>.</p>
+<p>Return <em>the <strong>exclusive time</strong> of each function in an array, where the value at the </em><code>i^th</code><em> index represents the exclusive time for the function with ID </em><code>i</code>.</p>
 <p>Example 1:</p>
 <pre class="example-block"><code>
-<strong>Input:</strong> n = 2, logs = [&quot;0:start:0&quot;,&quot;1:start:2&quot;,&quot;1:end:5&quot;,&quot;0:end:6&quot;]
-<strong>Output:</strong> [3,4]
-<strong>Explanation:</strong>
+**Input:** n = 2, logs = [&quot;0:start:0&quot;,&quot;1:start:2&quot;,&quot;1:end:5&quot;,&quot;0:end:6&quot;]
+**Output:** [3,4]
+**Explanation:**
 Function 0 starts at the beginning of time 0, then it executes 2 for units of time and reaches the end of time 1.
 Function 1 starts at the beginning of time 2, executes for 4 units of time, and ends at the end of time 5.
 Function 0 resumes execution at the beginning of time 6 and executes for 1 unit of time.
@@ -195,9 +195,9 @@ So function 0 spends 2 + 1 = 3 units of total time executing, and function 1 spe
 </code></pre>
 <p>Example 2:</p>
 <pre class="example-block"><code>
-<strong>Input:</strong> n = 1, logs = [&quot;0:start:0&quot;,&quot;0:start:2&quot;,&quot;0:end:5&quot;,&quot;0:start:6&quot;,&quot;0:end:6&quot;,&quot;0:end:7&quot;]
-<strong>Output:</strong> [8]
-<strong>Explanation:</strong>
+**Input:** n = 1, logs = [&quot;0:start:0&quot;,&quot;0:start:2&quot;,&quot;0:end:5&quot;,&quot;0:start:6&quot;,&quot;0:end:6&quot;,&quot;0:end:7&quot;]
+**Output:** [8]
+**Explanation:**
 Function 0 starts at the beginning of time 0, executes for 2 units of time, and recursively calls itself.
 Function 0 (recursive call) starts at the beginning of time 2 and executes for 4 units of time.
 Function 0 (initial call) resumes execution then immediately calls itself again.
@@ -207,9 +207,9 @@ So function 0 spends 2 + 4 + 1 + 1 = 8 units of total time executing.
 </code></pre>
 <p>Example 3:</p>
 <pre class="example-block"><code>
-<strong>Input:</strong> n = 2, logs = [&quot;0:start:0&quot;,&quot;0:start:2&quot;,&quot;0:end:5&quot;,&quot;1:start:6&quot;,&quot;1:end:6&quot;,&quot;0:end:7&quot;]
-<strong>Output:</strong> [7,1]
-<strong>Explanation:</strong>
+**Input:** n = 2, logs = [&quot;0:start:0&quot;,&quot;0:start:2&quot;,&quot;0:end:5&quot;,&quot;1:start:6&quot;,&quot;1:end:6&quot;,&quot;0:end:7&quot;]
+**Output:** [7,1]
+**Explanation:**
 Function 0 starts at the beginning of time 0, executes for 2 units of time, and recursively calls itself.
 Function 0 (recursive call) starts at the beginning of time 2 and executes for 4 units of time.
 Function 0 (initial call) resumes execution then immediately calls function 1.
@@ -231,7 +231,7 @@ So function 0 spends 2 + 4 + 1 = 7 units of total time executing, and function 1
 </ul>
 	
 <ul>
-<li><code>0 &lt;= timestamp &lt;= 109</code></li>
+<li><code>0 &lt;= timestamp &lt;= 10^9</code></li>
 </ul>
 	
 <ul>
