@@ -177,7 +177,7 @@ sup { font-size: 10px; }
           <span class="badge badge-Medium">Medium</span>
           <span class="tag">Hash Table</span><span class="tag">Two Pointers</span><span class="tag">Tree</span><span class="tag">Binary Tree</span>
         </div>
-        <div class="prob-stats">408.6K / 492.2K (83.0%)</div>
+        <div class="prob-stats">409K / 492.7K (83.0%)</div>
         <div class="prob-desc"><p>Given two nodes of a binary tree <code>p</code> and <code>q</code>, return <em>their lowest common ancestor (LCA)</em>.</p>
 <p>Each node will have a reference to its parent node. The definition for <code>Node</code> is below:</p>
 <pre class="example-block"><code>
@@ -188,31 +188,31 @@ class Node {
     public Node parent;
 }
 </code></pre>
-<p>According to the <strong>definition of LCA on Wikipedia</strong>: "The lowest common ancestor of two nodes p and q in a tree T is the lowest node that has both p and q as descendants (where we allow a node to be a descendant of itself)."</p>
+<p>According to the <strong><a href="https://en.wikipedia.org/wiki/Lowest_common_ancestor" target="_blank">definition of LCA on Wikipedia</a></strong>: "The lowest common ancestor of two nodes p and q in a tree T is the lowest node that has both p and q as descendants (where we allow a node to be a descendant of itself)."</p>
 <p>Example 1:</p>
 <pre class="example-block"><code>
-<strong>Input:</strong> root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
-<strong>Output:</strong> 3
-<strong>Explanation:</strong> The LCA of nodes 5 and 1 is 3.
+**Input:** root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
+**Output:** 3
+**Explanation:** The LCA of nodes 5 and 1 is 3.
 </code></pre>
 <p>Example 2:</p>
 <pre class="example-block"><code>
-<strong>Input:</strong> root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 4
-<strong>Output:</strong> 5
-<strong>Explanation:</strong> The LCA of nodes 5 and 4 is 5 since a node can be a descendant of itself according to the LCA definition.
+**Input:** root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 4
+**Output:** 5
+**Explanation:** The LCA of nodes 5 and 4 is 5 since a node can be a descendant of itself according to the LCA definition.
 </code></pre>
 <p>Example 3:</p>
 <pre class="example-block"><code>
-<strong>Input:</strong> root = [1,2], p = 1, q = 2
-<strong>Output:</strong> 1
+**Input:** root = [1,2], p = 1, q = 2
+**Output:** 1
 </code></pre>
 <p><strong>Constraints:</strong></p>
 <ul>
-<li>The number of nodes in the tree is in the range <code>[2, 105]</code>.</li>
+<li>The number of nodes in the tree is in the range <code>[2, 10^5]</code>.</li>
 </ul>
 	
 <ul>
-<li><code>-109 &lt;= Node.val &lt;= 109</code></li>
+<li><code>-10^9 &lt;= Node.val &lt;= 10^9</code></li>
 </ul>
 	
 <ul>
