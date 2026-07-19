@@ -17,10 +17,10 @@ For problems not on LeetCode (e.g. company interview questions), add a folder un
 | Difficulty | Solved |
 |------------|--------|
 | 🟢 Easy    | 16 |
-| 🟡 Medium  | 33 |
+| 🟡 Medium  | 34 |
 | 🔴 Hard    | 5 |
-| ❓ Unknown | 1 |
-| **Total**  | **55** |
+| ❓ Unknown | 2 |
+| **Total**  | **57** |
 
 ## 🟢 Easy
 
@@ -71,6 +71,7 @@ For problems not on LeetCode (e.g. company interview questions), add a folder un
 | 647 | [Palindromic Substrings](Medium/0647-Palindromic-Substrings/README.md) | [Python](Medium/0647-Palindromic-Substrings/solution.py) |
 | 670 | [Maximum Swap](Medium/0670-Maximum-Swap/README.md) | [Python](Medium/0670-Maximum-Swap/solution.py) |
 | 695 | [Max Area of Island](Medium/0695-Max-Area-of-Island/README.md) | [Python](Medium/0695-Max-Area-of-Island/solution.py) |
+| 708 | [Insert into a Sorted Circular Linked List](Medium/0708-Insert-into-a-Sorted-Circular-Linked-List/README.md) | [Python](Medium/0708-Insert-into-a-Sorted-Circular-Linked-List/solution.py) |
 | 863 | [All Nodes Distance K in Binary Tree](Medium/0863-All-Nodes-Distance-K-in-Binary-Tree/README.md) | [Python](Medium/0863-All-Nodes-Distance-K-in-Binary-Tree/solution.py) |
 | 1004 | [Max Consecutive Ones III](Medium/1004-Max-Consecutive-Ones-III/README.md) | [Python](Medium/1004-Max-Consecutive-Ones-III/solution.py) |
 | 1091 | [Shortest Path in Binary Matrix](Medium/1091-Shortest-Path-in-Binary-Matrix/README.md) | [Python](Medium/1091-Shortest-Path-in-Binary-Matrix/solution.py) |
@@ -96,3 +97,4 @@ For problems not on LeetCode (e.g. company interview questions), add a folder un
 | # | Title | Solution |
 |---|-------|----------|
 | 7 | [Max Repeated Characters](Unknown/Max-Repeated-Characters/README.md) | [Python](Unknown/Max-Repeated-Characters/solution.py) |
+| 8 | [Tally Service](Unknown/Tally-Service/README.md) | [Python](Unknown/Tally-Service/solution.py) |
