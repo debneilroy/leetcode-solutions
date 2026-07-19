@@ -2,13 +2,13 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Hash Table, Linked List, Design, Doubly-Linked List  
-**Accepted:** 2.7M / 5.6M (47.6%)
+**Accepted:** 2.7M / 5.6M (47.7%)
 
 ---
 
 ## Problem
 
-Design a data structure that follows the constraints of a **Least Recently Used (LRU) cache**.
+Design a data structure that follows the constraints of a **[Least Recently Used (LRU) cache](https://en.wikipedia.org/wiki/Cache_replacement_policies#LRU)**.
 
 Implement the `LRUCache` class:
 
@@ -54,11 +54,11 @@ lRUCache.get(4);    // return 4
 	
 - `1 <= capacity <= 3000`
 	
-- `0 <= key <= 104`
+- `0 <= key <= 10^4`
 	
-- `0 <= value <= 105`
+- `0 <= value <= 10^5`
 	
-- At most `2 * 105` calls will be made to `get` and `put`.
+- At most `2 * 10^5` calls will be made to `get` and `put`.
 
 ---
 
