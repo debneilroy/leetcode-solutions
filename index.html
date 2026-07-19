@@ -134,7 +134,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
 <div class="hero">
   <h1>My LeetCode Solutions</h1>
   <p>All problems solved in Python3, organized by difficulty.</p>
-  <p style="color:var(--muted);font-size:12px;margin-top:6px;">Last updated: Jul 19, 2026 at 10:14 PM</p>
+  <p style="color:var(--muted);font-size:12px;margin-top:6px;">Last updated: Jul 19, 2026 at 10:26 PM</p>
 </div>
 
 <div class="stats-bar">
@@ -156,16 +156,16 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
   </div>
   <div class="stat-card">
     <div class="stat-label" style="color:var(--unknown);">Unknown</div>
-    <div class="stat-val" style="color:var(--unknown);">0</div>
+    <div class="stat-val" style="color:var(--unknown);">2</div>
   </div>
 </div>
 
 <div class="filters">
-  <button class="filter-btn all active" onclick="filter('all', this)">All</button>
-  <button class="filter-btn easy"   onclick="filter('Easy', this)">Easy</button>
-  <button class="filter-btn medium" onclick="filter('Medium', this)">Medium</button>
-  <button class="filter-btn hard"   onclick="filter('Hard', this)">Hard</button>
-  <button class="filter-btn unknown" onclick="filter('Unknown', this)">Unknown</button>
+  <button class="filter-btn all active" onclick="filter('diff', 'all', this)">All</button>
+  <button class="filter-btn easy"   onclick="filter('diff', 'Easy', this)">Easy</button>
+  <button class="filter-btn medium" onclick="filter('diff', 'Medium', this)">Medium</button>
+  <button class="filter-btn hard"   onclick="filter('diff', 'Hard', this)">Hard</button>
+  <button class="filter-btn unknown" onclick="filter('source', 'unknown', this)">Unknown</button>
 </div>
 
 <div class="table-wrap">
@@ -178,7 +178,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     </thead>
     <tbody id="probTable">
       
-<tr class="prob-row" data-diff="Easy">
+<tr class="prob-row" data-diff="Easy" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">1</td>
   <td><a href="Easy/0001-Two-Sum/index.html">Two Sum</a></td>
   <td><span class="badge badge-Easy">Easy</span></td>
@@ -187,7 +187,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Easy/0001-Two-Sum/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Easy">
+<tr class="prob-row" data-diff="Easy" data-source="unknown">
   <td style="color:var(--muted);width:60px;">7</td>
   <td><a href="Unknown/Max-Repeated-Characters/index.html">Max Repeated Characters</a></td>
   <td><span class="badge badge-Easy">Easy</span></td>
@@ -196,7 +196,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Unknown/Max-Repeated-Characters/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Easy">
+<tr class="prob-row" data-diff="Easy" data-source="unknown">
   <td style="color:var(--muted);width:60px;">8</td>
   <td><a href="Unknown/Tally-Service/index.html">Tally Service</a></td>
   <td><span class="badge badge-Easy">Easy</span></td>
@@ -205,7 +205,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Unknown/Tally-Service/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">31</td>
   <td><a href="Medium/0031-Next-Permutation/index.html">Next Permutation</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -214,7 +214,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0031-Next-Permutation/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">34</td>
   <td><a href="Medium/0034-Find-First-and-Last-Position-of-Element-in-Sorted-Array/index.html">Find First and Last Position of Element in Sorted Array</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -223,7 +223,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0034-Find-First-and-Last-Position-of-Element-in-Sorted-Array/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">50</td>
   <td><a href="Medium/0050-Powx-n/index.html">Pow(x, n)</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -232,7 +232,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0050-Powx-n/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">56</td>
   <td><a href="Medium/0056-Merge-Intervals/index.html">Merge Intervals</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -241,7 +241,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0056-Merge-Intervals/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Hard">
+<tr class="prob-row" data-diff="Hard" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">65</td>
   <td><a href="Hard/0065-Valid-Number/index.html">Valid Number</a></td>
   <td><span class="badge badge-Hard">Hard</span></td>
@@ -250,7 +250,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Hard/0065-Valid-Number/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">71</td>
   <td><a href="Medium/0071-Simplify-Path/index.html">Simplify Path</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -259,7 +259,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0071-Simplify-Path/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">78</td>
   <td><a href="Medium/0078-Subsets/index.html">Subsets</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -268,7 +268,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0078-Subsets/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Easy">
+<tr class="prob-row" data-diff="Easy" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">88</td>
   <td><a href="Easy/0088-Merge-Sorted-Array/index.html">Merge Sorted Array</a></td>
   <td><span class="badge badge-Easy">Easy</span></td>
@@ -277,7 +277,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Easy/0088-Merge-Sorted-Array/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">117</td>
   <td><a href="Medium/0117-Populating-Next-Right-Pointers-in-Each-Node-II/index.html">Populating Next Right Pointers in Each Node II</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -286,7 +286,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0117-Populating-Next-Right-Pointers-in-Each-Node-II/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Easy">
+<tr class="prob-row" data-diff="Easy" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">121</td>
   <td><a href="Easy/0121-Best-Time-to-Buy-and-Sell-Stock/index.html">Best Time to Buy and Sell Stock</a></td>
   <td><span class="badge badge-Easy">Easy</span></td>
@@ -295,7 +295,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Easy/0121-Best-Time-to-Buy-and-Sell-Stock/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">133</td>
   <td><a href="Medium/0133-Clone-Graph/index.html">Clone Graph</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -304,7 +304,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0133-Clone-Graph/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">146</td>
   <td><a href="Medium/0146-LRU-Cache/index.html">LRU Cache</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -313,7 +313,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0146-LRU-Cache/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">162</td>
   <td><a href="Medium/0162-Find-Peak-Element/index.html">Find Peak Element</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -322,7 +322,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0162-Find-Peak-Element/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Easy">
+<tr class="prob-row" data-diff="Easy" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">163</td>
   <td><a href="Easy/0163-Missing-Ranges/index.html">Missing Ranges</a></td>
   <td><span class="badge badge-Easy">Easy</span></td>
@@ -331,7 +331,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Easy/0163-Missing-Ranges/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">199</td>
   <td><a href="Medium/0199-Binary-Tree-Right-Side-View/index.html">Binary Tree Right Side View</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -340,7 +340,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0199-Binary-Tree-Right-Side-View/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">207</td>
   <td><a href="Medium/0207-Course-Schedule/index.html">Course Schedule</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -349,7 +349,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0207-Course-Schedule/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">227</td>
   <td><a href="Medium/0227-Basic-Calculator-II/index.html">Basic Calculator II</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -358,7 +358,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0227-Basic-Calculator-II/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">236</td>
   <td><a href="Medium/0236-Lowest-Common-Ancestor-of-a-Binary-Tree/index.html">Lowest Common Ancestor of a Binary Tree</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -367,7 +367,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0236-Lowest-Common-Ancestor-of-a-Binary-Tree/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Easy">
+<tr class="prob-row" data-diff="Easy" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">270</td>
   <td><a href="Easy/0270-Closest-Binary-Search-Tree-Value/index.html">Closest Binary Search Tree Value</a></td>
   <td><span class="badge badge-Easy">Easy</span></td>
@@ -376,7 +376,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Easy/0270-Closest-Binary-Search-Tree-Value/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Easy">
+<tr class="prob-row" data-diff="Easy" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">283</td>
   <td><a href="Easy/0283-Move-Zeroes/index.html">Move Zeroes</a></td>
   <td><span class="badge badge-Easy">Easy</span></td>
@@ -385,7 +385,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Easy/0283-Move-Zeroes/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Easy">
+<tr class="prob-row" data-diff="Easy" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">303</td>
   <td><a href="Easy/0303-Range-Sum-Query---Immutable/index.html">Range Sum Query - Immutable</a></td>
   <td><span class="badge badge-Easy">Easy</span></td>
@@ -394,7 +394,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Easy/0303-Range-Sum-Query---Immutable/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">314</td>
   <td><a href="Medium/0314-Binary-Tree-Vertical-Order-Traversal/index.html">Binary Tree Vertical Order Traversal</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -403,7 +403,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0314-Binary-Tree-Vertical-Order-Traversal/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">339</td>
   <td><a href="Medium/0339-Nested-List-Weight-Sum/index.html">Nested List Weight Sum</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -412,7 +412,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0339-Nested-List-Weight-Sum/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Easy">
+<tr class="prob-row" data-diff="Easy" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">346</td>
   <td><a href="Easy/0346-Moving-Average-from-Data-Stream/index.html">Moving Average from Data Stream</a></td>
   <td><span class="badge badge-Easy">Easy</span></td>
@@ -421,7 +421,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Easy/0346-Moving-Average-from-Data-Stream/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">347</td>
   <td><a href="Medium/0347-Top-K-Frequent-Elements/index.html">Top K Frequent Elements</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -430,7 +430,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0347-Top-K-Frequent-Elements/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">348</td>
   <td><a href="Medium/0348-Design-Tic-Tac-Toe/index.html">Design Tic-Tac-Toe</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -439,7 +439,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0348-Design-Tic-Tac-Toe/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Easy">
+<tr class="prob-row" data-diff="Easy" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">408</td>
   <td><a href="Easy/0408-Valid-Word-Abbreviation/index.html">Valid Word Abbreviation</a></td>
   <td><span class="badge badge-Easy">Easy</span></td>
@@ -448,7 +448,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Easy/0408-Valid-Word-Abbreviation/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Hard">
+<tr class="prob-row" data-diff="Hard" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">489</td>
   <td><a href="Hard/0489-Robot-Room-Cleaner/index.html">Robot Room Cleaner</a></td>
   <td><span class="badge badge-Hard">Hard</span></td>
@@ -457,7 +457,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Hard/0489-Robot-Room-Cleaner/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">528</td>
   <td><a href="Medium/0528-Random-Pick-with-Weight/index.html">Random Pick with Weight</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -466,7 +466,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0528-Random-Pick-with-Weight/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Easy">
+<tr class="prob-row" data-diff="Easy" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">543</td>
   <td><a href="Easy/0543-Diameter-of-Binary-Tree/index.html">Diameter of Binary Tree</a></td>
   <td><span class="badge badge-Easy">Easy</span></td>
@@ -475,7 +475,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Easy/0543-Diameter-of-Binary-Tree/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">560</td>
   <td><a href="Medium/0560-Subarray-Sum-Equals-K/index.html">Subarray Sum Equals K</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -484,7 +484,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0560-Subarray-Sum-Equals-K/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Easy">
+<tr class="prob-row" data-diff="Easy" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">605</td>
   <td><a href="Easy/0605-Can-Place-Flowers/index.html">Can Place Flowers</a></td>
   <td><span class="badge badge-Easy">Easy</span></td>
@@ -493,7 +493,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Easy/0605-Can-Place-Flowers/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">636</td>
   <td><a href="Medium/0636-Exclusive-Time-of-Functions/index.html">Exclusive Time of Functions</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -502,7 +502,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0636-Exclusive-Time-of-Functions/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">647</td>
   <td><a href="Medium/0647-Palindromic-Substrings/index.html">Palindromic Substrings</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -511,7 +511,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0647-Palindromic-Substrings/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">670</td>
   <td><a href="Medium/0670-Maximum-Swap/index.html">Maximum Swap</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -520,7 +520,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0670-Maximum-Swap/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Easy">
+<tr class="prob-row" data-diff="Easy" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">680</td>
   <td><a href="Easy/0680-Valid-Palindrome-II/index.html">Valid Palindrome II</a></td>
   <td><span class="badge badge-Easy">Easy</span></td>
@@ -529,7 +529,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Easy/0680-Valid-Palindrome-II/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">695</td>
   <td><a href="Medium/0695-Max-Area-of-Island/index.html">Max Area of Island</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -538,7 +538,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0695-Max-Area-of-Island/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">708</td>
   <td><a href="Medium/0708-Insert-into-a-Sorted-Circular-Linked-List/index.html">Insert into a Sorted Circular Linked List</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -547,7 +547,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0708-Insert-into-a-Sorted-Circular-Linked-List/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Easy">
+<tr class="prob-row" data-diff="Easy" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">766</td>
   <td><a href="Easy/0766-Toeplitz-Matrix/index.html">Toeplitz Matrix</a></td>
   <td><span class="badge badge-Easy">Easy</span></td>
@@ -556,7 +556,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Easy/0766-Toeplitz-Matrix/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Hard">
+<tr class="prob-row" data-diff="Hard" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">827</td>
   <td><a href="Hard/0827-Making-A-Large-Island/index.html">Making A Large Island</a></td>
   <td><span class="badge badge-Hard">Hard</span></td>
@@ -565,7 +565,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Hard/0827-Making-A-Large-Island/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">863</td>
   <td><a href="Medium/0863-All-Nodes-Distance-K-in-Binary-Tree/index.html">All Nodes Distance K in Binary Tree</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -574,7 +574,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/0863-All-Nodes-Distance-K-in-Binary-Tree/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Easy">
+<tr class="prob-row" data-diff="Easy" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">938</td>
   <td><a href="Easy/0938-Range-Sum-of-BST/index.html">Range Sum of BST</a></td>
   <td><span class="badge badge-Easy">Easy</span></td>
@@ -583,7 +583,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Easy/0938-Range-Sum-of-BST/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Hard">
+<tr class="prob-row" data-diff="Hard" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">987</td>
   <td><a href="Hard/0987-Vertical-Order-Traversal-of-a-Binary-Tree/index.html">Vertical Order Traversal of a Binary Tree</a></td>
   <td><span class="badge badge-Hard">Hard</span></td>
@@ -592,7 +592,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Hard/0987-Vertical-Order-Traversal-of-a-Binary-Tree/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">1004</td>
   <td><a href="Medium/1004-Max-Consecutive-Ones-III/index.html">Max Consecutive Ones III</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -601,7 +601,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/1004-Max-Consecutive-Ones-III/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Easy">
+<tr class="prob-row" data-diff="Easy" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">1047</td>
   <td><a href="Easy/1047-Remove-All-Adjacent-Duplicates-In-String/index.html">Remove All Adjacent Duplicates In String</a></td>
   <td><span class="badge badge-Easy">Easy</span></td>
@@ -610,7 +610,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Easy/1047-Remove-All-Adjacent-Duplicates-In-String/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">1091</td>
   <td><a href="Medium/1091-Shortest-Path-in-Binary-Matrix/index.html">Shortest Path in Binary Matrix</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -619,7 +619,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/1091-Shortest-Path-in-Binary-Matrix/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">1209</td>
   <td><a href="Medium/1209-Remove-All-Adjacent-Duplicates-in-String-II/index.html">Remove All Adjacent Duplicates in String II</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -628,7 +628,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/1209-Remove-All-Adjacent-Duplicates-in-String-II/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Hard">
+<tr class="prob-row" data-diff="Hard" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">1216</td>
   <td><a href="Hard/1216-Valid-Palindrome-III/index.html">Valid Palindrome III</a></td>
   <td><span class="badge badge-Hard">Hard</span></td>
@@ -637,7 +637,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Hard/1216-Valid-Palindrome-III/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">1249</td>
   <td><a href="Medium/1249-Minimum-Remove-to-Make-Valid-Parentheses/index.html">Minimum Remove to Make Valid Parentheses</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -646,7 +646,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/1249-Minimum-Remove-to-Make-Valid-Parentheses/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Easy">
+<tr class="prob-row" data-diff="Easy" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">1539</td>
   <td><a href="Easy/1539-Kth-Missing-Positive-Number/index.html">Kth Missing Positive Number</a></td>
   <td><span class="badge badge-Easy">Easy</span></td>
@@ -655,7 +655,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Easy/1539-Kth-Missing-Positive-Number/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">1570</td>
   <td><a href="Medium/1570-Dot-Product-of-Two-Sparse-Vectors/index.html">Dot Product of Two Sparse Vectors</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -664,7 +664,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/1570-Dot-Product-of-Two-Sparse-Vectors/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">1650</td>
   <td><a href="Medium/1650-Lowest-Common-Ancestor-of-a-Binary-Tree-III/index.html">Lowest Common Ancestor of a Binary Tree III</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -673,7 +673,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/1650-Lowest-Common-Ancestor-of-a-Binary-Tree-III/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">1868</td>
   <td><a href="Medium/1868-Product-of-Two-Run-Length-Encoded-Arrays/index.html">Product of Two Run-Length Encoded Arrays</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -682,7 +682,7 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
     <a href="Medium/1868-Product-of-Two-Run-Length-Encoded-Arrays/index.html" class="sol-link">Python</a>
   </td>
 </tr>
-<tr class="prob-row" data-diff="Medium">
+<tr class="prob-row" data-diff="Medium" data-source="leetcode">
   <td style="color:var(--muted);width:60px;">2265</td>
   <td><a href="Medium/2265-Count-Nodes-Equal-to-Average-of-Subtree/index.html">Count Nodes Equal to Average of Subtree</a></td>
   <td><span class="badge badge-Medium">Medium</span></td>
@@ -696,11 +696,12 @@ tbody td { padding: 12px 12px; font-size: 14px; vertical-align: middle; }
 </div>
 
 <script>
-function filter(diff, btn) {
+function filter(type, value, btn) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   document.querySelectorAll('.prob-row').forEach(r => {
-    r.style.display = (diff === 'all' || r.dataset.diff === diff) ? '' : 'none';
+    var match = value === 'all' || (type === 'diff' ? r.dataset.diff === value : r.dataset.source === value);
+    r.style.display = match ? '' : 'none';
   });
 }
 </script>
