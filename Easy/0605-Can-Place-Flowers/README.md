@@ -35,7 +35,7 @@ Example 2:
 **Constraints:**
 
 	
-- `1 <= flowerbed.length <= 2 * 104`
+- `1 <= flowerbed.length <= 2 * 10^4`
 	
 - `flowerbed[i]` is `0` or `1`.
 	
