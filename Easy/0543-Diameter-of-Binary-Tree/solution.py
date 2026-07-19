@@ -336,109 +336,69 @@ class Solution:
 # Variant : Find diameter path
 
 # class Solution:
-#     def diameterOfBinaryTree(self, root: TreeNode):
+#     def diameterOfBinaryTreePath(self, root: TreeNode):
 #         """
-#         Return both the diameter length and the actual path.
-        
-#         Approach:
-#         - Use DFS to compute depth and path for each subtree
-#         - Each node returns (depth, path_from_node_to_deepest_leaf)
-#         - Paths stored in ROOT-TO-LEAF order: [node, child, grandchild, ...]
-#         - When forming diameter, reverse left_path to get LEAF-TO-ROOT order
-        
-#         Note: Could also store paths LEAF-TO-ROOT and reverse right_path instead.
-#         Choice is arbitrary but must be consistent.
-        
-#         Time Complexity: O(n) - visit each node once
-#         Space Complexity: O(h) - recursion stack + path storage
+#         Return both the diameter (in edges) and the actual longest path.
+
+#         CONVENTION USED (node-count height):
+#             height(None) = 0
+#             height(leaf) = 1
+#             height(node) = 1 + max(height(left), height(right))
+
+#         DIAMETER FORMULA:
+#             diameter_through_node = left_height + right_height
+#             (no correction needed, because of the node-count convention above)
+
+#         PATH CONVENTION:
+#             Every recursive call returns a path in ROOT-TO-LEAF order:
+#             [this_node, child, grandchild, ..., deepest_leaf]
+
+#         Time Complexity: O(n) - each node visited once
+#         Space Complexity: O(h) - recursion stack + path storage, h = tree height
 #         """
-#         # Track the maximum diameter (number of edges) found across all nodes
-#         # Needed because diameter might not pass through root
+#         # Best diameter (edges) seen across ALL nodes so far. Tracked
+#         # globally because the longest path may not pass through the root.
 #         self.max_diameter = 0
-        
-#         # Track the actual path (list of node values) for the max diameter
+
+#         # The actual node values forming that best diameter path.
 #         self.diameter_path = []
 
-#         def depth(node):
+#         def dfs(node):
 #             """
-#             Compute depth and path for subtree rooted at node.
-            
-#             Depth definition: Number of edges from node to its deepest leaf.
-#             - Leaf node: depth = 0 (no edges below)
-#             - Parent of leaf: depth = 1 (one edge to leaf)
-            
-#             Path convention: Stored in ROOT-TO-LEAF order [node, child, ...]
-#             This makes building paths natural: prepend current node to child's path
-            
-#             Returns:
-#                 tuple: (depth, path)
-#                 - depth: edges from node to deepest leaf
-#                 - path: node values from node to deepest leaf in ROOT-TO-LEAF order
+#             Returns (height, path_to_deepest_leaf) for the subtree at `node`.
+#             height: node-count height (None->0, leaf->1)
+#             path:   ROOT-TO-LEAF values along the single deepest branch.
+#             Side effect: updates self.max_diameter/self.diameter_path.
 #             """
-#             # Base case: null node contributes nothing
+#             # Empty subtree: no height, no path.
 #             if not node:
-#                 return 0, []  # 0 depth, empty path
+#                 return 0, []
 
-#             # Recursively get depth and path from both children
-#             # Each child returns its deepest path going downward
-#             left_depth, left_path = depth(node.left)
-#             right_depth, right_path = depth(node.right)
+#             # Get info from both children first (post-order).
+#             left_height, left_path = dfs(node.left)
+#             right_height, right_path = dfs(node.right)
 
-#             # Calculate diameter passing through current node
-#             # This is the longest path using current node as the "bridge"
-#             # Diameter = edges going down left + edges going down right
-#             current_diameter = left_depth + right_depth
-            
-#             # Update global maximum if this node gives us a longer diameter
+#             # Longest path THROUGH this node = left side + right side.
+#             current_diameter = left_height + right_height
+
 #             if current_diameter > self.max_diameter:
 #                 self.max_diameter = current_diameter
-                
-#                 # Build the complete diameter path through this node
-#                 # Goal: LEAF-TO-ROOT-TO-LEAF order [left_leaf, ..., node, ..., right_leaf]
-#                 #
-#                 # left_path is currently [node's_left_child, ..., left_leaf] (ROOT-TO-LEAF)
-#                 # We need [left_leaf, ..., node's_left_child] (LEAF-TO-ROOT), so REVERSE it
-#                 #
-#                 # right_path is [node's_right_child, ..., right_leaf] (ROOT-TO-LEAF)
-#                 # We keep this as-is because we want to continue from node toward right_leaf
-#                 #
-#                 # Final path: reversed_left + current_node + right
+#                 # left_path is ROOT-TO-LEAF from node.left down; reverse it
+#                 # so it reads LEAF-TO-ROOT leading INTO node from the left.
+#                 # right_path is already ROOT-TO-LEAF, which is the direction
+#                 # we want going OUT of node to the right. Keep as-is.
 #                 self.diameter_path = left_path[::-1] + [node.val] + right_path
 
-#             # Return depth and path for parent node's calculation
-#             # Parent needs to know: "How deep do you go?" and "What's your deepest path?"
-#             #
-#             # Why return only ONE path (not both)?
-#             # - Parent will use this path to calculate diameter through itself
-#             # - Parent combines its left child's path with right child's path
-#             # - So each child provides just one downward path (the deeper one)
-#             #
-#             # Depth calculation: 1 edge to this node + depth of chosen child
-#             # 
-#             # Path construction: [node.val] + child_path (ROOT-TO-LEAF order)
-#             # This prepends current node to maintain ROOT-TO-LEAF convention
-#             #
-#             # Alternative: Could use child_path + [node.val] (LEAF-TO-ROOT order)
-#             # If using LEAF-TO-ROOT, must change diameter construction to:
-#             #   self.diameter_path = left_path + [node.val] + right_path[::-1]
-#             # Both approaches work - must be consistent throughout
-#             if left_depth >= right_depth:
-#                 # Left goes deeper (or equal), so return left branch
-#                 # [node.val] + left_path maintains ROOT-TO-LEAF order
-#                 return left_depth + 1, [node.val] + left_path
+#             # Return only the deeper branch to the parent, since the parent
+#             # only needs ONE path from each child to combine with the other
+#             # child's path for its own diameter check.
+#             if left_height >= right_height:
+#                 return left_height + 1, [node.val] + left_path
 #             else:
-#                 # Right goes deeper, so return right branch
-#                 # [node.val] + right_path maintains ROOT-TO-LEAF order
-#                 return right_depth + 1, [node.val] + right_path
+#                 return right_height + 1, [node.val] + right_path
 
-#         # Start DFS traversal from root
-#         depth(root)
-        
-#         # # Display results for debugging/verification
-#         # print(f"Diameter path: {self.diameter_path}")
-#         # print(f"Diameter length (edges): {self.max_diameter}")
-        
-#         return self.diameter_path
+#         dfs(root)
+#         return self.max_diameter, self.diameter_path
 
 # Variant : Find diameter of N-ary tree (https://leetcode.com/problems/diameter-of-n-ary-tree/description/)
 
