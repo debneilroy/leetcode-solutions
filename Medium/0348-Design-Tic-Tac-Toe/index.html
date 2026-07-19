@@ -177,7 +177,7 @@ sup { font-size: 10px; }
           <span class="badge badge-Medium">Medium</span>
           <span class="tag">Array</span><span class="tag">Hash Table</span><span class="tag">Design</span><span class="tag">Matrix</span><span class="tag">Simulation</span>
         </div>
-        <div class="prob-stats">318.2K / 541.7K (58.7%)</div>
+        <div class="prob-stats">319.2K / 543.3K (58.8%)</div>
         <div class="prob-desc"><p>Assume the following rules are for the tic-tac-toe game on an <code>n x n</code> board between two players:</p>
 <ul>
 <li>A move is guaranteed to be valid and is placed on an empty block.</li>
@@ -213,12 +213,12 @@ sup { font-size: 10px; }
 </ul>
 <p>Example 1:</p>
 <pre class="example-block"><code>
-<strong>Input</strong>
+**Input**
 [&quot;TicTacToe&quot;, &quot;move&quot;, &quot;move&quot;, &quot;move&quot;, &quot;move&quot;, &quot;move&quot;, &quot;move&quot;, &quot;move&quot;]
 [[3], [0, 0, 1], [0, 2, 2], [2, 2, 1], [1, 1, 2], [2, 0, 1], [1, 0, 2], [2, 1, 1]]
-<strong>Output</strong>
+**Output**
 [null, 0, 0, 0, 0, 0, 0, 1]
-<p><strong>Explanation</strong><br>TicTacToe ticTacToe = new TicTacToe(3);<br>Assume that player 1 is &quot;X&quot; and player 2 is &quot;O&quot; in the board.<br>ticTacToe.move(0, 0, 1); // return 0 (no one wins)<br>|X| | |<br>| | | |    // Player 1 makes a move at (0, 0).<br>| | | |</p>
+<p>**Explanation**<br>TicTacToe ticTacToe = new TicTacToe(3);<br>Assume that player 1 is &quot;X&quot; and player 2 is &quot;O&quot; in the board.<br>ticTacToe.move(0, 0, 1); // return 0 (no one wins)<br>|X| | |<br>| | | |    // Player 1 makes a move at (0, 0).<br>| | | |</p>
 <p>ticTacToe.move(0, 2, 2); // return 0 (no one wins)<br>|X| |O|<br>| | | |    // Player 2 makes a move at (0, 2).<br>| | | |</p>
 <p>ticTacToe.move(2, 2, 1); // return 0 (no one wins)<br>|X| |O|<br>| | | |    // Player 1 makes a move at (2, 2).<br>| | |X|</p>
 <p>ticTacToe.move(1, 1, 2); // return 0 (no one wins)<br>|X| |O|<br>| |O| |    // Player 2 makes a move at (1, 1).<br>| | |X|</p>
@@ -243,9 +243,9 @@ sup { font-size: 10px; }
 </ul>
 	
 <ul>
-<li>At most <code>n2</code> calls will be made to <code>move</code>.</li>
+<li>At most <code>n^2</code> calls will be made to <code>move</code>.</li>
 </ul>
-<p><strong>Follow-up:</strong> Could you do better than <code>O(n2)</code> per <code>move()</code> operation?</p></div>
+<p><strong>Follow-up:</strong> Could you do better than <code>O(n^2)</code> per <code>move()</code> operation?</p></div>
       </div>
 
       <div class="tab-content" id="tab-hints">
