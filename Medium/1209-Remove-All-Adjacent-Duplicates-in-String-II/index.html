@@ -177,35 +177,35 @@ sup { font-size: 10px; }
           <span class="badge badge-Medium">Medium</span>
           <span class="tag">String</span><span class="tag">Stack</span>
         </div>
-        <div class="prob-stats">431.5K / 702K (61.5%)</div>
+        <div class="prob-stats">435.2K / 706.6K (61.6%)</div>
         <div class="prob-desc"><p>You are given a string <code>s</code> and an integer <code>k</code>, a <code>k</code> <strong>duplicate removal</strong> consists of choosing <code>k</code> adjacent and equal letters from <code>s</code> and removing them, causing the left and the right side of the deleted substring to concatenate together.</p>
 <p>We repeatedly make <code>k</code> <strong>duplicate removals</strong> on <code>s</code> until we no longer can.</p>
 <p>Return <em>the final string after all such duplicate removals have been made</em>. It is guaranteed that the answer is <strong>unique</strong>.</p>
 <p>Example 1:</p>
 <pre class="example-block"><code>
-<strong>Input:</strong> s = &quot;abcd&quot;, k = 2
-<strong>Output:</strong> &quot;abcd&quot;
-<strong>Explanation: </strong>There&#x27;s nothing to delete.</code></pre>
+**Input:** s = &quot;abcd&quot;, k = 2
+**Output:** &quot;abcd&quot;
+**Explanation: **There&#x27;s nothing to delete.</code></pre>
 <p>Example 2:</p>
 <pre class="example-block"><code>
-<strong>Input:</strong> s = &quot;deeedbbcccbdaa&quot;, k = 3
-<strong>Output:</strong> &quot;aa&quot;
+**Input:** s = &quot;deeedbbcccbdaa&quot;, k = 3
+**Output:** &quot;aa&quot;
 **Explanation: 
 **First delete &quot;eee&quot; and &quot;ccc&quot;, get &quot;ddbbbdaa&quot;
 Then delete &quot;bbb&quot;, get &quot;dddaa&quot;
 Finally delete &quot;ddd&quot;, get &quot;aa&quot;</code></pre>
 <p>Example 3:</p>
 <pre class="example-block"><code>
-<strong>Input:</strong> s = &quot;pbbcggttciiippooaais&quot;, k = 2
-<strong>Output:</strong> &quot;ps&quot;
+**Input:** s = &quot;pbbcggttciiippooaais&quot;, k = 2
+**Output:** &quot;ps&quot;
 </code></pre>
 <p><strong>Constraints:</strong></p>
 <ul>
-<li><code>1 &lt;= s.length &lt;= 105</code></li>
+<li><code>1 &lt;= s.length &lt;= 10^5</code></li>
 </ul>
 	
 <ul>
-<li><code>2 &lt;= k &lt;= 104</code></li>
+<li><code>2 &lt;= k &lt;= 10^4</code></li>
 </ul>
 	
 <ul>
