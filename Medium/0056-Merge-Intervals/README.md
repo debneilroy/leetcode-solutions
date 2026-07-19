@@ -2,13 +2,13 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Array, Sorting  
-**Accepted:** 4.1M / 7.9M (52.1%)
+**Accepted:** 4.2M / 8M (52.3%)
 
 ---
 
 ## Problem
 
-Given an array of `intervals` where `intervals[i] = [starti, endi]`, merge all overlapping intervals, and return *an array of the non-overlapping intervals that cover all the intervals in the input*.
+Given an array of `intervals` where `intervals[i] = [start_i, end_i]`, merge all overlapping intervals, and return *an array of the non-overlapping intervals that cover all the intervals in the input*.
 
  
 
@@ -47,11 +47,11 @@ Example 3:
 **Constraints:**
 
 	
-- `1 <= intervals.length <= 104`
+- `1 <= intervals.length <= 10^4`
 	
 - `intervals[i].length == 2`
 	
-- `0 <= starti <= endi <= 104`
+- `0 <= start_i <= end_i <= 10^4`
 
 ---
 
