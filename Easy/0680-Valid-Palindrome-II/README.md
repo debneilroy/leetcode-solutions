@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Two Pointers, String, Greedy  
-**Accepted:** 1.2M / 2.6M (44.4%)
+**Accepted:** 1.2M / 2.7M (44.5%)
 
 ---
 
@@ -45,7 +45,7 @@ Example 3:
 **Constraints:**
 
 	
-- `1 <= s.length <= 105`
+- `1 <= s.length <= 10^5`
 	
 - `s` consists of lowercase English letters.
 
