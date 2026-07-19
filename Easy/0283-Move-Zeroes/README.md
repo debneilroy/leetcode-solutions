@@ -35,9 +35,9 @@ Example 2:
 **Constraints:**
 
 	
-- `1 <= nums.length <= 104`
+- `1 <= nums.length <= 10^4`
 	
-- `-231 <= nums[i] <= 231 - 1`
+- `-2^31 <= nums[i] <= 2^31 - 1`
 
  
 
