@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Binary Search, Tree, Depth-First Search, Binary Search Tree, Binary Tree  
-**Accepted:** 455.4K / 926.2K (49.2%)
+**Accepted:** 456.1K / 928K (49.2%)
 
 ---
 
@@ -35,11 +35,11 @@ Example 2:
 **Constraints:**
 
 	
-- The number of nodes in the tree is in the range `[1, 104]`.
+- The number of nodes in the tree is in the range `[1, 10^4]`.
 	
-- `0 <= Node.val <= 109`
+- `0 <= Node.val <= 10^9`
 	
-- `-109 <= target <= 109`
+- `-10^9 <= target <= 10^9`
 
 ---
 
