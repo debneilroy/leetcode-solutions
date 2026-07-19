@@ -2,7 +2,7 @@
 
 **Difficulty:** 🔴 Hard  
 **Tags:** Array, Depth-First Search, Breadth-First Search, Union-Find, Matrix  
-**Accepted:** 434K / 764K (56.8%)
+**Accepted:** 439.4K / 771.6K (56.9%)
 
 ---
 
