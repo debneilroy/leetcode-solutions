@@ -177,7 +177,7 @@ sup { font-size: 10px; }
           <span class="badge badge-Hard">Hard</span>
           <span class="tag">Backtracking</span><span class="tag">Interactive</span>
         </div>
-        <div class="prob-stats">214.3K / 274.5K (78.0%)</div>
+        <div class="prob-stats">214.6K / 275K (78.0%)</div>
         <div class="prob-desc"><p>You are controlling a robot that is located somewhere in a room. The room is modeled as an <code>m x n</code> binary grid where <code>0</code> represents a wall and <code>1</code> represents an empty slot.</p>
 <p>The robot starts at an unknown location in the room that is guaranteed to be empty, and you do not have access to the grid, but you can move the robot using the given API <code>Robot</code>.</p>
 <p>You are tasked to use the robot to clean the entire room (i.e., clean every empty cell in the room). The robot with the four given APIs can move forward, turn left, or turn right. Each turn is <code>90</code> degrees.</p>
@@ -195,17 +195,17 @@ interface Robot {
 <p>The input is only given to initialize the room and the robot's position internally. You must solve this problem "blindfolded". In other words, you must control the robot using only the four mentioned APIs without knowing the room layout and the initial robot's position.</p>
 <p>Example 1:</p>
 <pre class="example-block"><code>
-<strong>Input:</strong> room = [[1,1,1,1,1,0,1,1],[1,1,1,1,1,0,1,1],[1,0,1,1,1,1,1,1],[0,0,0,1,0,0,0,0],[1,1,1,1,1,1,1,1]], row = 1, col = 3
-<strong>Output:</strong> Robot cleaned all rooms.
-<strong>Explanation:</strong> All grids in the room are marked by either 0 or 1.
+**Input:** room = [[1,1,1,1,1,0,1,1],[1,1,1,1,1,0,1,1],[1,0,1,1,1,1,1,1],[0,0,0,1,0,0,0,0],[1,1,1,1,1,1,1,1]], row = 1, col = 3
+**Output:** Robot cleaned all rooms.
+**Explanation:** All grids in the room are marked by either 0 or 1.
 0 means the cell is blocked, while 1 means the cell is accessible.
 The robot initially starts at the position of row=1, col=3.
 From the top left corner, its position is one row below and three columns right.
 </code></pre>
 <p>Example 2:</p>
 <pre class="example-block"><code>
-<strong>Input:</strong> room = [[1]], row = 0, col = 0
-<strong>Output:</strong> Robot cleaned all rooms.
+**Input:** room = [[1]], row = 0, col = 0
+**Output:** Robot cleaned all rooms.
 </code></pre>
 <p><strong>Constraints:</strong></p>
 <ul>
