@@ -177,25 +177,25 @@ sup { font-size: 10px; }
           <span class="badge badge-Hard">Hard</span>
           <span class="tag">Hash Table</span><span class="tag">Tree</span><span class="tag">Depth-First Search</span><span class="tag">Breadth-First Search</span><span class="tag">Sorting</span><span class="tag">Binary Tree</span>
         </div>
-        <div class="prob-stats">737.5K / 1.4M (54.1%)</div>
+        <div class="prob-stats">748.6K / 1.4M (54.3%)</div>
         <div class="prob-desc"><p>Given the <code>root</code> of a binary tree, calculate the <strong>vertical order traversal</strong> of the binary tree.</p>
 <p>For each node at position <code>(row, col)</code>, its left and right children will be at positions <code>(row + 1, col - 1)</code> and <code>(row + 1, col + 1)</code> respectively. The root of the tree is at <code>(0, 0)</code>.</p>
 <p>The <strong>vertical order traversal</strong> of a binary tree is a list of top-to-bottom orderings for each column index starting from the leftmost column and ending on the rightmost column. There may be multiple nodes in the same row and same column. In such a case, sort these nodes by their values.</p>
 <p>Return <em>the <strong>vertical order traversal</strong> of the binary tree</em>.</p>
 <p>Example 1:</p>
 <pre class="example-block"><code>
-<strong>Input:</strong> root = [3,9,20,null,null,15,7]
-<strong>Output:</strong> [[9],[3,15],[20],[7]]
-<strong>Explanation:</strong>
+**Input:** root = [3,9,20,null,null,15,7]
+**Output:** [[9],[3,15],[20],[7]]
+**Explanation:**
 Column -1: Only node 9 is in this column.
 Column 0: Nodes 3 and 15 are in this column in that order from top to bottom.
 Column 1: Only node 20 is in this column.
 Column 2: Only node 7 is in this column.</code></pre>
 <p>Example 2:</p>
 <pre class="example-block"><code>
-<strong>Input:</strong> root = [1,2,3,4,5,6,7]
-<strong>Output:</strong> [[4],[2],[1,5,6],[3],[7]]
-<strong>Explanation:</strong>
+**Input:** root = [1,2,3,4,5,6,7]
+**Output:** [[4],[2],[1,5,6],[3],[7]]
+**Explanation:**
 Column -2: Only node 4 is in this column.
 Column -1: Only node 2 is in this column.
 Column 0: Nodes 1, 5, and 6 are in this column.
@@ -206,9 +206,9 @@ Column 2: Only node 7 is in this column.
 </code></pre>
 <p>Example 3:</p>
 <pre class="example-block"><code>
-<strong>Input:</strong> root = [1,2,3,4,6,5,7]
-<strong>Output:</strong> [[4],[2],[1,5,6],[3],[7]]
-<strong>Explanation:</strong>
+**Input:** root = [1,2,3,4,6,5,7]
+**Output:** [[4],[2],[1,5,6],[3],[7]]
+**Explanation:**
 This case is the exact same as example 2, but with nodes 5 and 6 swapped.
 Note that the solution remains the same since 5 and 6 are in the same location and should be ordered by their values.
 </code></pre>
