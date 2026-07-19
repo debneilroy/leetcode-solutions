@@ -52,9 +52,9 @@ Example 3:
 **Constraints:**
 
 	
-- The number of nodes in the list is in the range `[0, 5 * 104]`.
+- The number of nodes in the list is in the range `[0, 5 * 10^4]`.
 	
-- `-106 <= Node.val, insertVal <= 106`
+- `-10^6 <= Node.val, insertVal <= 10^6`
 
 ---
 
