@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Hash Table, Tree, Depth-First Search, Breadth-First Search, Binary Tree  
-**Accepted:** 711.5K / 1M (67.8%)
+**Accepted:** 720K / 1.1M (67.9%)
 
 ---
 
