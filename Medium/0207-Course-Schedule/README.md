@@ -2,13 +2,13 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Depth-First Search, Breadth-First Search, Graph Theory, Topological Sort  
-**Accepted:** 2.7M / 5.2M (51.7%)
+**Accepted:** 2.7M / 5.2M (51.8%)
 
 ---
 
 ## Problem
 
-There are a total of `numCourses` courses you have to take, labeled from `0` to `numCourses - 1`. You are given an array `prerequisites` where `prerequisites[i] = [ai, bi]` indicates that you **must** take course `bi` first if you want to take course `ai`.
+There are a total of `numCourses` courses you have to take, labeled from `0` to `numCourses - 1`. You are given an array `prerequisites` where `prerequisites[i] = [a_i, b_i]` indicates that you **must** take course `b_i` first if you want to take course `a_i`.
 
 	
 - For example, the pair `[0, 1]`, indicates that to take course `0` you have to first take course `1`.
@@ -50,7 +50,7 @@ To take course 1 you should have finished course 0, and to take course 0 you sho
 	
 - `prerequisites[i].length == 2`
 	
-- `0 <= ai, bi < numCourses`
+- `0 <= a_i, b_i < numCourses`
 	
 - All the pairs prerequisites[i] are **unique**.
 
@@ -66,13 +66,13 @@ This problem is equivalent to finding if a cycle exists in a directed graph. If 
 
 <details><summary>Hint 2</summary>
 
-Topological Sort via DFS - A great tutorial explaining the basic concepts of Topological Sort.
+[Topological Sort via DFS](https://www.cs.princeton.edu/~wayne/kleinberg-tardos/pdf/03Graphs.pdf) - A great tutorial explaining the basic concepts of Topological Sort.
 
 </details>
 
 <details><summary>Hint 3</summary>
 
-Topological sort could also be done via BFS.
+Topological sort could also be done via [BFS](http://en.wikipedia.org/wiki/Topological_sorting#Algorithms).
 
 </details>
 
