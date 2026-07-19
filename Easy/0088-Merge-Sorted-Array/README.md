@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Array, Two Pointers, Sorting  
-**Accepted:** 5.8M / 10.6M (55.1%)
+**Accepted:** 5.9M / 10.7M (55.3%)
 
 ---
 
@@ -63,7 +63,7 @@ Note that because m = 0, there are no elements in nums1. The 0 is only there to 
 	
 - `1 <= m + n <= 200`
 	
-- `-109 <= nums1[i], nums2[j] <= 109`
+- `-10^9 <= nums1[i], nums2[j] <= 10^9`
 
  
 
