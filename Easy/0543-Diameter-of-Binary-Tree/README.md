@@ -40,7 +40,7 @@ Example 2:
 **Constraints:**
 
 	
-- The number of nodes in the tree is in the range `[1, 104]`.
+- The number of nodes in the tree is in the range `[1, 10^4]`.
 	
 - `-100 <= Node.val <= 100`
 
