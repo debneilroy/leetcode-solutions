@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Array, Two Pointers  
-**Accepted:** 2.3M / 5.1M (45.5%)
+**Accepted:** 2.4M / 5.2M (45.7%)
 
 ---
 
@@ -24,7 +24,7 @@ The **next permutation** of an array of integers is the next lexicographically g
 
 Given an array of integers `nums`, *find the next permutation of* `nums`.
 
-The replacement must be **in place** and use only constant extra memory.
+The replacement must be **[in place](http://en.wikipedia.org/wiki/In-place_algorithm)** and use only constant extra memory.
 
  
 
