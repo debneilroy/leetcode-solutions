@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Array, Hash Table  
-**Accepted:** 22.3M / 38.6M (57.7%)
+**Accepted:** 22.6M / 39.1M (57.8%)
 
 ---
 
@@ -49,17 +49,17 @@ Example 3:
 **Constraints:**
 
 	
-- `2 <= nums.length <= 104`
+- `2 <= nums.length <= 10^4`
 	
-- `-109 <= nums[i] <= 109`
+- `-10^9 <= nums[i] <= 10^9`
 	
-- `-109 <= target <= 109`
+- `-10^9 <= target <= 10^9`
 	
 - **Only one valid answer exists.**
 
  
 
-**Follow-up: **Can you come up with an algorithm that is less than `O(n2)` time complexity?
+**Follow-up: **Can you come up with an algorithm that is less than `O(n^2)` time complexity?
 
 ---
 
