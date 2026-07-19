@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Linked List, Tree, Depth-First Search, Breadth-First Search, Binary Tree  
-**Accepted:** 857.9K / 1.5M (57.7%)
+**Accepted:** 863.7K / 1.5M (57.9%)
 
 ---
 
