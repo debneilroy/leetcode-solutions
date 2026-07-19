@@ -177,24 +177,24 @@ sup { font-size: 10px; }
           <span class="badge badge-Medium">Medium</span>
           <span class="tag">Depth-First Search</span><span class="tag">Breadth-First Search</span><span class="tag">Graph Theory</span><span class="tag">Topological Sort</span>
         </div>
-        <div class="prob-stats">2.7M / 5.2M (51.7%)</div>
-        <div class="prob-desc"><p>There are a total of <code>numCourses</code> courses you have to take, labeled from <code>0</code> to <code>numCourses - 1</code>. You are given an array <code>prerequisites</code> where <code>prerequisites[i] = [ai, bi]</code> indicates that you <strong>must</strong> take course <code>bi</code> first if you want to take course <code>ai</code>.</p>
+        <div class="prob-stats">2.7M / 5.2M (51.8%)</div>
+        <div class="prob-desc"><p>There are a total of <code>numCourses</code> courses you have to take, labeled from <code>0</code> to <code>numCourses - 1</code>. You are given an array <code>prerequisites</code> where <code>prerequisites[i] = [a_i, b_i]</code> indicates that you <strong>must</strong> take course <code>b_i</code> first if you want to take course <code>a_i</code>.</p>
 <ul>
 <li>For example, the pair <code>[0, 1]</code>, indicates that to take course <code>0</code> you have to first take course <code>1</code>.</li>
 </ul>
 <p>Return <code>true</code> if you can finish all courses. Otherwise, return <code>false</code>.</p>
 <p>Example 1:</p>
 <pre class="example-block"><code>
-<strong>Input:</strong> numCourses = 2, prerequisites = [[1,0]]
-<strong>Output:</strong> true
-<strong>Explanation:</strong> There are a total of 2 courses to take. 
+**Input:** numCourses = 2, prerequisites = [[1,0]]
+**Output:** true
+**Explanation:** There are a total of 2 courses to take. 
 To take course 1 you should have finished course 0. So it is possible.
 </code></pre>
 <p>Example 2:</p>
 <pre class="example-block"><code>
-<strong>Input:</strong> numCourses = 2, prerequisites = [[1,0],[0,1]]
-<strong>Output:</strong> false
-<strong>Explanation:</strong> There are a total of 2 courses to take. 
+**Input:** numCourses = 2, prerequisites = [[1,0],[0,1]]
+**Output:** false
+**Explanation:** There are a total of 2 courses to take. 
 To take course 1 you should have finished course 0, and to take course 0 you should also have finished course 1. So it is impossible.
 </code></pre>
 <p><strong>Constraints:</strong></p>
@@ -211,7 +211,7 @@ To take course 1 you should have finished course 0, and to take course 0 you sho
 </ul>
 	
 <ul>
-<li><code>0 &lt;= ai, bi &lt; numCourses</code></li>
+<li><code>0 &lt;= a_i, b_i &lt; numCourses</code></li>
 </ul>
 	
 <ul>
@@ -227,11 +227,11 @@ To take course 1 you should have finished course 0, and to take course 0 you sho
 </details>
 <details class="hint-block">
   <summary>Hint 2</summary>
-  <div class="hint-body"><p>Topological Sort via DFS - A great tutorial explaining the basic concepts of Topological Sort.</p></div>
+  <div class="hint-body"><p><a href="https://www.cs.princeton.edu/~wayne/kleinberg-tardos/pdf/03Graphs.pdf" target="_blank">Topological Sort via DFS</a> - A great tutorial explaining the basic concepts of Topological Sort.</p></div>
 </details>
 <details class="hint-block">
   <summary>Hint 3</summary>
-  <div class="hint-body"><p>Topological sort could also be done via BFS.</p></div>
+  <div class="hint-body"><p>Topological sort could also be done via <a href="http://en.wikipedia.org/wiki/Topological_sorting#Algorithms" target="_blank">BFS</a>.</p></div>
 </details>
       </div>
 
