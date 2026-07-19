@@ -2,13 +2,13 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Array, Dynamic Programming  
-**Accepted:** 8.3M / 14.5M (57.0%)
+**Accepted:** 8.3M / 14.6M (57.1%)
 
 ---
 
 ## Problem
 
-You are given an array `prices` where `prices[i]` is the price of a given stock on the `ith` day.
+You are given an array `prices` where `prices[i]` is the price of a given stock on the `i^th` day.
 
 You want to maximize your profit by choosing a **single day** to buy one stock and choosing a **different day in the future** to sell that stock.
 
@@ -42,9 +42,9 @@ Example 2:
 **Constraints:**
 
 	
-- `1 <= prices.length <= 105`
+- `1 <= prices.length <= 10^5`
 	
-- `0 <= prices[i] <= 104`
+- `0 <= prices[i] <= 10^4`
 
 ---
 
