@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Array  
-**Accepted:** 312.1K / 875K (35.7%)
+**Accepted:** 312.5K / 876K (35.7%)
 
 ---
 
@@ -47,7 +47,7 @@ Example 2:
 **Constraints:**
 
 	
-- `-109 <= lower <= upper <= 109`
+- `-10^9 <= lower <= upper <= 10^9`
 	
 - `0 <= nums.length <= 100`
 	
