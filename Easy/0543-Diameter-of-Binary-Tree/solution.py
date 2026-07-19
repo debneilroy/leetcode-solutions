@@ -117,98 +117,98 @@ class Solution:
 
 # Alternative solution without using instance variable
 
-# class Solution:
-#     def diameterOfBinaryTree(self, root: TreeNode) -> int:
-#         def dfs(node):
-#             """
-#             Returns tuple of (height, max_diameter_in_subtree).
+class Solution:
+    def diameterOfBinaryTree(self, root: TreeNode) -> int:
+        def dfs(node):
+            """
+            Returns tuple of (height, max_diameter_in_subtree).
             
-#             Args:
-#                 node: TreeNode - Current node being processed
+            Args:
+                node: TreeNode - Current node being processed
                 
-#             Returns:
-#                 tuple: (height of subtree, maximum diameter in subtree)
-#             """
-#             if not node:
-#                 return 0, 0
+            Returns:
+                tuple: (height of subtree, maximum diameter in subtree)
+            """
+            if not node:
+                return 0, 0
             
-#             left_height, left_diameter = dfs(node.left)
-#             right_height, right_diameter = dfs(node.right)
+            left_height, left_diameter = dfs(node.left)
+            right_height, right_diameter = dfs(node.right)
             
-#             # Diameter through current node
-#             # Note: This counts EDGES. To count NODES instead, use: left_height + right_height + 1
-#             current_diameter = left_height + right_height
+            # Diameter through current node
+            # Note: This counts EDGES. To count NODES instead, use: left_height + right_height + 1
+            current_diameter = left_height + right_height
             
-#             # Maximum diameter in this subtree
-#             max_diameter = max(current_diameter, left_diameter, right_diameter)
+            # Maximum diameter in this subtree
+            max_diameter = max(current_diameter, left_diameter, right_diameter)
             
-#             # Height of current subtree
-#             height = 1 + max(left_height, right_height)
+            # Height of current subtree
+            height = 1 + max(left_height, right_height)
             
-#             return height, max_diameter
+            return height, max_diameter
         
-#         _, diameter = dfs(root)
-#         return diameter
+        _, diameter = dfs(root)
+        return diameter
 
 # Approach : BFS
 
-# class BFSSolution:
-#     def diameterOfBinaryTree(self, root: TreeNode) -> int:
-#         """
-#         BFS + reverse level-order solution.
+class Solution:
+    def diameterOfBinaryTree(self, root: TreeNode) -> int:
+        """
+        BFS + reverse level-order solution.
         
-#         Idea:
-#         1. Use BFS to collect all nodes in level order (top-down).
-#         2. Process nodes in reverse order so children are handled
-#            before their parents (bottom-up).
-#         3. Compute subtree heights and diameter at each node.
+        Idea:
+        1. Use BFS to collect all nodes in level order (top-down).
+        2. Process nodes in reverse order so children are handled
+           before their parents (bottom-up).
+        3. Compute subtree heights and diameter at each node.
         
-#         Why reverse? Heights depend on children, so we need children's
-#         heights before computing parent's height.
+        Why reverse? Heights depend on children, so we need children's
+        heights before computing parent's height.
         
-#         Time Complexity: O(n) - two passes through all nodes
-#         Space Complexity: O(n) - store all nodes + heights map
-#         """
-#         if not root:
-#             return 0
+        Time Complexity: O(n) - two passes through all nodes
+        Space Complexity: O(n) - store all nodes + heights map
+        """
+        if not root:
+            return 0
         
-#         # ---------- Step 1: BFS traversal (top-down) ----------
-#         # Collect all nodes level by level using a queue
-#         queue = deque([root])
-#         all_nodes = []  # Store nodes in level-order
+        # ---------- Step 1: BFS traversal (top-down) ----------
+        # Collect all nodes level by level using a queue
+        queue = deque([root])
+        all_nodes = []  # Store nodes in level-order
         
-#         while queue:
-#             node = queue.popleft()
-#             all_nodes.append(node)
+        while queue:
+            node = queue.popleft()
+            all_nodes.append(node)
             
-#             # Add children to queue for next level
-#             if node.left:
-#                 queue.append(node.left)
-#             if node.right:
-#                 queue.append(node.right)
+            # Add children to queue for next level
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
         
-#         # ---------- Step 2: Bottom-up processing (reverse order) ----------
-#         heights = {}  # node -> height (number of edges to deepest leaf)
-#         max_diameter = 0
+        # ---------- Step 2: Bottom-up processing (reverse order) ----------
+        heights = {}  # node -> height (number of edges to deepest leaf)
+        max_diameter = 0
         
-#         # Process in reverse: leaves first, then their parents, up to root
-#         # This ensures when we process a node, its children's heights are already computed
-#         for node in reversed(all_nodes):
-#             # Get heights of children (0 if child is None)
-#             left_height = heights.get(node.left, 0)
-#             right_height = heights.get(node.right, 0)
+        # Process in reverse: leaves first, then their parents, up to root
+        # This ensures when we process a node, its children's heights are already computed
+        for node in reversed(all_nodes):
+            # Get heights of children (0 if child is None)
+            left_height = heights.get(node.left, 0)
+            right_height = heights.get(node.right, 0)
             
-#             # Diameter through this node = sum of left and right subtree heights
-#             # This represents the longest path passing through this node
-#             # Note: This counts EDGES. To count NODES instead, use: left_height + right_height + 1
-#             current_diameter = left_height + right_height
-#             max_diameter = max(max_diameter, current_diameter)
+            # Diameter through this node = sum of left and right subtree heights
+            # This represents the longest path passing through this node
+            # Note: This counts EDGES. To count NODES instead, use: left_height + right_height + 1
+            current_diameter = left_height + right_height
+            max_diameter = max(max_diameter, current_diameter)
             
-#             # Height of current node = 1 + max of children's heights
-#             # The +1 represents the edge from this node to its taller child
-#             heights[node] = 1 + max(left_height, right_height)
+            # Height of current node = 1 + max of children's heights
+            # The +1 represents the edge from this node to its taller child
+            heights[node] = 1 + max(left_height, right_height)
         
-#         return max_diameter
+        return max_diameter
 
 
 # DFS vs BFS Tradeoffs
