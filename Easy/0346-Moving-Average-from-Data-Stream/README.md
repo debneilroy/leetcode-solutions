@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Array, Design, Queue, Data Stream  
-**Accepted:** 536.2K / 668.4K (80.2%)
+**Accepted:** 537.4K / 669.9K (80.2%)
 
 ---
 
@@ -45,9 +45,9 @@ movingAverage.next(5); // return 6.0 = (10 + 3 + 5) / 3
 	
 - `1 <= size <= 1000`
 	
-- `-105 <= val <= 105`
+- `-10^5 <= val <= 10^5`
 	
-- At most `104` calls will be made to `next`.
+- At most `10^4` calls will be made to `next`.
 
 ---
 
