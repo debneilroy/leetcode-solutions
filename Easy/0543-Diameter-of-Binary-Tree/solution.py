@@ -234,19 +234,16 @@ class Solution:
 # DFS space: O(log n) for balanced trees
 # BFS space: O(n) for balanced trees
 
-# Important: Height Definition
 
-# In this analysis, height = number of edges in the longest path from root to leaf (standard CS definition).
 
-# Single node: height = 0 (no edges)
-# Root with one child: height = 1 (one edge)
-# DFS space = number of stack frames = height + 1 (because we count nodes in the path, not edges)
-
+# Note: Using NODE-COUNT height throughout (None → 0, leaf → 1),
+# consistent with the Height/Diameter sections above.
 
 # Case 1: Complete Binary Tree
 # Definition: All levels completely filled except possibly the last, which is filled left to right.
 
 # Example 1: n = 7 nodes
+
 #        1          ← Level 0
 #       / \
 #      2   3        ← Level 1
@@ -256,14 +253,12 @@ class Solution:
 # Path from root to leaf: 1 → 2 → 4
 
 # Formulas & Analysis:
-# Height (edges): h = ⌊log₂(n)⌋ = ⌊log₂(7)⌋ = 2 edges
-# Path length (nodes): ⌊log₂(n)⌋ + 1 = 2 + 1 = 3 nodes
-# DFS Space: O(h + 1) = O(3) = O(log n) ✓ WINNER
+# Height (nodes): h = ⌊log₂(n)⌋ + 1 = ⌊log₂(7)⌋ + 1 = 2 + 1 = 3 nodes
+# DFS Space: O(h) = O(3) = O(log n) ✓ WINNER
 
 # Stack frames: dfs(1) → dfs(2) → dfs(4) = 3 frames
 
 # BFS Space: O(w) = O(n)
-
 # Max width at level 2: queue = [4,5,6,7] = 4 nodes ≈ n/2
 
 
@@ -283,22 +278,26 @@ class Solution:
 # Path from root to deepest leaf: 1 → 2 → 4
 
 # Formulas & Analysis:
-# Height (edges): h ≈ ⌊log₂(6)⌋ = ⌊2.585⌋ = 2 edges
-# Path length (nodes): 2 + 1 = 3 nodes
+# Height (nodes): h ≈ ⌊log₂(6)⌋ + 1 = 2 + 1 = 3 nodes
 # DFS Space: 3 stack frames = O(log n) ✓ WINNER
 # BFS Space: Max width at level 2 = 3 nodes = O(n)
 
 # Balance check at each node:
+# height(4) = 1, height(5) = 1, height(6) = 1
+# height(2) = 1 + max(1,1) = 2
+# height(3) = 1 + max(0,1) = 2   (node 3 has no left child → height(None)=0)
+# height(1) = 1 + max(2,2) = 3
 
-# Node 1: |height(left=2) - height(right=1)| = 1 ≤ 1 ✓
-# Node 2: |height(left=1) - height(right=1)| = 0 ≤ 1 ✓
-# Node 3: |height(left=0) - height(right=1)| = 1 ≤ 1 ✓
+# Node 1: |height(left=2)=2 - height(right=3)=2| = 0 ≤ 1 ✓
+# Node 2: |height(left=4)=1 - height(right=5)=1| = 0 ≤ 1 ✓
+# Node 3: |height(left=None)=0 - height(right=6)=1| = 1 ≤ 1 ✓
+
 
 # Case 3: Skewed/Unbalanced Tree
-
 # Definition: Essentially a linked list (worst case)
 
 # Example: n = 4 nodes
+
 # 1                 ← Level 0
 #  \
 #   2               ← Level 1
@@ -310,8 +309,7 @@ class Solution:
 # Path from root to leaf: 1 → 2 → 3 → 4
 
 # Formulas & Analysis:
-# Height (edges): h = 3 edges (NOT using log formula!)
-# Path length (nodes): 4 nodes = n
+# Height (nodes): h = 4 nodes = n  (NOT using log formula!)
 # DFS Space: O(n) = O(4) = 4 stack frames
 
 # Full path on stack: dfs(1) → dfs(2) → dfs(3) → dfs(4)
@@ -323,18 +321,12 @@ class Solution:
 # Summary Table - DFS vs BFS Space Complexity
 
 # Tree Type    DFS Space (stack frames)      BFS Space (queue size)        Winner
-
 # Complete     O(log n)                      O(n)                          DFS ✓
-#              ~log₂(n) nodes in path        ~n/2 nodes at last level     
-
 # Balanced     O(log n)                      O(n) worst case               DFS ✓
-#              ~log₂(n) nodes in path        Some level has O(n) nodes    
-
 # Skewed       O(n)                          O(1)                          BFS ✓
-#              n nodes in path               Only 1 node per level        
 
 # Key Insight:
-#   • DFS space = O(height) = O(depth of tree) = path length
+#   • DFS space = O(height) = O(depth of tree) = path length (in nodes)
 #   • BFS space = O(width) = O(breadth of tree) = max nodes at any level
 #   • For balanced trees: DFS wins with O(log n) vs O(n)
 #   • For skewed trees: BFS wins with O(1) vs O(n)
