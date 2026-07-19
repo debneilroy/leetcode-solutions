@@ -178,7 +178,7 @@ sup { font-size: 10px; }
           <span class="tag">Array</span><span class="tag">Two Pointers</span>
         </div>
         <div class="prob-stats">64.1K / 107.5K (59.6%)</div>
-        <div class="prob-desc"><p><strong>Run-length encoding</strong> is a compression algorithm that allows for an integer array <code>nums</code> with many segments of <strong>consecutive repeated</strong> numbers to be represented by a (generally smaller) 2D array <code>encoded</code>. Each <code>encoded[i] = [vali, freqi]</code> describes the <code>ith</code> segment of repeated numbers in <code>nums</code> where <code>vali</code> is the value that is repeated <code>freqi</code> times.</p>
+        <div class="prob-desc"><p><strong>Run-length encoding</strong> is a compression algorithm that allows for an integer array <code>nums</code> with many segments of <strong>consecutive repeated</strong> numbers to be represented by a (generally smaller) 2D array <code>encoded</code>. Each <code>encoded[i] = [val_i, freq_i]</code> describes the <code>i^th</code> segment of repeated numbers in <code>nums</code> where <code>val_i</code> is the value that is repeated <code>freq_i</code> times.</p>
 <ul>
 <li>For example, <code>nums = [1,1,1,2,2,2,2,2]</code> is represented by the <strong>run-length encoded</strong> array <code>encoded = [[1,3],[2,5]]</code>. Another way to read this is "three <code>1</code>'s followed by five <code>2</code>'s".</li>
 </ul>
@@ -194,26 +194,26 @@ sup { font-size: 10px; }
 <ul>
 <li><strong>Compress</strong> <code>prodNums</code> into a run-length encoded array and return it.</li>
 </ul>
-<p>You are given two <strong>run-length encoded</strong> arrays <code>encoded1</code> and <code>encoded2</code> representing full arrays <code>nums1</code> and <code>nums2</code> respectively. Both <code>nums1</code> and <code>nums2</code> have the <strong>same length</strong>. Each <code>encoded1[i] = [vali, freqi]</code> describes the <code>ith</code> segment of <code>nums1</code>, and each <code>encoded2[j] = [valj, freqj]</code> describes the <code>jth</code> segment of <code>nums2</code>.</p>
+<p>You are given two <strong>run-length encoded</strong> arrays <code>encoded1</code> and <code>encoded2</code> representing full arrays <code>nums1</code> and <code>nums2</code> respectively. Both <code>nums1</code> and <code>nums2</code> have the <strong>same length</strong>. Each <code>encoded1[i] = [val_i, freq_i]</code> describes the <code>i^th</code> segment of <code>nums1</code>, and each <code>encoded2[j] = [val_j, freq_j]</code> describes the <code>j^th</code> segment of <code>nums2</code>.</p>
 <p>Return the <strong>product</strong> of <code>encoded1</code><em> and </em><code>encoded2</code>.</p>
 <p><strong>Note:</strong> Compression should be done such that the run-length encoded array has the <strong>minimum</strong> possible length.</p>
 <p>Example 1:</p>
 <pre class="example-block"><code>
-<strong>Input:</strong> encoded1 = [[1,3],[2,3]], encoded2 = [[6,3],[3,3]]
-<strong>Output:</strong> [[6,6]]
-<strong>Explanation:</strong> encoded1 expands to [1,1,1,2,2,2] and encoded2 expands to [6,6,6,3,3,3].
+**Input:** encoded1 = [[1,3],[2,3]], encoded2 = [[6,3],[3,3]]
+**Output:** [[6,6]]
+**Explanation:** encoded1 expands to [1,1,1,2,2,2] and encoded2 expands to [6,6,6,3,3,3].
 prodNums = [6,6,6,6,6,6], which is compressed into the run-length encoded array [[6,6]].
 </code></pre>
 <p>Example 2:</p>
 <pre class="example-block"><code>
-<strong>Input:</strong> encoded1 = [[1,3],[2,1],[3,2]], encoded2 = [[2,3],[3,3]]
-<strong>Output:</strong> [[2,3],[6,1],[9,2]]
-<strong>Explanation:</strong> encoded1 expands to [1,1,1,2,3,3] and encoded2 expands to [2,2,2,3,3,3].
+**Input:** encoded1 = [[1,3],[2,1],[3,2]], encoded2 = [[2,3],[3,3]]
+**Output:** [[2,3],[6,1],[9,2]]
+**Explanation:** encoded1 expands to [1,1,1,2,3,3] and encoded2 expands to [2,2,2,3,3,3].
 prodNums = [2,2,2,6,9,9], which is compressed into the run-length encoded array [[2,3],[6,1],[9,2]].
 </code></pre>
 <p><strong>Constraints:</strong></p>
 <ul>
-<li><code>1 &lt;= encoded1.length, encoded2.length &lt;= 105</code></li>
+<li><code>1 &lt;= encoded1.length, encoded2.length &lt;= 10^5</code></li>
 </ul>
 	
 <ul>
@@ -225,11 +225,11 @@ prodNums = [2,2,2,6,9,9], which is compressed into the run-length encoded array 
 </ul>
 	
 <ul>
-<li><code>1 &lt;= vali, freqi &lt;= 104</code> for each <code>encoded1[i]</code>.</li>
+<li><code>1 &lt;= val_i, freq_i &lt;= 10^4</code> for each <code>encoded1[i]</code>.</li>
 </ul>
 	
 <ul>
-<li><code>1 &lt;= valj, freqj &lt;= 104</code> for each <code>encoded2[j]</code>.</li>
+<li><code>1 &lt;= val_j, freq_j &lt;= 10^4</code> for each <code>encoded2[j]</code>.</li>
 </ul>
 	
 <ul>
