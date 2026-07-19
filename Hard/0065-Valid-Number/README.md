@@ -2,7 +2,7 @@
 
 **Difficulty:** 🔴 Hard  
 **Tags:** String  
-**Accepted:** 529.2K / 2.3M (23.1%)
+**Accepted:** 534.4K / 2.3M (23.2%)
 
 ---
 
