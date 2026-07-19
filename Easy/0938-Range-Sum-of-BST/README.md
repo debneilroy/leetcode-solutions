@@ -37,11 +37,11 @@ Example 2:
 **Constraints:**
 
 	
-- The number of nodes in the tree is in the range `[1, 2 * 104]`.
+- The number of nodes in the tree is in the range `[1, 2 * 10^4]`.
 	
-- `1 <= Node.val <= 105`
+- `1 <= Node.val <= 10^5`
 	
-- `1 <= low <= high <= 105`
+- `1 <= low <= high <= 10^5`
 	
 - All `Node.val` are **unique**.
 
