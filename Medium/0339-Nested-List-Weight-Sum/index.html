@@ -177,25 +177,25 @@ sup { font-size: 10px; }
           <span class="badge badge-Medium">Medium</span>
           <span class="tag">Depth-First Search</span><span class="tag">Breadth-First Search</span>
         </div>
-        <div class="prob-stats">417.8K / 486K (86.0%)</div>
+        <div class="prob-stats">418.2K / 486.4K (86.0%)</div>
         <div class="prob-desc"><p>You are given a nested list of integers <code>nestedList</code>. Each element is either an integer or a list whose elements may also be integers or other lists.</p>
 <p>The <strong>depth</strong> of an integer is the number of lists that it is inside of. For example, the nested list <code>[1,[2,2],[[3],2],1]</code> has each integer's value set to its <strong>depth</strong>.</p>
 <p>Return <em>the sum of each integer in </em><code>nestedList</code><em> multiplied by its <strong>depth</strong></em>.</p>
 <p>Example 1:</p>
 <pre class="example-block"><code>
-<strong>Input:</strong> nestedList = [[1,1],2,[1,1]]
-<strong>Output:</strong> 10
-<strong>Explanation:</strong> Four 1&#x27;s at depth 2, one 2 at depth 1. 1<em>2 + 1</em>2 + 2<em>1 + 1</em>2 + 1*2 = 10.
+**Input:** nestedList = [[1,1],2,[1,1]]
+**Output:** 10
+**Explanation:** Four 1&#x27;s at depth 2, one 2 at depth 1. 1*2 + 1*2 + 2*1 + 1*2 + 1*2 = 10.
 </code></pre>
 <p>Example 2:</p>
 <pre class="example-block"><code>
-<strong>Input:</strong> nestedList = [1,[4,[6]]]
-<strong>Output:</strong> 27
-<strong>Explanation:</strong> One 1 at depth 1, one 4 at depth 2, and one 6 at depth 3. 1<em>1 + 4</em>2 + 6*3 = 27.</code></pre>
+**Input:** nestedList = [1,[4,[6]]]
+**Output:** 27
+**Explanation:** One 1 at depth 1, one 4 at depth 2, and one 6 at depth 3. 1*1 + 4*2 + 6*3 = 27.</code></pre>
 <p>Example 3:</p>
 <pre class="example-block"><code>
-<strong>Input:</strong> nestedList = [0]
-<strong>Output:</strong> 0
+**Input:** nestedList = [0]
+**Output:** 0
 </code></pre>
 <p><strong>Constraints:</strong></p>
 <ul>
