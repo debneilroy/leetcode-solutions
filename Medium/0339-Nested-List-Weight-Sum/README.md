@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Depth-First Search, Breadth-First Search  
-**Accepted:** 418.2K / 486.4K (86.0%)
+**Accepted:** 418.4K / 486.7K (86.0%)
 
 ---
 
@@ -18,6 +18,8 @@ Return *the sum of each integer in *`nestedList`* multiplied by its **depth***.
 
 Example 1:
 
+![](https://assets.leetcode.com/uploads/2021/01/14/nestedlistweightsumex1.png)
+
 ```
 
 **Input:** nestedList = [[1,1],2,[1,1]]
@@ -27,6 +29,8 @@ Example 1:
 ```
 
 Example 2:
+
+![](https://assets.leetcode.com/uploads/2021/01/14/nestedlistweightsumex2.png)
 
 ```
 
