@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Binary Search, Tree, Depth-First Search, Binary Search Tree, Binary Tree  
-**Accepted:** 456.1K / 928K (49.2%)
+**Accepted:** 456.6K / 929.1K (49.1%)
 
 ---
 
@@ -13,6 +13,8 @@ Given the `root` of a binary search tree and a `target` value, return *the value
  
 
 Example 1:
+
+![](https://assets.leetcode.com/uploads/2021/03/12/closest1-1-tree.jpg)
 
 ```
 
@@ -45,7 +47,7 @@ Example 2:
 
 ## Similar Problems
 
-- [Count Complete Tree Nodes](https://leetcode.com/problems/count-complete-tree-nodes/) — Easy
+- [Count Complete Tree Nodes](https://leetcode.com/problems/count-complete-tree-nodes/) — Medium
 - [Closest Binary Search Tree Value II](https://leetcode.com/problems/closest-binary-search-tree-value-ii/) — Hard
 - [Search in a Binary Search Tree](https://leetcode.com/problems/search-in-a-binary-search-tree/) — Easy
 - [Closest Nodes Queries in a Binary Search Tree](https://leetcode.com/problems/closest-nodes-queries-in-a-binary-search-tree/) — Medium
