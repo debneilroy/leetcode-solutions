@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Array  
-**Accepted:** 312.5K / 876K (35.7%)
+**Accepted:** 312.8K / 876.7K (35.7%)
 
 ---
 
