@@ -2,7 +2,7 @@
 
 **Difficulty:** 🔴 Hard  
 **Tags:** Backtracking, Interactive  
-**Accepted:** 214.6K / 275K (78.0%)
+**Accepted:** 214.8K / 275.3K (78.0%)
 
 ---
 
@@ -47,6 +47,8 @@ The input is only given to initialize the room and the robot's position internal
  
 
 Example 1:
+
+![](https://assets.leetcode.com/uploads/2021/07/17/lc-grid.jpg)
 
 ```
 
