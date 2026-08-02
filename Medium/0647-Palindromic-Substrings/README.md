@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Two Pointers, String, Dynamic Programming  
-**Accepted:** 1.2M / 1.7M (73.0%)
+**Accepted:** 1.2M / 1.7M (73.1%)
 
 ---
 
