@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Array, Matrix  
-**Accepted:** 466.5K / 669K (69.7%)
+**Accepted:** 472.9K / 677.3K (69.8%)
 
 ---
 
@@ -16,6 +16,8 @@ A matrix is **Toeplitz** if every diagonal from top-left to bottom-right has the
 
 Example 1:
 
+![](https://assets.leetcode.com/uploads/2020/11/04/ex1.jpg)
+
 ```
 
 **Input:** matrix = [[1,2,3,4],[5,1,2,3],[9,5,1,2]]
@@ -28,6 +30,8 @@ In each diagonal all elements are the same, so the answer is True.
 ```
 
 Example 2:
+
+![](https://assets.leetcode.com/uploads/2020/11/04/ex2.jpg)
 
 ```
 
