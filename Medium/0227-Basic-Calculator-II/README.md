@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Math, String, Stack  
-**Accepted:** 966.2K / 2.1M (47.0%)
+**Accepted:** 970.9K / 2.1M (47.0%)
 
 ---
 
