@@ -53,6 +53,7 @@ p { margin-bottom: 10px; }
 ul { padding-left: 20px; margin-bottom: 10px; }
 li { margin-bottom: 4px; }
 strong { font-weight: 600; }
+img { max-width: 100%; height: auto; border-radius: var(--radius); display: block; margin: 10px 0; }
 h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
 sup { font-size: 10px; }
 
@@ -192,22 +193,24 @@ sup { font-size: 10px; }
 <li>Both the left and right subtrees must also be binary search trees.</li>
 </ul>
 <p>Example 1:</p>
+<p><img src="https://assets.leetcode.com/uploads/2020/01/30/sample_1_1709.png" alt="" loading="lazy"></p>
 <pre class="example-block"><code>
-**Input:** root = [1,4,3,2,4,2,5,null,null,null,null,null,null,4,6]
-**Output:** 20
-**Explanation:** Maximum sum in a valid Binary search tree is obtained in root node with key equal to 3.
+<strong>Input:</strong> root = [1,4,3,2,4,2,5,null,null,null,null,null,null,4,6]
+<strong>Output:</strong> 20
+<strong>Explanation:</strong> Maximum sum in a valid Binary search tree is obtained in root node with key equal to 3.
 </code></pre>
 <p>Example 2:</p>
+<p><img src="https://assets.leetcode.com/uploads/2020/01/30/sample_2_1709.png" alt="" loading="lazy"></p>
 <pre class="example-block"><code>
-**Input:** root = [4,3,null,1,2]
-**Output:** 2
-**Explanation:** Maximum sum in a valid Binary search tree is obtained in a single root node with key equal to 2.
+<strong>Input:</strong> root = [4,3,null,1,2]
+<strong>Output:</strong> 2
+<strong>Explanation:</strong> Maximum sum in a valid Binary search tree is obtained in a single root node with key equal to 2.
 </code></pre>
 <p>Example 3:</p>
 <pre class="example-block"><code>
-**Input:** root = [-4,-2,-5]
-**Output:** 0
-**Explanation:** All values are negatives. Return an empty BST.
+<strong>Input:</strong> root = [-4,-2,-5]
+<strong>Output:</strong> 0
+<strong>Explanation:</strong> All values are negatives. Return an empty BST.
 </code></pre>
 <p><strong>Constraints:</strong></p>
 <ul>
