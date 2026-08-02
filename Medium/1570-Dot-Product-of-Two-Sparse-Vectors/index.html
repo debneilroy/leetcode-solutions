@@ -53,6 +53,7 @@ p { margin-bottom: 10px; }
 ul { padding-left: 20px; margin-bottom: 10px; }
 li { margin-bottom: 4px; }
 strong { font-weight: 600; }
+img { max-width: 100%; height: auto; border-radius: var(--radius); display: block; margin: 10px 0; }
 h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
 sup { font-size: 10px; }
 
@@ -177,7 +178,7 @@ sup { font-size: 10px; }
           <span class="badge badge-Medium">Medium</span>
           <span class="tag">Array</span><span class="tag">Hash Table</span><span class="tag">Two Pointers</span><span class="tag">Design</span>
         </div>
-        <div class="prob-stats">407.8K / 453.7K (89.9%)</div>
+        <div class="prob-stats">408.1K / 454K (89.9%)</div>
         <div class="prob-desc"><p>Given two sparse vectors, compute their dot product.</p>
 <p>Implement class <code>SparseVector</code>:</p>
 <ul>
@@ -191,22 +192,22 @@ sup { font-size: 10px; }
 <p><strong>Follow up: </strong>What if only one of the vectors is sparse?</p>
 <p>Example 1:</p>
 <pre class="example-block"><code>
-**Input:** nums1 = [1,0,0,2,3], nums2 = [0,3,0,4,0]
-**Output:** 8
-**Explanation:** v1 = SparseVector(nums1) , v2 = SparseVector(nums2)
+<strong>Input:</strong> nums1 = [1,0,0,2,3], nums2 = [0,3,0,4,0]
+<strong>Output:</strong> 8
+<strong>Explanation:</strong> v1 = SparseVector(nums1) , v2 = SparseVector(nums2)
 v1.dotProduct(v2) = 1*0 + 0*3 + 0*0 + 2*4 + 3*0 = 8
 </code></pre>
 <p>Example 2:</p>
 <pre class="example-block"><code>
-**Input:** nums1 = [0,1,0,0,0], nums2 = [0,0,0,0,2]
-**Output:** 0
-**Explanation:** v1 = SparseVector(nums1) , v2 = SparseVector(nums2)
+<strong>Input:</strong> nums1 = [0,1,0,0,0], nums2 = [0,0,0,0,2]
+<strong>Output:</strong> 0
+<strong>Explanation:</strong> v1 = SparseVector(nums1) , v2 = SparseVector(nums2)
 v1.dotProduct(v2) = 0*0 + 1*0 + 0*0 + 0*0 + 0*2 = 0
 </code></pre>
 <p>Example 3:</p>
 <pre class="example-block"><code>
-**Input:** nums1 = [0,1,0,0,2,0,0], nums2 = [1,0,0,0,3,0,4]
-**Output:** 6
+<strong>Input:</strong> nums1 = [0,1,0,0,2,0,0], nums2 = [1,0,0,0,3,0,4]
+<strong>Output:</strong> 6
 </code></pre>
 <p><strong>Constraints:</strong></p>
 <ul>
