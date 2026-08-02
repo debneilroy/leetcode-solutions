@@ -53,6 +53,7 @@ p { margin-bottom: 10px; }
 ul { padding-left: 20px; margin-bottom: 10px; }
 li { margin-bottom: 4px; }
 strong { font-weight: 600; }
+img { max-width: 100%; height: auto; border-radius: var(--radius); display: block; margin: 10px 0; }
 h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
 sup { font-size: 10px; }
 
@@ -177,7 +178,7 @@ sup { font-size: 10px; }
           <span class="badge badge-Medium">Medium</span>
           <span class="tag">Tree</span><span class="tag">Depth-First Search</span><span class="tag">Binary Tree</span>
         </div>
-        <div class="prob-stats">202.3K / 233.1K (86.8%)</div>
+        <div class="prob-stats">202.9K / 233.8K (86.8%)</div>
         <div class="prob-desc"><p>Given the <code>root</code> of a binary tree, return <em>the number of nodes where the value of the node is equal to the <strong>average</strong> of the values in its <strong>subtree</strong></em>.</p>
 <p><strong>Note:</strong></p>
 <ul>
@@ -188,10 +189,11 @@ sup { font-size: 10px; }
 <li>A <strong>subtree</strong> of <code>root</code> is a tree consisting of <code>root</code> and all of its descendants.</li>
 </ul>
 <p>Example 1:</p>
+<p><img src="https://assets.leetcode.com/uploads/2022/03/15/image-20220315203925-1.png" alt="" loading="lazy"></p>
 <pre class="example-block"><code>
-**Input:** root = [4,8,5,0,1,null,6]
-**Output:** 5
-**Explanation:** 
+<strong>Input:</strong> root = [4,8,5,0,1,null,6]
+<strong>Output:</strong> 5
+<strong>Explanation:</strong> 
 For the node with value 4: The average of its subtree is (4 + 8 + 5 + 0 + 1 + 6) / 6 = 24 / 6 = 4.
 For the node with value 5: The average of its subtree is (5 + 6) / 2 = 11 / 2 = 5.
 For the node with value 0: The average of its subtree is 0 / 1 = 0.
@@ -199,10 +201,11 @@ For the node with value 1: The average of its subtree is 1 / 1 = 1.
 For the node with value 6: The average of its subtree is 6 / 1 = 6.
 </code></pre>
 <p>Example 2:</p>
+<p><img src="https://assets.leetcode.com/uploads/2022/03/26/image-20220326133920-1.png" alt="" loading="lazy"></p>
 <pre class="example-block"><code>
-**Input:** root = [1]
-**Output:** 1
-**Explanation:** For the node with value 1: The average of its subtree is 1 / 1 = 1.
+<strong>Input:</strong> root = [1]
+<strong>Output:</strong> 1
+<strong>Explanation:</strong> For the node with value 1: The average of its subtree is 1 / 1 = 1.
 </code></pre>
 <p><strong>Constraints:</strong></p>
 <ul>
