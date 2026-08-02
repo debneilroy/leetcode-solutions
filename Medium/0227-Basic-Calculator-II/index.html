@@ -53,6 +53,7 @@ p { margin-bottom: 10px; }
 ul { padding-left: 20px; margin-bottom: 10px; }
 li { margin-bottom: 4px; }
 strong { font-weight: 600; }
+img { max-width: 100%; height: auto; border-radius: var(--radius); display: block; margin: 10px 0; }
 h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
 sup { font-size: 10px; }
 
@@ -177,22 +178,22 @@ sup { font-size: 10px; }
           <span class="badge badge-Medium">Medium</span>
           <span class="tag">Math</span><span class="tag">String</span><span class="tag">Stack</span>
         </div>
-        <div class="prob-stats">966.2K / 2.1M (47.0%)</div>
+        <div class="prob-stats">970.9K / 2.1M (47.0%)</div>
         <div class="prob-desc"><p>Given a string <code>s</code> which represents an expression, <em>evaluate this expression and return its value</em>.</p>
 <p>The integer division should truncate toward zero.</p>
 <p>You may assume that the given expression is always valid. All intermediate results will be in the range of <code>[-2^31, 2^31 - 1]</code>.</p>
 <p><strong>Note:</strong> You are not allowed to use any built-in function which evaluates strings as mathematical expressions, such as <code>eval()</code>.</p>
 <p>Example 1:</p>
-<pre class="example-block"><code>**Input:** s = &quot;3+2*2&quot;
-**Output:** 7
+<pre class="example-block"><code><strong>Input:</strong> s = &quot;3+2*2&quot;
+<strong>Output:</strong> 7
 </code></pre>
 <p>Example 2:</p>
-<pre class="example-block"><code>**Input:** s = &quot; 3/2 &quot;
-**Output:** 1
+<pre class="example-block"><code><strong>Input:</strong> s = &quot; 3/2 &quot;
+<strong>Output:</strong> 1
 </code></pre>
 <p>Example 3:</p>
-<pre class="example-block"><code>**Input:** s = &quot; 3+5 / 2 &quot;
-**Output:** 5
+<pre class="example-block"><code><strong>Input:</strong> s = &quot; 3+5 / 2 &quot;
+<strong>Output:</strong> 5
 </code></pre>
 <p><strong>Constraints:</strong></p>
 <ul>
