@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Tree, Depth-First Search, Binary Tree  
-**Accepted:** 2.6M / 4M (65.9%)
+**Accepted:** 2.6M / 4M (66.0%)
 
 ---
 
@@ -17,6 +17,8 @@ The **length** of a path between two nodes is represented by the number of edges
  
 
 Example 1:
+
+![](https://assets.leetcode.com/uploads/2021/03/06/diamtree.jpg)
 
 ```
 
