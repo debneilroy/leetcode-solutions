@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Tree, Depth-First Search, Breadth-First Search, Binary Tree  
-**Accepted:** 2.3M / 3.3M (70.7%)
+**Accepted:** 2.3M / 3.3M (70.9%)
 
 ---
 
@@ -20,6 +20,8 @@ Example 1:
 
 **Explanation:**
 
+![](https://assets.leetcode.com/uploads/2024/11/24/tmpd5jn43fs-1.png)
+
 Example 2:
 
 **Input:** root = [1,2,3,4,null,null,null,5]
@@ -27,6 +29,8 @@ Example 2:
 **Output:** [1,3,4,5]
 
 **Explanation:**
+
+![](https://assets.leetcode.com/uploads/2024/11/24/tmpkpe40xeh-1.png)
 
 Example 3:
 
