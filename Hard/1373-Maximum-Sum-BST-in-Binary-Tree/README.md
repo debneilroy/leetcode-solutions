@@ -23,6 +23,8 @@ Assume a BST is defined as follows:
 
 Example 1:
 
+![](https://assets.leetcode.com/uploads/2020/01/30/sample_1_1709.png)
+
 ```
 
 **Input:** root = [1,4,3,2,4,2,5,null,null,null,null,null,null,4,6]
@@ -32,6 +34,8 @@ Example 1:
 ```
 
 Example 2:
+
+![](https://assets.leetcode.com/uploads/2020/01/30/sample_2_1709.png)
 
 ```
 
