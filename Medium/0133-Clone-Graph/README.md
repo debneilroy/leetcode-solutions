@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Hash Table, Depth-First Search, Breadth-First Search, Graph Theory  
-**Accepted:** 2M / 3M (65.8%)
+**Accepted:** 2M / 3M (65.9%)
 
 ---
 
@@ -37,6 +37,8 @@ The given node will always be the first node with `val = 1`. You must return the
 
 Example 1:
 
+![](https://assets.leetcode.com/uploads/2019/11/04/133_clone_graph_question.png)
+
 ```
 
 **Input:** adjList = [[2,4],[1,3],[2,4],[1,3]]
@@ -50,6 +52,8 @@ Example 1:
 ```
 
 Example 2:
+
+![](https://assets.leetcode.com/uploads/2020/01/07/graph.png)
 
 ```
 
