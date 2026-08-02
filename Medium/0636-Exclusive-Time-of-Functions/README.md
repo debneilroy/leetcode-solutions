@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Array, Stack  
-**Accepted:** 371.9K / 561.3K (66.2%)
+**Accepted:** 374.3K / 564.8K (66.3%)
 
 ---
 
@@ -21,6 +21,8 @@ Return *the **exclusive time** of each function in an array, where the value at 
  
 
 Example 1:
+
+![](https://assets.leetcode.com/uploads/2019/04/05/diag1b.png)
 
 ```
 
