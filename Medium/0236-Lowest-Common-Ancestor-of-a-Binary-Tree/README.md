@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Tree, Depth-First Search, Binary Tree  
-**Accepted:** 2.7M / 3.9M (69.8%)
+**Accepted:** 2.7M / 3.9M (69.9%)
 
 ---
 
@@ -16,6 +16,8 @@ According to the [definition of LCA on Wikipedia](https://en.wikipedia.org/wiki/
 
 Example 1:
 
+![](https://assets.leetcode.com/uploads/2018/12/14/binarytree.png)
+
 ```
 
 **Input:** root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
@@ -25,6 +27,8 @@ Example 1:
 ```
 
 Example 2:
+
+![](https://assets.leetcode.com/uploads/2018/12/14/binarytree.png)
 
 ```
 
