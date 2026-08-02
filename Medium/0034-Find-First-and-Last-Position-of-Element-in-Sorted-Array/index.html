@@ -53,6 +53,7 @@ p { margin-bottom: 10px; }
 ul { padding-left: 20px; margin-bottom: 10px; }
 li { margin-bottom: 4px; }
 strong { font-weight: 600; }
+img { max-width: 100%; height: auto; border-radius: var(--radius); display: block; margin: 10px 0; }
 h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
 sup { font-size: 10px; }
 
@@ -177,21 +178,21 @@ sup { font-size: 10px; }
           <span class="badge badge-Medium">Medium</span>
           <span class="tag">Array</span><span class="tag">Binary Search</span>
         </div>
-        <div class="prob-stats">3.5M / 7M (49.3%)</div>
+        <div class="prob-stats">3.5M / 7.1M (49.4%)</div>
         <div class="prob-desc"><p>Given an array of integers <code>nums</code> sorted in non-decreasing order, find the starting and ending position of a given <code>target</code> value.</p>
 <p>If <code>target</code> is not found in the array, return <code>[-1, -1]</code>.</p>
 <p>You must write an algorithm with <code>O(log n)</code> runtime complexity.</p>
 <p>Example 1:</p>
-<pre class="example-block"><code>**Input:** nums = [5,7,7,8,8,10], target = 8
-**Output:** [3,4]
+<pre class="example-block"><code><strong>Input:</strong> nums = [5,7,7,8,8,10], target = 8
+<strong>Output:</strong> [3,4]
 </code></pre>
 <p>Example 2:</p>
-<pre class="example-block"><code>**Input:** nums = [5,7,7,8,8,10], target = 6
-**Output:** [-1,-1]
+<pre class="example-block"><code><strong>Input:</strong> nums = [5,7,7,8,8,10], target = 6
+<strong>Output:</strong> [-1,-1]
 </code></pre>
 <p>Example 3:</p>
-<pre class="example-block"><code>**Input:** nums = [], target = 0
-**Output:** [-1,-1]
+<pre class="example-block"><code><strong>Input:</strong> nums = [], target = 0
+<strong>Output:</strong> [-1,-1]
 </code></pre>
 <p><strong>Constraints:</strong></p>
 <ul>
