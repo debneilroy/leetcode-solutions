@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Array, Hash Table, Two Pointers, Design  
-**Accepted:** 407.8K / 453.7K (89.9%)
+**Accepted:** 408.1K / 454K (89.9%)
 
 ---
 
