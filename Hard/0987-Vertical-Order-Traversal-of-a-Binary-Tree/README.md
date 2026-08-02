@@ -2,7 +2,7 @@
 
 **Difficulty:** 🔴 Hard  
 **Tags:** Hash Table, Tree, Depth-First Search, Breadth-First Search, Sorting, Binary Tree  
-**Accepted:** 748.6K / 1.4M (54.3%)
+**Accepted:** 755.1K / 1.4M (54.4%)
 
 ---
 
@@ -20,6 +20,8 @@ Return *the **vertical order traversal** of the binary tree*.
 
 Example 1:
 
+![](https://assets.leetcode.com/uploads/2021/01/29/vtree1.jpg)
+
 ```
 
 **Input:** root = [3,9,20,null,null,15,7]
@@ -32,6 +34,8 @@ Column 2: Only node 7 is in this column.
 ```
 
 Example 2:
+
+![](https://assets.leetcode.com/uploads/2021/01/29/vtree2.jpg)
 
 ```
 
@@ -49,6 +53,8 @@ Column 2: Only node 7 is in this column.
 ```
 
 Example 3:
+
+![](https://assets.leetcode.com/uploads/2021/01/29/vtree3.jpg)
 
 ```
 
