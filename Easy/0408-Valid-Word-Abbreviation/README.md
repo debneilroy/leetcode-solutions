@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Two Pointers, String  
-**Accepted:** 364.2K / 983K (37.0%)
+**Accepted:** 364.4K / 983.7K (37.0%)
 
 ---
 
