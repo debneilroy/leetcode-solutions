@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Math, Greedy  
-**Accepted:** 519.2K / 997K (52.1%)
+**Accepted:** 520.1K / 998.7K (52.1%)
 
 ---
 
