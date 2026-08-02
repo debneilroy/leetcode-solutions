@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Array, Sorting  
-**Accepted:** 4.2M / 8M (52.3%)
+**Accepted:** 4.2M / 8M (52.5%)
 
 ---
 
