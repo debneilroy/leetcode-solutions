@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>129. Sum Root to Leaf Numbers - LeetCode Solutions</title>
+<link rel="stylesheet" id="prism-theme" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+<style>
+
+:root {
+  --bg:        #ffffff;
+  --surface:   #f7f8fa;
+  --surface2:  #eff1f3;
+  --border:    #e0e0e0;
+  --text:      #1a1a1a;
+  --muted:     #6b7280;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --unknown:   #8b5cf6;
+  --radius:    6px;
+  --code-bg:   #f5f5f5;
+  --code-panel:#f7f8fa;
+  --code-border:#e0e0e0;
+  --code-muted:#6b7280;
+}
+[data-theme="dark"] {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --code-bg:   #1e1e1e;
+  --code-panel:#2d2d2d;
+  --code-border:#3e3e3e;
+  --code-muted:#8d99a6;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #d63384; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+.theme-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 13px;
+  transition: color .15s, border-color .15s; }
+.theme-btn:hover { color: var(--text); border-color: var(--muted); }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy    { color: var(--easy);    background: rgba(44,187,93,0.15); }
+.badge-Medium  { color: var(--medium);  background: rgba(255,161,22,0.15); }
+.badge-Hard    { color: var(--hard);    background: rgba(239,71,67,0.15); }
+.badge-Unknown { color: var(--unknown); background: rgba(139,92,246,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--code-border); background: var(--code-panel); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--code-panel); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--code-panel); border-bottom: 1px solid var(--code-border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--code-muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--code-border); color: var(--code-muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: var(--code-bg) !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--code-panel); border-top: 1px solid var(--code-border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">129. Sum Root to Leaf Numbers</span>
+    <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()">🌙</button>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (0)</div>
+        <div class="tab" data-tab="similar">Similar (3)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">129. Sum Root to Leaf Numbers</div>
+        <div class="prob-meta">
+          <span class="badge badge-Medium">Medium</span>
+          <span class="tag">Tree</span><span class="tag">Depth-First Search</span><span class="tag">Binary Tree</span>
+        </div>
+        <div class="prob-stats">1.3M / 1.9M (70.2%)</div>
+        <div class="prob-desc"><p>You are given the <code>root</code> of a binary tree containing digits from <code>0</code> to <code>9</code> only.</p>
+<p>Each root-to-leaf path in the tree represents a number.</p>
+<ul>
+<li>For example, the root-to-leaf path <code>1 -&gt; 2 -&gt; 3</code> represents the number <code>123</code>.</li>
+</ul>
+<p>Return <em>the total sum of all root-to-leaf numbers</em>. Test cases are generated so that the answer will fit in a <strong>32-bit</strong> integer.</p>
+<p>A <strong>leaf</strong> node is a node with no children.</p>
+<p>Example 1:</p>
+<pre class="example-block"><code>
+**Input:** root = [1,2,3]
+**Output:** 25
+**Explanation:**
+The root-to-leaf path <code>1-&amp;gt;2</code> represents the number <code>12</code>.
+The root-to-leaf path <code>1-&amp;gt;3</code> represents the number <code>13</code>.
+Therefore, sum = 12 + 13 = <code>25</code>.
+</code></pre>
+<p>Example 2:</p>
+<pre class="example-block"><code>
+**Input:** root = [4,9,0,5,1]
+**Output:** 1026
+**Explanation:**
+The root-to-leaf path <code>4-&amp;gt;9-&amp;gt;5</code> represents the number 495.
+The root-to-leaf path <code>4-&amp;gt;9-&amp;gt;1</code> represents the number 491.
+The root-to-leaf path <code>4-&amp;gt;0</code> represents the number 40.
+Therefore, sum = 495 + 491 + 40 = <code>1026</code>.
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li>The number of nodes in the tree is in the range <code>[1, 1000]</code>.</li>
+</ul>
+	
+<ul>
+<li><code>0 &lt;= Node.val &lt;= 9</code></li>
+</ul>
+	
+<ul>
+<li>The depth of the tree will not exceed <code>10</code>.</li>
+</ul></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        <p class="empty-msg">No hints for this problem.</p>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/path-sum/" target="_blank">Path Sum</a>
+  <span style="color:#2cbb5d; font-size:12px;">Easy</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/binary-tree-maximum-path-sum/" target="_blank">Binary Tree Maximum Path Sum</a>
+  <span style="color:#ef4743; font-size:12px;">Hard</span>
+</div>
+<div class="similar-row">
+  <a href="https://leetcode.com/problems/smallest-string-starting-from-leaf/" target="_blank">Smallest String Starting From Leaf</a>
+  <span style="color:#ffa116; font-size:12px;">Medium</span>
+</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 129. Sum Root to Leaf Numbers
+Difficulty: Medium
+URL: https://leetcode.com/problems/sum-root-to-leaf-numbers/
+&quot;&quot;&quot;
+
+# Definition for a binary tree node.
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def sumNumbers(self, root: Optional[TreeNode]) -&gt; int:
+        &quot;&quot;&quot;
+        Approach: DFS (preorder), carrying the &quot;number built so far&quot; down
+        from root to each leaf. At a leaf, add that number to a running total.
+
+        nonlocal (over self.root_to_leaf): keeps the running total scoped to
+        this call only, avoiding stale state leaking across repeated calls
+        on the same Solution instance.
+
+        TC: O(n) - visit every node exactly once
+        SC: O(h) - recursion stack depth, h = height of tree
+            (worst case O(n) for a skewed/degenerate tree)
+        &quot;&quot;&quot;
+
+        def preorder(node: TreeNode, curr_number: int):
+            nonlocal root_to_leaf
+            # self version: no line needed here (self is already accessible
+            # inside this closure, unlike a plain enclosing-scope variable)
+
+            # Base case: fell off the tree (happens at every leaf&#x27;s None
+            # children too) — nothing to add here, just stop.
+            if not node:
+                return
+
+            # Extend the number being built along this path.
+            # Example: curr_number=12, node.val=3 -&gt; curr_number=123
+            curr_number = curr_number * 10 + node.val
+
+            # Leaf check: no children means this root-to-leaf path is complete.
+            # Example: node=3 with no left/right -&gt; add 123 to the total
+            if not node.left and not node.right:
+                root_to_leaf += curr_number
+                # self version: self.root_to_leaf += curr_number
+
+                # results-array version (return each path&#x27;s number instead
+                # of a combined total): results.append(curr_number)
+                
+                # -- note: no nonlocal needed for this one, since
+                # results.append(...) mutates the existing list rather
+                # than rebinding the name (only rebinding requires nonlocal)
+                return
+
+            # Not a leaf yet — keep extending the path in both directions,
+            # carrying the current partial number down to each child.
+            preorder(node.left, curr_number)
+            preorder(node.right, curr_number)
+
+        # root_to_leaf lives in sumNumbers&#x27; scope; preorder mutates it
+        # via nonlocal rather than returning values back up the call stack.
+        root_to_leaf = 0
+        # self version: self.root_to_leaf = 0
+        # results-array version: results = []  (initialize an empty list
+        # instead of a running total)
+        preorder(root, 0)
+        return root_to_leaf
+        # self version: return self.root_to_leaf
+        # results-array version: return results
+
+# Another approach : Without any instance or nonlocal variables
+
+class Solution:
+    def sumNumbers(self, root):
+        &quot;&quot;&quot;
+        Approach: DFS with helper function
+        Time: O(n), Space: O(h) where h is height
+        &quot;&quot;&quot;
+        def dfs(node, current_num):
+
+            # return 0 here (not None) because this value gets summed via
+            # dfs(left) + dfs(right) below — 0 is the identity for +, so a
+            # missing child contributes nothing to the total.
+            # (Not needed in the self/nonlocal version, since there the
+            # return value is never used — the result is set via a side
+            # effect instead, so a bare `return` is enough.)
+            if not node:
+                return 0
+            
+            # Build current number by appending digit
+            current_num = current_num * 10 + node.val
+            
+            # If leaf node, return the number
+            if not node.left and not node.right:
+                return current_num
+            
+            # Sum from left and right subtrees
+            return dfs(node.left, current_num) + dfs(node.right, current_num)
+        
+        return dfs(root, 0)
+
+# Iterative Preorder Traversal
+
+class Solution:
+    def sumNumbers(self, root):
+        &quot;&quot;&quot;
+        Approach 2: Iterative DFS using stack
+        Time: O(n), Space: O(h)
+        &quot;&quot;&quot;
+        if not root:
+            return 0
+        
+        stack = [(root, root.val)]
+        total = 0
+        
+        while stack:
+            node, current_num = stack.pop()
+            
+            # If leaf node, add to total
+            if not node.left and not node.right:
+                total += current_num
+            
+            # Add children to stack with updated numbers
+            if node.right:
+                stack.append((node.right, current_num * 10 + node.right.val))
+            if node.left:
+                stack.append((node.left, current_num * 10 + node.left.val))
+        
+        return total
+
+
+# Variant 1: Sum of Root-to-Leaf Path Sums (multi-digit values, addition instead of concatenation)
+
+# Given a binary tree where node values may be multi-digit (not restricted to single digits 0-9), each root-to-leaf path has a path sum = the sum of node values along that path (plain addition). Return the sum of all these path sums across every root-to-leaf path.
+
+# How this differs from the original LC 129 — same tree shape, two different rules:
+
+        1
+       / \
+      2   3
+
+# Original LC 129: values are restricted to single digits, and each path is built by concatenating digits (not adding them). Path 1 → 2 becomes the number 12 — the &quot;1&quot; and &quot;2&quot; are glued together digit-by-digit, not summed. Path 1 → 3 becomes 13. Total = 12 + 13 = 25.
+
+# This variant, same tree: instead of concatenating, we sum the values. Path 1 → 2 becomes 1+2 = 3. Path 1 → 3 becomes 1+3 = 4. Total = 3 + 4 = 7.
+
+# Now here is  why the variant needs multi-digit values allowed — if the tree instead looks like this:
+
+        15
+       /  \
+      9    28
+     /
+    6
+
+# This variant only (concatenation wouldn&#x27;t make sense here — imagine trying to glue &quot;15&quot; and &quot;9&quot; together digit-by-digit; it&#x27;s unclear whether that means &quot;159&quot; or &quot;1509&quot; or something else, which is exactly why concatenation breaks down once values aren&#x27;t single digits):
+
+# Path 15 → 9 → 6 → sum = 15+9+6 = 30
+# Path 15 → 28 → sum = 15+28 = 43
+# Total = 30 + 43 = 73
+
+class Solution:
+    def sumRootToLeafPathSums(self, root: Optional[TreeNode]) -&gt; int:
+        &quot;&quot;&quot;
+        Approach: DFS, carrying the running sum of node values down each
+        path (plain addition, not digit concatenation). At a leaf, add
+        that path&#x27;s sum into self.total_sum.
+
+        Difference from LC 129: original problem restricts node values to
+        single digits (0-9) and builds a number via concatenation
+        (curr_number * 10 + node.val). Here, values can be multi-digit,
+        so we simply add (curr_sum + node.val) instead of shifting digits.
+
+        self.total_sum (instance variable): mutated as a side effect inside
+        dfs, rather than returned and combined via +. Works, but ties the
+        result to the Solution object&#x27;s state rather than keeping it local
+        to this call — must be reset each call, or stale values leak across
+        repeated calls on the same instance.
+
+        TC: O(n) - visit every node exactly once
+        SC: O(h) - recursion stack depth, h = height of tree
+        &quot;&quot;&quot;
+        def dfs(node, path_sum_so_far):
+            if not node:
+                return
+
+            path_sum_so_far += node.val
+
+            if not node.left and not node.right:
+                self.total_sum += path_sum_so_far
+                return
+
+            dfs(node.left, path_sum_so_far)
+            dfs(node.right, path_sum_so_far)
+
+        self.total_sum = 0
+        dfs(root, 0)
+        return self.total_sum
+
+# Another version : no instance variables
+
+class Solution:
+    def sumRootToLeafPathSums(self, root: Optional[TreeNode]) -&gt; int:
+        &quot;&quot;&quot;
+        Approach: DFS, carrying the running sum of node values down each
+        path (plain addition, not digit concatenation). At a leaf, add
+        that path&#x27;s sum into a running total across all paths.
+
+        Difference from LC 129: original problem restricts node values to
+        single digits (0-9) and builds a number via concatenation
+        (curr_number * 10 + node.val). Here, values can be multi-digit,
+        so we simply add (curr_sum + node.val) instead of shifting digits.
+
+        TC: O(n) - visit every node exactly once
+        SC: O(h) - recursion stack depth, h = height of tree
+        &quot;&quot;&quot;
+        def dfs(node, path_sum_so_far):
+            if not node:
+                return 0
+
+            # Plain addition — no *10 shift, since values aren&#x27;t
+            # restricted to single digits here.
+            # Example: path_sum_so_far=15, node.val=9 -&gt; 24
+            path_sum_so_far += node.val
+
+            if not node.left and not node.right:
+                return path_sum_so_far
+
+            return dfs(node.left, path_sum_so_far) + dfs(node.right, path_sum_so_far)
+
+        return dfs(root, 0)
+
+
+# Variant 2: Sum Root to Leaf Numbers (multi-digit values)
+
+# You are given the root of a binary tree containing numbers from 0 to 999 (not restricted to single digits).
+
+# Each root-to-leaf path in the tree represents a number, formed by concatenating the values along the path — not adding them.
+
+# For example, the root-to-leaf path 10 -&gt; 88 -&gt; 555 represents the number 1088555 (digits glued together: &quot;10&quot; + &quot;88&quot; + &quot;555&quot;).
+
+# Return the total sum of all root-to-leaf numbers.
+
+# How this differs from the &quot;classic&quot; single-digit version of LC 129: with single-digit values, concatenating just means num * 10 + val (shift left by exactly one decimal place each time). With multi-digit values (0-999), the shift amount depends on how many digits val has — shifting by a fixed *10 would be wrong. E.g. concatenating &quot;15&quot; after &quot;3&quot; should give &quot;315,&quot; not 3*10+15=45.
+
+# Example (using the tree from the screenshot):
+
+        3
+       / \
+      79   2
+     /
+   111
+
+# Path 3 → 79 → 111: concatenate → &quot;3&quot; + &quot;79&quot; + &quot;111&quot; → 379111
+# Path 3 → 2: concatenate → &quot;3&quot; + &quot;2&quot; → 32
+# Total = 379111 + 32 = 379143
+
+class Solution:
+    def sumNumbers(self, root: Optional[TreeNode]) -&gt; int:
+        &quot;&quot;&quot;
+        Approach: DFS, building each root-to-leaf number by concatenating
+        node values (not just digits) — values can range from 0 to 999,
+        so we shift by the correct power of 10 based on how many digits
+        the current node&#x27;s value actually has.
+
+        Difference from the single-digit version of LC 129: there,
+        current_num * 10 + node.val works because every value is exactly
+        one digit. Here, node.val can be multi-digit (e.g. 79, 111), so a
+        fixed *10 shift would be wrong — we need *10^(digit count of val).
+
+        TC: O(n) - visit every node once; count_digits is O(log(val)) per
+            node, so more precisely O(n * log(max_val)), a small constant
+            factor here since max_val = 999 (at most 3 digits)
+        SC: O(h) - recursion stack depth, h = height of tree
+        &quot;&quot;&quot;
+
+        def count_digits(n: int) -&gt; int:
+            &quot;&quot;&quot;
+            Counts the number of digits in a non-negative integer.
+            Used to determine how much to shift current_num when
+            concatenating in the next value.
+
+            Examples: 5 -&gt; 1 digit, 42 -&gt; 2 digits, 999 -&gt; 3 digits
+            &quot;&quot;&quot;
+            if n == 0:
+                return 1
+
+            count = 0
+            while n &gt; 0:
+                count += 1
+                n //= 10
+            return count
+
+        def dfs(node: TreeNode, current_num: int) -&gt; None:
+            if not node:
+                return
+
+            # Count how many digits node.val occupies, so we shift by
+            # exactly that many decimal places before adding it in.
+            digits = count_digits(node.val)
+
+            # Shift current_num left by 10^digits, then concatenate node.val.
+            # Example: current_num=123, node.val=45 (2 digits)
+            # -&gt; 123 * 10^2 + 45 = 12300 + 45 = 12345
+            current_num = current_num * (10 ** digits) + node.val
+
+            # Leaf check: path is complete — accumulate into self.total
+            # instead of returning the value back up the call stack.
+            if not node.left and not node.right:
+                self.total += current_num
+                return
+
+            dfs(node.left, current_num)
+            dfs(node.right, current_num)
+
+        self.total = 0
+        dfs(root, 0)
+        return self.total
+
+
+# Variant 3: Sum Root to Leaf Numbers (signed variant)
+
+# You are given the root of a binary tree containing digits from -9 to 9 only.
+
+# Each root-to-leaf path in the tree represents a number whose sign is:
+
+# 1. negative if there is an odd number of negative nodes in the path
+# 2. positive if there is an even number of negative nodes in the path (including zero)
+
+# These are known as a negative path and a positive path, respectively.
+
+# For example, the root-to-leaf path 1 -&gt; -2 -&gt; 3 represents the number -123.
+
+# Note: the sign of a node should not affect any root-to-leaf calculations other than the consideration of a negative path — i.e., only the absolute value of each digit is used when building the number itself; the sign only determines whether the final number is positive or negative.
+
+# Return the total sum of all root-to-leaf numbers. Test cases are generated so the answer fits in a 32-bit integer.
+
+# A leaf node is a node with no children.
+
+# Example:
+
+# Input: root = [1, -2, 3]
+# Output: 1
+
+# Explanation:
+
+# The root-to-leaf path 1 -&gt; -2 represents the number -12.
+# The root-to-leaf path 1 -&gt; 3 represents the number 13.
+# Therefore, sum = -12 + 13 = 1.
+
+# Second example, using a deeper tree:
+
+              -1
+             /   \
+           -2     4
+           /        \
+         -9          -5
+
+# Path -1 → -2 → -9: digits (absolute values) concatenate to 129; three negative nodes (-1, -2, -9) → odd count → number is -129
+# Path -1 → 4 → -5: digits concatenate to 145; two negative nodes (-1, -5) → even count → number is +145
+# Total = -129 + 145 = 16     
+
+
+class Solution:
+    def sumNumbers(self, root: Optional[TreeNode]) -&gt; int:
+        &quot;&quot;&quot;
+        Variant: Sum root-to-leaf numbers with sign based on negative node count
+
+        Rules:
+        - Each root-to-leaf path represents a number formed by concatenating
+          the ABSOLUTE VALUES of node digits (sign never affects the digits)
+        - If path has an ODD number of negative nodes -&gt; final number is NEGATIVE
+        - If path has an EVEN number of negative nodes -&gt; final number is POSITIVE
+
+        Example: Path [1, -2, 3]
+        - Absolute number: 123... but wait, only the -2 branch matters per
+          leaf. Concretely: path 1 -&gt; -2 gives abs digits &quot;1&quot;,&quot;2&quot; -&gt; 12,
+          with 1 negative node (odd) -&gt; final = -12.
+
+        Difference from original LC 129: digits are still single-digit
+        (-9 to 9), so the *10 shift still applies unchanged. What&#x27;s new:
+        (a) use abs(node.val) when concatenating, and (b) separately track
+        parity of negative nodes seen, applied as a sign only at the leaf.
+
+        TC: O(n) - visit every node once
+        SC: O(h) - recursion stack depth, h = height of tree
+        &quot;&quot;&quot;
+        def dfs(node, current_num, negative_count):
+            if not node:
+                # Identity for +: a missing child contributes 0 to the sum,
+                # since this return value is combined via left_sum + right_sum.
+                return 0
+
+            # Build the absolute value of the number — ignore sign here,
+            # sign is handled separately via negative_count.
+            # Example: current_num=1, node.val=-2 -&gt; current_num=12
+            current_num = current_num * 10 + abs(node.val)
+
+            # Track how many negative nodes we&#x27;ve seen on this path so far.
+            if node.val &lt; 0:
+                negative_count += 1
+
+            # Leaf check: path is complete — apply sign based on parity.
+            if not node.left and not node.right:
+                # Odd number of negatives -&gt; negative result
+                # Even number of negatives -&gt; positive result
+                if negative_count % 2 == 1:
+                    return -current_num
+                else:
+                    return current_num
+
+            # Continue DFS for left and right subtrees, carrying both
+            # current_num and negative_count down each branch.
+            left_sum = dfs(node.left, current_num, negative_count)
+            right_sum = dfs(node.right, current_num, negative_count)
+
+            return left_sum + right_sum
+
+        return dfs(root, 0, 0)</code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Easy/0121-Best-Time-to-Buy-and-Sell-Stock/">&#8592; 121. Best Time to Buy and Sell Stock</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Medium/0133-Clone-Graph/">133. Clone Graph &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+<script>
+(function() {
+  var t = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('theme-toggle').textContent = t === 'dark' ? '☀️' : '🌙';
+  if (t === 'dark') document.getElementById('prism-theme').href = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css';
+})();
+function toggleTheme() {
+  var t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('theme', t);
+  document.getElementById('theme-toggle').textContent = t === 'dark' ? '☀️' : '🌙';
+  document.getElementById('prism-theme').href = t === 'dark'
+    ? 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css'
+    : 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css';
+}
+</script>
+</body>
+</html>
