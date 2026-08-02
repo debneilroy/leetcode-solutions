@@ -53,6 +53,7 @@ p { margin-bottom: 10px; }
 ul { padding-left: 20px; margin-bottom: 10px; }
 li { margin-bottom: 4px; }
 strong { font-weight: 600; }
+img { max-width: 100%; height: auto; border-radius: var(--radius); display: block; margin: 10px 0; }
 h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
 sup { font-size: 10px; }
 
@@ -177,7 +178,7 @@ sup { font-size: 10px; }
           <span class="badge badge-Medium">Medium</span>
           <span class="tag">Depth-First Search</span><span class="tag">Breadth-First Search</span><span class="tag">Graph Theory</span><span class="tag">Topological Sort</span>
         </div>
-        <div class="prob-stats">2.7M / 5.2M (51.8%)</div>
+        <div class="prob-stats">2.7M / 5.3M (51.9%)</div>
         <div class="prob-desc"><p>There are a total of <code>numCourses</code> courses you have to take, labeled from <code>0</code> to <code>numCourses - 1</code>. You are given an array <code>prerequisites</code> where <code>prerequisites[i] = [a_i, b_i]</code> indicates that you <strong>must</strong> take course <code>b_i</code> first if you want to take course <code>a_i</code>.</p>
 <ul>
 <li>For example, the pair <code>[0, 1]</code>, indicates that to take course <code>0</code> you have to first take course <code>1</code>.</li>
@@ -185,16 +186,16 @@ sup { font-size: 10px; }
 <p>Return <code>true</code> if you can finish all courses. Otherwise, return <code>false</code>.</p>
 <p>Example 1:</p>
 <pre class="example-block"><code>
-**Input:** numCourses = 2, prerequisites = [[1,0]]
-**Output:** true
-**Explanation:** There are a total of 2 courses to take. 
+<strong>Input:</strong> numCourses = 2, prerequisites = [[1,0]]
+<strong>Output:</strong> true
+<strong>Explanation:</strong> There are a total of 2 courses to take. 
 To take course 1 you should have finished course 0. So it is possible.
 </code></pre>
 <p>Example 2:</p>
 <pre class="example-block"><code>
-**Input:** numCourses = 2, prerequisites = [[1,0],[0,1]]
-**Output:** false
-**Explanation:** There are a total of 2 courses to take. 
+<strong>Input:</strong> numCourses = 2, prerequisites = [[1,0],[0,1]]
+<strong>Output:</strong> false
+<strong>Explanation:</strong> There are a total of 2 courses to take. 
 To take course 1 you should have finished course 0, and to take course 0 you should also have finished course 1. So it is impossible.
 </code></pre>
 <p><strong>Constraints:</strong></p>
