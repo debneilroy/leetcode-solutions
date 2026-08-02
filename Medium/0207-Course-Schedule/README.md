@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Depth-First Search, Breadth-First Search, Graph Theory, Topological Sort  
-**Accepted:** 2.7M / 5.2M (51.8%)
+**Accepted:** 2.7M / 5.3M (51.9%)
 
 ---
 
