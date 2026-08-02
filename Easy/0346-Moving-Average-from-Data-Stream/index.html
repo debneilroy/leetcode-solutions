@@ -53,6 +53,7 @@ p { margin-bottom: 10px; }
 ul { padding-left: 20px; margin-bottom: 10px; }
 li { margin-bottom: 4px; }
 strong { font-weight: 600; }
+img { max-width: 100%; height: auto; border-radius: var(--radius); display: block; margin: 10px 0; }
 h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
 sup { font-size: 10px; }
 
@@ -177,7 +178,7 @@ sup { font-size: 10px; }
           <span class="badge badge-Easy">Easy</span>
           <span class="tag">Array</span><span class="tag">Design</span><span class="tag">Queue</span><span class="tag">Data Stream</span>
         </div>
-        <div class="prob-stats">537.4K / 669.9K (80.2%)</div>
+        <div class="prob-stats">538.3K / 671K (80.2%)</div>
         <div class="prob-desc"><p>Given a stream of integers and a window size, calculate the moving average of all integers in the sliding window.</p>
 <p>Implement the <code>MovingAverage</code> class:</p>
 <ul>
@@ -189,12 +190,12 @@ sup { font-size: 10px; }
 </ul>
 <p>Example 1:</p>
 <pre class="example-block"><code>
-**Input**
+<strong>Input</strong>
 [&quot;MovingAverage&quot;, &quot;next&quot;, &quot;next&quot;, &quot;next&quot;, &quot;next&quot;]
 [[3], [1], [10], [3], [5]]
-**Output**
+<strong>Output</strong>
 [null, 1.0, 5.5, 4.66667, 6.0]
-<p>**Explanation**<br>MovingAverage movingAverage = new MovingAverage(3);<br>movingAverage.next(1); // return 1.0 = 1 / 1<br>movingAverage.next(10); // return 5.5 = (1 + 10) / 2<br>movingAverage.next(3); // return 4.66667 = (1 + 10 + 3) / 3<br>movingAverage.next(5); // return 6.0 = (10 + 3 + 5) / 3<br></code></pre></p>
+<p><strong>Explanation</strong><br>MovingAverage movingAverage = new MovingAverage(3);<br>movingAverage.next(1); // return 1.0 = 1 / 1<br>movingAverage.next(10); // return 5.5 = (1 + 10) / 2<br>movingAverage.next(3); // return 4.66667 = (1 + 10 + 3) / 3<br>movingAverage.next(5); // return 6.0 = (10 + 3 + 5) / 3<br></code></pre></p>
 <p><strong>Constraints:</strong></p>
 <ul>
 <li><code>1 &lt;= size &lt;= 1000</code></li>
