@@ -53,6 +53,7 @@ p { margin-bottom: 10px; }
 ul { padding-left: 20px; margin-bottom: 10px; }
 li { margin-bottom: 4px; }
 strong { font-weight: 600; }
+img { max-width: 100%; height: auto; border-radius: var(--radius); display: block; margin: 10px 0; }
 h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
 sup { font-size: 10px; }
 
@@ -177,21 +178,21 @@ sup { font-size: 10px; }
           <span class="badge badge-Easy">Easy</span>
           <span class="tag">String</span><span class="tag">Stack</span>
         </div>
-        <div class="prob-stats">915.3K / 1.2M (73.6%)</div>
+        <div class="prob-stats">926.6K / 1.3M (73.8%)</div>
         <div class="prob-desc"><p>You are given a string <code>s</code> consisting of lowercase English letters. A <strong>duplicate removal</strong> consists of choosing two <strong>adjacent</strong> and <strong>equal</strong> letters and removing them.</p>
 <p>We repeatedly make <strong>duplicate removals</strong> on <code>s</code> until we no longer can.</p>
 <p>Return <em>the final string after all such duplicate removals have been made</em>. It can be proven that the answer is <strong>unique</strong>.</p>
 <p>Example 1:</p>
 <pre class="example-block"><code>
-**Input:** s = &quot;abbaca&quot;
-**Output:** &quot;ca&quot;
-**Explanation:** 
+<strong>Input:</strong> s = &quot;abbaca&quot;
+<strong>Output:</strong> &quot;ca&quot;
+<strong>Explanation:</strong> 
 For example, in &quot;abbaca&quot; we could remove &quot;bb&quot; since the letters are adjacent and equal, and this is the only possible move.  The result of this move is that the string is &quot;aaca&quot;, of which only &quot;aa&quot; is possible, so the final string is &quot;ca&quot;.
 </code></pre>
 <p>Example 2:</p>
 <pre class="example-block"><code>
-**Input:** s = &quot;azxxzy&quot;
-**Output:** &quot;ay&quot;
+<strong>Input:</strong> s = &quot;azxxzy&quot;
+<strong>Output:</strong> &quot;ay&quot;
 </code></pre>
 <p><strong>Constraints:</strong></p>
 <ul>
