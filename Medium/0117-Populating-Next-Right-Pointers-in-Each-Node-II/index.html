@@ -53,6 +53,7 @@ p { margin-bottom: 10px; }
 ul { padding-left: 20px; margin-bottom: 10px; }
 li { margin-bottom: 4px; }
 strong { font-weight: 600; }
+img { max-width: 100%; height: auto; border-radius: var(--radius); display: block; margin: 10px 0; }
 h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
 sup { font-size: 10px; }
 
@@ -177,7 +178,7 @@ sup { font-size: 10px; }
           <span class="badge badge-Medium">Medium</span>
           <span class="tag">Linked List</span><span class="tag">Tree</span><span class="tag">Depth-First Search</span><span class="tag">Breadth-First Search</span><span class="tag">Binary Tree</span>
         </div>
-        <div class="prob-stats">863.7K / 1.5M (57.9%)</div>
+        <div class="prob-stats">868.4K / 1.5M (58.0%)</div>
         <div class="prob-desc"><p>Given a binary tree</p>
 <pre class="example-block"><code>
 struct Node {
@@ -190,15 +191,16 @@ struct Node {
 <p>Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set to <code>NULL</code>.</p>
 <p>Initially, all next pointers are set to <code>NULL</code>.</p>
 <p>Example 1:</p>
+<p><img src="https://assets.leetcode.com/uploads/2019/02/15/117_sample.png" alt="" loading="lazy"></p>
 <pre class="example-block"><code>
-**Input:** root = [1,2,3,4,5,null,7]
-**Output:** [1,#,2,3,#,4,5,7,#]
-**Explanation: **Given the above binary tree (Figure A), your function should populate each next pointer to point to its next right node, just like in Figure B. The serialized output is in level order as connected by the next pointers, with &#x27;#&#x27; signifying the end of each level.
+<strong>Input:</strong> root = [1,2,3,4,5,null,7]
+<strong>Output:</strong> [1,#,2,3,#,4,5,7,#]
+<strong>Explanation: </strong>Given the above binary tree (Figure A), your function should populate each next pointer to point to its next right node, just like in Figure B. The serialized output is in level order as connected by the next pointers, with &#x27;#&#x27; signifying the end of each level.
 </code></pre>
 <p>Example 2:</p>
 <pre class="example-block"><code>
-**Input:** root = []
-**Output:** []
+<strong>Input:</strong> root = []
+<strong>Output:</strong> []
 </code></pre>
 <p><strong>Constraints:</strong></p>
 <ul>
