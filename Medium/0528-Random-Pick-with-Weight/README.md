@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Array, Math, Binary Search, Prefix Sum, Randomized  
-**Accepted:** 707.8K / 1.4M (49.2%)
+**Accepted:** 709.6K / 1.4M (49.2%)
 
 ---
 
