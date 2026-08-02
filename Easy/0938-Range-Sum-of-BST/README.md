@@ -14,6 +14,8 @@ Given the `root` node of a binary search tree and two integers `low` and `high`,
 
 Example 1:
 
+![](https://assets.leetcode.com/uploads/2020/11/05/bst1.jpg)
+
 ```
 
 **Input:** root = [10,5,15,3,7,null,18], low = 7, high = 15
@@ -23,6 +25,8 @@ Example 1:
 ```
 
 Example 2:
+
+![](https://assets.leetcode.com/uploads/2020/11/05/bst2.jpg)
 
 ```
 
