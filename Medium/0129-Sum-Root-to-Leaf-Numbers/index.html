@@ -53,6 +53,7 @@ p { margin-bottom: 10px; }
 ul { padding-left: 20px; margin-bottom: 10px; }
 li { margin-bottom: 4px; }
 strong { font-weight: 600; }
+img { max-width: 100%; height: auto; border-radius: var(--radius); display: block; margin: 10px 0; }
 h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
 sup { font-size: 10px; }
 
@@ -186,19 +187,21 @@ sup { font-size: 10px; }
 <p>Return <em>the total sum of all root-to-leaf numbers</em>. Test cases are generated so that the answer will fit in a <strong>32-bit</strong> integer.</p>
 <p>A <strong>leaf</strong> node is a node with no children.</p>
 <p>Example 1:</p>
+<p><img src="https://assets.leetcode.com/uploads/2021/02/19/num1tree.jpg" alt="" loading="lazy"></p>
 <pre class="example-block"><code>
-**Input:** root = [1,2,3]
-**Output:** 25
-**Explanation:**
+<strong>Input:</strong> root = [1,2,3]
+<strong>Output:</strong> 25
+<strong>Explanation:</strong>
 The root-to-leaf path <code>1-&amp;gt;2</code> represents the number <code>12</code>.
 The root-to-leaf path <code>1-&amp;gt;3</code> represents the number <code>13</code>.
 Therefore, sum = 12 + 13 = <code>25</code>.
 </code></pre>
 <p>Example 2:</p>
+<p><img src="https://assets.leetcode.com/uploads/2021/02/19/num2tree.jpg" alt="" loading="lazy"></p>
 <pre class="example-block"><code>
-**Input:** root = [4,9,0,5,1]
-**Output:** 1026
-**Explanation:**
+<strong>Input:</strong> root = [4,9,0,5,1]
+<strong>Output:</strong> 1026
+<strong>Explanation:</strong>
 The root-to-leaf path <code>4-&amp;gt;9-&amp;gt;5</code> represents the number 495.
 The root-to-leaf path <code>4-&amp;gt;9-&amp;gt;1</code> represents the number 491.
 The root-to-leaf path <code>4-&amp;gt;0</code> represents the number 40.
