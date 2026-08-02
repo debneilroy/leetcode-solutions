@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Hash Table, Tree, Depth-First Search, Breadth-First Search, Sorting, Binary Tree  
-**Accepted:** 599.7K / 1M (57.9%)
+**Accepted:** 600.3K / 1M (57.9%)
 
 ---
 
@@ -16,6 +16,8 @@ If two nodes are in the same row and column, the order should be from **left to 
 
 Example 1:
 
+![](https://assets.leetcode.com/uploads/2024/09/23/image1.png)
+
 ```
 
 **Input:** root = [3,9,20,null,null,15,7]
@@ -25,6 +27,8 @@ Example 1:
 
 Example 2:
 
+![](https://assets.leetcode.com/uploads/2024/09/23/image3.png)
+
 ```
 
 **Input:** root = [3,9,8,4,0,1,7]
@@ -33,6 +37,8 @@ Example 2:
 ```
 
 Example 3:
+
+![](https://assets.leetcode.com/uploads/2024/09/23/image2.png)
 
 ```
 
