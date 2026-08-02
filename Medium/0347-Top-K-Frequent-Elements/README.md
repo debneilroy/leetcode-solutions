@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Array, Hash Table, Divide and Conquer, Sorting, Heap (Priority Queue), Bucket Sort, Counting, Quickselect  
-**Accepted:** 3.7M / 5.6M (66.9%)
+**Accepted:** 3.8M / 5.7M (67.0%)
 
 ---
 
