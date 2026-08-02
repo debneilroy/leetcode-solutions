@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Array, Two Pointers, Sorting  
-**Accepted:** 5.9M / 10.7M (55.3%)
+**Accepted:** 6M / 10.8M (55.4%)
 
 ---
 
