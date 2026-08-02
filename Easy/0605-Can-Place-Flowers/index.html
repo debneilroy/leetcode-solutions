@@ -53,6 +53,7 @@ p { margin-bottom: 10px; }
 ul { padding-left: 20px; margin-bottom: 10px; }
 li { margin-bottom: 4px; }
 strong { font-weight: 600; }
+img { max-width: 100%; height: auto; border-radius: var(--radius); display: block; margin: 10px 0; }
 h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
 sup { font-size: 10px; }
 
@@ -177,16 +178,16 @@ sup { font-size: 10px; }
           <span class="badge badge-Easy">Easy</span>
           <span class="tag">Array</span><span class="tag">Greedy</span>
         </div>
-        <div class="prob-stats">1.4M / 4.9M (29.2%)</div>
+        <div class="prob-stats">1.5M / 5M (29.3%)</div>
         <div class="prob-desc"><p>You have a long flowerbed in which some of the plots are planted, and some are not. However, flowers cannot be planted in <strong>adjacent</strong> plots.</p>
 <p>Given an integer array <code>flowerbed</code> containing <code>0</code>'s and <code>1</code>'s, where <code>0</code> means empty and <code>1</code> means not empty, and an integer <code>n</code>, return <code>true</code> <em>if</em> <code>n</code> <em>new flowers can be planted in the</em> <code>flowerbed</code> <em>without violating the no-adjacent-flowers rule and</em> <code>false</code> <em>otherwise</em>.</p>
 <p>Example 1:</p>
-<pre class="example-block"><code>**Input:** flowerbed = [1,0,0,0,1], n = 1
-**Output:** true
+<pre class="example-block"><code><strong>Input:</strong> flowerbed = [1,0,0,0,1], n = 1
+<strong>Output:</strong> true
 </code></pre>
 <p>Example 2:</p>
-<pre class="example-block"><code>**Input:** flowerbed = [1,0,0,0,1], n = 2
-**Output:** false
+<pre class="example-block"><code><strong>Input:</strong> flowerbed = [1,0,0,0,1], n = 2
+<strong>Output:</strong> false
 </code></pre>
 <p><strong>Constraints:</strong></p>
 <ul>
