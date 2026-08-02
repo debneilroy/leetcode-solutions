@@ -53,6 +53,7 @@ p { margin-bottom: 10px; }
 ul { padding-left: 20px; margin-bottom: 10px; }
 li { margin-bottom: 4px; }
 strong { font-weight: 600; }
+img { max-width: 100%; height: auto; border-radius: var(--radius); display: block; margin: 10px 0; }
 h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
 sup { font-size: 10px; }
 
@@ -177,7 +178,7 @@ sup { font-size: 10px; }
           <span class="badge badge-Medium">Medium</span>
           <span class="tag">Array</span><span class="tag">Hash Table</span><span class="tag">Design</span><span class="tag">Matrix</span><span class="tag">Simulation</span>
         </div>
-        <div class="prob-stats">319.2K / 543.3K (58.8%)</div>
+        <div class="prob-stats">319.7K / 544.2K (58.7%)</div>
         <div class="prob-desc"><p>Assume the following rules are for the tic-tac-toe game on an <code>n x n</code> board between two players:</p>
 <ul>
 <li>A move is guaranteed to be valid and is placed on an empty block.</li>
@@ -213,12 +214,12 @@ sup { font-size: 10px; }
 </ul>
 <p>Example 1:</p>
 <pre class="example-block"><code>
-**Input**
+<strong>Input</strong>
 [&quot;TicTacToe&quot;, &quot;move&quot;, &quot;move&quot;, &quot;move&quot;, &quot;move&quot;, &quot;move&quot;, &quot;move&quot;, &quot;move&quot;]
 [[3], [0, 0, 1], [0, 2, 2], [2, 2, 1], [1, 1, 2], [2, 0, 1], [1, 0, 2], [2, 1, 1]]
-**Output**
+<strong>Output</strong>
 [null, 0, 0, 0, 0, 0, 0, 1]
-<p>**Explanation**<br>TicTacToe ticTacToe = new TicTacToe(3);<br>Assume that player 1 is &quot;X&quot; and player 2 is &quot;O&quot; in the board.<br>ticTacToe.move(0, 0, 1); // return 0 (no one wins)<br>|X| | |<br>| | | |    // Player 1 makes a move at (0, 0).<br>| | | |</p>
+<p><strong>Explanation</strong><br>TicTacToe ticTacToe = new TicTacToe(3);<br>Assume that player 1 is &quot;X&quot; and player 2 is &quot;O&quot; in the board.<br>ticTacToe.move(0, 0, 1); // return 0 (no one wins)<br>|X| | |<br>| | | |    // Player 1 makes a move at (0, 0).<br>| | | |</p>
 <p>ticTacToe.move(0, 2, 2); // return 0 (no one wins)<br>|X| |O|<br>| | | |    // Player 2 makes a move at (0, 2).<br>| | | |</p>
 <p>ticTacToe.move(2, 2, 1); // return 0 (no one wins)<br>|X| |O|<br>| | | |    // Player 1 makes a move at (2, 2).<br>| | |X|</p>
 <p>ticTacToe.move(1, 1, 2); // return 0 (no one wins)<br>|X| |O|<br>| |O| |    // Player 2 makes a move at (1, 1).<br>| | |X|</p>
