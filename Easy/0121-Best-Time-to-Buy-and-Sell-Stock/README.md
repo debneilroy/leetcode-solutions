@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Array, Dynamic Programming  
-**Accepted:** 8.3M / 14.6M (57.1%)
+**Accepted:** 8.4M / 14.7M (57.2%)
 
 ---
 
