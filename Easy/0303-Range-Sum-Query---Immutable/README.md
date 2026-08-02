@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Array, Design, Prefix Sum  
-**Accepted:** 978K / 1.3M (72.8%)
+**Accepted:** 991.3K / 1.4M (73.0%)
 
 ---
 
