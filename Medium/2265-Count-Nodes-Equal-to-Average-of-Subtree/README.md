@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Tree, Depth-First Search, Binary Tree  
-**Accepted:** 202.3K / 233.1K (86.8%)
+**Accepted:** 202.9K / 233.8K (86.8%)
 
 ---
 
@@ -21,6 +21,8 @@ Given the `root` of a binary tree, return *the number of nodes where the value o
 
 Example 1:
 
+![](https://assets.leetcode.com/uploads/2022/03/15/image-20220315203925-1.png)
+
 ```
 
 **Input:** root = [4,8,5,0,1,null,6]
@@ -35,6 +37,8 @@ For the node with value 6: The average of its subtree is 6 / 1 = 6.
 ```
 
 Example 2:
+
+![](https://assets.leetcode.com/uploads/2022/03/26/image-20220326133920-1.png)
 
 ```
 
