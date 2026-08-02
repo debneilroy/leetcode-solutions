@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Linked List, Tree, Depth-First Search, Breadth-First Search, Binary Tree  
-**Accepted:** 863.7K / 1.5M (57.9%)
+**Accepted:** 868.4K / 1.5M (58.0%)
 
 ---
 
@@ -28,6 +28,8 @@ Initially, all next pointers are set to `NULL`.
  
 
 Example 1:
+
+![](https://assets.leetcode.com/uploads/2019/02/15/117_sample.png)
 
 ```
 
