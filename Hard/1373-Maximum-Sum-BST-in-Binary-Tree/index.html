@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1373. Maximum Sum BST in Binary Tree - LeetCode Solutions</title>
+<link rel="stylesheet" id="prism-theme" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+<style>
+
+:root {
+  --bg:        #ffffff;
+  --surface:   #f7f8fa;
+  --surface2:  #eff1f3;
+  --border:    #e0e0e0;
+  --text:      #1a1a1a;
+  --muted:     #6b7280;
+  --accent:    #ffa116;
+  --easy:      #2cbb5d;
+  --medium:    #ffa116;
+  --hard:      #ef4743;
+  --unknown:   #8b5cf6;
+  --radius:    6px;
+  --code-bg:   #f5f5f5;
+  --code-panel:#f7f8fa;
+  --code-border:#e0e0e0;
+  --code-muted:#6b7280;
+}
+[data-theme="dark"] {
+  --bg:        #1a1a1a;
+  --surface:   #282828;
+  --surface2:  #333;
+  --border:    #3e3e3e;
+  --text:      #eff2f6;
+  --muted:     #8d99a6;
+  --code-bg:   #1e1e1e;
+  --code-panel:#2d2d2d;
+  --code-border:#3e3e3e;
+  --code-muted:#8d99a6;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+       background: var(--surface2); color: #d63384; padding: 2px 5px;
+       border-radius: 3px; font-size: 13px; }
+pre.example-block { background: var(--surface2); border-radius: var(--radius);
+  padding: 12px 16px; margin: 10px 0; overflow-x: auto; }
+pre.example-block code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+strong { font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+sup { font-size: 10px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* header */
+.header { display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.logo span { color: var(--text); font-weight: 400; }
+.header-nav { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+.header-nav a { color: var(--muted); }
+.header-nav a:hover { color: var(--text); text-decoration: none; }
+.header-spacer { flex: 1; }
+.theme-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 13px;
+  transition: color .15s, border-color .15s; }
+.theme-btn:hover { color: var(--text); border-color: var(--muted); }
+
+/* difficulty badge */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 500; }
+.badge-Easy    { color: var(--easy);    background: rgba(44,187,93,0.15); }
+.badge-Medium  { color: var(--medium);  background: rgba(255,161,22,0.15); }
+.badge-Hard    { color: var(--hard);    background: rgba(239,71,67,0.15); }
+.badge-Unknown { color: var(--unknown); background: rgba(139,92,246,0.15); }
+
+/* tag */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; background: var(--surface2); color: var(--muted);
+  margin: 2px; }
+
+
+/* layout */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; gap: 0; }
+.panel { display: flex; flex-direction: column; overflow: hidden; }
+.panel-left { border-right: 1px solid var(--border); }
+
+/* tabs */
+.tabs { display: flex; border-bottom: 1px solid var(--code-border); background: var(--code-panel); flex-shrink: 0; }
+.tab { padding: 10px 16px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: color .15s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+.tab-content.active { display: block; }
+
+/* problem header */
+.prob-num-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.prob-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.prob-stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.prob-tags { margin-bottom: 20px; }
+.prob-desc { font-size: 14px; line-height: 1.7; }
+
+/* hint */
+.hint-block { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.hint-block summary { padding: 10px 14px; cursor: pointer; font-size: 13px; color: var(--muted);
+  background: var(--code-panel); user-select: none; }
+.hint-block summary:hover { color: var(--text); }
+.hint-body { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); }
+
+/* similar */
+.similar-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.similar-row:last-child { border-bottom: none; }
+.empty-msg { color: var(--muted); font-size: 13px; }
+
+/* code panel */
+.code-header { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--code-panel); border-bottom: 1px solid var(--code-border); flex-shrink: 0; }
+.lang-pill { font-size: 12px; background: var(--surface2); color: var(--code-muted);
+  padding: 3px 10px; border-radius: 20px; }
+.copy-btn { background: none; border: 1px solid var(--code-border); color: var(--code-muted);
+  padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: var(--text); border-color: var(--muted); }
+.code-scroll { flex: 1; overflow-y: auto; }
+.code-scroll pre[class*="language-"] { margin: 0 !important; border-radius: 0 !important;
+  background: var(--code-bg) !important; min-height: 100%; font-size: 13px !important;
+  padding: 20px !important; tab-size: 4; }
+
+/* bottom nav */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: var(--code-panel); border-top: 1px solid var(--code-border);
+  flex-shrink: 0; font-size: 12px; }
+.nav-btn { color: var(--muted); padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: var(--radius); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 280px; }
+.nav-btn:hover { color: var(--text); border-color: var(--muted); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a class="logo" href="../../index.html">&#9889; <span>leetcode-solutions</span></a>
+    <div class="header-nav">
+      <a href="../../index.html">All Problems</a>
+    </div>
+    <div class="header-spacer"></div>
+    <span style="font-size:12px;color:var(--muted);">1373. Maximum Sum BST in Binary Tree</span>
+    <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()">🌙</button>
+  </header>
+
+  <div class="split">
+
+    <!-- LEFT PANEL -->
+    <div class="panel panel-left">
+      <div class="tabs">
+        <div class="tab active" data-tab="desc">Description</div>
+        <div class="tab" data-tab="hints">Hints (2)</div>
+        <div class="tab" data-tab="similar">Similar (0)</div>
+      </div>
+
+      <div class="tab-content active" id="tab-desc">
+        <div class="prob-num-title">1373. Maximum Sum BST in Binary Tree</div>
+        <div class="prob-meta">
+          <span class="badge badge-Hard">Hard</span>
+          <span class="tag">Dynamic Programming</span><span class="tag">Tree</span><span class="tag">Depth-First Search</span><span class="tag">Binary Search Tree</span><span class="tag">Binary Tree</span>
+        </div>
+        <div class="prob-stats">144.9K / 299K (48.5%)</div>
+        <div class="prob-desc"><p>Given a <strong>binary tree</strong> <code>root</code>, return <em>the maximum sum of all keys of <strong>any</strong> sub-tree which is also a Binary Search Tree (BST)</em>.</p>
+<p>Assume a BST is defined as follows:</p>
+<ul>
+<li>The left subtree of a node contains only nodes with keys <strong>less than</strong> the node's key.</li>
+</ul>
+	
+<ul>
+<li>The right subtree of a node contains only nodes with keys <strong>greater than</strong> the node's key.</li>
+</ul>
+	
+<ul>
+<li>Both the left and right subtrees must also be binary search trees.</li>
+</ul>
+<p>Example 1:</p>
+<pre class="example-block"><code>
+**Input:** root = [1,4,3,2,4,2,5,null,null,null,null,null,null,4,6]
+**Output:** 20
+**Explanation:** Maximum sum in a valid Binary search tree is obtained in root node with key equal to 3.
+</code></pre>
+<p>Example 2:</p>
+<pre class="example-block"><code>
+**Input:** root = [4,3,null,1,2]
+**Output:** 2
+**Explanation:** Maximum sum in a valid Binary search tree is obtained in a single root node with key equal to 2.
+</code></pre>
+<p>Example 3:</p>
+<pre class="example-block"><code>
+**Input:** root = [-4,-2,-5]
+**Output:** 0
+**Explanation:** All values are negatives. Return an empty BST.
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li>The number of nodes in the tree is in the range <code>[1, 4 * 10^4]</code>.</li>
+</ul>
+	
+<ul>
+<li><code>-4 * 10^4 &lt;= Node.val &lt;= 4 * 10^4</code></li>
+</ul></div>
+      </div>
+
+      <div class="tab-content" id="tab-hints">
+        
+<details class="hint-block">
+  <summary>Hint 1</summary>
+  <div class="hint-body"><p>Create a datastructure with 4 parameters:  (sum, isBST, maxLeft, minRight).</p></div>
+</details>
+<details class="hint-block">
+  <summary>Hint 2</summary>
+  <div class="hint-body"><p>In each node compute theses parameters, following the conditions of a Binary Search Tree.</p></div>
+</details>
+      </div>
+
+      <div class="tab-content" id="tab-similar">
+        <p class="empty-msg">No similar problems listed.</p>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <div class="code-header">
+        <span class="lang-pill">Python3</span>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="code-scroll">
+        <pre class="language-python"><code class="language-python" id="solutionCode">&quot;&quot;&quot;
+LeetCode 1373. Maximum Sum BST in Binary Tree
+Difficulty: Hard
+URL: https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/
+&quot;&quot;&quot;
+
+# Lower priority, check the variant instead
+
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def maxSumBST(self, root: TreeNode) -&gt; int:
+        &quot;&quot;&quot;
+        Postorder DFS, same skeleton as the plain &#x27;largest subtree sum&#x27;
+        variant problem below -- but each call now returns 4 things instead of 1,
+        because a parent can&#x27;t tell if IT is a valid BST without
+        knowing whether each child is a valid BST AND the value range
+        each child spans.
+
+        Returns per node: (is_valid_bst, min_val, max_val, subtree_sum)
+
+        Time Complexity:  O(n) - every node visited exactly once
+        Space Complexity: O(h) - recursion stack, h = tree height
+        &quot;&quot;&quot;
+
+        # empty tree is a valid BST with sum 0 -- that&#x27;s our floor.
+        # Since 0 is always an available candidate, the final
+        # answer can NEVER be negative, even if every node in
+        # the tree is negative and/or every valid BST subtree
+        # sums to something negative (e.g. [-4,-6,-2]: whole
+        # tree IS a valid BST but sums to -12 -- still loses to 0).
+
+        best = 0  
+
+        def postorder(node: TreeNode):
+            nonlocal best
+
+            # Base case: null is treated as a valid BST with sum 0.
+            # min=+inf / max=-inf are sentinels so that when a REAL
+            # parent node checks &quot;is my value &gt; left.max_val&quot; or
+            # &quot;is my value &lt; right.min_val&quot;, a missing child never
+            # accidentally fails that check.
+            #
+            # Example: node=5 with no left child --
+            #   left = (True, +inf, -inf, 0)
+            #   check: node.val(5) &gt; left.max_val(-inf)? Yes, trivially true.
+            #   (if we&#x27;d used 0 instead of -inf, a node valued 0 or
+            #    less would wrongly fail this check against an ABSENT child)
+            if node is None:
+                return (True, float(&#x27;inf&#x27;), float(&#x27;-inf&#x27;), 0)
+
+            is_left_bst, left_min, left_max, left_sum = postorder(node.left)
+            is_right_bst, right_min, right_max, right_sum = postorder(node.right)
+
+            # BST validity at this node requires ALL three:
+            #   1. left subtree is itself a valid BST
+            #   2. right subtree is itself a valid BST
+            #   3. node.val strictly greater than everything in left,
+            #      strictly less than everything in right
+            #
+            # Counterexample this guards against: [5, 1, 4, null, null, 3, 6]
+            #        5
+            #       / \
+            #      1   4
+            #         / \
+            #        3   6
+            # node=4&#x27;s own children (3,6) look locally fine (3&lt;4&lt;6),
+            # so a naive check would call node=4 a valid BST. But 4&#x27;s
+            # PARENT is 5, and node=4 is in the right subtree, so
+            # node=4&#x27;s entire range must be &gt; 5. It isn&#x27;t (3 &lt; 5).
+            # That&#x27;s why we propagate min/max up, not just check locally.
+            if (is_left_bst and is_right_bst
+                    and left_max &lt; node.val &lt; right_min):
+                # Valid BST rooted here -- compute its sum and range.
+                curr_sum = node.val + left_sum + right_sum
+                curr_min = min(left_min, node.val)
+                curr_max = max(right_max, node.val)
+
+                best = max(best, curr_sum)
+                return (True, curr_min, curr_max, curr_sum)
+            else:
+                # NOT a valid BST here. We still must return something,
+                # but is_valid=False poisons every ancestor&#x27;s check above
+                # (since &#x27;is_left_bst&#x27;/&#x27;is_right_bst&#x27; will now be False
+                # for whoever called us) -- so min/max/sum values no
+                # longer matter for correctness. Returning them anyway
+                # (rather than sentinel junk) costs nothing and keeps
+                # the tuple shape uniform.
+                return (False, 0, 0, 0)
+
+        postorder(root)
+        return best
+
+# Variant : Find Largest Subtree Sum in a Tree
+
+# Given the root of a binary tree, find the maximum subtree sum among all possible subtrees, and return that sum.
+
+# A subtree of a node consists of the node itself and all of its descendants. (A single leaf node counts as a valid subtree — its sum is just its own value.)
+
+# Example 1:
+
+# Input: root = [10, 8, 2, 3, 5, N, N]
+
+           10
+          /  \
+         8    2
+        / \
+       3   5
+
+# Output: 28
+# Explanation: All node values are positive, so the largest possible 
+# subtree sum is the sum of the entire tree: 10+8+2+3+5 = 28.
+
+# Example 2:
+
+# Input: root = [1, -2, 3, 4, 5, -6, 2]
+
+             1
+           /   \
+         -2     3
+         / \   / \
+        4   5 -6  2
+
+# Output: 7
+# Explanation: The subtree rooted at node -2 has sum = -2+4+5 = 7.
+# Compare against other candidate subtrees:
+  - subtree at 4        -&gt; 4
+  - subtree at 5        -&gt; 5
+  - subtree at -6       -&gt; -6
+  - subtree at 2        -&gt; 2
+  - subtree at 3        -&gt; 3+(-6)+2 = -1
+  - subtree at root(1)  -&gt; 1+7+(-1) = 7
+# The maximum among all of these is 7.
+        
+
+class Solution:
+    def maxSubtreeSum(self, root: TreeNode) -&gt; int:
+        &quot;&quot;&quot;
+        Postorder DFS: each call returns the sum of the subtree rooted
+        at &#x27;node&#x27; to its parent. A nonlocal &#x27;best&#x27; tracks the max sum
+        seen across ALL subtrees, updated as we unwind the recursion.
+
+        Time Complexity:  O(n) - every node visited exactly once
+        Space Complexity: O(h) - recursion stack, h = tree height
+                           (O(n) worst case for a skewed tree, O(log n) balanced)
+        &quot;&quot;&quot;
+        # best is declared outside the recursive helper so every call
+        # can update the SAME running maximum, not a local copy.
+        # Initialized to -inf (not 0) so that a tree of all-negative
+        # values still reports its true max (e.g. a single node -5
+        # should return -5, not incorrectly clamp to 0).
+
+        best = float(&#x27;-inf&#x27;)
+
+        def postorder(node: TreeNode) -&gt; int:
+            nonlocal best
+
+            # Base case: an empty child contributes nothing to its
+            # parent&#x27;s sum. Returning 0 here is safe and does NOT
+            # pollute &#x27;best&#x27;, because we only compare &#x27;best&#x27; against
+            # currSum for REAL nodes below -- null itself is never
+            # treated as a subtree candidate.
+            if node is None:
+                return 0
+
+            # Postorder ordering is the whole trick: fully resolve
+            # left and right subtree sums BEFORE touching node.val.
+            # This guarantees no subtree sum is ever recomputed --
+            # each node&#x27;s contribution is added exactly once, total
+            # work across the whole tree is O(n).
+            left_sum = postorder(node.left)
+            right_sum = postorder(node.right)
+
+            # Subtree sum rooted at THIS node = its own value plus
+            # whatever its children already resolved to.
+            #
+            # Example walk on [1,-2,3,4,5,-6,2]:
+            #   node=4  (leaf)      -&gt; currSum = 4
+            #   node=5  (leaf)      -&gt; currSum = 5
+            #   node=-2             -&gt; currSum = -2 + 4 + 5 = 7
+            #   node=-6 (leaf)      -&gt; currSum = -6
+            #   node=2  (leaf)      -&gt; currSum = 2
+            #   node=3              -&gt; currSum = 3 + (-6) + 2 = -1
+            #   node=1  (root)      -&gt; currSum = 1 + 7 + (-1) = 7
+            currSum = node.val + left_sum + right_sum
+
+            # Update the global best BEFORE returning -- every node,
+            # not just the root, is a candidate subtree.
+            best = max(best, currSum)
+
+            # Return currSum (not best!) to the parent. The parent
+            # needs the RAW sum of this subtree to compute its own
+            # currSum -- if we returned &#x27;best&#x27; instead, a parent could
+            # silently absorb an unrelated, disconnected subtree&#x27;s sum
+            # into its own total, which is wrong (subtree sums must
+            # stay contiguous/rooted).
+            return currSum
+
+        postorder(root)
+        return best</code></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div><a class="nav-btn" href="../../Medium/1249-Minimum-Remove-to-Make-Valid-Parentheses/">&#8592; 1249. Minimum Remove to Make Valid Parentheses</a></div>
+    <a href="../../index.html" style="font-size:12px;color:var(--muted);">&#8801; All Problems</a>
+    <div><a class="nav-btn" href="../../Easy/1539-Kth-Missing-Positive-Number/">1539. Kth Missing Positive Number &#8594;</a></div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+// copy
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const code = document.getElementById('solutionCode').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+});
+</script>
+<script>
+(function() {
+  var t = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('theme-toggle').textContent = t === 'dark' ? '☀️' : '🌙';
+  if (t === 'dark') document.getElementById('prism-theme').href = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css';
+})();
+function toggleTheme() {
+  var t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('theme', t);
+  document.getElementById('theme-toggle').textContent = t === 'dark' ? '☀️' : '🌙';
+  document.getElementById('prism-theme').href = t === 'dark'
+    ? 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css'
+    : 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css';
+}
+</script>
+</body>
+</html>
