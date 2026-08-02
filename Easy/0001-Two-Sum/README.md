@@ -2,13 +2,13 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Array, Hash Table  
-**Accepted:** 22.6M / 39.1M (57.8%)
+**Accepted:** 22.9M / 39.5M (57.9%)
 
 ---
 
 ## Problem
 
-Given an array of integers `nums` and an integer `target`, return *indices of the two numbers such that they add up to `target`*.
+You are given an array of integers `nums` and an integer `target`, return *indices of the two numbers such that they add up to `target`*.
 
 You may assume that each input would have ***exactly* one solution**, and you may not use the *same* element twice.
 
