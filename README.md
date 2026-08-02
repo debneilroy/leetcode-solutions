@@ -16,17 +16,18 @@ For problems not on LeetCode (e.g. company interview questions), add a folder un
 
 | Difficulty | Solved |
 |------------|--------|
-| 🟢 Easy    | 16 |
-| 🟡 Medium  | 34 |
-| 🔴 Hard    | 5 |
+| 🟢 Easy    | 17 |
+| 🟡 Medium  | 35 |
+| 🔴 Hard    | 6 |
 | ❓ Unknown | 2 |
-| **Total**  | **57** |
+| **Total**  | **60** |
 
 ## 🟢 Easy
 
 | # | Title | Solution |
 |---|-------|----------|
 | 1 | [Two Sum](Easy/0001-Two-Sum/README.md) | [Python](Easy/0001-Two-Sum/solution.py) |
+| 26 | [Remove Duplicates from Sorted Array](Easy/0026-Remove-Duplicates-from-Sorted-Array/README.md) | [Python](Easy/0026-Remove-Duplicates-from-Sorted-Array/solution.py) |
 | 88 | [Merge Sorted Array](Easy/0088-Merge-Sorted-Array/README.md) | [Python](Easy/0088-Merge-Sorted-Array/solution.py) |
 | 121 | [Best Time to Buy and Sell Stock](Easy/0121-Best-Time-to-Buy-and-Sell-Stock/README.md) | [Python](Easy/0121-Best-Time-to-Buy-and-Sell-Stock/solution.py) |
 | 163 | [Missing Ranges](Easy/0163-Missing-Ranges/README.md) | [Python](Easy/0163-Missing-Ranges/solution.py) |
@@ -54,6 +55,7 @@ For problems not on LeetCode (e.g. company interview questions), add a folder un
 | 71 | [Simplify Path](Medium/0071-Simplify-Path/README.md) | [Python](Medium/0071-Simplify-Path/solution.py) |
 | 78 | [Subsets](Medium/0078-Subsets/README.md) | [Python](Medium/0078-Subsets/solution.py) |
 | 117 | [Populating Next Right Pointers in Each Node II](Medium/0117-Populating-Next-Right-Pointers-in-Each-Node-II/README.md) | [Python](Medium/0117-Populating-Next-Right-Pointers-in-Each-Node-II/solution.py) |
+| 129 | [Sum Root to Leaf Numbers](Medium/0129-Sum-Root-to-Leaf-Numbers/README.md) | [Python](Medium/0129-Sum-Root-to-Leaf-Numbers/solution.py) |
 | 133 | [Clone Graph](Medium/0133-Clone-Graph/README.md) | [Python](Medium/0133-Clone-Graph/solution.py) |
 | 146 | [LRU Cache](Medium/0146-LRU-Cache/README.md) | [Python](Medium/0146-LRU-Cache/solution.py) |
 | 162 | [Find Peak Element](Medium/0162-Find-Peak-Element/README.md) | [Python](Medium/0162-Find-Peak-Element/solution.py) |
@@ -91,6 +93,7 @@ For problems not on LeetCode (e.g. company interview questions), add a folder un
 | 827 | [Making A Large Island](Hard/0827-Making-A-Large-Island/README.md) | [Python](Hard/0827-Making-A-Large-Island/solution.py) |
 | 987 | [Vertical Order Traversal of a Binary Tree](Hard/0987-Vertical-Order-Traversal-of-a-Binary-Tree/README.md) | [Python](Hard/0987-Vertical-Order-Traversal-of-a-Binary-Tree/solution.py) |
 | 1216 | [Valid Palindrome III](Hard/1216-Valid-Palindrome-III/README.md) | [Python](Hard/1216-Valid-Palindrome-III/solution.py) |
+| 1373 | [Maximum Sum BST in Binary Tree](Hard/1373-Maximum-Sum-BST-in-Binary-Tree/README.md) | [Python](Hard/1373-Maximum-Sum-BST-in-Binary-Tree/solution.py) |
 
 ## ❓ Unknown
 
