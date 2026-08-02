@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟢 Easy  
 **Tags:** Array, Greedy  
-**Accepted:** 1.4M / 4.9M (29.2%)
+**Accepted:** 1.5M / 5M (29.3%)
 
 ---
 
