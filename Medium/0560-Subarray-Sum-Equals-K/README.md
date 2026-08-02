@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Array, Hash Table, Prefix Sum  
-**Accepted:** 2.6M / 5.4M (47.8%)
+**Accepted:** 2.6M / 5.5M (47.9%)
 
 ---
 
