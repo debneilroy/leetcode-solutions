@@ -178,7 +178,7 @@ sup { font-size: 10px; }
           <span class="badge badge-Medium">Medium</span>
           <span class="tag">Array</span><span class="tag">Binary Search</span>
         </div>
-        <div class="prob-stats">3.5M / 7.1M (49.4%)</div>
+        <div class="prob-stats">3.5M / 7.1M (49.5%)</div>
         <div class="prob-desc"><p>Given an array of integers <code>nums</code> sorted in non-decreasing order, find the starting and ending position of a given <code>target</code> value.</p>
 <p>If <code>target</code> is not found in the array, return <code>[-1, -1]</code>.</p>
 <p>You must write an algorithm with <code>O(log n)</code> runtime complexity.</p>
@@ -394,6 +394,7 @@ class Solution:
         return [left_pos, right_pos]
 
 # Alternative one-pass solution using single binary search function
+
 class Solution:
     def searchRange(self, nums, target):
         &quot;&quot;&quot;
@@ -487,12 +488,9 @@ class Solution:
         # Return the range [leftmost, rightmost]
         return [left_pos, right_pos]
 
-
-
 # Variant 1 : Count Occurrences of Target in Sorted Array
 
-# Given an array of integers nums sorted in non-decreasing order, 
-# count the number of occurrences of a given target value.
+# Given an array of integers nums sorted in non-decreasing order, count the number of occurrences of a given target value.
 
 # You must write an algorithm with O(log n) runtime complexity.
 
@@ -590,6 +588,7 @@ def countTarget(nums, target):
     Explanation: Empty array has no elements
 
 # Note: Linear scan is more optimal O(n) vs O(k*log n).
+
 # This binary search approach only wins when k &lt;&lt; n (very few unique elements).
 
 def countUniqueElementsBinarySearch(nums):
@@ -651,12 +650,15 @@ def countUniqueElementsBinarySearch(nums):
         return result
     
     unique_count = 0
+
     i = 0  # i is always the leftmost position of current element
     
-    # Process array by jumping from one unique element to the next
-    # ⚠️  Note: Even though we &quot;jump&quot;, we still examine O(n) positions
-    # in total across all jumps, then add O(k * log n) for binary searches.
-    # This is why the total complexity is O(k * log n), not better.
+    # Process array by jumping from one unique element to the next. Each iteration visits ONE position (the leftmost of a group), runs O(log n) binary search, then jumps past the entire group. Loop runs exactly k times → total: O(k * log n).
+
+    # Why while instead of for?
+    # We jump i by variable amounts (right_pos + 1), not by 1.
+    # A for loop in Python can&#x27;t modify the loop variable mid-iteration,
+    # so while gives us full control over non-uniform index jumps.
 
     while i &lt; len(nums):
         current = nums[i]
@@ -675,7 +677,7 @@ def countUniqueElementsBinarySearch(nums):
         
         unique_count += 1
         
-        # Skip to next unique element
+        # Skip to next unique element, don&#x27;t do i += right_pos + 1
         i = right_pos + 1
     
     return unique_count
