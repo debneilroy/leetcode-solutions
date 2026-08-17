@@ -6,36 +6,36 @@ URL: https://leetcode.com/problems/find-first-and-last-position-of-element-in-so
 
 # Brute Force Approach : Linear Scan
 
-# class Solution:
-#     def searchRange(nums, target):
-#         """
-#         Brute Force: Single pass to find both positions.
+class Solution:
+    def searchRange(nums, target):
+        """
+        Brute Force: Single pass to find both positions.
         
-#         Time Complexity: O(n) - scan entire array once
-#         Space Complexity: O(1)
+        Time Complexity: O(n) - scan entire array once
+        Space Complexity: O(1)
 
-#         This violates the problem's requirement of O(log n) time.
-#         """
-#         if not nums:
-#             return [-1, -1]
+        This violates the problem's requirement of O(log n) time.
+        """
+        if not nums:
+            return [-1, -1]
 
-#         if target < nums[0] or target > nums[-1]:
-#             return [-1, -1]
+        if target < nums[0] or target > nums[-1]:
+            return [-1, -1]
         
-#         left_pos = -1
-#         right_pos = -1
+        left_pos = -1
+        right_pos = -1
         
-#         # Single pass: Update positions as we find target
-#         for i in range(len(nums)):
-#             if nums[i] == target:
-#                 if left_pos == -1:
-#                     # First occurrence found
-#                     left_pos = i
-#                 # Always update right position when we find target
-#                 right_pos = i
+        # Single pass: Update positions as we find target
+        for i in range(len(nums)):
+            if nums[i] == target:
+                if left_pos == -1:
+                    # First occurrence found
+                    left_pos = i
+                # Always update right position when we find target
+                right_pos = i
         
-#         # If target never found, both will be -1
-#         return [left_pos, right_pos]
+        # If target never found, both will be -1
+        return [left_pos, right_pos]
 
 class Solution:
     def searchRange(self, nums: List[int], target: int) -> List[int]:
@@ -152,6 +152,7 @@ class Solution:
         return [left_pos, right_pos]
 
 # Alternative one-pass solution using single binary search function
+
 class Solution:
     def searchRange(self, nums, target):
         """
@@ -245,12 +246,9 @@ class Solution:
         # Return the range [leftmost, rightmost]
         return [left_pos, right_pos]
 
-
-
 # Variant 1 : Count Occurrences of Target in Sorted Array
 
-# Given an array of integers nums sorted in non-decreasing order, 
-# count the number of occurrences of a given target value.
+# Given an array of integers nums sorted in non-decreasing order, count the number of occurrences of a given target value.
 
 # You must write an algorithm with O(log n) runtime complexity.
 
@@ -348,6 +346,7 @@ class Solution:
 #     Explanation: Empty array has no elements
 
 # Note: Linear scan is more optimal O(n) vs O(k*log n).
+
 # This binary search approach only wins when k << n (very few unique elements).
 
 # def countUniqueElementsBinarySearch(nums):
@@ -409,12 +408,15 @@ class Solution:
 #         return result
     
 #     unique_count = 0
+
 #     i = 0  # i is always the leftmost position of current element
     
-#     # Process array by jumping from one unique element to the next
-#     # ⚠️  Note: Even though we "jump", we still examine O(n) positions
-#     # in total across all jumps, then add O(k * log n) for binary searches.
-#     # This is why the total complexity is O(k * log n), not better.
+#     # Process array by jumping from one unique element to the next. Each iteration visits ONE position (the leftmost of a group), runs O(log n) binary search, then jumps past the entire group. Loop runs exactly k times → total: O(k * log n).
+
+#     # Why while instead of for?
+#     # We jump i by variable amounts (right_pos + 1), not by 1.
+#     # A for loop in Python can't modify the loop variable mid-iteration,
+#     # so while gives us full control over non-uniform index jumps.
 
 #     while i < len(nums):
 #         current = nums[i]
@@ -433,7 +435,7 @@ class Solution:
         
 #         unique_count += 1
         
-#         # Skip to next unique element
+#         # Skip to next unique element, don't do i += right_pos + 1
 #         i = right_pos + 1
     
 #     return unique_count
