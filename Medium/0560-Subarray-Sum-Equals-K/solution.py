@@ -82,6 +82,8 @@ class Solution:
             # Check if (cumulative_sum - k) exists in hash map
             # This means there's a subarray ending at current position with sum k
             if (cumulative_sum - k) in sum_count:
+                # Cannot do result += 1: the same cumulative sum may have appeared
+                # multiple times before, each representing a different valid subarray. We must add the full frequency: sum_count[cumulative_sum - k]. Check with the example nums = [1, -1, 0], k = 0
                 result += sum_count[cumulative_sum - k]
             
             # Add current cumulative sum to hash map
