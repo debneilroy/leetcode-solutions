@@ -61,7 +61,7 @@ class Solution:
         
         # Edge case: single cell (start == end)
         if n == 1:
-            return 1 # return 
+            return 1 # For path: return [(0, 0)]
         
         # BFS initialization
         queue = deque([(0, 0)])  # Cells to explore (FIFO)
@@ -227,6 +227,8 @@ class Solution:
         
 #         # Initialize visited set with starting position
 #         # Using set for O(1) average lookup time
+#         # visited = set() also works here since we only return path length.
+#         #   (0,0) may be re-enqueued once by its neighbors, but it's harmless — BFS finds the destination before that redundant entry is ever popped. However, {(0,0)} is cleaner and avoids even that minor waste.
 #         visited = {(0, 0)}
         
 #         # Initialize BFS queue with (row, col, distance)
@@ -403,7 +405,11 @@ class Solution:
     
 #     # BFS setup
 #     queue = deque([(0, 0)])
-#     visited = {(0, 0)}  # Separate visited set instead of modifying grid
+
+#     visited = {(0, 0)}  # Must include (0,0) for path reconstruction:
+#                         # without it, a neighbor re-enqueues (0,0) and
+#                         # overwrites parent[(0,0)] from None, corrupting the parent chain and causing infinite loops in reconstruct_path.
+
 #     parent = {(0, 0): None}
     
 #     # 8 directions: up-left, up, up-right, left, right, down-left, down, down-right
@@ -462,7 +468,7 @@ class Solution:
 #     # Reverse to get path from start to end
 #     return path[::-1]
 
-# # Minh's solution
+# # # Minh's solution
 
 # class Variant:
 #     def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> List[tuple[int]]:
@@ -570,81 +576,81 @@ class Solution:
 
 # # Return both the shortest path and its length
 
-# # def shortestPath(grid):
-# #     """
-# #     Returns:
-# #         Tuple[int, List[Tuple[int, int]]]: (path_length, path_coordinates)
-# #         (-1, []) if no path exists
+# def shortestPath(grid):
+#     """
+#     Returns:
+#         Tuple[int, List[Tuple[int, int]]]: (path_length, path_coordinates)
+#         (-1, []) if no path exists
 
-# #     TC : O(N^2) SC : O(N^2)
-# #     """
-# #     n = len(grid)
+#     TC : O(N^2) SC : O(N^2)
+#     """
+#     n = len(grid)
     
-# #     if not grid or grid[0][0] == 1 or grid[n-1][n-1] == 1:
-# #         return (-1, [])
+#     if not grid or grid[0][0] == 1 or grid[n-1][n-1] == 1:
+#         return (-1, [])
     
-# #     if n == 1:
-# #         return (1, [(0, 0)])
+#     if n == 1:
+#         return (1, [(0, 0)])
     
-# #     # BFS queue: (row, col)
-# #     queue = deque([(0, 0)])
-# #     visited = {(0, 0)}
+#     # BFS queue: (row, col)
+#     queue = deque([(0, 0)])
+#     visited = {(0, 0)}
     
-# #     # Parent tracking: child -> parent mapping
-# #     parent = {(0, 0): None}
+#     # Parent tracking: child -> parent mapping
+#     parent = {(0, 0): None}
     
-# #     dirs = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
+#     dirs = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
     
-# #     while queue:
-# #         r, c = queue.popleft()
+#     while queue:
+#         r, c = queue.popleft()
         
-# #         for dr, dc in dirs:
-# #             nr, nc = r + dr, c + dc
+#         for dr, dc in dirs:
+#             nr, nc = r + dr, c + dc
             
-# #             if (0 <= nr < n and 0 <= nc < n and 
-# #                 not grid[nr][nc] and (nr, nc) not in visited):
+#             if (0 <= nr < n and 0 <= nc < n and 
+#                 not grid[nr][nc] and (nr, nc) not in visited):
                 
-# #                 visited.add((nr, nc))
-# #                 parent[(nr, nc)] = (r, c)  # Track parent
+#                 visited.add((nr, nc))
+#                 parent[(nr, nc)] = (r, c)  # Track parent
                 
-# #                 # Check if reached destination
-# #                 if nr == n-1 and nc == n-1:
-# #                     # Reconstruct path by backtracking through parents
-# #                     path = reconstruct_path(parent, (nr, nc))
-# #                     return (len(path), path)
+#                 # Check if reached destination
+#                 if nr == n-1 and nc == n-1:
+#                     # Reconstruct path by backtracking through parents
+#                     path = reconstruct_path(parent, (nr, nc))
+#                     return (len(path), path)
                 
-# #                 queue.append((nr, nc))
+#                 queue.append((nr, nc))
     
-# #     return (-1, [])
+#     return (-1, [])
 
-# # def reconstruct_path(parent, end):
-# #     """
-# #     Reconstruct path from parent mapping by backtracking.
+# def reconstruct_path(parent, end):
+#     """
+#     Reconstruct path from parent mapping by backtracking.
     
-# #     Args:
-# #         parent: Dictionary mapping child -> parent coordinate
-# #         end: End coordinate (destination)
+#     Args:
+#         parent: Dictionary mapping child -> parent coordinate
+#         end: End coordinate (destination)
     
-# #     Returns:
-# #         List[Tuple[int, int]]: Path from start to end
+#     Returns:
+#         List[Tuple[int, int]]: Path from start to end
     
-# #     Time Complexity: O(path_length)
-# #         - Backtrack through parent pointers once
-# #         - Reverse the list: O(path_length)
+#     Time Complexity: O(path_length)
+#         - Backtrack through parent pointers once
+#         - Reverse the list: O(path_length)
     
-# #     Space Complexity: O(path_length)
-# #         - Path list stores all coordinates in the path
-# #     """
-# #     path = []
-# #     current = end
+#     Space Complexity: O(path_length)
+#         - Path list stores all coordinates in the path
+#     """
+#     path = []
+#     current = end
     
-# #     # Backtrack through parents until we reach start (parent = None)
-# #     while current is not None:
-# #         path.append(current)
-# #         current = parent[current]
+#     # Backtrack through parents until we reach start (parent = None)
+#     while current is not None:
+#         path.append(current)
+#         current = parent[current]
     
-# #     # Reverse to get path from start to end
-# #     return path[::-1]
+#     # Reverse to get path from start to end
+#     return path[::-1]
 
 # # Follow ups:
 
@@ -774,6 +780,71 @@ class Solution:
 #         return path if dfs(0, 0) else []
 #         # For length: return len(path) if dfs(0, 0) else -1
 
+# # Return only path length, not the actual path
+
+# class Solution:
+#     def pathInBinaryMatrix(self, grid: List[List[int]]) -> int:
+#         """
+#         Find length of ANY path (not necessarily shortest) using recursive DFS with backtracking.
+        
+#         TC: O(M×N) - in worst case, explores all cells
+#         SC: O(M×N) - recursion stack depth + visited set
+        
+#         Note: Uses DFS instead of BFS because we only need ANY path, not shortest.
+#         Tracks distance as a parameter instead of maintaining a path list,
+#         avoiding the overhead of append/pop operations on every cell.
+        
+#         Args:
+#             grid: m×n binary matrix where 0 is traversable, 1 is blocked
+        
+#         Returns:
+#             int: Length of any valid path from (0,0) to (m-1,n-1), or -1 if no path exists
+#         """
+#         if not grid or not grid[0]:
+#             return -1
+
+#         m = len(grid)
+#         n = len(grid[0])
+
+#         if grid[0][0] == 1 or grid[m-1][n-1] == 1:
+#             return -1
+
+#         if m == 1 and n == 1:
+#             return 1
+
+#         visited = {(0, 0)}
+#         directions = [(-1,-1), (-1,0), (-1,1), (0,-1), (0,1), (1,-1), (1,0), (1,1)]
+
+#         def dfs(row, col, dist):
+#             """
+#             Nested DFS to find any path from current cell to destination.
+#             Has direct access to: grid, m, n, visited, directions (closure)
+            
+#             Args:
+#                 row, col: Current cell coordinates
+#                 dist: Current path length (number of cells visited so far)
+            
+#             Returns:
+#                 int: Path length if destination found, -1 otherwise
+#             """
+#             if row == m - 1 and col == n - 1:
+#                 return dist           # Reached destination, return current length
+
+#             for dr, dc in directions:
+#                 nr, nc = row + dr, col + dc
+
+#                 if (0 <= nr < m and 0 <= nc < n and
+#                     grid[nr][nc] == 0 and (nr, nc) not in visited):
+
+#                     visited.add((nr, nc))
+#                     result = dfs(nr, nc, dist + 1)
+#                     if result != -1:
+#                         return result  # Path found through this neighbor
+
+#             return -1                 # No valid path from this cell
+
+#         return dfs(0, 0, 1)          # Start DFS with distance 1 (counting start cell)
+
 # # Iterative DFS
 
 # class Solution:
@@ -798,59 +869,60 @@ class Solution:
             
 #             For path length: int (length of path or -1 if no path)
 #         """
-#         # Edge case: empty grid
 #         if not grid:
 #             return []  # For length: return -1
         
-#         # Edge case: empty first row
 #         if not grid[0]:
 #             return []  # For length: return -1
         
-#         # Get grid dimensions
-#         m = len(grid)      # Number of rows
-#         n = len(grid[0])   # Number of columns
+#         m = len(grid)
+#         n = len(grid[0])
         
-#         # Edge case: start or end blocked
 #         if grid[0][0] == 1 or grid[m-1][n-1] == 1:
 #             return []  # For length: return -1
 
-#         # Edge case: single cell grid
 #         if m == 1 and n == 1:
 #             return [[0, 0]]  # For length: return 1
 
-#         # Initialize data structures for iterative DFS
-#         # Stack stores: (row, col, path_so_far)
-#         # path_so_far is the path taken to reach this cell
-#         stack = [(0, 0, [[0, 0]])]
+#         # Stack stores (row, col, path_so_far)
+#         # For length: change to (row, col, dist) — store int instead of list
+#         stack = [(0, 0, [[0, 0]])]  # For length: stack = [(0, 0, 1)]
         
-#         # Track visited cells to avoid cycles
 #         visited = {(0, 0)}
         
-#         # 8-directional moves (including diagonals)
 #         directions = [(-1,-1), (-1,0), (-1,1), (0,-1), (0,1), (1,-1), (1,0), (1,1)]
         
 #         while stack:
-#             row, col, path = stack.pop()
-            
-#             # Check if reached destination (bottom-right cell)
+#             row, col, path = stack.pop()  # For length: row, col, dist = stack.pop()
+
+#             # Destination check: done after pop for cleaner path return.
+#             # Checking inside the loop would require returning path + [[nr, nc]]
+#             # instead of path — easy to forget under interview pressure.
+
+#             # Note: When returning path length, return dist (not dist + 1) because dist was already incremented when this cell was pushed onto the stack (dist + 1 in stack.append). So dist here already counts the current cell including destination. Contrast with BFS inside-for-loop check where destination hasn't been counted yet, requiring dist + 1.
+
+#             # For length: either position works equally well (return dist here vs return dist + 1 inside the loop).
+
 #             if row == m - 1 and col == n - 1:
-#                 return path  # Found a path! For length: return len(path)
+#                 return path  # For length: return dist
             
-#             # Explore all 8 possible directions from current cell
 #             for dr, dc in directions:
-#                 nr, nc = row + dr, col + dc  # Calculate neighbor coordinates
+#                 nr, nc = row + dr, col + dc
             
 #                 if (0 <= nr < m and 0 <= nc < n and 
 #                     grid[nr][nc] == 0 and (nr, nc) not in visited):
                     
 #                     visited.add((nr, nc))
                     
-#                     new_path = path + [[nr, nc]]
+#                     new_path = path + [[nr, nc]]  # For length: remove this line entirely
                     
-#                     # Push neighbor onto stack with its path
-#                     stack.append((nr, nc, new_path))
+#                     # Could check destination here instead. But not ideal — requires new_path to include destination, making it easy to accidentally return path (missing last cell) instead.
+
+#                     # if nr == m-1 and nc == n-1: 
+#                     #     return new_path  (For length: return dist + 1)
+
+#                     stack.append((nr, nc, new_path))  # For length: stack.append((nr, nc, dist + 1))
         
-#         # Stack exhausted without finding destination - no path exists
 #         return []  # For length: return -1
 
 # # Using parent tracking
@@ -942,7 +1014,7 @@ class Solution:
         
 #         return length
 
-# Approach : DFS with in cell modification
+# # Approach : DFS with in cell modification
 
 # def pathInBinaryMatrix(grid):
 #     n = len(grid)
