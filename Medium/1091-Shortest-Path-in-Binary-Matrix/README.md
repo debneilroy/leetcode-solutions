@@ -2,7 +2,7 @@
 
 **Difficulty:** 🟡 Medium  
 **Tags:** Array, Breadth-First Search, Matrix  
-**Accepted:** 892.3K / 1.7M (52.0%)
+**Accepted:** 904.9K / 1.7M (52.1%)
 
 ---
 
