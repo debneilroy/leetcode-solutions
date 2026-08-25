@@ -178,7 +178,7 @@ sup { font-size: 10px; }
           <span class="badge badge-Medium">Medium</span>
           <span class="tag">Array</span><span class="tag">Hash Table</span><span class="tag">Prefix Sum</span>
         </div>
-        <div class="prob-stats">2.6M / 5.5M (47.9%)</div>
+        <div class="prob-stats">2.7M / 5.6M (48.0%)</div>
         <div class="prob-desc"><p>Given an array of integers <code>nums</code> and an integer <code>k</code>, return <em>the total number of subarrays whose sum equals to</em> <code>k</code>.</p>
 <p>A subarray is a contiguous <strong>non-empty</strong> sequence of elements within an array.</p>
 <p>Example 1:</p>
@@ -352,6 +352,8 @@ class Solution:
             # Check if (cumulative_sum - k) exists in hash map
             # This means there&#x27;s a subarray ending at current position with sum k
             if (cumulative_sum - k) in sum_count:
+                # Cannot do result += 1: the same cumulative sum may have appeared
+                # multiple times before, each representing a different valid subarray. We must add the full frequency: sum_count[cumulative_sum - k]. Check with the example nums = [1, -1, 0], k = 0
                 result += sum_count[cumulative_sum - k]
             
             # Add current cumulative sum to hash map
